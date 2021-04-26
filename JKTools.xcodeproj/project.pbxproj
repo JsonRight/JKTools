@@ -1,0 +1,590 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		BF25A4392615DE1B00CB2F1B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF25A4382615DE1B00CB2F1B /* AppDelegate.swift */; };
+		BF25A43B2615DE1B00CB2F1B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF25A43A2615DE1B00CB2F1B /* ViewController.swift */; };
+		BF25A43D2615DE1D00CB2F1B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BF25A43C2615DE1D00CB2F1B /* Assets.xcassets */; };
+		BF25A47A26170AA300CB2F1B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BF25A47926170AA300CB2F1B /* Main.storyboard */; };
+		BF2BC8EE26202FDB005802E4 /* PreferencesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2BC8ED26202FDB005802E4 /* PreferencesViewController.swift */; };
+		BF2BC8F12620370D005802E4 /* PreferencesCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2BC8F02620370D005802E4 /* PreferencesCellView.swift */; };
+		BF2BC8F4262064D0005802E4 /* ProjectInfoBean.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2BC8F3262064D0005802E4 /* ProjectInfoBean.swift */; };
+		BF2BC8F72620681B005802E4 /* InsertProjectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2BC8F62620681B005802E4 /* InsertProjectViewController.swift */; };
+		BF3B8054263171390085E75A /* Projects.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3B8053263171390085E75A /* Projects.swift */; };
+		BF3B805F26318A7A0085E75A /* AppleScriptCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3B805E26318A7A0085E75A /* AppleScriptCommand.swift */; };
+		BF3B8063263194A10085E75A /* ConfigType.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3B8062263194A00085E75A /* ConfigType.swift */; };
+		BF3B8066263199A30085E75A /* ConsoleOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3B8065263199A30085E75A /* ConsoleOptions.swift */; };
+		BF3B80692632686C0085E75A /* MenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3B80682632686C0085E75A /* MenuView.swift */; };
+		BFA528EC26351606003427A8 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA528EB26351606003427A8 /* main.swift */; };
+		BFA528F326351634003427A8 /* JKTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA528F226351634003427A8 /* JKTool.swift */; };
+		BFA528FB26351659003427A8 /* ANSIProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA528F726351659003427A8 /* ANSIProperties.swift */; };
+		BFA528FC26351659003427A8 /* ANSIModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA528F826351659003427A8 /* ANSIModifiers.swift */; };
+		BFA528FD26351659003427A8 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA528F926351659003427A8 /* Colors.swift */; };
+		BFA528FE26351659003427A8 /* ANSIColorCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA528FA26351659003427A8 /* ANSIColorCode.swift */; };
+		BFA5290E2635169A003427A8 /* SubModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA529082635169A003427A8 /* SubModule.swift */; };
+		BFA5290F2635169A003427A8 /* ConfigType.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA529092635169A003427A8 /* ConfigType.swift */; };
+		BFA529102635169A003427A8 /* ConsoleOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA5290A2635169A003427A8 /* ConsoleOptions.swift */; };
+		BFA529122635169A003427A8 /* Project.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA5290C2635169A003427A8 /* Project.swift */; };
+		BFA529132635169A003427A8 /* ShellOut.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA5290D2635169A003427A8 /* ShellOut.swift */; };
+		BFA52927263516AE003427A8 /* CloneCommon.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA52917263516AE003427A8 /* CloneCommon.swift */; };
+		BFA52928263516AE003427A8 /* ArchiveCommon.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA52918263516AE003427A8 /* ArchiveCommon.swift */; };
+		BFA52929263516AE003427A8 /* PullAllCommon.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA52919263516AE003427A8 /* PullAllCommon.swift */; };
+		BFA5292A263516AE003427A8 /* PullCommon.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA5291A263516AE003427A8 /* PullCommon.swift */; };
+		BFA5292B263516AE003427A8 /* BuildCommon.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA5291B263516AE003427A8 /* BuildCommon.swift */; };
+		BFA5292C263516AE003427A8 /* BuildFrameworkCommon.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA5291C263516AE003427A8 /* BuildFrameworkCommon.swift */; };
+		BFA5292D263516AE003427A8 /* DeleteTagCommon.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA5291D263516AE003427A8 /* DeleteTagCommon.swift */; };
+		BFA5292E263516AE003427A8 /* BaseBuildCommon.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA5291E263516AE003427A8 /* BaseBuildCommon.swift */; };
+		BFA5292F263516AE003427A8 /* AddTagCommon.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA5291F263516AE003427A8 /* AddTagCommon.swift */; };
+		BFA52930263516AE003427A8 /* OneKeyUploadCommon.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA52920263516AE003427A8 /* OneKeyUploadCommon.swift */; };
+		BFA52931263516AE003427A8 /* CommonProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA52921263516AE003427A8 /* CommonProtocol.swift */; };
+		BFA52932263516AE003427A8 /* UploadCommon.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA52922263516AE003427A8 /* UploadCommon.swift */; };
+		BFA52933263516AE003427A8 /* BuildStaticCommon.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA52923263516AE003427A8 /* BuildStaticCommon.swift */; };
+		BFA52934263516AE003427A8 /* BuildXCFrameworkCommon.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA52924263516AE003427A8 /* BuildXCFrameworkCommon.swift */; };
+		BFA52935263516AE003427A8 /* CloneProjectCommon.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA52925263516AE003427A8 /* CloneProjectCommon.swift */; };
+		BFA52936263516AE003427A8 /* HelperCommon.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA52926263516AE003427A8 /* HelperCommon.swift */; };
+		BFA5293B263517AE003427A8 /* JKTool in Resources */ = {isa = PBXBuildFile; fileRef = BFA528E926351606003427A8 /* JKTool */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		BFA528E726351606003427A8 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		BF25A4352615DE1B00CB2F1B /* JKTools.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JKTools.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		BF25A4382615DE1B00CB2F1B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		BF25A43A2615DE1B00CB2F1B /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		BF25A43C2615DE1D00CB2F1B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		BF25A4412615DE1D00CB2F1B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BF25A4422615DE1D00CB2F1B /* JKTools.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = JKTools.entitlements; sourceTree = "<group>"; };
+		BF25A47926170AA300CB2F1B /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
+		BF2BC8ED26202FDB005802E4 /* PreferencesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesViewController.swift; sourceTree = "<group>"; };
+		BF2BC8F02620370D005802E4 /* PreferencesCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesCellView.swift; sourceTree = "<group>"; };
+		BF2BC8F3262064D0005802E4 /* ProjectInfoBean.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectInfoBean.swift; sourceTree = "<group>"; };
+		BF2BC8F62620681B005802E4 /* InsertProjectViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsertProjectViewController.swift; sourceTree = "<group>"; };
+		BF3B8053263171390085E75A /* Projects.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Projects.swift; sourceTree = "<group>"; };
+		BF3B805E26318A7A0085E75A /* AppleScriptCommand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleScriptCommand.swift; sourceTree = "<group>"; };
+		BF3B8062263194A00085E75A /* ConfigType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfigType.swift; sourceTree = "<group>"; };
+		BF3B8065263199A30085E75A /* ConsoleOptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConsoleOptions.swift; sourceTree = "<group>"; };
+		BF3B80682632686C0085E75A /* MenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuView.swift; sourceTree = "<group>"; };
+		BFA528E926351606003427A8 /* JKTool */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = JKTool; sourceTree = BUILT_PRODUCTS_DIR; };
+		BFA528EB26351606003427A8 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		BFA528F226351634003427A8 /* JKTool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JKTool.swift; sourceTree = "<group>"; };
+		BFA528F726351659003427A8 /* ANSIProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ANSIProperties.swift; sourceTree = "<group>"; };
+		BFA528F826351659003427A8 /* ANSIModifiers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ANSIModifiers.swift; sourceTree = "<group>"; };
+		BFA528F926351659003427A8 /* Colors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
+		BFA528FA26351659003427A8 /* ANSIColorCode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ANSIColorCode.swift; sourceTree = "<group>"; };
+		BFA529082635169A003427A8 /* SubModule.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubModule.swift; sourceTree = "<group>"; };
+		BFA529092635169A003427A8 /* ConfigType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfigType.swift; sourceTree = "<group>"; };
+		BFA5290A2635169A003427A8 /* ConsoleOptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConsoleOptions.swift; sourceTree = "<group>"; };
+		BFA5290C2635169A003427A8 /* Project.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Project.swift; sourceTree = "<group>"; };
+		BFA5290D2635169A003427A8 /* ShellOut.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShellOut.swift; sourceTree = "<group>"; };
+		BFA52917263516AE003427A8 /* CloneCommon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CloneCommon.swift; sourceTree = "<group>"; };
+		BFA52918263516AE003427A8 /* ArchiveCommon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArchiveCommon.swift; sourceTree = "<group>"; };
+		BFA52919263516AE003427A8 /* PullAllCommon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PullAllCommon.swift; sourceTree = "<group>"; };
+		BFA5291A263516AE003427A8 /* PullCommon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PullCommon.swift; sourceTree = "<group>"; };
+		BFA5291B263516AE003427A8 /* BuildCommon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BuildCommon.swift; sourceTree = "<group>"; };
+		BFA5291C263516AE003427A8 /* BuildFrameworkCommon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BuildFrameworkCommon.swift; sourceTree = "<group>"; };
+		BFA5291D263516AE003427A8 /* DeleteTagCommon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeleteTagCommon.swift; sourceTree = "<group>"; };
+		BFA5291E263516AE003427A8 /* BaseBuildCommon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseBuildCommon.swift; sourceTree = "<group>"; };
+		BFA5291F263516AE003427A8 /* AddTagCommon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddTagCommon.swift; sourceTree = "<group>"; };
+		BFA52920263516AE003427A8 /* OneKeyUploadCommon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OneKeyUploadCommon.swift; sourceTree = "<group>"; };
+		BFA52921263516AE003427A8 /* CommonProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommonProtocol.swift; sourceTree = "<group>"; };
+		BFA52922263516AE003427A8 /* UploadCommon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UploadCommon.swift; sourceTree = "<group>"; };
+		BFA52923263516AE003427A8 /* BuildStaticCommon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BuildStaticCommon.swift; sourceTree = "<group>"; };
+		BFA52924263516AE003427A8 /* BuildXCFrameworkCommon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BuildXCFrameworkCommon.swift; sourceTree = "<group>"; };
+		BFA52925263516AE003427A8 /* CloneProjectCommon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CloneProjectCommon.swift; sourceTree = "<group>"; };
+		BFA52926263516AE003427A8 /* HelperCommon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HelperCommon.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		BF25A4322615DE1B00CB2F1B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BFA528E626351606003427A8 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		BF25A42C2615DE1B00CB2F1B = {
+			isa = PBXGroup;
+			children = (
+				BF25A4372615DE1B00CB2F1B /* JKTools */,
+				BFA528EA26351606003427A8 /* JKTool */,
+				BF25A4362615DE1B00CB2F1B /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		BF25A4362615DE1B00CB2F1B /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				BF25A4352615DE1B00CB2F1B /* JKTools.app */,
+				BFA528E926351606003427A8 /* JKTool */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		BF25A4372615DE1B00CB2F1B /* JKTools */ = {
+			isa = PBXGroup;
+			children = (
+				BF25A4382615DE1B00CB2F1B /* AppDelegate.swift */,
+				BF25A43A2615DE1B00CB2F1B /* ViewController.swift */,
+				BF3B804E263049AB0085E75A /* AppleScripts */,
+				BF2BC8ED26202FDB005802E4 /* PreferencesViewController.swift */,
+				BF3B80682632686C0085E75A /* MenuView.swift */,
+				BF2BC8F02620370D005802E4 /* PreferencesCellView.swift */,
+				BF2BC8F3262064D0005802E4 /* ProjectInfoBean.swift */,
+				BF3B8053263171390085E75A /* Projects.swift */,
+				BF2BC8F62620681B005802E4 /* InsertProjectViewController.swift */,
+				BF25A43C2615DE1D00CB2F1B /* Assets.xcassets */,
+				BF25A47926170AA300CB2F1B /* Main.storyboard */,
+				BF25A4412615DE1D00CB2F1B /* Info.plist */,
+				BF25A4422615DE1D00CB2F1B /* JKTools.entitlements */,
+			);
+			path = JKTools;
+			sourceTree = "<group>";
+		};
+		BF3B804E263049AB0085E75A /* AppleScripts */ = {
+			isa = PBXGroup;
+			children = (
+				BF3B8062263194A00085E75A /* ConfigType.swift */,
+				BF3B8065263199A30085E75A /* ConsoleOptions.swift */,
+				BF3B805E26318A7A0085E75A /* AppleScriptCommand.swift */,
+			);
+			path = AppleScripts;
+			sourceTree = "<group>";
+		};
+		BFA528EA26351606003427A8 /* JKTool */ = {
+			isa = PBXGroup;
+			children = (
+				BFA528EB26351606003427A8 /* main.swift */,
+				BFA528F226351634003427A8 /* JKTool.swift */,
+				BFA528F626351659003427A8 /* Colors */,
+				BFA529072635169A003427A8 /* Shell */,
+				BFA52916263516AE003427A8 /* Commond */,
+			);
+			path = JKTool;
+			sourceTree = "<group>";
+		};
+		BFA528F626351659003427A8 /* Colors */ = {
+			isa = PBXGroup;
+			children = (
+				BFA528F726351659003427A8 /* ANSIProperties.swift */,
+				BFA528F826351659003427A8 /* ANSIModifiers.swift */,
+				BFA528F926351659003427A8 /* Colors.swift */,
+				BFA528FA26351659003427A8 /* ANSIColorCode.swift */,
+			);
+			path = Colors;
+			sourceTree = "<group>";
+		};
+		BFA529072635169A003427A8 /* Shell */ = {
+			isa = PBXGroup;
+			children = (
+				BFA5290D2635169A003427A8 /* ShellOut.swift */,
+				BFA529082635169A003427A8 /* SubModule.swift */,
+				BFA529092635169A003427A8 /* ConfigType.swift */,
+				BFA5290A2635169A003427A8 /* ConsoleOptions.swift */,
+				BFA5290C2635169A003427A8 /* Project.swift */,
+			);
+			path = Shell;
+			sourceTree = "<group>";
+		};
+		BFA52916263516AE003427A8 /* Commond */ = {
+			isa = PBXGroup;
+			children = (
+				BFA52921263516AE003427A8 /* CommonProtocol.swift */,
+				BFA52917263516AE003427A8 /* CloneCommon.swift */,
+				BFA52925263516AE003427A8 /* CloneProjectCommon.swift */,
+				BFA52918263516AE003427A8 /* ArchiveCommon.swift */,
+				BFA52919263516AE003427A8 /* PullAllCommon.swift */,
+				BFA5291A263516AE003427A8 /* PullCommon.swift */,
+				BFA5291B263516AE003427A8 /* BuildCommon.swift */,
+				BFA5291E263516AE003427A8 /* BaseBuildCommon.swift */,
+				BFA5291C263516AE003427A8 /* BuildFrameworkCommon.swift */,
+				BFA52923263516AE003427A8 /* BuildStaticCommon.swift */,
+				BFA52924263516AE003427A8 /* BuildXCFrameworkCommon.swift */,
+				BFA5291D263516AE003427A8 /* DeleteTagCommon.swift */,
+				BFA5291F263516AE003427A8 /* AddTagCommon.swift */,
+				BFA52920263516AE003427A8 /* OneKeyUploadCommon.swift */,
+				BFA52922263516AE003427A8 /* UploadCommon.swift */,
+				BFA52926263516AE003427A8 /* HelperCommon.swift */,
+			);
+			path = Commond;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		BF25A4342615DE1B00CB2F1B /* JKTools */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BF25A4452615DE1D00CB2F1B /* Build configuration list for PBXNativeTarget "JKTools" */;
+			buildPhases = (
+				BF25A4312615DE1B00CB2F1B /* Sources */,
+				BF25A4322615DE1B00CB2F1B /* Frameworks */,
+				BF25A4332615DE1B00CB2F1B /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = JKTools;
+			productName = JKTools;
+			productReference = BF25A4352615DE1B00CB2F1B /* JKTools.app */;
+			productType = "com.apple.product-type.application";
+		};
+		BFA528E826351606003427A8 /* JKTool */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BFA528EF26351606003427A8 /* Build configuration list for PBXNativeTarget "JKTool" */;
+			buildPhases = (
+				BFA528E526351606003427A8 /* Sources */,
+				BFA528E626351606003427A8 /* Frameworks */,
+				BFA528E726351606003427A8 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = JKTool;
+			productName = JKTool;
+			productReference = BFA528E926351606003427A8 /* JKTool */;
+			productType = "com.apple.product-type.tool";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		BF25A42D2615DE1B00CB2F1B /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1240;
+				LastUpgradeCheck = 1240;
+				TargetAttributes = {
+					BF25A4342615DE1B00CB2F1B = {
+						CreatedOnToolsVersion = 12.4;
+					};
+					BFA528E826351606003427A8 = {
+						CreatedOnToolsVersion = 12.4;
+					};
+				};
+			};
+			buildConfigurationList = BF25A4302615DE1B00CB2F1B /* Build configuration list for PBXProject "JKTools" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = BF25A42C2615DE1B00CB2F1B;
+			productRefGroup = BF25A4362615DE1B00CB2F1B /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				BF25A4342615DE1B00CB2F1B /* JKTools */,
+				BFA528E826351606003427A8 /* JKTool */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		BF25A4332615DE1B00CB2F1B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BFA5293B263517AE003427A8 /* JKTool in Resources */,
+				BF25A47A26170AA300CB2F1B /* Main.storyboard in Resources */,
+				BF25A43D2615DE1D00CB2F1B /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		BF25A4312615DE1B00CB2F1B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BF25A43B2615DE1B00CB2F1B /* ViewController.swift in Sources */,
+				BF2BC8F12620370D005802E4 /* PreferencesCellView.swift in Sources */,
+				BF3B8066263199A30085E75A /* ConsoleOptions.swift in Sources */,
+				BF2BC8F4262064D0005802E4 /* ProjectInfoBean.swift in Sources */,
+				BF3B805F26318A7A0085E75A /* AppleScriptCommand.swift in Sources */,
+				BF2BC8F72620681B005802E4 /* InsertProjectViewController.swift in Sources */,
+				BF25A4392615DE1B00CB2F1B /* AppDelegate.swift in Sources */,
+				BF3B80692632686C0085E75A /* MenuView.swift in Sources */,
+				BF2BC8EE26202FDB005802E4 /* PreferencesViewController.swift in Sources */,
+				BF3B8063263194A10085E75A /* ConfigType.swift in Sources */,
+				BF3B8054263171390085E75A /* Projects.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BFA528E526351606003427A8 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BFA52929263516AE003427A8 /* PullAllCommon.swift in Sources */,
+				BFA5292A263516AE003427A8 /* PullCommon.swift in Sources */,
+				BFA52936263516AE003427A8 /* HelperCommon.swift in Sources */,
+				BFA52933263516AE003427A8 /* BuildStaticCommon.swift in Sources */,
+				BFA52932263516AE003427A8 /* UploadCommon.swift in Sources */,
+				BFA529132635169A003427A8 /* ShellOut.swift in Sources */,
+				BFA528F326351634003427A8 /* JKTool.swift in Sources */,
+				BFA5292B263516AE003427A8 /* BuildCommon.swift in Sources */,
+				BFA528FD26351659003427A8 /* Colors.swift in Sources */,
+				BFA528FB26351659003427A8 /* ANSIProperties.swift in Sources */,
+				BFA52928263516AE003427A8 /* ArchiveCommon.swift in Sources */,
+				BFA5292D263516AE003427A8 /* DeleteTagCommon.swift in Sources */,
+				BFA5290F2635169A003427A8 /* ConfigType.swift in Sources */,
+				BFA528EC26351606003427A8 /* main.swift in Sources */,
+				BFA5292F263516AE003427A8 /* AddTagCommon.swift in Sources */,
+				BFA5292E263516AE003427A8 /* BaseBuildCommon.swift in Sources */,
+				BFA528FC26351659003427A8 /* ANSIModifiers.swift in Sources */,
+				BFA52934263516AE003427A8 /* BuildXCFrameworkCommon.swift in Sources */,
+				BFA5292C263516AE003427A8 /* BuildFrameworkCommon.swift in Sources */,
+				BFA52935263516AE003427A8 /* CloneProjectCommon.swift in Sources */,
+				BFA529122635169A003427A8 /* Project.swift in Sources */,
+				BFA5290E2635169A003427A8 /* SubModule.swift in Sources */,
+				BFA52930263516AE003427A8 /* OneKeyUploadCommon.swift in Sources */,
+				BFA52931263516AE003427A8 /* CommonProtocol.swift in Sources */,
+				BFA52927263516AE003427A8 /* CloneCommon.swift in Sources */,
+				BFA529102635169A003427A8 /* ConsoleOptions.swift in Sources */,
+				BFA528FE26351659003427A8 /* ANSIColorCode.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		BF25A4432615DE1D00CB2F1B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		BF25A4442615DE1D00CB2F1B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+			};
+			name = Release;
+		};
+		BF25A4462615DE1D00CB2F1B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = JKTools/JKTools.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = 6R64B64M76;
+				ENABLE_HARDENED_RUNTIME = YES;
+				INFOPLIST_FILE = JKTools/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.jk.JKTools;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		BF25A4472615DE1D00CB2F1B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = JKTools/JKTools.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = 6R64B64M76;
+				ENABLE_HARDENED_RUNTIME = YES;
+				INFOPLIST_FILE = JKTools/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.jk.JKTools;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		BFA528ED26351606003427A8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 6R64B64M76;
+				ENABLE_HARDENED_RUNTIME = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		BFA528EE26351606003427A8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 6R64B64M76;
+				ENABLE_HARDENED_RUNTIME = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		BF25A4302615DE1B00CB2F1B /* Build configuration list for PBXProject "JKTools" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BF25A4432615DE1D00CB2F1B /* Debug */,
+				BF25A4442615DE1D00CB2F1B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		BF25A4452615DE1D00CB2F1B /* Build configuration list for PBXNativeTarget "JKTools" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BF25A4462615DE1D00CB2F1B /* Debug */,
+				BF25A4472615DE1D00CB2F1B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		BFA528EF26351606003427A8 /* Build configuration list for PBXNativeTarget "JKTool" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BFA528ED26351606003427A8 /* Debug */,
+				BFA528EE26351606003427A8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = BF25A42D2615DE1B00CB2F1B /* Project object */;
+}
