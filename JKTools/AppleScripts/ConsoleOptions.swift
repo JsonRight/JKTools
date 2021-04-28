@@ -9,16 +9,16 @@
 import Foundation
 
 public struct ConsoleOptions {
-    var config = ConfigType("Debug")
-    var cache = true
+    var config:ConfigType?
+    var cache:Bool?
     var url:String?
     var path:String?
     var branch:String?
     var scheme:String?
-    var export = "export.plist"
+    var export:String?
     var tag:String?
-    var desc = ""
-    var libraryOptions = LibraryOptions.Framework
+    var desc:String?
+    var libraryOptions:LibraryOptions?
     
     init(url:String?,path:String?) {
         self.url = url

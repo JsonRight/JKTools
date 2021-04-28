@@ -1,0 +1,1 @@
+on JKToolScript(toolName, scriptStr, path)    if scriptStr contains "JKTool" then        tell application "Terminal"            do script with command scriptStr        end tell    else        tell application toolName            do shell script scriptStr & quoted form of path        end tell    end ifend JKToolScript

@@ -118,7 +118,7 @@ public enum MenuItem: String {
      
 }
 
-public func menuView(consoleOptions:ConsoleOptions, menus:[MenuItem], target: AnyObject?, action: Selector?) -> NSMenu {
+public func menuView(menus:[MenuItem], target: AnyObject?, action: Selector?) -> NSMenu {
     
     let menuView = NSMenu.init()
     menuView.autoenablesItems = false

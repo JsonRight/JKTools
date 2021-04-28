@@ -20,6 +20,15 @@
 		BF3B8063263194A10085E75A /* ConfigType.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3B8062263194A00085E75A /* ConfigType.swift */; };
 		BF3B8066263199A30085E75A /* ConsoleOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3B8065263199A30085E75A /* ConsoleOptions.swift */; };
 		BF3B80692632686C0085E75A /* MenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3B80682632686C0085E75A /* MenuView.swift */; };
+		BF3CBE3B2636D58D0082E869 /* JKToolScript.scpt in Resources */ = {isa = PBXBuildFile; fileRef = BF3CBE3A2636D58C0082E869 /* JKToolScript.scpt */; };
+		BF3CBE602637EA9A0082E869 /* FinderSync.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3CBE5F2637EA9A0082E869 /* FinderSync.swift */; };
+		BF3CBE652637EA9A0082E869 /* FinderSyncExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = BF3CBE5D2637EA9A0082E869 /* FinderSyncExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		BF3CBE6D2637EAAC0082E869 /* ConfigType.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3B8062263194A00085E75A /* ConfigType.swift */; };
+		BF3CBE722637EAAF0082E869 /* ConsoleOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3B8065263199A30085E75A /* ConsoleOptions.swift */; };
+		BF3CBE772637EAB20082E869 /* JKToolScript.scpt in Resources */ = {isa = PBXBuildFile; fileRef = BF3CBE3A2636D58C0082E869 /* JKToolScript.scpt */; };
+		BF3CBE7C2637EAB60082E869 /* AppleScriptCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3B805E26318A7A0085E75A /* AppleScriptCommand.swift */; };
+		BF3CBE812637EABB0082E869 /* MenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3B80682632686C0085E75A /* MenuView.swift */; };
+		BF3CBE862637EAC10082E869 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BF25A43C2615DE1D00CB2F1B /* Assets.xcassets */; };
 		BFA528EC26351606003427A8 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA528EB26351606003427A8 /* main.swift */; };
 		BFA528F326351634003427A8 /* JKTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA528F226351634003427A8 /* JKTool.swift */; };
 		BFA528FB26351659003427A8 /* ANSIProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA528F726351659003427A8 /* ANSIProperties.swift */; };
@@ -50,6 +59,16 @@
 		BFA5293B263517AE003427A8 /* JKTool in Resources */ = {isa = PBXBuildFile; fileRef = BFA528E926351606003427A8 /* JKTool */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		BF3CBE632637EA9A0082E869 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BF25A42D2615DE1B00CB2F1B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = BF3CBE5C2637EA9A0082E869;
+			remoteInfo = FinderSyncExtension;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXCopyFilesBuildPhase section */
 		BFA528E726351606003427A8 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
@@ -59,6 +78,17 @@
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 1;
+		};
+		BFA5298E263690F7003427A8 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				BF3CBE652637EA9A0082E869 /* FinderSyncExtension.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
@@ -79,6 +109,11 @@
 		BF3B8062263194A00085E75A /* ConfigType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfigType.swift; sourceTree = "<group>"; };
 		BF3B8065263199A30085E75A /* ConsoleOptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConsoleOptions.swift; sourceTree = "<group>"; };
 		BF3B80682632686C0085E75A /* MenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuView.swift; sourceTree = "<group>"; };
+		BF3CBE3A2636D58C0082E869 /* JKToolScript.scpt */ = {isa = PBXFileReference; lastKnownFileType = file; path = JKToolScript.scpt; sourceTree = "<group>"; };
+		BF3CBE5D2637EA9A0082E869 /* FinderSyncExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = FinderSyncExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		BF3CBE5F2637EA9A0082E869 /* FinderSync.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinderSync.swift; sourceTree = "<group>"; };
+		BF3CBE612637EA9A0082E869 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BF3CBE622637EA9A0082E869 /* FinderSyncExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = FinderSyncExtension.entitlements; sourceTree = "<group>"; };
 		BFA528E926351606003427A8 /* JKTool */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = JKTool; sourceTree = BUILT_PRODUCTS_DIR; };
 		BFA528EB26351606003427A8 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		BFA528F226351634003427A8 /* JKTool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JKTool.swift; sourceTree = "<group>"; };
@@ -117,6 +152,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		BF3CBE5A2637EA9A0082E869 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		BFA528E626351606003427A8 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -132,6 +174,7 @@
 			children = (
 				BF25A4372615DE1B00CB2F1B /* JKTools */,
 				BFA528EA26351606003427A8 /* JKTool */,
+				BF3CBE5E2637EA9A0082E869 /* FinderSyncExtension */,
 				BF25A4362615DE1B00CB2F1B /* Products */,
 			);
 			sourceTree = "<group>";
@@ -141,6 +184,7 @@
 			children = (
 				BF25A4352615DE1B00CB2F1B /* JKTools.app */,
 				BFA528E926351606003427A8 /* JKTool */,
+				BF3CBE5D2637EA9A0082E869 /* FinderSyncExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -170,9 +214,20 @@
 			children = (
 				BF3B8062263194A00085E75A /* ConfigType.swift */,
 				BF3B8065263199A30085E75A /* ConsoleOptions.swift */,
+				BF3CBE3A2636D58C0082E869 /* JKToolScript.scpt */,
 				BF3B805E26318A7A0085E75A /* AppleScriptCommand.swift */,
 			);
 			path = AppleScripts;
+			sourceTree = "<group>";
+		};
+		BF3CBE5E2637EA9A0082E869 /* FinderSyncExtension */ = {
+			isa = PBXGroup;
+			children = (
+				BF3CBE5F2637EA9A0082E869 /* FinderSync.swift */,
+				BF3CBE612637EA9A0082E869 /* Info.plist */,
+				BF3CBE622637EA9A0082E869 /* FinderSyncExtension.entitlements */,
+			);
+			path = FinderSyncExtension;
 			sourceTree = "<group>";
 		};
 		BFA528EA26351606003427A8 /* JKTool */ = {
@@ -243,15 +298,34 @@
 				BF25A4312615DE1B00CB2F1B /* Sources */,
 				BF25A4322615DE1B00CB2F1B /* Frameworks */,
 				BF25A4332615DE1B00CB2F1B /* Resources */,
+				BFA5298E263690F7003427A8 /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				BF3CBE642637EA9A0082E869 /* PBXTargetDependency */,
 			);
 			name = JKTools;
 			productName = JKTools;
 			productReference = BF25A4352615DE1B00CB2F1B /* JKTools.app */;
 			productType = "com.apple.product-type.application";
+		};
+		BF3CBE5C2637EA9A0082E869 /* FinderSyncExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BF3CBE662637EA9A0082E869 /* Build configuration list for PBXNativeTarget "FinderSyncExtension" */;
+			buildPhases = (
+				BF3CBE592637EA9A0082E869 /* Sources */,
+				BF3CBE5A2637EA9A0082E869 /* Frameworks */,
+				BF3CBE5B2637EA9A0082E869 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = FinderSyncExtension;
+			productName = FinderSyncExtension;
+			productReference = BF3CBE5D2637EA9A0082E869 /* FinderSyncExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
 		};
 		BFA528E826351606003427A8 /* JKTool */ = {
 			isa = PBXNativeTarget;
@@ -282,6 +356,9 @@
 					BF25A4342615DE1B00CB2F1B = {
 						CreatedOnToolsVersion = 12.4;
 					};
+					BF3CBE5C2637EA9A0082E869 = {
+						CreatedOnToolsVersion = 12.4;
+					};
 					BFA528E826351606003427A8 = {
 						CreatedOnToolsVersion = 12.4;
 					};
@@ -302,6 +379,7 @@
 			targets = (
 				BF25A4342615DE1B00CB2F1B /* JKTools */,
 				BFA528E826351606003427A8 /* JKTool */,
+				BF3CBE5C2637EA9A0082E869 /* FinderSyncExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -312,8 +390,18 @@
 			buildActionMask = 2147483647;
 			files = (
 				BFA5293B263517AE003427A8 /* JKTool in Resources */,
+				BF3CBE3B2636D58D0082E869 /* JKToolScript.scpt in Resources */,
 				BF25A47A26170AA300CB2F1B /* Main.storyboard in Resources */,
 				BF25A43D2615DE1D00CB2F1B /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BF3CBE5B2637EA9A0082E869 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BF3CBE862637EAC10082E869 /* Assets.xcassets in Resources */,
+				BF3CBE772637EAB20082E869 /* JKToolScript.scpt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -335,6 +423,18 @@
 				BF2BC8EE26202FDB005802E4 /* PreferencesViewController.swift in Sources */,
 				BF3B8063263194A10085E75A /* ConfigType.swift in Sources */,
 				BF3B8054263171390085E75A /* Projects.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BF3CBE592637EA9A0082E869 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BF3CBE812637EABB0082E869 /* MenuView.swift in Sources */,
+				BF3CBE602637EA9A0082E869 /* FinderSync.swift in Sources */,
+				BF3CBE7C2637EAB60082E869 /* AppleScriptCommand.swift in Sources */,
+				BF3CBE722637EAAF0082E869 /* ConsoleOptions.swift in Sources */,
+				BF3CBE6D2637EAAC0082E869 /* ConfigType.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -373,6 +473,14 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		BF3CBE642637EA9A0082E869 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = BF3CBE5C2637EA9A0082E869 /* FinderSyncExtension */;
+			targetProxy = BF3CBE632637EA9A0082E869 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		BF25A4432615DE1D00CB2F1B /* Debug */ = {
@@ -493,6 +601,7 @@
 		BF25A4462615DE1D00CB2F1B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = JKTools/JKTools.entitlements;
@@ -514,6 +623,7 @@
 		BF25A4472615DE1D00CB2F1B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = JKTools/JKTools.entitlements;
@@ -528,6 +638,50 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.jk.JKTools;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		BF3CBE672637EA9A0082E869 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = FinderSyncExtension/FinderSyncExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = 6R64B64M76;
+				ENABLE_HARDENED_RUNTIME = YES;
+				INFOPLIST_FILE = FinderSyncExtension/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.jk.JKTools.FinderSyncExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		BF3CBE682637EA9A0082E869 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = FinderSyncExtension/FinderSyncExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = 6R64B64M76;
+				ENABLE_HARDENED_RUNTIME = YES;
+				INFOPLIST_FILE = FinderSyncExtension/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.jk.JKTools.FinderSyncExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
@@ -571,6 +725,15 @@
 			buildConfigurations = (
 				BF25A4462615DE1D00CB2F1B /* Debug */,
 				BF25A4472615DE1D00CB2F1B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		BF3CBE662637EA9A0082E869 /* Build configuration list for PBXNativeTarget "FinderSyncExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BF3CBE672637EA9A0082E869 /* Debug */,
+				BF3CBE682637EA9A0082E869 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

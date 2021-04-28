@@ -76,7 +76,7 @@ extension PreferencesCellView {
     override func rightMouseDown(with event: NSEvent) {
         let menus = MenuItem.subScriptEnum(isRootProject:true)
 
-        let menu = menuView(consoleOptions: ConsoleOptions(url: self.projectInfo?.sourcePath, path: self.projectInfo?.projectPath), menus: menus,target: self, action: #selector(self.action(item:)))
+        let menu = menuView(menus: menus,target: self, action: #selector(self.action(item:)))
         NSMenu.popUpContextMenu(menu, with: event, for: self)
     }
     
@@ -84,6 +84,7 @@ extension PreferencesCellView {
         guard let menu = IntMenuItem(rawValue: item.tag) else {
             return
         }
+        
         runScript(appleScript: menu.toString().run(consoleOptions: ConsoleOptions(url: self.projectInfo?.sourcePath, path: self.projectInfo?.projectPath)))
         
    }

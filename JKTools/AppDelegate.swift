@@ -40,6 +40,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         return true
     }
 
+    @IBAction func clean(_ sender: AnyObject?) {
+        openPanel()
+    }
 
 }
 
