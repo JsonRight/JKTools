@@ -51,9 +51,9 @@ public func openPanel() {
     }
 }
 
-func alert(message: String) {
+public func alert(message: String) {
   let alert = NSAlert()
-  alert.messageText = "🐢 Finder Go"
+  alert.messageText = "🐢 JKTool"
   alert.informativeText = message
   alert.addButton(withTitle: "OK")
 
