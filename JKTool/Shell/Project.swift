@@ -195,4 +195,8 @@ extension Project: Equatable {
     public static func == (lhs: Project, rhs: Project) -> Bool {
         return lhs.directoryPath == rhs.directoryPath
     }
+    
+    public static func != (lhs: Project, rhs: Project) -> Bool {
+        return lhs.directoryPath != rhs.directoryPath
+    }
 }

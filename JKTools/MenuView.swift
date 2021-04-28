@@ -13,7 +13,8 @@ public enum IntMenuItem: Int {
     case clone_project
     case pull
     case pull_all
-    case prune_branch
+    case prune
+    case prune_all
     case add_tag
     case del_tag
     case build
@@ -33,7 +34,8 @@ public enum IntMenuItem: Int {
         case .clone_project:return MenuItem.clone_project
         case .pull:return MenuItem.pull
         case .pull_all:return MenuItem.pull_all
-        case .prune_branch:return MenuItem.prune_branch
+        case .prune:return MenuItem.prune
+        case .prune_all:return MenuItem.prune_all
         case .add_tag:return MenuItem.add_tag
         case .del_tag:return MenuItem.del_tag
         case .build:return MenuItem.build
@@ -54,7 +56,8 @@ public enum MenuItem: String {
     case clone_project
     case pull
     case pull_all
-    case prune_branch
+    case prune
+    case prune_all
     case add_tag
     case del_tag
     case build
@@ -74,7 +77,8 @@ public enum MenuItem: String {
         case .clone_project:return .JKToolScript(needToPath:false,script:self.rawValue,options:consoleOptions)
         case .pull:return .JKToolScript(needToPath:true,script:self.rawValue,options:consoleOptions)
         case .pull_all:return .JKToolScript(needToPath:true,script:self.rawValue,options:consoleOptions)
-        case .prune_branch:return .JKToolScript(needToPath:true,script:self.rawValue,options:consoleOptions)
+        case .prune:return .JKToolScript(needToPath:true,script:self.rawValue,options:consoleOptions)
+        case .prune_all:return .JKToolScript(needToPath:true,script:self.rawValue,options:consoleOptions)
         case .add_tag:return .JKToolScript(needToPath:true,script:self.rawValue,options:consoleOptions)
         case .del_tag:return .JKToolScript(needToPath:true,script:self.rawValue,options:consoleOptions)
         case .build:return .JKToolScript(needToPath:true,script:self.rawValue,options:consoleOptions)
@@ -95,7 +99,8 @@ public enum MenuItem: String {
         case .clone_project:return IntMenuItem.clone_project
         case .pull:return IntMenuItem.pull
         case .pull_all:return IntMenuItem.pull_all
-        case .prune_branch:return IntMenuItem.prune_branch
+        case .prune:return IntMenuItem.prune
+        case .prune_all:return IntMenuItem.prune_all
         case .add_tag:return IntMenuItem.add_tag
         case .del_tag:return IntMenuItem.del_tag
         case .build:return IntMenuItem.build
@@ -111,9 +116,9 @@ public enum MenuItem: String {
     
     static func subScriptEnum(isRootProject:Bool) -> [MenuItem] {
         if isRootProject {
-            return [.help,.clone,.clone_project,.pull,.pull_all,.prune_branch,.add_tag,.del_tag,.build,.archive,.upload,.one_key_upload]
+            return [.help,.clone,.clone_project,.pull,.pull_all,.prune,.prune_all,.add_tag,.del_tag,.build,.archive,.upload,.one_key_upload]
         }
-        return [.help,.clone,.pull,.pull_all,.prune_branch,.add_tag,.del_tag,.build]
+        return [.help,.clone,.pull,.pull_all,.prune,.prune_all,.add_tag,.del_tag,.build]
     }
      
 }

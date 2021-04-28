@@ -19,6 +19,10 @@ class JKTool {
             PullCommon().run(options: ConsoleOptions(arguments: argumentExtion))
         } else if argumentExtion.first == "pull_all" {
             PullAllCommon().run(options: ConsoleOptions(arguments: argumentExtion))
+        } else if argumentExtion.first == "prune" {
+            PruneCommon().run(options: ConsoleOptions(arguments: argumentExtion))
+        } else if argumentExtion.first == "prune_all" {
+            PruneAllCommon().run(options: ConsoleOptions(arguments: argumentExtion))
         } else if argumentExtion.first == "add_tag" {
             AddTagCommon().run(options: ConsoleOptions(arguments: argumentExtion))
         } else if argumentExtion.first == "del_tag" {

@@ -15,7 +15,7 @@ class ArchiveCommon: CommonProtocol {
             print(Colors.red("请在项目根目录执行脚本"))
             exit(EXIT_FAILURE)
         }
-        guard pro.rootProject != pro else {
+        guard pro.rootProject == pro else {
             print(Colors.red("请在项目根目录执行脚本"))
             exit(EXIT_FAILURE)
         }

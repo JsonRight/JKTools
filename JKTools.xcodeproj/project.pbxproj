@@ -56,7 +56,9 @@
 		BFA52934263516AE003427A8 /* BuildXCFrameworkCommon.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA52924263516AE003427A8 /* BuildXCFrameworkCommon.swift */; };
 		BFA52935263516AE003427A8 /* CloneProjectCommon.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA52925263516AE003427A8 /* CloneProjectCommon.swift */; };
 		BFA52936263516AE003427A8 /* HelperCommon.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA52926263516AE003427A8 /* HelperCommon.swift */; };
-		BFA5293B263517AE003427A8 /* JKTool in Resources */ = {isa = PBXBuildFile; fileRef = BFA528E926351606003427A8 /* JKTool */; };
+		BFB4B1E326394758002E7072 /* JKTool in Resources */ = {isa = PBXBuildFile; fileRef = BFB4B1E226394758002E7072 /* JKTool */; };
+		BFB4B1E826394D96002E7072 /* PruneCommon.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFB4B1E726394D96002E7072 /* PruneCommon.swift */; };
+		BFB4B1ED26394DCA002E7072 /* PruneAllCommon.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFB4B1EC26394DCA002E7072 /* PruneAllCommon.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -109,7 +111,7 @@
 		BF3B8062263194A00085E75A /* ConfigType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfigType.swift; sourceTree = "<group>"; };
 		BF3B8065263199A30085E75A /* ConsoleOptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConsoleOptions.swift; sourceTree = "<group>"; };
 		BF3B80682632686C0085E75A /* MenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuView.swift; sourceTree = "<group>"; };
-		BF3CBE3A2636D58C0082E869 /* JKToolScript.scpt */ = {isa = PBXFileReference; lastKnownFileType = file; path = JKToolScript.scpt; sourceTree = "<group>"; };
+		BF3CBE3A2636D58C0082E869 /* JKToolScript.scpt */ = {isa = PBXFileReference; lastKnownFileType = text; path = JKToolScript.scpt; sourceTree = "<group>"; };
 		BF3CBE5D2637EA9A0082E869 /* FinderSyncExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = FinderSyncExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		BF3CBE5F2637EA9A0082E869 /* FinderSync.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinderSync.swift; sourceTree = "<group>"; };
 		BF3CBE612637EA9A0082E869 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -142,6 +144,9 @@
 		BFA52924263516AE003427A8 /* BuildXCFrameworkCommon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BuildXCFrameworkCommon.swift; sourceTree = "<group>"; };
 		BFA52925263516AE003427A8 /* CloneProjectCommon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CloneProjectCommon.swift; sourceTree = "<group>"; };
 		BFA52926263516AE003427A8 /* HelperCommon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HelperCommon.swift; sourceTree = "<group>"; };
+		BFB4B1E226394758002E7072 /* JKTool */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = JKTool; path = build/JKTool; sourceTree = SOURCE_ROOT; };
+		BFB4B1E726394D96002E7072 /* PruneCommon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PruneCommon.swift; sourceTree = "<group>"; };
+		BFB4B1EC26394DCA002E7072 /* PruneAllCommon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PruneAllCommon.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -212,6 +217,7 @@
 		BF3B804E263049AB0085E75A /* AppleScripts */ = {
 			isa = PBXGroup;
 			children = (
+				BFB4B1E226394758002E7072 /* JKTool */,
 				BF3B8062263194A00085E75A /* ConfigType.swift */,
 				BF3B8065263199A30085E75A /* ConsoleOptions.swift */,
 				BF3CBE3A2636D58C0082E869 /* JKToolScript.scpt */,
@@ -274,13 +280,15 @@
 				BFA52918263516AE003427A8 /* ArchiveCommon.swift */,
 				BFA52919263516AE003427A8 /* PullAllCommon.swift */,
 				BFA5291A263516AE003427A8 /* PullCommon.swift */,
+				BFB4B1E726394D96002E7072 /* PruneCommon.swift */,
+				BFB4B1EC26394DCA002E7072 /* PruneAllCommon.swift */,
 				BFA5291B263516AE003427A8 /* BuildCommon.swift */,
 				BFA5291E263516AE003427A8 /* BaseBuildCommon.swift */,
 				BFA5291C263516AE003427A8 /* BuildFrameworkCommon.swift */,
 				BFA52923263516AE003427A8 /* BuildStaticCommon.swift */,
 				BFA52924263516AE003427A8 /* BuildXCFrameworkCommon.swift */,
-				BFA5291D263516AE003427A8 /* DeleteTagCommon.swift */,
 				BFA5291F263516AE003427A8 /* AddTagCommon.swift */,
+				BFA5291D263516AE003427A8 /* DeleteTagCommon.swift */,
 				BFA52920263516AE003427A8 /* OneKeyUploadCommon.swift */,
 				BFA52922263516AE003427A8 /* UploadCommon.swift */,
 				BFA52926263516AE003427A8 /* HelperCommon.swift */,
@@ -334,6 +342,7 @@
 				BFA528E526351606003427A8 /* Sources */,
 				BFA528E626351606003427A8 /* Frameworks */,
 				BFA528E726351606003427A8 /* CopyFiles */,
+				BFB4B1D5263946E3002E7072 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -389,8 +398,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BFA5293B263517AE003427A8 /* JKTool in Resources */,
 				BF3CBE3B2636D58D0082E869 /* JKToolScript.scpt in Resources */,
+				BFB4B1E326394758002E7072 /* JKTool in Resources */,
 				BF25A47A26170AA300CB2F1B /* Main.storyboard in Resources */,
 				BF25A43D2615DE1D00CB2F1B /* Assets.xcassets in Resources */,
 			);
@@ -406,6 +415,26 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		BFB4B1D5263946E3002E7072 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "mkdir -p ${SRCROOT}/build\ncp -R ${BUILD_DIR}/Debug/${TARGET_NAME} ${SRCROOT}/build\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		BF25A4312615DE1B00CB2F1B /* Sources */ = {
@@ -445,6 +474,8 @@
 				BFA52929263516AE003427A8 /* PullAllCommon.swift in Sources */,
 				BFA5292A263516AE003427A8 /* PullCommon.swift in Sources */,
 				BFA52936263516AE003427A8 /* HelperCommon.swift in Sources */,
+				BFB4B1E826394D96002E7072 /* PruneCommon.swift in Sources */,
+				BFB4B1ED26394DCA002E7072 /* PruneAllCommon.swift in Sources */,
 				BFA52933263516AE003427A8 /* BuildStaticCommon.swift in Sources */,
 				BFA52932263516AE003427A8 /* UploadCommon.swift in Sources */,
 				BFA529132635169A003427A8 /* ShellOut.swift in Sources */,

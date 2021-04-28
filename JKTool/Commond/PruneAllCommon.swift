@@ -1,17 +1,16 @@
 //
-//  PullAllCommon.swift
+//  PruneAllCommon.swift
 //  JKTool
 //
-//  Created by 姜奎 on 2020/11/20.
-//  Copyright © 2020 JK. All rights reserved.
+//  Created by 姜奎 on 2021/4/28.
 //
 
 import Foundation
 
-class PullAllCommon: PullCommon {
+class PruneAllCommon: PruneCommon {
     
-    override func pull(pro: Project, options: ConsoleOptions) {
-        super.pull(pro: pro, options: options)
+    override func prune(pro: Project, options: ConsoleOptions) {
+        super.prune(pro: pro, options: options)
         do {
             let data = try Data(contentsOf: URL(fileURLWithPath: pro.rootProject.recordListPath))
             let recordList = try JSONSerialization.jsonObject(with: data, options: .mutableContainers) as! Array<String>
@@ -22,7 +21,7 @@ class PullAllCommon: PullCommon {
                     print(Colors.yellow("\(record) 工程不存在，请检查 Modulefile.recordList 是否为最新内容"))
                     break
                 }
-                super.pull(pro: pro1, options: options)
+                super.prune(pro: pro1, options: options)
             }
         } catch {
             print(Colors.red("【\(pro.rootProject.name)】Modulefile.recordList 读取失败"))

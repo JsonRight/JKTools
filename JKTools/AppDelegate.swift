@@ -17,15 +17,27 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         guard let path = Bundle.main.path(forResource: "JKTool", ofType: "") else {
             return
         }
+        let manager = FileManager.default
+        do {
+            try manager.removeItem(at: URL(fileURLWithPath: "/usr/local/bin/JKTool"))
+        } catch {
+            let error = error
+            print(error)
+            
+        }
         
         do {
-            let manager = FileManager.default
+            
             /// 绝对路径注意： 不能带file://，否则会调用失败；
             /// 设置文件权限： [FileAttributeKey.posixPermissions: 0o777]
 //            manager.createFile(atPath: "/usr/local/bin/JKTool", contents: tool, attributes: [FileAttributeKey.posixPermissions: 0o777])
             /// 构建快捷方式，权限将和原文件权限一致
+            
             try manager.createSymbolicLink(atPath: "/usr/local/bin/JKTool", withDestinationPath: path)
-        } catch {}
+        } catch {
+            let error = error
+            print(error)
+        }
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {

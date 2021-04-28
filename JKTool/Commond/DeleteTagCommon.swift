@@ -14,22 +14,24 @@ class DeleteTagCommon: PullCommon {
             print(Colors.red("当前目录没有检索到工程"))
             exit(EXIT_FAILURE)
         }
-        if pro.rootProject != pro {
-            self.deleteTag(pro: pro.rootProject, options: options)
+        guard pro.rootProject == pro else {
+            print(Colors.red("请在项目根目录执行脚本"))
+            exit(EXIT_FAILURE)
         }
+        self.deleteTag(pro: pro, options: options)
         do {
-            let data = try Data(contentsOf: URL(fileURLWithPath: pro.rootProject.recordListPath))
+            let data = try Data(contentsOf: URL(fileURLWithPath: pro.recordListPath))
             let recordList = try JSONSerialization.jsonObject(with: data, options: .mutableContainers) as! Array<String>
-            print(Colors.green("【\(pro.rootProject.name)】Modulefile.recordList 读取成功"))
+            print(Colors.green("【\(pro.name)】Modulefile.recordList 读取成功"))
             for record in recordList {
-                guard let pro1 = Project.project(directoryPath: "\(pro.rootProject.checkoutsPath)/\(record)") else {
+                guard let pro1 = Project.project(directoryPath: "\(pro.checkoutsPath)/\(record)") else {
                     print(Colors.yellow("\(record) 工程不存在，请检查 Modulefile.recordList 是否为最新内容"))
                     break
                 }
                 self.deleteTag(pro: pro1, options: options)
             }
         } catch {
-            print(Colors.red("【\(pro.rootProject.name)】Modulefile.recordList 读取失败"))
+            print(Colors.red("【\(pro.name)】Modulefile.recordList 读取失败"))
         }
     }
     

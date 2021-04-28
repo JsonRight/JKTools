@@ -174,6 +174,15 @@ public extension ShellOutCommand {
         return ShellOutCommand(string: command)
     }
     
+    /// Perform a git pull
+    static func gitPrune(remote: String? = nil, branch: String? = nil, allowingPrompt: Bool = true) -> ShellOutCommand {
+        var command = "\(git(allowingPrompt: allowingPrompt)) remote prune origin"
+        remote.map { command.append(argument: $0) }
+        branch.map { command.append(argument: $0) }
+
+        return ShellOutCommand(string: command)
+    }
+    
     /// Perform a git Rebase
     static func gitRebase(remote: String? = nil, masterBranch: String? = nil, allowingPrompt: Bool = true) -> ShellOutCommand {
         var command = "\(git(allowingPrompt: allowingPrompt)) rebase -i"
