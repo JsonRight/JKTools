@@ -36,7 +36,7 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       launchStyle = "0"
       useCustomWorkingDirectory = "YES"
-      customWorkingDirectory = "/Users/jiangkui/Desktop/JKProject/Notebook"
+      customWorkingDirectory = "/Users/jiangkui/Desktop/JKProject/Notebook/Module/checkouts/JKFoundation"
       ignoresPersistentStateOnLaunch = "NO"
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
@@ -53,19 +53,7 @@
       </BuildableProductRunnable>
       <CommandLineArguments>
          <CommandLineArgument
-            argument = "archive"
-            isEnabled = "YES">
-         </CommandLineArgument>
-         <CommandLineArgument
-            argument = "-t=Notebook"
-            isEnabled = "YES">
-         </CommandLineArgument>
-         <CommandLineArgument
-            argument = "-p=/Users/jiangkui/Desktop/JKProject/Notebook"
-            isEnabled = "YES">
-         </CommandLineArgument>
-         <CommandLineArgument
-            argument = "-u=https://gitee.com/jk14138/Notebook.git"
+            argument = "build"
             isEnabled = "YES">
          </CommandLineArgument>
       </CommandLineArguments>

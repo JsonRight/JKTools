@@ -22,7 +22,7 @@ class PreferencesViewController: NSViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        self.table.rowHeight = 73
     }
     
     @IBAction func cloneAction(_ sender: Any) {

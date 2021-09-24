@@ -12,6 +12,7 @@ import CommonCrypto
 protocol BaseBuildCommon: CommonProtocol {
     func build(pro: Project,options: ConsoleOptions)
     func librarySuffix() -> String
+    func echoError(name: String, filePath: String, content:String)
 }
 
 extension BaseBuildCommon {
@@ -51,6 +52,15 @@ extension BaseBuildCommon {
             exit(EXIT_FAILURE)
         }
         print(Colors.green("======build子模块结束======"))
+    }
+    
+    func echoError(name: String, filePath: String, content:String){
+        do {
+            try shellOut(to: .createFile(named: filePath, contents: content))
+            print(Colors.yellow("【\(name)错误详情:(\(filePath))"))
+        } catch {
+            print(Colors.red("【\(name)】错误详情写入失败！(\(filePath))"))
+        }
     }
     
     func MD5(string: String) -> String {

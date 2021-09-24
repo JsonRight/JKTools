@@ -58,8 +58,7 @@ class BuildXCFrameworkCommon: BaseBuildCommon {
         } catch {
             print(Colors.red("【\(pro.name)】\(librarySuffix()) Build Debug 失败"))
             let error = error as! ShellOutError
-            print(error.message) // Prints STDERR
-            print(error.output) // Prints STDOUT
+            echoError(name: pro.name, filePath: pro.buildPath + "/" + "error.log", content: error.message + error.output)
             exit(EXIT_FAILURE)
         }
         
@@ -68,8 +67,7 @@ class BuildXCFrameworkCommon: BaseBuildCommon {
         } catch {
             print(Colors.red("【\(pro.name)】\(librarySuffix()) Build Release 失败"))
             let error = error as! ShellOutError
-            print(error.message) // Prints STDERR
-            print(error.output) // Prints STDOUT
+            echoError(name: pro.name, filePath: pro.buildPath + "/" + "error.log", content: error.message + error.output)
             exit(EXIT_FAILURE)
         }
         
@@ -84,8 +82,7 @@ class BuildXCFrameworkCommon: BaseBuildCommon {
         } catch {
             print(Colors.red("【\(pro.name)】\(librarySuffix()) merge 失败"))
             let error = error as! ShellOutError
-            print(error.message) // Prints STDERR
-            print(error.output) // Prints STDOUT
+            echoError(name: pro.name, filePath: pro.buildPath + "/" + "error.log", content: error.message + error.output)
             exit(EXIT_FAILURE)
         }
         
@@ -103,8 +100,7 @@ class BuildXCFrameworkCommon: BaseBuildCommon {
         } catch {
             print(Colors.yellow("【\(pro.name)】.bundle Build失败"))
             let error = error as! ShellOutError
-            print(error.message) // Prints STDERR
-            print(error.output) // Prints STDOUT
+            echoError(name: pro.name, filePath: pro.buildPath + "/" + "error.log", content: error.message + error.output)
             exit(EXIT_FAILURE)
         }
     }

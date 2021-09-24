@@ -14,7 +14,19 @@ func fourCharCode(from string : String) -> FourCharCode
 }
 
 var scriptPath: URL? {
-  return try? FileManager.default.url(for: .applicationScriptsDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
+  return scriptsFolderURL
+}
+var scriptsFolderURL: URL {
+    let manager = FileManager.default
+    var scriptsFolder: URL!
+
+    do {
+        scriptsFolder = try manager.url(for: .applicationScriptsDirectory, in: FileManager.SearchPathDomainMask.userDomainMask, appropriateFor: nil, create: true)
+    } catch let error {
+        print(error)
+        scriptsFolder = manager.urls(for: .applicationScriptsDirectory, in: .userDomainMask).first!
+    }
+    return scriptsFolder
 }
 
 var bundle: String {

@@ -7,6 +7,24 @@
 
 import Foundation
 import Cocoa
+
+public enum MenuItemOptions {
+    case JKToolsRootProject
+    case JKToolsSubProject
+    case FinderSyncExtension
+
+    func subScriptEnum() -> [MenuItem] {
+        switch self {
+        case .JKToolsRootProject:
+            return [.help,.clone,.clone_project,.pull,.pull_all,.prune,.prune_all,.add_tag,.del_tag,.build,.archive,.upload,.one_key_upload]
+        case .JKToolsSubProject:
+            return [.help,.clone,.pull,.pull_all,.prune,.prune_all,.add_tag,.del_tag,.build]
+        case .FinderSyncExtension:
+            return [.help,.clone,.clone_project,.pull,.pull_all,.prune,.prune_all,.add_tag,.del_tag,.build,.archive,.upload,.one_key_upload]
+    }
+    }
+}
+
 public enum IntMenuItem: Int {
     case help = 1
     case clone
@@ -91,6 +109,29 @@ public enum MenuItem: String {
         case .script:return nil
         }
     }
+    func run1(consoleOptions:ConsoleOptions, block:(AppleScriptCommand?) -> Void) {
+       
+        
+        switch self {
+        case .help: block(run(consoleOptions: consoleOptions))
+        case .clone: block(run(consoleOptions: consoleOptions))
+        case .clone_project:block(run(consoleOptions: consoleOptions))
+        case .pull: block(run(consoleOptions: consoleOptions))
+        case .pull_all: block(run(consoleOptions: consoleOptions))
+        case .prune: block(run(consoleOptions: consoleOptions))
+        case .prune_all: block(run(consoleOptions: consoleOptions))
+        case .add_tag: block(run(consoleOptions: consoleOptions))
+        case .del_tag: block(run(consoleOptions: consoleOptions))
+        case .build: block(run(consoleOptions: consoleOptions))
+        case .archive: block(run(consoleOptions: consoleOptions))
+        case .upload: block(run(consoleOptions: consoleOptions))
+        case .one_key_upload: block(run(consoleOptions: consoleOptions))
+        case .Xcode: block(run(consoleOptions: consoleOptions))
+        case .Terminal: block(run(consoleOptions: consoleOptions))
+        case .Finder: block(run(consoleOptions: consoleOptions))
+        case .script:block(run(consoleOptions: consoleOptions))
+        }
+    }
     
     func toInt() -> IntMenuItem {
         switch self {
@@ -115,6 +156,11 @@ public enum MenuItem: String {
     }
     
     static func subScriptEnum(isRootProject:Bool) -> [MenuItem] {
+        let con = ConsoleOptions(url: nil, path: nil)
+        
+        MenuItem.Finder.run1(consoleOptions: con) { com in
+            
+        }
         if isRootProject {
             return [.help,.clone,.clone_project,.pull,.pull_all,.prune,.prune_all,.add_tag,.del_tag,.build,.archive,.upload,.one_key_upload]
         }

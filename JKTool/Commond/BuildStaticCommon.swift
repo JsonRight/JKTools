@@ -42,16 +42,6 @@ class BuildStaticCommon: BaseBuildCommon {
             print(Colors.yellow("【\(pro.name)】\(librarySuffix()) 删除失败"))
         }
         
-//        do {
-//            try shellOut(to:.buildStaticIOS(projectName: pro.name, projectFilePath: pro.directoryPath + "/" + pro.name + ".xcodeproj", derivedDataPath: pro.buildPath, toStaticPath: pro.rootBuildsPath + "/" + pro.name))
-//        } catch  {
-//            print(Colors.red("【\(pro.name)】.a Build失败"))
-//            let error = error as! ShellOutError
-//            print(error.message) // Prints STDERR
-//            print(error.output) // Prints STDOUT
-//            exit(EXIT_FAILURE)
-//        }
-        
         let needMerge = options.config == ConfigType("Debug")
         
         if needMerge {
@@ -60,8 +50,7 @@ class BuildStaticCommon: BaseBuildCommon {
             } catch  {
                 print(Colors.red("【\(pro.name)】\(librarySuffix()) Build Debug 失败"))
                 let error = error as! ShellOutError
-                print(error.message) // Prints STDERR
-                print(error.output) // Prints STDOUT
+                echoError(name: pro.name, filePath: pro.buildPath + "/" + "error.log", content: error.message + error.output)
                 exit(EXIT_FAILURE)
             }
         }
@@ -71,8 +60,7 @@ class BuildStaticCommon: BaseBuildCommon {
         } catch  {
             print(Colors.red("【\(pro.name)】\(librarySuffix()) Build Release 失败"))
             let error = error as! ShellOutError
-            print(error.message) // Prints STDERR
-            print(error.output) // Prints STDOUT
+            echoError(name: pro.name, filePath: pro.buildPath + "/" + "error.log", content: error.message + error.output)
             exit(EXIT_FAILURE)
         }
         
@@ -81,8 +69,7 @@ class BuildStaticCommon: BaseBuildCommon {
         } catch  {
             print(Colors.red("【\(pro.name)】\(librarySuffix()) Build merge 失败"))
             let error = error as! ShellOutError
-            print(error.message) // Prints STDERR
-            print(error.output) // Prints STDOUT
+            echoError(name: pro.name, filePath: pro.buildPath + "/" + "error.log", content: error.message + error.output)
             exit(EXIT_FAILURE)
         }
         
@@ -91,8 +78,7 @@ class BuildStaticCommon: BaseBuildCommon {
         } catch  {
             print(Colors.red("【\(pro.name)】copy头文件 失败"))
             let error = error as! ShellOutError
-            print(error.message) // Prints STDERR
-            print(error.output) // Prints STDOUT
+            echoError(name: pro.name, filePath: pro.buildPath + "/" + "error.log", content: error.message + error.output)
             exit(EXIT_FAILURE)
         }
         
@@ -104,8 +90,7 @@ class BuildStaticCommon: BaseBuildCommon {
         } catch  {
             print(Colors.red("【\(pro.name)】.bundle Build失败"))
             let error = error as! ShellOutError
-            print(error.message) // Prints STDERR
-            print(error.output) // Prints STDOUT
+            echoError(name: pro.name, filePath: pro.buildPath + "/" + "error.log", content: error.message + error.output)
             exit(EXIT_FAILURE)
         }
     }
