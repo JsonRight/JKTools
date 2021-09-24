@@ -66,8 +66,12 @@ class FinderSync: FIFinderSync {
             return
         }
         
+        guard let paths = FIFinderSyncController.default().selectedItemURLs() else {
+            return
+        }
     
         runUserScript(appleScript: menu.toString().run(consoleOptions: ConsoleOptions(url: nil, path: path)))
+//        runScript(appleScript: menu.toString().run(consoleOptions: ConsoleOptions(url: nil, path: path)))
         
    }
 
