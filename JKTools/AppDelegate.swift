@@ -9,34 +9,16 @@ import Cocoa
 
 @main
 class AppDelegate: NSObject, NSApplicationDelegate {
-
-    
-
-
     func applicationDidFinishLaunching(_ aNotification: Notification) {
-        guard let path = Bundle.main.path(forResource: "JKTool", ofType: "") else {
-            return
-        }
-        let manager = FileManager.default
-        do {
-            try manager.removeItem(at: URL(fileURLWithPath: "/usr/local/bin/JKTool"))
-        } catch {
-            let error = error
-            print(error)
-            
+        if !Constants.hasShellScptPath(name: "JKTool") {
+            Constants.resetShellScpt(name: "JKTool")
         }
         
-        do {
-            
-            /// 绝对路径注意： 不能带file://，否则会调用失败；
-            /// 设置文件权限： [FileAttributeKey.posixPermissions: 0o777]
-//            manager.createFile(atPath: "/usr/local/bin/JKTool", contents: tool, attributes: [FileAttributeKey.posixPermissions: 0o777])
-            /// 构建快捷方式，权限将和原文件权限一致
-            
-            try manager.createSymbolicLink(atPath: "/usr/local/bin/JKTool", withDestinationPath: path)
-        } catch {
-            let error = error
-            print(error)
+        if !Constants.Id.LauncherApp.hasFileScriptPath() {
+            Constants.resetScpt(id: .LauncherApp)
+        }
+        if !Constants.Id.FinderExtension.hasFileScriptPath() {
+            Constants.resetScpt(id: .FinderExtension)
         }
     }
 
@@ -51,9 +33,15 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
         return true
     }
+    
 
     @IBAction func clean(_ sender: AnyObject?) {
-        openPanel()
+        resetScpt()
+    }
+    
+    func resetScpt() {
+        Constants.resetScpt(id: .LauncherApp)
+        Constants.resetScpt(id: .FinderExtension)
     }
 
 }

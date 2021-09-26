@@ -59,6 +59,10 @@
 		BFB4B1E326394758002E7072 /* JKTool in Resources */ = {isa = PBXBuildFile; fileRef = BFB4B1E226394758002E7072 /* JKTool */; };
 		BFB4B1E826394D96002E7072 /* PruneCommon.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFB4B1E726394D96002E7072 /* PruneCommon.swift */; };
 		BFB4B1ED26394DCA002E7072 /* PruneAllCommon.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFB4B1EC26394DCA002E7072 /* PruneAllCommon.swift */; };
+		BFB7CA822700893F0099B634 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFB7CA812700893F0099B634 /* Constants.swift */; };
+		BFB7CA85270092080099B634 /* Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFB7CA84270092080099B634 /* Alert.swift */; };
+		BFB7CA86270092080099B634 /* Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFB7CA84270092080099B634 /* Alert.swift */; };
+		BFB7CA87270092C80099B634 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFB7CA812700893F0099B634 /* Constants.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -147,6 +151,8 @@
 		BFB4B1E226394758002E7072 /* JKTool */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = JKTool; path = build/JKTool; sourceTree = SOURCE_ROOT; };
 		BFB4B1E726394D96002E7072 /* PruneCommon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PruneCommon.swift; sourceTree = "<group>"; };
 		BFB4B1EC26394DCA002E7072 /* PruneAllCommon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PruneAllCommon.swift; sourceTree = "<group>"; };
+		BFB7CA812700893F0099B634 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		BFB7CA84270092080099B634 /* Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alert.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -222,6 +228,8 @@
 				BF3B8065263199A30085E75A /* ConsoleOptions.swift */,
 				BF3CBE3A2636D58C0082E869 /* JKToolScript.scpt */,
 				BF3B805E26318A7A0085E75A /* AppleScriptCommand.swift */,
+				BFB7CA812700893F0099B634 /* Constants.swift */,
+				BFB7CA84270092080099B634 /* Alert.swift */,
 			);
 			path = AppleScripts;
 			sourceTree = "<group>";
@@ -446,12 +454,14 @@
 				BF3B8066263199A30085E75A /* ConsoleOptions.swift in Sources */,
 				BF2BC8F4262064D0005802E4 /* ProjectInfoBean.swift in Sources */,
 				BF3B805F26318A7A0085E75A /* AppleScriptCommand.swift in Sources */,
+				BFB7CA85270092080099B634 /* Alert.swift in Sources */,
 				BF2BC8F72620681B005802E4 /* InsertProjectViewController.swift in Sources */,
 				BF25A4392615DE1B00CB2F1B /* AppDelegate.swift in Sources */,
 				BF3B80692632686C0085E75A /* MenuView.swift in Sources */,
 				BF2BC8EE26202FDB005802E4 /* PreferencesViewController.swift in Sources */,
 				BF3B8063263194A10085E75A /* ConfigType.swift in Sources */,
 				BF3B8054263171390085E75A /* Projects.swift in Sources */,
+				BFB7CA822700893F0099B634 /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -459,9 +469,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BFB7CA86270092080099B634 /* Alert.swift in Sources */,
 				BF3CBE812637EABB0082E869 /* MenuView.swift in Sources */,
 				BF3CBE602637EA9A0082E869 /* FinderSync.swift in Sources */,
 				BF3CBE7C2637EAB60082E869 /* AppleScriptCommand.swift in Sources */,
+				BFB7CA87270092C80099B634 /* Constants.swift in Sources */,
 				BF3CBE722637EAAF0082E869 /* ConsoleOptions.swift in Sources */,
 				BF3CBE6D2637EAAC0082E869 /* ConfigType.swift in Sources */,
 			);
@@ -677,6 +689,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ALLOW_ENTITLEMENTS_MODIFICATION = YES;
 				CODE_SIGN_ENTITLEMENTS = FinderSyncExtension/FinderSyncExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
@@ -699,6 +712,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ALLOW_ENTITLEMENTS_MODIFICATION = YES;
 				CODE_SIGN_ENTITLEMENTS = FinderSyncExtension/FinderSyncExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;

@@ -59,21 +59,12 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "BF3CBE5C2637EA9A0082E869"
-            BuildableName = "FinderSyncExtension.appex"
-            BlueprintName = "FinderSyncExtension"
-            ReferencedContainer = "container:JKTools.xcodeproj">
-         </BuildableReference>
-      </BuildableProductRunnable>
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
             BlueprintIdentifier = "BF25A4342615DE1B00CB2F1B"
             BuildableName = "JKTools.app"
             BlueprintName = "JKTools"
             ReferencedContainer = "container:JKTools.xcodeproj">
          </BuildableReference>
-      </MacroExpansion>
+      </BuildableProductRunnable>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"

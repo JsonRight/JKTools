@@ -88,7 +88,7 @@ public enum MenuItem: String {
     case script
     
     func run(consoleOptions:ConsoleOptions) -> AppleScriptCommand? {
-       
+
         switch self {
         case .help:return .JKToolScript(needToPath:true,script:self.rawValue,options:consoleOptions)
         case .clone:return .JKToolScript(needToPath:true,script:self.rawValue,options:consoleOptions)
@@ -109,29 +109,29 @@ public enum MenuItem: String {
         case .script:return nil
         }
     }
-    func run1(consoleOptions:ConsoleOptions, block:(AppleScriptCommand?) -> Void) {
-       
-        
-        switch self {
-        case .help: block(run(consoleOptions: consoleOptions))
-        case .clone: block(run(consoleOptions: consoleOptions))
-        case .clone_project:block(run(consoleOptions: consoleOptions))
-        case .pull: block(run(consoleOptions: consoleOptions))
-        case .pull_all: block(run(consoleOptions: consoleOptions))
-        case .prune: block(run(consoleOptions: consoleOptions))
-        case .prune_all: block(run(consoleOptions: consoleOptions))
-        case .add_tag: block(run(consoleOptions: consoleOptions))
-        case .del_tag: block(run(consoleOptions: consoleOptions))
-        case .build: block(run(consoleOptions: consoleOptions))
-        case .archive: block(run(consoleOptions: consoleOptions))
-        case .upload: block(run(consoleOptions: consoleOptions))
-        case .one_key_upload: block(run(consoleOptions: consoleOptions))
-        case .Xcode: block(run(consoleOptions: consoleOptions))
-        case .Terminal: block(run(consoleOptions: consoleOptions))
-        case .Finder: block(run(consoleOptions: consoleOptions))
-        case .script:block(run(consoleOptions: consoleOptions))
-        }
-    }
+//    func run1(consoleOptions:ConsoleOptions, block:(AppleScriptCommand?) -> Void) {
+//
+//
+//        switch self {
+//        case .help: block(run(consoleOptions: consoleOptions))
+//        case .clone: block(run(consoleOptions: consoleOptions))
+//        case .clone_project:block(run(consoleOptions: consoleOptions))
+//        case .pull: block(run(consoleOptions: consoleOptions))
+//        case .pull_all: block(run(consoleOptions: consoleOptions))
+//        case .prune: block(run(consoleOptions: consoleOptions))
+//        case .prune_all: block(run(consoleOptions: consoleOptions))
+//        case .add_tag: block(run(consoleOptions: consoleOptions))
+//        case .del_tag: block(run(consoleOptions: consoleOptions))
+//        case .build: block(run(consoleOptions: consoleOptions))
+//        case .archive: block(run(consoleOptions: consoleOptions))
+//        case .upload: block(run(consoleOptions: consoleOptions))
+//        case .one_key_upload: block(run(consoleOptions: consoleOptions))
+//        case .Xcode: block(run(consoleOptions: consoleOptions))
+//        case .Terminal: block(run(consoleOptions: consoleOptions))
+//        case .Finder: block(run(consoleOptions: consoleOptions))
+//        case .script:block(run(consoleOptions: consoleOptions))
+//        }
+//    }
     
     func toInt() -> IntMenuItem {
         switch self {
@@ -156,11 +156,11 @@ public enum MenuItem: String {
     }
     
     static func subScriptEnum(isRootProject:Bool) -> [MenuItem] {
-        let con = ConsoleOptions(url: nil, path: nil)
+//        let con = ConsoleOptions(url: nil, path: nil)
         
-        MenuItem.Finder.run1(consoleOptions: con) { com in
-            
-        }
+//        MenuItem.Finder.run1(consoleOptions: con) { com in
+//
+//        }
         if isRootProject {
             return [.help,.clone,.clone_project,.pull,.pull_all,.prune,.prune_all,.add_tag,.del_tag,.build,.archive,.upload,.one_key_upload]
         }
@@ -177,21 +177,25 @@ public func menuView(menus:[MenuItem], target: AnyObject?, action: Selector?) ->
     menuView.addItem(Xcode)
     Xcode.target = target
     Xcode.tag = IntMenuItem.Xcode.rawValue
+    Xcode.image =  NSImage(named: NSImage.computerName)!
     
     let Terminal = NSMenuItem(title: MenuItem.Terminal.rawValue, action: action, keyEquivalent: "")
     menuView.addItem(Terminal)
     Terminal.target = target
     Terminal.tag = IntMenuItem.Terminal.rawValue
+    Terminal.image =  NSImage(named: NSImage.computerName)!
     
     let Finder = NSMenuItem(title: MenuItem.Finder.rawValue, action: action, keyEquivalent: "")
     menuView.addItem(Finder)
     Finder.target = target
     Finder.tag = IntMenuItem.Finder.rawValue
+    Finder.image =  NSImage(named: NSImage.computerName)!
     
     let script = NSMenuItem(title: MenuItem.script.rawValue, action: action, keyEquivalent: "")
     menuView.addItem(script)
     script.target = target
     script.tag = IntMenuItem.script.rawValue
+    script.image =  NSImage(named: NSImage.computerName)!
     
     let scriptItem = NSMenu.init(title: MenuItem.script.rawValue)
     menuView.setSubmenu(scriptItem, for: script)
@@ -202,6 +206,7 @@ public func menuView(menus:[MenuItem], target: AnyObject?, action: Selector?) ->
         scriptItem.addItem(menu)
         menu.target = target
         menu.tag = menuItem.toInt().rawValue
+        menu.image =  NSImage(named: NSImage.computerName)!
     }
     
     return menuView

@@ -13,88 +13,10 @@ func fourCharCode(from string : String) -> FourCharCode
   return string.utf16.reduce(0, {$0 << 8 + FourCharCode($1)})
 }
 
-var scriptPath: URL? {
-  return scriptsFolderURL
-}
-var scriptsFolderURL: URL {
-    let manager = FileManager.default
-    var scriptsFolder: URL!
-
-    do {
-        scriptsFolder = try manager.url(for: .applicationScriptsDirectory, in: FileManager.SearchPathDomainMask.userDomainMask, appropriateFor: nil, create: true)
-    } catch let error {
-        print(error)
-        scriptsFolder = manager.urls(for: .applicationScriptsDirectory, in: .userDomainMask).first!
-    }
-    return scriptsFolder
-}
-
 var bundle: String {
     return Bundle(for: AppleScriptCommand.self).bundleIdentifier!
 }
 
-func fileScriptPath(fileName: String) -> URL? {
-  return scriptPath?
-    .appendingPathComponent(fileName)
-    .appendingPathExtension("scpt")
-}
-
-public func openPanel() {
-    let panel = NSOpenPanel()
-    panel.directoryURL = scriptPath
-    panel.canChooseDirectories = true
-    panel.canChooseFiles = false
-    panel.prompt = "Select Script Folder"
-    panel.message = "Please select the User > Library > Application Scripts > \(bundle) folder"
-
-    panel.begin { result in
-        guard result.rawValue == NSApplication.ModalResponse.OK.rawValue,
-              panel.url == scriptPath else {
-            alert(message: "Script folder was not selected")
-            return
-        }
-    
-        let result = copy()
-        if result {
-            alert(message: "Done")
-        } else {
-            alert(message: "Fail")
-        }
-    }
-}
-
-public func alert(message: String) {
-  let alert = NSAlert()
-  alert.messageText = "🐢 JKTool"
-  alert.informativeText = message
-  alert.addButton(withTitle: "OK")
-
-  alert.runModal()
-}
-
-func copy() -> Bool {
-  
-    guard let scriptUrl = Bundle.main.url(forResource: "JKToolScript", withExtension: "scpt") else {
-        return false
-    }
-    guard let destinationPath = fileScriptPath(fileName: "JKToolScript") else {
-      return false
-    }
-    
-    do {
-      try FileManager.default.removeItem(at: destinationPath)
-    } catch {
-      
-    }
-
-    do {
-      try FileManager.default.copyItem(at: scriptUrl, to: destinationPath)
-    } catch {
-      return false
-    }
-    
-    return true
-}
 
 public func runScript(appleScript: AppleScriptCommand?) {
     
@@ -125,12 +47,11 @@ public func tryRunUserScript(appleScript: AppleScriptCommand?) -> (event: NSAppl
         return (nil,nil)
     }
     
-    guard let filePath = fileScriptPath(fileName: "JKToolScript") else {
+    guard let filePath = Constants.fileScriptPath(string: bundle, fileName: "JKToolScript") else {
       return (nil,nil)
     }
 
     guard FileManager.default.fileExists(atPath: filePath.path) else {
-      openPanel()
       return (nil,nil)
     }
     
