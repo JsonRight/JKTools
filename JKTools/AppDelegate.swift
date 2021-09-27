@@ -40,6 +40,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
     
     func resetScpt() {
+        Constants.resetShellScpt(name: "JKTool")
         Constants.resetScpt(id: .LauncherApp)
         Constants.resetScpt(id: .FinderExtension)
     }

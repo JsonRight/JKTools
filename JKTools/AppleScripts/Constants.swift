@@ -18,6 +18,13 @@ struct Constants {
         return bundle() == Id.FinderExtension.rawValue
     }
     
+    static func applicationScriptsPath() -> URL? {
+        guard let path = FileManager.default.urls(for: .applicationScriptsDirectory, in: .userDomainMask).first else {
+            return nil
+        }
+        return path.deletingLastPathComponent()
+    }
+    
     enum Id: String {
         case LauncherApp = "com.jk.JKTools"
         case FinderExtension = "com.jk.JKTools.FinderSyncExtension"
@@ -81,19 +88,19 @@ struct Constants {
     static func resetScpt(id: Id) {
         let panel = NSOpenPanel()
 
-        panel.directoryURL = id.appScriptsPath()
+        panel.directoryURL = self.applicationScriptsPath()
         panel.canChooseDirectories = true
         panel.canChooseFiles = false
         panel.prompt = "Select Script Folder"
-        panel.message = "Please select the User > Library > Application Scripts > \(id.rawValue) folder"
+        panel.message = "Please select the User > Library > Application Scripts"
 
         panel.begin { result in
             guard result.rawValue == NSApplication.ModalResponse.OK.rawValue,
-                  panel.url == id.appScriptsPath() else {
-                      Alert.alert(message: "Script folder was not selected")
+                  self.applicationScriptsPath()?.path == panel.url?.path else {
+                      Alert.alert(message: "Application Scripts folder was not selected")
                 return
             }
-            let result = copyScript(url: id.fileScriptPath(fileName: "JKToolScript"))
+            let result = copyAppleScript(url: id.fileScriptPath(fileName: "JKToolScript"))
             if result {
                 Alert.alert(message: "Done")
             } else {
@@ -102,7 +109,7 @@ struct Constants {
         }
     }
     
-    static func copyScript(url:URL?) -> Bool {
+    static func copyAppleScript(url:URL?) -> Bool {
       
         guard let scriptUrl = Bundle.main.url(forResource: "JKToolScript", withExtension: "scpt") else {
             return false
@@ -130,17 +137,43 @@ struct Constants {
         return FileManager.default.fileExists(atPath: "/usr/local/bin/\(name)")
     }
     
+    static func ShellScptPath() -> URL {
+        return URL(fileURLWithPath: "/usr/local/bin")
+    }
+    
     static func resetShellScpt(name: String) {
+        let panel = NSOpenPanel()
+
+        panel.directoryURL = self.ShellScptPath()
+        panel.canChooseDirectories = true
+        panel.canChooseFiles = false
+        panel.prompt = "Select Script Folder"
+        panel.message = "Please select the usr > local > bin folder"
+
+        panel.begin { result in
+            guard result.rawValue == NSApplication.ModalResponse.OK.rawValue,
+                  self.ShellScptPath().path == panel.url?.path else {
+                      Alert.alert(message: "Shell folder was not selected")
+                return
+            }
+            let result = copyShellScript(name: name)
+            if result {
+                Alert.alert(message: "Done")
+            } else {
+                Alert.alert(message: "Fail")
+            }
+        }
+    }
+    static func copyShellScript(name: String) -> Bool {
+      
         guard let path = Bundle.main.path(forResource: name, ofType: "") else {
-            return
+            return false
         }
         let manager = FileManager.default
         do {
             try manager.removeItem(at: URL(fileURLWithPath: "/usr/local/bin/\(name)"))
         } catch {
-            let error = error
-            print(error)
-            
+            return false
         }
         
         do {
@@ -152,11 +185,9 @@ struct Constants {
             
             try manager.createSymbolicLink(atPath: "/usr/local/bin/JKTool", withDestinationPath: path)
         } catch {
-            let error = error
-            print(error)
+            return false
         }
+        return true
     }
-    
-    
 }
 

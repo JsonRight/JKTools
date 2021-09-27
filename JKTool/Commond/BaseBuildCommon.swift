@@ -55,10 +55,10 @@ extension BaseBuildCommon {
     }
     
     func echoError(name: String, filePath: String, content:String){
-        print(Colors.yellow("【\(name)错误详情:(\(content))"))
+        print(Colors.yellow("【\(name)】错误详情:(\(content))"))
         do {
             try shellOut(to: .createFile(named: filePath, contents: content))
-            print(Colors.yellow("【\(name)错误详情:(\(filePath))"))
+            print(Colors.yellow("【\(name)】错误详情:(\(filePath))"))
         } catch {
             print(Colors.red("【\(name)】错误详情写入失败！(\(filePath))"))
         }
