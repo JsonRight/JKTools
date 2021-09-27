@@ -47,7 +47,7 @@ class FinderSync: FIFinderSync {
     }
     
     override func menu(for menuKind: FIMenuKind) -> NSMenu {
-        
+
         let menus = MenuItem.subScriptEnum(isRootProject:false)
 
         let menu = menuView(menus: menus,target: self, action: #selector(action(_:)))

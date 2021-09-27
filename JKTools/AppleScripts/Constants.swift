@@ -9,6 +9,15 @@ import Foundation
 import Cocoa
 
 struct Constants {
+    
+    static func bundle() -> String {
+        return Bundle.main.bundleIdentifier!
+    }
+    
+    static func isFinderExtension() -> Bool{
+        return bundle() == Id.FinderExtension.rawValue
+    }
+    
     enum Id: String {
         case LauncherApp = "com.jk.JKTools"
         case FinderExtension = "com.jk.JKTools.FinderSyncExtension"
@@ -33,7 +42,7 @@ struct Constants {
             }
             
             path.deleteLastPathComponent()
-            path = path.appendingPathComponent("com.jk.JKTools.FinderSyncExtension")
+            path = path.appendingPathComponent(Id.FinderExtension.rawValue)
             if !FileManager.default.fileExists(atPath: path.path) {
                 do {
                     try FileManager.default.createDirectory(atPath: path.path,
@@ -69,21 +78,6 @@ struct Constants {
         }
     }
     
-    static func appScriptsPath(string: String) -> URL? {
-        switch Id.id(string: string) {
-            case .LauncherApp:
-                return Id.LauncherApp.JKToolsScriptsPath
-            case .FinderExtension:
-                return Id.FinderExtension.JKToolsFnderExtensionScriptsPath
-        }
-    }
-    
-    static func fileScriptPath(string: String, fileName: String) -> URL? {
-        return appScriptsPath(string: string)?
-        .appendingPathComponent(fileName)
-        .appendingPathExtension("scpt")
-    }
-    
     static func resetScpt(id: Id) {
         let panel = NSOpenPanel()
 
@@ -91,7 +85,7 @@ struct Constants {
         panel.canChooseDirectories = true
         panel.canChooseFiles = false
         panel.prompt = "Select Script Folder"
-        panel.message = "Please select the User > Library > Application Scripts > \(id) folder"
+        panel.message = "Please select the User > Library > Application Scripts > \(id.rawValue) folder"
 
         panel.begin { result in
             guard result.rawValue == NSApplication.ModalResponse.OK.rawValue,

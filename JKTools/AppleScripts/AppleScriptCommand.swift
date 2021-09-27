@@ -13,11 +13,6 @@ func fourCharCode(from string : String) -> FourCharCode
   return string.utf16.reduce(0, {$0 << 8 + FourCharCode($1)})
 }
 
-var bundle: String {
-    return Bundle(for: AppleScriptCommand.self).bundleIdentifier!
-}
-
-
 public func runScript(appleScript: AppleScriptCommand?) {
     
     let (event, filePath) = tryRunUserScript(appleScript: appleScript)
@@ -28,7 +23,6 @@ public func runScript(appleScript: AppleScriptCommand?) {
     guard let filePath1 = filePath else {
         return
     }
-    
     let script: NSAppleScript = {
         var error: NSDictionary? = nil
         let script = NSAppleScript(contentsOf: filePath1, error: &error)
@@ -42,12 +36,31 @@ public func runScript(appleScript: AppleScriptCommand?) {
     }
 }
 
+public func runUserScript(appleScript: AppleScriptCommand?){
+    
+    let (event, filePath) = tryRunUserScript(appleScript: appleScript)
+    
+    guard let event1 = event else {
+        return
+    }
+    guard let filePath1 = filePath else {
+        return
+    }
+    let appleScript = try! NSUserAppleScriptTask(url: filePath1)
+    appleScript.execute(withAppleEvent: event1, completionHandler: { (_, error) in
+        if let error = error {
+            print(error)
+        }
+    })
+    
+}
+
 public func tryRunUserScript(appleScript: AppleScriptCommand?) -> (event: NSAppleEventDescriptor?,filePath: URL?) {
     guard let command = appleScript else {
         return (nil,nil)
     }
     
-    guard let filePath = Constants.fileScriptPath(string: bundle, fileName: "JKToolScript") else {
+    guard let filePath = Constants.Id.FinderExtension.fileScriptPath(fileName: "JKToolScript") else {
       return (nil,nil)
     }
 
@@ -70,26 +83,6 @@ public func tryRunUserScript(appleScript: AppleScriptCommand?) -> (event: NSAppl
     event.setDescriptor(NSAppleEventDescriptor(string: "JKToolScript"), forKeyword: AEKeyword(fourCharCode(from: "snam")))
     event.setDescriptor(parameters, forKeyword: AEKeyword(keyDirectObject))
     return (event, filePath)
-}
-
-public func runUserScript(appleScript: AppleScriptCommand?){
-    
-    let (event, filePath) = tryRunUserScript(appleScript: appleScript)
-    
-    guard let event1 = event else {
-        return
-    }
-    guard let filePath1 = filePath else {
-        return
-    }
-    
-    let appleScript = try! NSUserAppleScriptTask(url: filePath1)
-    appleScript.execute(withAppleEvent: event1, completionHandler: { (_, error) in
-        if let error = error {
-            print(error)
-        }
-    })
-    
 }
 
 public class AppleScriptCommand {

@@ -185,11 +185,13 @@ public func menuView(menus:[MenuItem], target: AnyObject?, action: Selector?) ->
     Terminal.tag = IntMenuItem.Terminal.rawValue
     Terminal.image =  NSImage(named: NSImage.computerName)!
     
-    let Finder = NSMenuItem(title: MenuItem.Finder.rawValue, action: action, keyEquivalent: "")
-    menuView.addItem(Finder)
-    Finder.target = target
-    Finder.tag = IntMenuItem.Finder.rawValue
-    Finder.image =  NSImage(named: NSImage.computerName)!
+    if !Constants.isFinderExtension() {
+        let Finder = NSMenuItem(title: MenuItem.Finder.rawValue, action: action, keyEquivalent: "")
+        menuView.addItem(Finder)
+        Finder.target = target
+        Finder.tag = IntMenuItem.Finder.rawValue
+        Finder.image =  NSImage(named: NSImage.computerName)!
+    }
     
     let script = NSMenuItem(title: MenuItem.script.rawValue, action: action, keyEquivalent: "")
     menuView.addItem(script)

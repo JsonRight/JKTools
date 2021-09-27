@@ -28,7 +28,6 @@
 		BF3CBE772637EAB20082E869 /* JKToolScript.scpt in Resources */ = {isa = PBXBuildFile; fileRef = BF3CBE3A2636D58C0082E869 /* JKToolScript.scpt */; };
 		BF3CBE7C2637EAB60082E869 /* AppleScriptCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3B805E26318A7A0085E75A /* AppleScriptCommand.swift */; };
 		BF3CBE812637EABB0082E869 /* MenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3B80682632686C0085E75A /* MenuView.swift */; };
-		BF3CBE862637EAC10082E869 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BF25A43C2615DE1D00CB2F1B /* Assets.xcassets */; };
 		BFA528EC26351606003427A8 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA528EB26351606003427A8 /* main.swift */; };
 		BFA528F326351634003427A8 /* JKTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA528F226351634003427A8 /* JKTool.swift */; };
 		BFA528FB26351659003427A8 /* ANSIProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA528F726351659003427A8 /* ANSIProperties.swift */; };
@@ -417,7 +416,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BF3CBE862637EAC10082E869 /* Assets.xcassets in Resources */,
 				BF3CBE772637EAB20082E869 /* JKToolScript.scpt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
