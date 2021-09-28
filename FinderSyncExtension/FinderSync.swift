@@ -12,26 +12,19 @@ class FinderSync: FIFinderSync {
     
     override init() {
         super.init()
+        let finderSync = FIFinderSyncController.default()
+        if let mountedVolumes = FileManager.default.mountedVolumeURLs(includingResourceValuesForKeys: nil, options: [.skipHiddenVolumes]) {
+            finderSync.directoryURLs = Set<URL>(mountedVolumes)
+        }
+//        // Monitor volumes
+        let notificationCenter = NSWorkspace.shared.notificationCenter
+        notificationCenter.addObserver(forName: NSWorkspace.didMountNotification, object: nil, queue: .main) { notification in
+            if let volumeURL = notification.userInfo?[NSWorkspace.volumeURLUserInfoKey] as? URL {
+                finderSync.directoryURLs.insert(volumeURL)
+            }
+        }
     }
-    
-    // MARK: - Primary Finder Sync protocol methods
-    
-    override func beginObservingDirectory(at url: URL) {
-        // The user is now seeing the container's contents.
-        // If they see it in more than one view at a time, we're only told once.
-        NSLog("beginObservingDirectoryAtURL: %@", url.path as NSString)
-    }
-    
-    
-    override func endObservingDirectory(at url: URL) {
-        // The user is no longer seeing the container's contents.
-        NSLog("endObservingDirectoryAtURL: %@", url.path as NSString)
-    }
-    
-    override func requestBadgeIdentifier(for url: URL) {
-        NSLog("requestBadgeIdentifierForURL: %@", url.path as NSString)
-    }
-    
+
     // MARK: - Menu and toolbar item support
     
     override var toolbarItemName: String {
@@ -47,7 +40,7 @@ class FinderSync: FIFinderSync {
     }
     
     override func menu(for menuKind: FIMenuKind) -> NSMenu {
-
+        
         let menus = MenuItem.subScriptEnum(isRootProject:false)
 
         let menu = menuView(menus: menus,target: self, action: #selector(action(_:)))
@@ -61,11 +54,14 @@ class FinderSync: FIFinderSync {
             return
         }
         
-        guard let path = FIFinderSyncController.default().targetedURL()?.path else {
-            return
+        if let selectedURLs = FIFinderSyncController.default().selectedItemURLs() {
+            for selectedURL in selectedURLs {
+                runUserScript(appleScript: menu.toString().run(consoleOptions: ConsoleOptions(url: nil, path: selectedURL.path)))
+            }
+        } else if let path = FIFinderSyncController.default().targetedURL()?.path {
+            
+            runUserScript(appleScript: menu.toString().run(consoleOptions: ConsoleOptions(url: nil, path: path)))
         }
-        
-        runUserScript(appleScript: menu.toString().run(consoleOptions: ConsoleOptions(url: nil, path: path)))
         
    }
 }
