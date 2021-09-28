@@ -64,6 +64,11 @@ public class Project {
                 return
             }
             
+            guard let remainingString = scannerWithComments.remainingSubstring.map(String.init)?.replacingOccurrences(of: "\'", with: "") else {
+                stop = true
+                return
+            }
+            
             var arr = remainingString.components(separatedBy: " ").filter { (str) -> Bool in
                 return str != ""
             }
@@ -78,7 +83,7 @@ public class Project {
                 
             }
             
-            let module = SubModule(source: arr[0], url: arr[1], branch: (arr.count >= 3) ? (arr[2]) : "" )
+            let module = SubModule(source: arr[0], url: arr[1], branch: (arr.count >= 3) ? (arr[2]) : "master" )
             list.append(module)
         }
         return list
@@ -151,15 +156,16 @@ extension Project {
             if file == "Pods.xcodeproj" {
                 return nil
             }
+            if file.hasSuffix(".scworkspace") {
+                projectType = ProjectType.scworkspace
+                break
+            }
             
             if file.hasSuffix(".xcodeproj") {
                 projectType = ProjectType.xcodeproj
                 break
             }
-            if file.hasSuffix(".scworkspace") {
-                projectType = ProjectType.scworkspace
-                break
-            }
+            
         }
         return projectType
     }

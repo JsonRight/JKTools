@@ -177,27 +177,27 @@ public func menuView(menus:[MenuItem], target: AnyObject?, action: Selector?) ->
     menuView.addItem(Xcode)
     Xcode.target = target
     Xcode.tag = IntMenuItem.Xcode.rawValue
-    Xcode.image =  NSImage(named: NSImage.computerName)!
+//    Xcode.image =  NSImage(named: NSImage.computerName)!
     
     let Terminal = NSMenuItem(title: MenuItem.Terminal.rawValue, action: action, keyEquivalent: "")
     menuView.addItem(Terminal)
     Terminal.target = target
     Terminal.tag = IntMenuItem.Terminal.rawValue
-    Terminal.image =  NSImage(named: NSImage.computerName)!
+//    Terminal.image =  NSImage(named: NSImage.computerName)!
     
     if !Constants.isFinderExtension() {
         let Finder = NSMenuItem(title: MenuItem.Finder.rawValue, action: action, keyEquivalent: "")
         menuView.addItem(Finder)
         Finder.target = target
         Finder.tag = IntMenuItem.Finder.rawValue
-        Finder.image =  NSImage(named: NSImage.computerName)!
+//        Finder.image =  NSImage(named: NSImage.computerName)!
     }
     
     let script = NSMenuItem(title: MenuItem.script.rawValue, action: action, keyEquivalent: "")
     menuView.addItem(script)
     script.target = target
     script.tag = IntMenuItem.script.rawValue
-    script.image =  NSImage(named: NSImage.computerName)!
+//    script.image =  NSImage(named: NSImage.computerName)!
     
     let scriptItem = NSMenu.init(title: MenuItem.script.rawValue)
     menuView.setSubmenu(scriptItem, for: script)
@@ -208,7 +208,7 @@ public func menuView(menus:[MenuItem], target: AnyObject?, action: Selector?) ->
         scriptItem.addItem(menu)
         menu.target = target
         menu.tag = menuItem.toInt().rawValue
-        menu.image =  NSImage(named: NSImage.computerName)!
+//        menu.image =  NSImage(named: NSImage.computerName)!
     }
     
     return menuView
