@@ -6,7 +6,6 @@
 //
 
 import Cocoa
-import ApplicationServices
 @main
 class AppDelegate: NSObject, NSApplicationDelegate {
     
@@ -72,12 +71,6 @@ extension AppDelegate {
     }
     
     func setStatusToggle() {
-        
-//
-//        let menus = MenuItem.subScriptEnum(isRootProject:false)
-//
-//        let menu = menuView(menus: menus,target: self, action: #selector(action(_:)))
-//
         statusItem.button?.action = #selector(action(_:))
     }
     @IBAction func action(_ item: NSMenuItem) {
