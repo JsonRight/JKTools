@@ -6,9 +6,12 @@
 //
 
 import Cocoa
-
+import ApplicationServices
 @main
 class AppDelegate: NSObject, NSApplicationDelegate {
+    
+    let statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
+    
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         if !Constants.hasShellScptPath(name: "JKTool") {
             Constants.resetShellScpt(name: "JKTool")
@@ -20,18 +23,23 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         if !Constants.Id.FinderExtension.hasFileScriptPath() {
             Constants.resetScpt(id: .FinderExtension)
         }
+        setStatusItemIcon()
+        setStatusItemVisible()
+        setStatusToggle()
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {
-        // Insert code here to tear down your application
+        NSStatusBar.system.removeStatusItem(statusItem)
     }
     
     func applicationShouldHandleReopen(_ sender: NSApplication, hasVisibleWindows flag: Bool) -> Bool {
         if !flag {
+            sender.activate(ignoringOtherApps: true)
             let window = sender.windows.first
-            window?.makeKeyAndOrderFront(nil)
+            window?.makeKeyAndOrderFront(self)
+            return true
         }
-        return true
+        return false
     }
     
 
@@ -47,3 +55,35 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
 }
 
+extension AppDelegate {
+    
+    // MARK: - Status Bar Item
+    
+    func setStatusItemIcon() {
+        let icon = NSImage(named: "Image")
+        icon?.isTemplate = true // Support Dark Mode
+        DispatchQueue.main.async {
+            self.statusItem.button?.image = icon
+        }
+    }
+    
+    func setStatusItemVisible() {
+        statusItem.isVisible = true
+    }
+    
+    func setStatusToggle() {
+        
+//
+//        let menus = MenuItem.subScriptEnum(isRootProject:false)
+//
+//        let menu = menuView(menus: menus,target: self, action: #selector(action(_:)))
+//
+        statusItem.button?.action = #selector(action(_:))
+    }
+    @IBAction func action(_ item: NSMenuItem) {
+        NSApplication.shared.activate(ignoringOtherApps: true)
+        for window in NSApplication.shared.windows {
+            window.makeKeyAndOrderFront(self)
+        }
+   }
+}
