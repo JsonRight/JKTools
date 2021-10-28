@@ -56,11 +56,11 @@ class FinderSync: FIFinderSync {
         
         if let selectedURLs = FIFinderSyncController.default().selectedItemURLs() {
             for selectedURL in selectedURLs {
-                runUserScript(appleScript: menu.toString().run(consoleOptions: ConsoleOptions(url: nil, path: selectedURL.path)))
+                runUserScript(appleScript: menu.toString().run(consoleOptions: ConsoleOptions(url: nil, path: selectedURL.path)), id: Constants.Id.FinderExtension)
             }
         } else if let path = FIFinderSyncController.default().targetedURL()?.path {
             
-            runUserScript(appleScript: menu.toString().run(consoleOptions: ConsoleOptions(url: nil, path: path)))
+            runUserScript(appleScript: menu.toString().run(consoleOptions: ConsoleOptions(url: nil, path: path)), id: Constants.Id.FinderExtension)
         }
         
    }

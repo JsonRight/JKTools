@@ -13,32 +13,33 @@ func fourCharCode(from string : String) -> FourCharCode
   return string.utf16.reduce(0, {$0 << 8 + FourCharCode($1)})
 }
 
-public func runScript(appleScript: AppleScriptCommand?) {
-    
-    let (event, filePath) = tryRunUserScript(appleScript: appleScript)
-    
-    guard let event1 = event else {
-        return
-    }
-    guard let filePath1 = filePath else {
-        return
-    }
-    let script: NSAppleScript = {
-        var error: NSDictionary? = nil
-        let script = NSAppleScript(contentsOf: filePath1, error: &error)
-        return script!
-    }()
-    var error: NSDictionary? = nil
-    _ = script.executeAppleEvent(event1, error: &error)
-    _ = script.executeAndReturnError(&error)
-    if let error = error {
-        print(error)
-    }
-}
+// NSAppleScript不能用了
+//func runScript(appleScript: AppleScriptCommand?, id: Constants.Id) {
+//
+//    let (event, filePath) = tryRunUserScript(appleScript: appleScript, id: id)
+//
+//    guard let event1 = event else {
+//        return
+//    }
+//    guard let filePath1 = filePath else {
+//        return
+//    }
+//    let script: NSAppleScript = {
+//        var error: NSDictionary? = nil
+//        let script = NSAppleScript(contentsOf: filePath1, error: &error)
+//        return script!
+//    }()
+//    var error: NSDictionary? = nil
+//    _ = script.executeAppleEvent(event1, error: &error)
+//    _ = script.executeAndReturnError(&error)
+//    if let error = error {
+//        print(error)
+//    }
+//}
 
-public func runUserScript(appleScript: AppleScriptCommand?){
+func runUserScript(appleScript: AppleScriptCommand?, id: Constants.Id){
     
-    let (event, filePath) = tryRunUserScript(appleScript: appleScript)
+    let (event, filePath) = tryRunUserScript(appleScript: appleScript,id: id)
     
     guard let event1 = event else {
         return
@@ -55,12 +56,12 @@ public func runUserScript(appleScript: AppleScriptCommand?){
     
 }
 
-public func tryRunUserScript(appleScript: AppleScriptCommand?) -> (event: NSAppleEventDescriptor?,filePath: URL?) {
+func tryRunUserScript(appleScript: AppleScriptCommand?, id: Constants.Id) -> (event: NSAppleEventDescriptor?,filePath: URL?) {
     guard let command = appleScript else {
         return (nil,nil)
     }
     
-    guard let filePath = Constants.Id.FinderExtension.fileScriptPath(fileName: "JKToolScript") else {
+    guard let filePath = id.fileScriptPath(fileName: "JKToolScript") else {
       return (nil,nil)
     }
 
@@ -85,7 +86,7 @@ public func tryRunUserScript(appleScript: AppleScriptCommand?) -> (event: NSAppl
     return (event, filePath)
 }
 
-public class AppleScriptCommand {
+class AppleScriptCommand {
     let toolName: String
     let script: String
     let path: String
@@ -96,7 +97,7 @@ public class AppleScriptCommand {
     }
 }
 
-public extension AppleScriptCommand {
+extension AppleScriptCommand {
     static func JKToolScript(needToPath:Bool, script:String,options: ConsoleOptions) ->AppleScriptCommand? {
         var consoleScript = "JKTool \(script)"
         guard let path = options.path else {

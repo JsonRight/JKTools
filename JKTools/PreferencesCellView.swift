@@ -85,7 +85,7 @@ extension PreferencesCellView {
             return
         }
         
-        runScript(appleScript: menu.toString().run(consoleOptions: ConsoleOptions(url: self.projectInfo?.sourcePath, path: self.projectInfo?.projectPath)))
+        runUserScript(appleScript: menu.toString().run(consoleOptions: ConsoleOptions(url: self.projectInfo?.sourcePath, path: self.projectInfo?.projectPath)), id: Constants.Id.LauncherApp)
         
    }
 }

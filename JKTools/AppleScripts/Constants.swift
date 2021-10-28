@@ -8,7 +8,7 @@
 import Foundation
 import Cocoa
 
-struct Constants {
+public struct Constants {
     
     static func bundle() -> String {
         return Bundle.main.bundleIdentifier!
