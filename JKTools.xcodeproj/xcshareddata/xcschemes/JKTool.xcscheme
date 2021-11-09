@@ -36,7 +36,7 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       launchStyle = "0"
       useCustomWorkingDirectory = "YES"
-      customWorkingDirectory = "/Users/jiangkui/Desktop/JKProject/Notebook/Module/checkouts/JKFoundation"
+      customWorkingDirectory = "/Users/jiangkui/Desktop/JKProject/Notebook"
       ignoresPersistentStateOnLaunch = "NO"
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
@@ -53,7 +53,7 @@
       </BuildableProductRunnable>
       <CommandLineArguments>
          <CommandLineArgument
-            argument = "build"
+            argument = "clone"
             isEnabled = "YES">
          </CommandLineArgument>
       </CommandLineArguments>

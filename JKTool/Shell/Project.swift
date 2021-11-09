@@ -12,6 +12,10 @@ public func nameForPath(path: String) ->String {
     return URL(fileURLWithPath: path).lastPathComponent
 }
 
+public func schemeForPath(path: String) ->String {
+    return URL(fileURLWithPath: path).lastPathComponent
+}
+
 public class Project {
     
     public  enum ProjectType: String {
@@ -33,6 +37,10 @@ public class Project {
     
     lazy var name: String = {
         return nameForPath(path: self.directoryPath)
+    }()
+    
+    lazy var scheme: String = {
+        return schemeForPath(path: self.directoryPath)
     }()
     lazy var modulefilePath: String = {
         return self.directoryPath.appending("/Modulefile")
@@ -59,15 +67,12 @@ public class Project {
                 return
             }
             
-            guard let remainingString = scannerWithComments.remainingSubstring.map(String.init)?.replacingOccurrences(of: "\"", with: "") else {
-                stop = true
-                return
-            }
             
-            guard let remainingString = scannerWithComments.remainingSubstring.map(String.init)?.replacingOccurrences(of: "\'", with: "") else {
-                stop = true
-                return
-            }
+            var remainingString = scannerWithComments.string.replacingOccurrences(of: "\"", with: "")
+            
+            remainingString = remainingString.replacingOccurrences(of: "\'", with: "")
+            
+            remainingString = remainingString.replacingOccurrences(of: "\\", with: "")
             
             var arr = remainingString.components(separatedBy: " ").filter { (str) -> Bool in
                 return str != ""

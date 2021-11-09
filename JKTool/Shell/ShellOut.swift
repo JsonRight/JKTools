@@ -821,38 +821,3 @@ extension String {
     }
 }
 
-extension Scanner {
-
-    /// Scans a string that is supposed to start with the given prefix, until the given
-    /// string is encountered.
-    /// - returns: the scanned string without the prefix. If the string does not start with the prefix,
-    /// or the scanner is at the end, it returns `nil` without advancing the scanner.
-    fileprivate func scanStringWithPrefix(_ prefix: Character, until: String) -> String? {
-        guard !self.isAtEnd, self.remainingSubstring?.first == prefix else { return nil }
-
-        var buffer: NSString?
-        self.scanUpTo(until, into: &buffer)
-        guard let stringWithPrefix = buffer as String?, stringWithPrefix.first == prefix else {
-            return nil
-        }
-
-        return String(stringWithPrefix.dropFirst())
-    }
-
-    /// The string (as `Substring?`) that is left to scan.
-    ///
-    /// Accessing this variable will not advance the scanner location.
-    ///
-    /// - returns: `nil` in the unlikely event `self.scanLocation` splits an extended grapheme cluster.
-    var remainingSubstring: Substring? {
-        return Range(
-            NSRange(
-                location: self.scanLocation /* our UTF-16 offset */,
-                length: (self.string as NSString).length - self.scanLocation
-            ),
-            in: self.string
-        ).map {
-            self.string[$0]
-        }
-    }
-}
