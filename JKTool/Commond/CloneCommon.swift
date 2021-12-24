@@ -21,64 +21,114 @@ class CloneCommon: CommonProtocol {
             exit(EXIT_FAILURE)
         }
         print(Colors.green("======Clone子模块开始======"))
-        do {
-            try shellOut(to: .removeFolder(from: project.rootProject.modulePath))
-        } catch {
-            print(Colors.yellow("Clone 命令执行异常！删除工程Module文件夹失败"))
-        }
+//        if project.fileManager.fileExists(atPath: project.rootProject.modulePath) {
+//
+//        }
+//        do {
+//            try shellOut(to: .removeFolder(from: project.rootProject.modulePath))
+//        } catch {
+//            print(Colors.yellow("Clone 命令执行异常！删除工程Module文件夹失败"))
+//        }
         
-        let list = self.clone(pro: project.rootProject)
+        let subRecordList = self.clone(pro: project.rootProject)
         var recordList:[String] = []
-        for item in list.reversed() {
+        for item in subRecordList.reversed() {
             if !recordList.contains(item) {
                 recordList.append(item)
             }
         }
-        do {
-            let data = try JSONSerialization.data(withJSONObject: recordList, options: .fragmentsAllowed)
-            try data.write(to: URL(fileURLWithPath: project.rootProject.recordListPath), options: .atomicWrite)
-            print(Colors.green("Modulefile.recordList 写入成功"))
-        } catch {
-            print(Colors.yellow("Modulefile.recordList 写入失败"))
+        let oldRecordList = project.recordList
+        if oldRecordList.isEmpty || !recordList.elementsEqual(oldRecordList)  {
+            do {
+                let data = try JSONSerialization.data(withJSONObject: recordList, options: .fragmentsAllowed)
+                try data.write(to: URL(fileURLWithPath: project.rootProject.recordListPath), options: .atomicWrite)
+                print(Colors.green("【\(project.name)】Modulefile.recordList 写入成功"))
+            } catch {
+                print(Colors.yellow("【\(project.name)】Modulefile.recordList 写入失败"))
+            }
         }
+        
         print(Colors.green("======clone子模块结束======"))
     }
     
     func clone(pro: Project) -> [String] {
-        var recordList:[String] = []
+        var subRecordList:[String] = []
         for module in pro.moduleList {
-            do {
-                try shellOut(to: .gitClone(url: module.url, to: pro.rootProject.checkoutsPath + "/" + module.name))
-                print(Colors.green("\(module.name):clone成功"))
-            } catch {
-                print(Colors.yellow("\(module.name) 已经存在,无需Clone！"))
+            // 将module加入即将需要subModule中
+            subRecordList.append(module.name)
+            // 组装module路径
+            let modulePath = pro.rootProject.checkoutsPath + "/" + module.name
+            //通过检查文件夹的方式，检查是否已经存在
+            let needClone = !pro.fileManager.fileExists(atPath: modulePath)
+            // clone module
+            if needClone {
+                do {
+                    try shellOut(to: .gitClone(url: module.url, to: modulePath))
+                    print(Colors.green("【\(module.name)】:clone成功"))
+                } catch {
+                    print(Colors.yellow("【\(module.name)】已经存在,无需Clone！"))
+                }
             }
+            //创建module的Project
+            guard let subModule = Project.project(directoryPath: modulePath) else {
+                print(Colors.red("【\(module.name)】初始化失败，请检查项目"))
+                exit(EXIT_FAILURE)
+            }
+            // 递归Clone subModule
+            let list = self.clone(pro: subModule)
+            // 检查是否还有subModule。没有则直接return
+            if list.isEmpty {
+                return subRecordList
+            }
+            // 过滤当前module的subModule，按照工程层级
+            var recordList:[String] = []
+            for item in list.reversed() {
+                if !recordList.contains(item) {
+                    recordList.append(item)
+                }
+            }
+            // 当前Project如果不是根Project则创建子Project的工程软链接
             if pro.rootProject != pro {
+                //删除当前subModule的checkoutsPath
+                do {
+                    try shellOut(to: .removeFolder(from: pro.checkoutsPath))
+                } catch {
+                    print(Colors.yellow("【\(pro.name)】Clone 命令执行异常！删除工程Module文件夹失败"))
+                }
+                //重建当前subModule的checkoutsPath
                 do {
                     try shellOut(to: .createFolder(path: pro.checkoutsPath))
                 } catch {
                     print(Colors.yellow("【\(pro.name)】创建'checkouts'目录 失败，可能已经存在"))
                 }
-                
-                do {
-                    try shellOut(to: .createSymlink(to: pro.rootProject.checkoutsPath + "/" + module.name, at: pro.checkoutsPath))
-                    print(Colors.green("【\(pro.name)】创建\(module.name) links 成功"))
-                } catch {
-                    print(Colors.yellow("【\(pro.name)】创建\(module.name) links 失败，可能已经存在"))
+                //创建子Project的工程软链接
+                for item in recordList {
+                    let subModulePath = pro.rootProject.checkoutsPath + "/" + item
+                    do {
+                        try shellOut(to: .createSymlink(to: subModulePath, at: pro.checkoutsPath))
+                        print(Colors.green("【\(pro.name)】创建\(item) links 成功"))
+                    } catch {
+                        print(Colors.yellow("【\(pro.name)】创建\(item) links 失败，可能已经存在"))
+                    }
                 }
             }
-            
-            guard let pro1 = Project.project(directoryPath: "\(pro.rootProject.checkoutsPath)/\(module.name)") else {
-                print(Colors.red("\(module.name)初始化失败，请检查项目"))
-                exit(EXIT_FAILURE)
+            // 写入当前工程所有subModule
+            if needClone {
+                
+                let oldRecordList = subModule.recordList
+                if oldRecordList.isEmpty || !recordList.elementsEqual(oldRecordList)  {
+                    do {
+                        let data = try JSONSerialization.data(withJSONObject: recordList, options: .fragmentsAllowed)
+                        try data.write(to: URL(fileURLWithPath: subModule.recordListPath), options: .atomicWrite)
+                        print(Colors.green("【\(subModule.name)】Modulefile.recordList 写入成功"))
+                    } catch {
+                        print(Colors.yellow("【\(subModule.name)】Modulefile.recordList 写入失败"))
+                    }
+                }
             }
-            let list = self.clone(pro: pro1)
-            recordList.append(module.name)
-            recordList += list
-            
+            subRecordList += list
         }
-        
-        return recordList
+        return subRecordList
     }
     
     

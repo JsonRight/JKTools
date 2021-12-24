@@ -100,7 +100,7 @@ public class Project {
     
     lazy var recordList: [String] = {
         do {
-            let data = try Data(contentsOf: URL(fileURLWithPath: self.modulefilePath))
+            let data = try Data(contentsOf: URL(fileURLWithPath: self.recordListPath))
             let recordList = try JSONSerialization.jsonObject(with: data, options: .mutableContainers) as! Array<String>
             return recordList
         } catch {
