@@ -15,18 +15,18 @@ class BuildFrameworkCommon: BaseBuildCommon {
 
     func build(pro: Project,options: ConsoleOptions) {
         
-        if pro.moduleList.count > 0 {
+        if pro.recordList.count > 0 {
             do {
                 try shellOut(to: .createFolder(path: pro.buildsPath + "/"))
             } catch {
                 print(Colors.yellow("【\(pro.name)】创建 Module/Builds 失败，可能已经存在"))
             }
             
-            for module in pro.moduleList {
+            for moduleName in pro.recordList {
                 do {
-                    try shellOut(to: .createSymlink(to: pro.rootProject.buildsPath + "/" + module.name + librarySuffix(), at: pro.buildsPath))
+                    try shellOut(to: .createSymlink(to: pro.rootProject.buildsPath + "/" + moduleName + librarySuffix(), at: pro.buildsPath))
                 } catch {
-                    print(Colors.yellow("【\(pro.name)】创建\(module.name)\(librarySuffix()) links 失败，可能已经存在"))
+                    print(Colors.yellow("【\(pro.name)】创建\(moduleName)\(librarySuffix()) links 失败，可能已经存在"))
                 }
             }
         }
