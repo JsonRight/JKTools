@@ -97,31 +97,31 @@ class CloneCommon: CommonProtocol {
                 recordList.append(item)
             }
         }
-        // 当前Project如果不是根Project则创建子Project的工程软链接
-        if module.rootProject != module {
-            //删除当前subModule的checkoutsPath
-            do {
-                try shellOut(to: .removeFolder(from: module.checkoutsPath))
-            } catch {
-                print(Colors.yellow("【\(module.name)】Clone 命令执行异常！删除工程Module文件夹失败"))
-            }
-            //重建当前subModule的checkoutsPath
-            do {
-                try shellOut(to: .createFolder(path: module.checkoutsPath))
-            } catch {
-                print(Colors.yellow("【\(module.name)】创建'checkouts'目录 失败，可能已经存在"))
-            }
-            //创建子Project的工程软链接
-            for item in recordList {
-                let subModulePath = module.rootProject.checkoutsPath + "/" + item
-                do {
-                    try shellOut(to: .createSymlink(to: subModulePath, at: module.checkoutsPath))
-                    print(Colors.green("【\(module.name)】创建\(item) links 成功"))
-                } catch {
-                    print(Colors.yellow("【\(module.name)】创建\(item) links 失败，可能已经存在"))
-                }
-            }
-        }
+//         当前Project如果不是根Project则创建子Project的工程软链接
+//        if module.rootProject != module {
+//            //删除当前subModule的checkoutsPath
+//            do {
+//                try shellOut(to: .removeFolder(from: module.checkoutsPath))
+//            } catch {
+//                print(Colors.yellow("【\(module.name)】Clone 命令执行异常！删除工程Module文件夹失败"))
+//            }
+//            //重建当前subModule的checkoutsPath
+//            do {
+//                try shellOut(to: .createFolder(path: module.checkoutsPath))
+//            } catch {
+//                print(Colors.yellow("【\(module.name)】创建'checkouts'目录 失败，可能已经存在"))
+//            }
+//            //创建子Project的工程软链接
+//            for item in recordList {
+//                let subModulePath = module.rootProject.checkoutsPath + "/" + item
+//                do {
+//                    try shellOut(to: .createSymlink(to: subModulePath, at: module.checkoutsPath))
+//                    print(Colors.green("【\(module.name)】创建\(item) links 成功"))
+//                } catch {
+//                    print(Colors.yellow("【\(module.name)】创建\(item) links 失败，可能已经存在"))
+//                }
+//            }
+//        }
         // 写入当前工程所有subModule
         if needClone {
             

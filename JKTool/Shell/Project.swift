@@ -50,7 +50,6 @@ public class Project {
         do {
             return try String(contentsOf: URL(fileURLWithPath: self.modulefilePath))
         } catch {
-            print(Colors.green("【\(self.name)】:没有Modulefile文件"))
             return ""
         }
     }()
@@ -104,7 +103,6 @@ public class Project {
             let recordList = try JSONSerialization.jsonObject(with: data, options: .mutableContainers) as! Array<String>
             return recordList
         } catch {
-            print(Colors.yellow("【\(self.name)】Modulefile.recordList 读取失败"))
             return []
         }
     }()
