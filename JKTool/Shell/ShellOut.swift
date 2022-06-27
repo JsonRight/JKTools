@@ -131,13 +131,13 @@ public extension ShellOutCommand {
     }
 
     /// Clone a git repository at a given URL
-    static func gitClone(url: URL, to path: String? = nil, branch: String? = nil, allowingPrompt: Bool = true) -> ShellOutCommand {
-        return gitClone(url: url.absoluteString ,to: path, branch: branch, allowingPrompt: allowingPrompt)
+    static func gitClone(url: URL, to path: String? = nil, branch: String? = nil) -> ShellOutCommand {
+        return gitClone(url: url.absoluteString ,to: path, branch: branch)
     }
     
     /// Clone a git repository at a given URLString
-    static func gitClone(url: String, to path: String? = nil, branch: String? = nil, allowingPrompt: Bool = true) -> ShellOutCommand {
-        var command = "\(git(allowingPrompt: allowingPrompt)) clone \(url)"
+    static func gitClone(url: String, to path: String? = nil, branch: String? = nil) -> ShellOutCommand {
+        var command = "git clone \(url)"
         path.map { command.append(argument: $0) }
         command.append(" -b \(branch ?? "master")")
         command.append(" --quiet")
@@ -146,8 +146,8 @@ public extension ShellOutCommand {
     }
 
     /// Create a git commit with a given message (also adds all untracked file to the index)
-    static func gitCommit(message: String, allowingPrompt: Bool = true) -> ShellOutCommand {
-        var command = "\(git(allowingPrompt: allowingPrompt)) add . && git commit -a -m"
+    static func gitCommit(message: String) -> ShellOutCommand {
+        var command = "git add . && git commit -a -m"
         command.append(argument: message)
         command.append(" --quiet")
 
@@ -155,8 +155,8 @@ public extension ShellOutCommand {
     }
 
     /// Perform a git push
-    static func gitPush(remote: String? = nil, branch: String? = nil, allowingPrompt: Bool = true) -> ShellOutCommand {
-        var command = "\(git(allowingPrompt: allowingPrompt)) push"
+    static func gitPush(remote: String? = nil, branch: String? = nil) -> ShellOutCommand {
+        var command = "git push"
         remote.map { command.append(argument: $0) }
         branch.map { command.append(argument: $0) }
         command.append(" --quiet")
@@ -165,8 +165,8 @@ public extension ShellOutCommand {
     }
 
     /// Perform a git pull
-    static func gitPull(remote: String? = nil, branch: String? = nil, allowingPrompt: Bool = true) -> ShellOutCommand {
-        var command = "\(git(allowingPrompt: allowingPrompt)) pull"
+    static func gitPull(remote: String? = nil, branch: String? = nil) -> ShellOutCommand {
+        var command = "git pull"
         remote.map { command.append(argument: $0) }
         branch.map { command.append(argument: $0) }
         command.append(" --quiet")
@@ -175,8 +175,8 @@ public extension ShellOutCommand {
     }
     
     /// Perform a git pull
-    static func gitPrune(remote: String? = nil, branch: String? = nil, allowingPrompt: Bool = true) -> ShellOutCommand {
-        var command = "\(git(allowingPrompt: allowingPrompt)) remote prune origin"
+    static func gitPrune(remote: String? = nil, branch: String? = nil) -> ShellOutCommand {
+        var command = "git remote prune origin"
         remote.map { command.append(argument: $0) }
         branch.map { command.append(argument: $0) }
 
@@ -184,34 +184,33 @@ public extension ShellOutCommand {
     }
     
     /// Perform a git Rebase
-    static func gitRebase(remote: String? = nil, masterBranch: String? = nil, allowingPrompt: Bool = true) -> ShellOutCommand {
-        var command = "\(git(allowingPrompt: allowingPrompt)) rebase -i"
-//        remote.map { command.append(argument: $0) }
-        masterBranch.map { command.append(argument: $0) }
+    static func gitRebase(branch: String? = nil) -> ShellOutCommand {
+        var command = "git rebase -i"
+        branch.map { command.append(argument: $0) }
         command.append(" --quiet")
 
         return ShellOutCommand(string: command)
     }
     
     /// Perform a git tag
-    static func gitAddTag(tag: String, allowingPrompt: Bool = true) -> ShellOutCommand {
-        var command = "\(git(allowingPrompt: allowingPrompt)) tag \(tag)"
+    static func gitAddTag(tag: String) -> ShellOutCommand {
+        var command = "git tag \(tag)"
         command.append(" --quiet && ")
-        command.append("\(git(allowingPrompt: allowingPrompt)) push origin \(tag)")
+        command.append("git push origin \(tag)")
         return ShellOutCommand(string: command)
     }
     
     /// del a git tag
-    static func gitDelTag(tag: String, allowingPrompt: Bool = true) -> ShellOutCommand {
-        var command = "\(git(allowingPrompt: allowingPrompt)) tag -d \(tag)"
+    static func gitDelTag(tag: String) -> ShellOutCommand {
+        var command = "git tag -d \(tag)"
         command.append(" --quiet && ")
-        command.append("\(git(allowingPrompt: allowingPrompt)) push origin :refs/tags/\(tag)")
+        command.append("git push origin :refs/tags/\(tag)")
         return ShellOutCommand(string: command)
     }
 
     /// Run a git submodule update
-    static func gitSubmoduleUpdate(initializeIfNeeded: Bool = true, recursive: Bool = true, allowingPrompt: Bool = true) -> ShellOutCommand {
-        var command = "\(git(allowingPrompt: allowingPrompt)) submodule update"
+    static func gitSubmoduleUpdate(initializeIfNeeded: Bool = true, recursive: Bool = true) -> ShellOutCommand {
+        var command = "git submodule update"
 
         if initializeIfNeeded {
             command.append(" --init")
@@ -226,27 +225,31 @@ public extension ShellOutCommand {
     }
 
     /// Checkout a given git branch
-    static func gitCheckout(branch: String) -> ShellOutCommand {
-        let command = "git checkout".appending(argument: branch)
-                                    .appending(" --quiet")
+    static func gitCheckout(branch: String, force: Bool = false) -> ShellOutCommand {
+        var command = "\(git(force: force)) checkout"
+        command.append(argument: branch)
+        command.append(" --quiet")
 
         return ShellOutCommand(string: command)
     }
     
-    /// Clone a git repository at a given URLString
     static func gitStatus() -> ShellOutCommand {
-         let command = "git diff"
+         let command = "git diff HEAD"
         return ShellOutCommand(string: command)
     }
     
-    /// Clone a git repository at a given URLString
-       static func gitCodeVerison() -> ShellOutCommand {
-            let command = "git rev-parse HEAD"
-           return ShellOutCommand(string: command)
-       }
+    static func gitCodeVerison() -> ShellOutCommand {
+        let command = "git rev-parse HEAD"
+       return ShellOutCommand(string: command)
+    }
+    
+    static func gitCodeReset() -> ShellOutCommand {
+        let command = "git reset --hard HEAD"
+       return ShellOutCommand(string: command)
+    }
 
-    private static func git(allowingPrompt: Bool) -> String {
-        return allowingPrompt ? "git" : "env GIT_TERMINAL_PROMPT=0 git"
+    private static func git(force: Bool) -> String {
+        return force ? "git --force" : "git"
     }
 }
 
@@ -821,3 +824,39 @@ extension String {
     }
 }
 
+public extension String {
+    
+    func connecting(andCommand: String?) -> String {
+        if let andCommand = andCommand {
+            return "\(self) && \(andCommand)"
+        }
+        return self
+    }
+    
+    mutating func connected(andCommand: String?) {
+        self = connecting(andCommand: andCommand)
+    }
+    
+    func connecting(spaceCommand: String?) -> String {
+        if let spaceCommand = spaceCommand {
+            return "\(self) \(spaceCommand)"
+        }
+        return self
+    }
+    
+    mutating func connected(spaceCommand: String?) {
+        self = connecting(spaceCommand: spaceCommand)
+    }
+    
+    func connecting(orCommand: String?) -> String {
+        if let orCommand = orCommand {
+            return "\(self) || \(orCommand)"
+        }
+        return self
+    }
+    
+    mutating func connected(orCommand: String?) {
+        self = connecting(orCommand: orCommand)
+    }
+   
+}

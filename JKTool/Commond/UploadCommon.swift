@@ -28,7 +28,7 @@ class UploadCommon: CommonProtocol {
         }
         print(Colors.green("======开始准备upload【\(scheme)】项目======"))
         do {
-            try shellOut(to: .uploadIOS(scheme: scheme, projectPath: pro.directoryPath, config: options.config.name, desc: options.desc))
+            try shellOut(to: .uploadIOS(scheme: scheme, projectPath: pro.directoryPath, config: options.config.value, desc: options.desc))
         } catch {
             print(Colors.red("upload：\(scheme).ipa 失败"))
             let error = error as! ShellOutError

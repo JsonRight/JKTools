@@ -30,7 +30,7 @@ class ArchiveCommon: CommonProtocol {
         }
         print(Colors.green("======开始准备archive【\(scheme)】项目======"))
         do {
-            try shellOut(to: .archiveIOS(scheme: scheme, projectPath: pro.directoryPath, config: options.config.name, exportName: options.export))
+            try shellOut(to: .archiveIOS(scheme: scheme, projectPath: pro.directoryPath, config: options.config.value, exportName: options.export))
         } catch  {
             print(Colors.red("archive：\(scheme).ipa 失败"))
             let error = error as! ShellOutError

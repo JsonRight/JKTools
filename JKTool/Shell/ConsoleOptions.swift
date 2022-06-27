@@ -50,10 +50,16 @@ struct ConsoleOptions {
             }
         }
     }
-}
-
-enum LibraryOptions: String {
-    case Framework = "Framework"
-    case XCFramework = "XCFramework"
-    case Static = "Static"
+    init(config: ConfigType?, cache:Bool?, url:String?, path:String?,branch:String?,scheme:String?,export:String?,tag:String?,desc:String?,lib:LibraryOptions?) {
+        self.config = config ?? ConfigType("Debug")
+        self.cache = cache ?? true
+        self.url = url
+        self.path = path
+        self.branch = branch
+        self.scheme = scheme
+        self.export = export ?? "export.plist"
+        self.tag = tag
+        self.desc = desc ?? ""
+        self.libraryOptions = lib ?? .Framework
+    }
 }

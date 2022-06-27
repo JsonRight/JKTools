@@ -5,7 +5,7 @@
 //  Created by 姜奎 on 2021/4/25.
 //
 
-import Foundation
 
-JKTool.run(arguments: Swift.CommandLine.arguments)
-
+//JKTool.run(arguments: Swift.CommandLine.arguments)
+print(Swift.CommandLine.arguments)
+JKTool.main()

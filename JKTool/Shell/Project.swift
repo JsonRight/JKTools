@@ -127,6 +127,11 @@ public class Project {
         return buildPath
     }()
     
+    lazy var defaultConfigPath: String = {
+        let buildPath = self.directoryPath.appending("/defaultConfig.json")
+        return buildPath
+    }()
+    
     lazy var rootProject: Project = {
         guard self.directoryPath.contains("/Module/checkouts") else {
             return self
@@ -145,6 +150,57 @@ public class Project {
 
 
 extension Project {
+    
+    func writeRecordList(recordList: Array<String>) {
+        // 检查是否还有subModule。没有则直接return
+        if recordList.isEmpty {
+            return
+        }
+        
+        // 过滤当前module的subModule，按照工程层级
+        var list:[String] = []
+        for item in recordList {
+            if !list.contains(item) {
+                list.append(item)
+            }
+        }
+//         当前Project如果不是根Project则创建子Project的工程软链接
+//        if module.rootProject != module {
+//            //删除当前subModule的checkoutsPath
+//            do {
+//                try shellOut(to: .removeFolder(from: module.checkoutsPath))
+//            } catch {
+//                print(Colors.yellow("【\(module.name)】Clone 命令执行异常！删除工程Module文件夹失败"))
+//            }
+//            //重建当前subModule的checkoutsPath
+//            do {
+//                try shellOut(to: .createFolder(path: module.checkoutsPath))
+//            } catch {
+//                print(Colors.yellow("【\(module.name)】创建'checkouts'目录 失败，可能已经存在"))
+//            }
+//            //创建子Project的工程软链接
+//            for item in recordList {
+//                let subModulePath = module.rootProject.checkoutsPath + "/" + item
+//                do {
+//                    try shellOut(to: .createSymlink(to: subModulePath, at: module.checkoutsPath))
+//                    print(Colors.green("【\(module.name)】创建\(item) links 成功"))
+//                } catch {
+//                    print(Colors.yellow("【\(module.name)】创建\(item) links 失败，可能已经存在"))
+//                }
+//            }
+//        }
+        // 写入当前工程所有subModule
+        let oldRecordList = self.recordList
+        if oldRecordList.isEmpty || !list.elementsEqual(oldRecordList)  {
+            do {
+                let data = try JSONSerialization.data(withJSONObject: list, options: .fragmentsAllowed)
+                try data.write(to: URL(fileURLWithPath: self.recordListPath), options: .atomicWrite)
+                po(tip: "【\(self.name)】Modulefile.recordList 写入成功")
+            } catch {
+                po(tip: "【\(self.name)】Modulefile.recordList 写入失败",type: .error)
+            }
+        }
+    }
     
     private static func check(directoryPath: String) -> ProjectType? {
         
