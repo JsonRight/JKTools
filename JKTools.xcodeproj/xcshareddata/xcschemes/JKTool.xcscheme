@@ -97,6 +97,10 @@
             isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
+            argument = "Debug"
+            isEnabled = "YES">
+         </CommandLineArgument>
+         <CommandLineArgument
             argument = "url"
             isEnabled = "NO">
          </CommandLineArgument>

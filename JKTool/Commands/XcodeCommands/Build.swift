@@ -92,27 +92,15 @@ extension JKTool.Build {
             func build(project:Project) {
                 // 创建Module/Builds link 依赖库
                 if project.recordList.count > 0 {
-                    do {
-                        try shellOut(to: .createFolder(path: project.buildsPath + "/"))
-                    } catch {
-                        po(tip:"【\(project.name)】创建 Module/Builds 失败，可能已经存在",type: .warning)
-                    }
+                    _ = try? shellOut(to: .createFolder(path: project.buildsPath + "/"))
                     
                     for moduleName in project.recordList {
-                        do {
-                            try shellOut(to: .createSymlink(to: project.rootProject.buildsPath + "/" + moduleName, at: project.buildsPath))
-                        } catch {
-                            po(tip:"【\(project.name)】创建\(moduleName).a) links 失败，可能已经存在",type: .warning)
-                        }
+                        _ = try? shellOut(to: .createSymlink(to: project.rootProject.buildsPath + "/" + moduleName, at: project.buildsPath))
                     }
                 }
                 
                 // 删除主项目旧.a相关文件
-                do {
-                    try shellOut(to: .removeFolder(from: project.rootProject.buildsPath + "/\(project.name)"))
-                } catch {
-                    po(tip:"【\(project.name)】.a) 删除失败",type: .warning)
-                }
+                _ = try? shellOut(to: .removeFolder(from: project.rootProject.buildsPath + "/\(project.name)"))
                 
                 let oldVersion = try? shellOut(to: .readVerison(path: "\(project.buildPath)/Build/Products/Universal/"))
                 let status = try? shellOut(to: .gitStatus(),at: project.rootProject.checkoutsPath + "/" + project.name)
@@ -125,11 +113,8 @@ extension JKTool.Build {
                 if options.cache == false || oldVersion != currentVersion {
                     po(tip:"【\(project.name)】需重新编译")
                     // 删除历史build文件
-                    do {
-                        try shellOut(to: .removeFolder(from: project.buildPath))
-                    } catch {
-                        po(tip:"【\(project.name)】历史Build 删除失败",type: .warning)
-                    }
+                    _ = try? shellOut(to: .removeFolder(from: project.buildPath))
+                    
                     let staticCommand = ShellOutCommand.staticBuild(projectName: project.name, projectFilePath: project.directoryPath + "/" + project.name + ".xcodeproj", derivedDataPath: project.buildPath, configuration: options.configuration ?? "Release", sdk: options.sdk ?? "iOS",verison: currentVersion,toStaticPath: project.rootProject.buildsPath + "/" + project.name,toHeaderPath: project.rootProject.buildsPath + "/" + project.name)
                     do {
                         try shellOut(to: staticCommand)
@@ -215,28 +200,15 @@ extension JKTool.Build {
             func build(project:Project) {
                 // 创建Module/Builds link 依赖库
                 if project.recordList.count > 0 {
-                    do {
-                        try shellOut(to: .createFolder(path: project.buildsPath + "/"))
-                    } catch {
-                        po(tip:"【\(project.name)】创建 Module/Builds 失败，可能已经存在",type: .warning)
-                    }
+                    _ = try? shellOut(to: .createFolder(path: project.buildsPath + "/"))
                     
                     for moduleName in project.recordList {
-                        do {
-                            try shellOut(to: .createSymlink(to: project.rootProject.buildsPath + "/" + moduleName + ".framework", at: project.buildsPath))
-                        } catch {
-                            po(tip:"【\(project.name)】创建\(moduleName).framework links 失败，可能已经存在",type: .warning)
-                        }
+                        _ = try? shellOut(to: .createSymlink(to: project.rootProject.buildsPath + "/" + moduleName + ".framework", at: project.buildsPath))
                     }
                 }
                 
                 // 删除主项目旧.framework相关文件
-                do {
-                    try shellOut(to: .removeFolder(from: project.rootProject.buildsPath + "/\(project.name)"))
-                } catch {
-                    po(tip:"【\(project.name)】.framework 删除失败",type: .warning)
-                }
-                
+                _ = try? shellOut(to: .removeFolder(from: project.rootProject.buildsPath + "/\(project.name).framework"))
                 
                 let oldVersion = (try? shellOut(to: .readVerison(path: "\(project.buildPath)/Universal/")))
                 let status = try? shellOut(to: .gitStatus(),at: project.rootProject.checkoutsPath + "/" + project.name)
@@ -248,11 +220,7 @@ extension JKTool.Build {
                     po(tip:"【\(project.name)】需重新编译")
                     
                     // 删除历史build文件
-                    do {
-                        try shellOut(to: .removeFolder(from: project.buildPath))
-                    } catch {
-                        po(tip:"【\(project.name)】 历史Build 删除失败",type: .warning)
-                    }
+                    _ = try? shellOut(to: .removeFolder(from: project.buildPath))
                     
                     let frameworkCommand = ShellOutCommand.frameworkBuild(projectName: project.name, projectFilePath: project.directoryPath + "/" + project.name + ".xcodeproj", derivedDataPath: project.buildPath, configuration: options.configuration ?? "Release", sdk: options.sdk ?? "iOS", verison: currentVersion, toPath: project.rootProject.buildsPath)
                     
@@ -340,27 +308,15 @@ extension JKTool.Build {
             func build(project:Project) {
                 // 创建Module/Builds link 依赖库
                 if project.recordList.count > 0 {
-                    do {
-                        try shellOut(to: .createFolder(path: project.buildsPath + "/"))
-                    } catch {
-                        po(tip:"【\(project.name)】创建 Module/Builds 失败，可能已经存在",type: .warning)
-                    }
+                    _ = try? shellOut(to: .createFolder(path: project.buildsPath + "/"))
                     
                     for moduleName in project.recordList {
-                        do {
-                            try shellOut(to: .createSymlink(to: project.rootProject.buildsPath + "/" + moduleName + ".xcframework", at: project.buildsPath))
-                        } catch {
-                            po(tip:"【\(project.name)】创建\(moduleName).framework links 失败，可能已经存在",type: .warning)
-                        }
+                        _ = try? shellOut(to: .createSymlink(to: project.rootProject.buildsPath + "/" + moduleName + ".xcframework", at: project.buildsPath))
                     }
                 }
                 
                 // 删除主项目旧.framework相关文件
-                do {
-                    try shellOut(to: .removeFolder(from: project.rootProject.buildsPath + "/\(project.name)"))
-                } catch {
-                    po(tip:"【\(project.name)】.framework 删除失败",type: .warning)
-                }
+                _ = try? shellOut(to: .removeFolder(from: project.rootProject.buildsPath + "/\(project.name).xcframework"))
                 
                 let oldVersion = try? shellOut(to: .readVerison(path: "\(project.buildPath)/Build/Products/Universal/"))
                 let status = try? shellOut(to: .gitStatus(),at: project.rootProject.checkoutsPath + "/" + project.name)
@@ -372,11 +328,7 @@ extension JKTool.Build {
                     po(tip:"【\(project.name)】需重新编译")
                     
                     // 删除历史build文件
-                    do {
-                        try shellOut(to: .removeFolder(from: project.buildPath))
-                    } catch {
-                        po(tip:"【\(project.name)】历史Build 删除失败",type: .warning)
-                    }
+                    _ = try? shellOut(to: .removeFolder(from: project.buildPath))
                     
                     let xcframeworkCommand = ShellOutCommand.xcframeworkBuild(projectName: project.name, projectFilePath: project.directoryPath + "/" + project.name + ".xcodeproj", derivedDataPath: project.buildPath, configuration: options.configuration ?? "Release", sdk: options.sdk ?? "iOS", verison: currentVersion, toPath: project.rootProject.buildsPath)
                     

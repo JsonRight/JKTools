@@ -118,6 +118,7 @@
 		BFB7CA85270092080099B634 /* Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFB7CA84270092080099B634 /* Alert.swift */; };
 		BFB7CA86270092080099B634 /* Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFB7CA84270092080099B634 /* Alert.swift */; };
 		BFB7CA87270092C80099B634 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFB7CA812700893F0099B634 /* Constants.swift */; };
+		BFEB07B5286AA7DB00B5D197 /* Merge.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFEB07B4286AA7DB00B5D197 /* Merge.swift */; };
 		BFEBAE6828608295006928AD /* ExecutableBuild.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFEBAE6728608295006928AD /* ExecutableBuild.swift */; };
 /* End PBXBuildFile section */
 
@@ -265,6 +266,7 @@
 		BFB4B1EC26394DCA002E7072 /* PruneAllCommon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PruneAllCommon.swift; sourceTree = "<group>"; };
 		BFB7CA812700893F0099B634 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		BFB7CA84270092080099B634 /* Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alert.swift; sourceTree = "<group>"; };
+		BFEB07B4286AA7DB00B5D197 /* Merge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Merge.swift; sourceTree = "<group>"; };
 		BFEBAE6728608295006928AD /* ExecutableBuild.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExecutableBuild.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -478,6 +480,7 @@
 				BF69D6BE286478B6009CE7D1 /* Push.swift */,
 				BF69D6C0286478C5009CE7D1 /* Prune.swift */,
 				BF69D6C2286478D2009CE7D1 /* Rebase.swift */,
+				BFEB07B4286AA7DB00B5D197 /* Merge.swift */,
 				BF69D6C4286478DE009CE7D1 /* Checkout.swift */,
 				BF69D6C6286478EC009CE7D1 /* Status.swift */,
 				BF69D6C8286478F8009CE7D1 /* Reset.swift */,
@@ -820,6 +823,7 @@
 				BF69D6702861BF01009CE7D1 /* CommandConfiguration.swift in Sources */,
 				BF69D6742861BF01009CE7D1 /* BashCompletionsGenerator.swift in Sources */,
 				BFA529102635169A003427A8 /* ConsoleOptions.swift in Sources */,
+				BFEB07B5286AA7DB00B5D197 /* Merge.swift in Sources */,
 				BF69D6BB2864789B009CE7D1 /* Init.swift in Sources */,
 				BF69D6BF286478B6009CE7D1 /* Push.swift in Sources */,
 				BF69D6792861BF01009CE7D1 /* HelpCommand.swift in Sources */,

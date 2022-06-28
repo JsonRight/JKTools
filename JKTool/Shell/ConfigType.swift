@@ -69,14 +69,34 @@ public enum ConfigOptions: String {
     }
 }
 
-public enum ValidArchs: String {
-    case Release = "arm64 armv7"
-    case Debug = "x86_64 i386"
-    public init(_ string: String) {
-        if string == "Debug" {
-            self = .Debug
-        }else{
-            self = .Release
+public enum ValidArchs {
+    case framework(ConfigOptions)
+    case xcframework(ConfigOptions)
+    case a(ConfigOptions)
+    
+    public func archs()-> String {
+        switch self {
+        case .framework(let configOptions):
+            switch configOptions {
+            case .Debug:
+                return "x86_64 i386"
+            case .Release:
+                return "arm64 armv7"
+            }
+        case .xcframework(let configOptions):
+            switch configOptions {
+            case .Debug:
+                return "x86_64 i386"
+            case .Release:
+                return "arm64 armv7"
+            }
+        case .a(let configOptions):
+            switch configOptions {
+            case .Debug:
+                return "x86_64 i386"
+            case .Release:
+                return "arm64 armv7"
+            }
         }
     }
 }
