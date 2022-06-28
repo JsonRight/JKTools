@@ -119,6 +119,8 @@
 		BFB7CA86270092080099B634 /* Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFB7CA84270092080099B634 /* Alert.swift */; };
 		BFB7CA87270092C80099B634 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFB7CA812700893F0099B634 /* Constants.swift */; };
 		BFEB07B5286AA7DB00B5D197 /* Merge.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFEB07B4286AA7DB00B5D197 /* Merge.swift */; };
+		BFEB07D0286B0A6C00B5D197 /* Del.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFEB07CF286B0A6B00B5D197 /* Del.swift */; };
+		BFEB07D2286B0ECD00B5D197 /* Squash.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFEB07D1286B0ECD00B5D197 /* Squash.swift */; };
 		BFEBAE6828608295006928AD /* ExecutableBuild.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFEBAE6728608295006928AD /* ExecutableBuild.swift */; };
 /* End PBXBuildFile section */
 
@@ -267,6 +269,8 @@
 		BFB7CA812700893F0099B634 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		BFB7CA84270092080099B634 /* Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alert.swift; sourceTree = "<group>"; };
 		BFEB07B4286AA7DB00B5D197 /* Merge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Merge.swift; sourceTree = "<group>"; };
+		BFEB07CF286B0A6B00B5D197 /* Del.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Del.swift; sourceTree = "<group>"; };
+		BFEB07D1286B0ECD00B5D197 /* Squash.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Squash.swift; sourceTree = "<group>"; };
 		BFEBAE6728608295006928AD /* ExecutableBuild.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExecutableBuild.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -481,6 +485,8 @@
 				BF69D6C0286478C5009CE7D1 /* Prune.swift */,
 				BF69D6C2286478D2009CE7D1 /* Rebase.swift */,
 				BFEB07B4286AA7DB00B5D197 /* Merge.swift */,
+				BFEB07D1286B0ECD00B5D197 /* Squash.swift */,
+				BFEB07CF286B0A6B00B5D197 /* Del.swift */,
 				BF69D6C4286478DE009CE7D1 /* Checkout.swift */,
 				BF69D6C6286478EC009CE7D1 /* Status.swift */,
 				BF69D6C8286478F8009CE7D1 /* Reset.swift */,
@@ -754,7 +760,9 @@
 				BF69D6772861BF01009CE7D1 /* ZshCompletionsGenerator.swift in Sources */,
 				BF69D6B428632EC1009CE7D1 /* subModule.swift in Sources */,
 				BF69D6802861BF01009CE7D1 /* Tree.swift in Sources */,
+				BFEB07D0286B0A6C00B5D197 /* Del.swift in Sources */,
 				BF69D68A2861BF01009CE7D1 /* Flag.swift in Sources */,
+				BFEB07D2286B0ECD00B5D197 /* Squash.swift in Sources */,
 				BFB4B1E826394D96002E7072 /* PruneCommon.swift in Sources */,
 				BFB4B1ED26394DCA002E7072 /* PruneAllCommon.swift in Sources */,
 				BF69D6782861BF01009CE7D1 /* DumpHelpGenerator.swift in Sources */,

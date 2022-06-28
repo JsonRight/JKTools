@@ -12,6 +12,20 @@ extension JKTool {
             _superCommandName: "JKTool",
             abstract: "git",
             version: "1.0.0",
-            subcommands: [Init.self,Clone.self,Commit.self,Pull.self,Push.self,Prune.self,Rebase.self,Checkout.self,Status.self,Reset.self,Tag.self,subModule.self])
+            subcommands: [Init.self,
+                          Clone.self,
+                          Commit.self,
+                          Pull.self,
+                          Push.self,
+                          Prune.self,
+                          Rebase.self,
+                          Merge.self,
+                          Squash.self,
+                          Del.self,
+                          Checkout.self,
+                          Status.self,
+                          Reset.self,
+                          Tag.self,
+                          subModule.self])
     }
 }

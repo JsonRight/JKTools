@@ -192,6 +192,34 @@ public extension ShellOutCommand {
         return ShellOutCommand(string: command)
     }
     
+    /// Perform a git merge
+    static func gitMerge(branch: String, squash: Bool?) -> ShellOutCommand {
+        var command = "git merge \(branch)"
+        if squash != false {
+            command.append(" --squash")
+        }
+        command.append(" --quiet")
+
+        return ShellOutCommand(string: command)
+    }
+    
+    /// Perform a git delete branch
+    static func gitDelLocalBranch(branch: String? = nil) -> ShellOutCommand {
+        var command = "git branch -d"
+        branch.map { command.append(argument: $0) }
+        command.append(" --quiet")
+
+        return ShellOutCommand(string: command)
+    }
+    
+    /// Perform a git delete branch
+    static func gitDelOriginBranch(branch: String? = nil) -> ShellOutCommand {
+        var command = "git push origin -d"
+        branch.map { command.append(argument: $0) }
+        command.append(" --quiet")
+        return ShellOutCommand(string: command)
+    }
+    
     /// Perform a git tag
     static func gitAddTag(tag: String) -> ShellOutCommand {
         var command = "git tag \(tag)"

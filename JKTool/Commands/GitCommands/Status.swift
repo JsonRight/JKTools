@@ -11,78 +11,41 @@ extension JKTool.Git {
         static var configuration = CommandConfiguration(
             commandName: "status",
             _superCommandName: "git",
-            abstract: "status",
-            subcommands: [Sub.self, All.self],
-            defaultSubcommand: Sub.self)
-    }
-}
-
-
-extension JKTool.Git.Status {
-    struct Sub: ParsableCommand {
-        static var configuration = CommandConfiguration(
-            commandName: "sub",
-            _superCommandName: "status",
-            abstract: "status sub",
-            version: "1.0.0")
-        
+            abstract: "status")
         @Argument(help: "工程存放路径！")
         var path: String?
         
-        @Argument(help: "子模块名称！")
-        var module: String?
-
-        mutating func run() {
-            guard let project = Project.project(directoryPath: path ?? FileManager.default.currentDirectoryPath) else {
-                return po(tip: "\(path ?? FileManager.default.currentDirectoryPath)目录没有检索到工程", type: .error)
-            }
-            var statusPath = project.directoryPath
-            
-            if project.rootProject == project, let module = module {
-                statusPath = "\(project.checkoutsPath)/\(module)/"
-            }
-            
-            guard let pro = Project.project(directoryPath: statusPath) else {
-                return po(tip: "\(statusPath)目录没有检索到工程", type: .error)
-            }
-            po(tip: "======【\(pro.name)】Status开始======", type: .tip)
-            do {
-                try shellOut(to: .gitPull(), at: statusPath)
-                po(tip: "======【\(pro.name)】Status完成======", type: .tip)
-            } catch {
-                let error = error as! ShellOutError
-                po(tip:  error.message + error.output,type: .error)
-            }
-        }
-    }
-    
-    struct All: ParsableCommand {
-        static var configuration = CommandConfiguration(
-            commandName: "all",
-            _superCommandName: "status",
-            abstract: "status all",
-            version: "1.0.0")
+        @Argument(help: "是否递归！")
+        var recursive: Bool?
         
-        @Argument(help: "工程存放路径！")
-        var path: String?
-
         mutating func run() {
             guard let project = Project.project(directoryPath: path ?? FileManager.default.currentDirectoryPath) else {
                 return po(tip: "\(path ?? FileManager.default.currentDirectoryPath)目录没有检索到工程", type: .error)
             }
             
             guard project.rootProject == project else {
-               return po(tip: "请在项目根目录执行脚本", type: .error)
+                do {
+                    try shellOut(to: .gitStatus(), at: project.directoryPath)
+                    po(tip: "【\(project.name)】Status完成", type: .tip)
+                } catch {
+                    let error = error as! ShellOutError
+                    po(tip: "【\(project.name)】 Status失败\n" + error.message + error.output,type: .error)
+                }
+               return
             }
             
             po(tip: "======Status工程开始======", type: .tip)
             
             do {
-                try shellOut(to: .gitPull(), at: project.directoryPath)
+                try shellOut(to: .gitStatus(), at: project.directoryPath)
                 po(tip: "【\(project.name)】Status完成", type: .tip)
             } catch {
                 let error = error as! ShellOutError
-                po(tip:  error.message + error.output,type: .error)
+                po(tip: "【\(project.name)】 Status失败\n" + error.message + error.output,type: .error)
+            }
+            
+            if recursive != false {
+                return
             }
             
             for record in project.recordList {
@@ -92,11 +55,11 @@ extension JKTool.Git.Status {
                     break
                 }
                 do {
-                    try shellOut(to: .gitPull(), at: pro.directoryPath)
+                    try shellOut(to: .gitStatus(), at: pro.directoryPath)
                     po(tip: "【\(pro.name)】Status完成", type: .tip)
                 } catch {
                     let error = error as! ShellOutError
-                    po(tip:  error.message + error.output,type: .error)
+                    po(tip: "【\(pro.name)】 Status失败\n" + error.message + error.output,type: .error)
                 }
             }
             
@@ -104,7 +67,3 @@ extension JKTool.Git.Status {
         }
     }
 }
-
-
-
-
