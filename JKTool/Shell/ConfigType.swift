@@ -132,64 +132,64 @@ enum Platform: String {
         }
     }
     
-    func sdk(_ string: String) -> String {
+    func sdk(_ config: ConfigOptions) -> String {
         switch self {
         case .iOS:
-            if string == ConfigOptions.Debug.rawValue {
+            if config == .Debug {
                 return "iphonesimulator"
             }
             return "iphoneos"
         case .iPadOS:
-            if string == ConfigOptions.Debug.rawValue {
+            if config == .Debug {
                 return "iphonesimulator"
             }
             return "iphoneos"
         case .macOS:
             return "macosx"
         case .tvOS:
-            if string == ConfigOptions.Debug.rawValue {
+            if config == .Debug {
                 return "appletvsimulator"
             }
             return "appletvos"
         case .watchOS:
-            if string == ConfigOptions.Debug.rawValue {
+            if config == .Debug {
                 return "watchsimulator"
             }
             return "watchos"
         case .carPlayOS:
-            if string == ConfigOptions.Debug.rawValue {
+            if config == .Debug {
                 return "carplaysimulator"
             }
             return "carplayos"
         }
     }
     
-    func platform(_ string: String) -> String {
+    func platform(_ config: ConfigOptions) -> String {
         switch self {
         case .iOS:
-            if string == ConfigOptions.Debug.rawValue {
+            if config == .Debug {
                 return "iOS Simulator"
             }
             return "iOS"
         case .iPadOS:
-            if string == ConfigOptions.Debug.rawValue {
+            if config == .Debug {
                 return "iPadOS Simulator"
             }
             return "iPadOS"
         case .macOS:
             return "macOS"
         case .tvOS:
-            if string == ConfigOptions.Debug.rawValue {
+            if config == .Debug {
                 return "tvOS Simulator"
             }
             return "tvOS"
         case .watchOS:
-            if string == ConfigOptions.Debug.rawValue {
+            if config == .Debug {
                 return "watchOS Simulator"
             }
             return "watchOS"
         case .carPlayOS:
-            if string == ConfigOptions.Debug.rawValue {
+            if config == .Debug {
                 return "carPlayOS Simulator"
             }
             return "carPlayOS"
