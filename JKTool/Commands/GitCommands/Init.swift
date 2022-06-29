@@ -15,18 +15,21 @@ extension JKTool.Git {
             abstract: "init",
             version: "1.0.0")
         
+        @Argument(help: "是否输出详细信息！")
+        var quiet: Bool?
+        
         @Argument(help: "init git仓库路径！")
         var path: String?
         
         mutating func run() {
-            po(tip: "======开始准备init git仓库======")
+            if quiet != false {po(tip: "======开始准备init git仓库======")}
             do {
                 try shellOut(to: .gitInit(),at: path ?? FileManager.default.currentDirectoryPath)
             } catch {
                 let error = error as! ShellOutError
                 po(tip:  error.message + error.output,type: .error)
             }
-            po(tip: "======init git仓库完成======")
+            if quiet != false {po(tip: "======init git仓库完成======")}
         }
     }
 }

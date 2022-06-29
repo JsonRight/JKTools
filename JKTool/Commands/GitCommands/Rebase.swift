@@ -17,19 +17,22 @@ extension JKTool.Git {
         @Argument(help: "Rebase by branch")
         var branch: String
         
+        @Argument(help: "是否输出详细信息！")
+        var quiet: Bool?
+        
         mutating func run() {
             
             guard let project = Project.project() else {
                 return po(tip: "\(FileManager.default.currentDirectoryPath)目录没有检索到工程", type: .error)
             }
-            po(tip: "======【\(project.name)】Rebase开始======")
+            if quiet != false {po(tip: "======【\(project.name)】Rebase开始======")}
             do {
                 try shellOut(to: .gitRebase(branch: branch),at: project.directoryPath)
             } catch {
                 let error = error as! ShellOutError
                 po(tip:  error.message + error.output,type: .error)
             }
-            po(tip: "======【\(project.name)】Rebase完成======")
+            if quiet != false {po(tip: "======【\(project.name)】Rebase完成======")}
         }
     }
 }

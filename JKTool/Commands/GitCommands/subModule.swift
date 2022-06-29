@@ -30,15 +30,17 @@ extension JKTool.Git.subModule {
             abstract: "submodule updata",
             version: "1.0.0")
 
-        @Argument(help: "工程存放路径！")
-        var path: String?
-        
         @Argument(help: "need init！")
         var i: Bool?
         
         @Argument(help: "need recursive！")
         var recursive: Bool?
         
+        @Argument(help: "是否输出详细信息！")
+        var quiet: Bool?
+        
+        @Argument(help: "工程存放路径！")
+        var path: String?
 
         mutating func run() {
             guard let project = Project.project(directoryPath: path ?? FileManager.default.currentDirectoryPath) else {
@@ -49,16 +51,16 @@ extension JKTool.Git.subModule {
                return po(tip: "请在项目根目录执行脚本", type: .error)
             }
             
-            po(tip: "======Updata工程开始======", type: .tip)
+            if quiet != false {po(tip: "======Updata工程开始======", type: .tip)}
             
             do {
                 try shellOut(to: .gitSubmoduleUpdate(initializeIfNeeded: i ?? false, recursive: recursive ?? false), at: project.directoryPath)
-                po(tip: "【\(project.name)】Updata完成", type: .tip)
+                if quiet != false {po(tip: "【\(project.name)】Updata完成", type: .tip)}
             } catch {
                 let error = error as! ShellOutError
-                po(tip:  error.message + error.output,type: .error)
+                po(tip:  "【\(project.name)】Update失败\n" + error.message + error.output,type: .error)
             }
-            po(tip: "======Updata工程完成======", type: .tip)
+            if quiet != false {po(tip: "======Updata工程完成======", type: .tip)}
         }
     }
     

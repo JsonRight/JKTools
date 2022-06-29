@@ -26,12 +26,16 @@ extension JKTool.Git.Clone {
             abstract: "clone sub",
             version: "1.0.0")
 
-        @Argument(help: "工程存放路径！")
-        var path: String?
         
         @Argument(help: "force Clone")
         var force: Bool?
-
+        
+        @Argument(help: "是否输出详细信息！")
+        var quiet: Bool?
+        
+        @Argument(help: "工程存放路径！")
+        var path: String?
+        
         mutating func run() {
             var cloneHistory: [String] = []
             func clone(project:Project) -> [String] {
@@ -46,7 +50,7 @@ extension JKTool.Git.Clone {
                     if needClone {
                         do {
                             try shellOut(to: .gitClone(url: module.url, to: modulePath))
-                            po(tip: "【\(module.name)】:clone成功")
+                            if quiet != false {po(tip: "【\(module.name)】:clone成功")}
                             cloneHistory.append(module.name)
                         } catch {
                             let error = error as! ShellOutError
@@ -61,7 +65,7 @@ extension JKTool.Git.Clone {
                     if let subModule = Project.project(directoryPath: modulePath) {
                         // 递归Clone subModule
                         let list = clone(project: subModule)
-                        subModule.writeRecordList(recordList: list)
+                        subModule.writeRecordList(recordList: list, quiet: quiet)
                         
                         subRecordList += list
                         // 将module加入即将需要subModule中
@@ -86,11 +90,11 @@ extension JKTool.Git.Clone {
                 _ = try? shellOut(to: .removeFolder(from: project.checkoutsPath))
             }
             
-            po(tip: "======Clone子模块开始======", type: .tip)
+            if quiet != false {po(tip: "======Clone子模块开始======", type: .tip)}
             
             let subRecordList = clone(project: project)
-            project.writeRecordList(recordList: subRecordList)
-            po(tip: "======clone子模块完成======")
+            project.writeRecordList(recordList: subRecordList, quiet: quiet)
+            if quiet != false {po(tip: "======clone子模块完成======")}
         }
     }
     
@@ -107,12 +111,15 @@ extension JKTool.Git.Clone {
         @Argument(help: "工程存放路径！")
         var path: String
         
+        @Argument(help: "是否输出详细信息！")
+        var quiet: Bool?
+        
         @Argument(help: "Clone by branch")
         var branch: String?
-
+        
         mutating func run() {
             
-            po(tip: "======开始准备clone项目======")
+            if quiet != false {po(tip: "======开始准备clone项目======")}
             do {
                 try shellOut(to: .removeFolder(from: path))
             } catch {
@@ -149,8 +156,8 @@ extension JKTool.Git.Clone {
                 let error = error as! ShellOutError
                 po(tip:  error.message + error.output,type: .error)
             }
-            Sub.main([path])
-            po(tip: "======clone项目完成======")
+            Sub.main(["\(true)","\(quiet ?? true)",path])
+            if quiet != false {po(tip: "======clone项目完成======")}
         }
     }
 }

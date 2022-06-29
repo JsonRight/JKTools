@@ -67,6 +67,14 @@ public enum ConfigOptions: String {
             self = .Release
         }
     }
+    public func archs()-> String {
+        switch self {
+        case .Debug:
+            return "x86_64 i386"
+        case .Release:
+            return "arm64 armv7"
+        }
+    }
 }
 
 public enum ValidArchs {

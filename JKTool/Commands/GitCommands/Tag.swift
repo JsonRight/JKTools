@@ -30,39 +30,41 @@ extension JKTool.Git.Tag {
         @Argument(help: "工程存放路径！")
         var tag: String
         
-        @Argument(help: "工程存放路径！")
-        var path: String?
-        
         @Argument(help: "是否递归！")
         var recursive: Bool?
         
+        @Argument(help: "是否输出详细信息！")
+        var quiet: Bool?
+        
+        @Argument(help: "工程存放路径！")
+        var path: String?
+        
         mutating func run() {
+            
+            func addTag(project: Project){
+                do {
+                    try shellOut(to: .gitAddTag(tag: tag), at: project.directoryPath)
+                    if quiet != false {po(tip: "【\(project.name)】Add Tag完成", type: .tip)}
+                } catch {
+                    let error = error as! ShellOutError
+                    po(tip: "【\(project.name)】 Add Tag失败\n" + error.message + error.output,type: .error)
+                }
+            }
+            
             guard let project = Project.project(directoryPath: path ?? FileManager.default.currentDirectoryPath) else {
                 return po(tip: "\(path ?? FileManager.default.currentDirectoryPath)目录没有检索到工程", type: .error)
             }
             
             guard project.rootProject == project else {
-                do {
-                    try shellOut(to: .gitAddTag(tag: tag), at: project.directoryPath)
-                    po(tip: "【\(project.name)】Add Tag完成", type: .tip)
-                } catch {
-                    let error = error as! ShellOutError
-                    po(tip: "【\(project.name)】 Add Tag失败\n" + error.message + error.output,type: .error)
-                }
+                addTag(project: project)
                return
             }
             
-            po(tip: "======Add Tag开始======", type: .tip)
+            if quiet != false {po(tip: "======Add Tag开始======", type: .tip)}
             
-            do {
-                try shellOut(to: .gitAddTag(tag: tag), at: project.directoryPath)
-                po(tip: "【\(project.name)】Add Tag完成", type: .tip)
-            } catch {
-                let error = error as! ShellOutError
-                po(tip: "【\(project.name)】 Add Tag失败\n" + error.message + error.output,type: .error)
-            }
+            addTag(project: project)
             
-            if recursive != false {
+            if recursive != true {
                 return
             }
             
@@ -72,16 +74,10 @@ extension JKTool.Git.Tag {
                     po(tip: "\(record) 工程不存在，请检查 Modulefile.recordList 是否为最新内容",type: .warning)
                     break
                 }
-                do {
-                    try shellOut(to: .gitAddTag(tag: tag), at: pro.directoryPath)
-                    po(tip: "【\(pro.name)】Add Tag完成", type: .tip)
-                } catch {
-                    let error = error as! ShellOutError
-                    po(tip: "【\(pro.name)】 Add Tag失败\n" + error.message + error.output,type: .error)
-                }
+                addTag(project: pro)
             }
             
-            po(tip: "======Add Tag结束======")
+            if quiet != false {po(tip: "======Add Tag结束======")}
         }
     }
     
@@ -95,39 +91,41 @@ extension JKTool.Git.Tag {
         @Argument(help: "工程存放路径！")
         var tag: String
         
-        @Argument(help: "工程存放路径！")
-        var path: String?
-        
         @Argument(help: "是否递归！")
         var recursive: Bool?
         
+        @Argument(help: "是否输出详细信息！")
+        var quiet: Bool?
+        
+        @Argument(help: "工程存放路径！")
+        var path: String?
+        
         mutating func run() {
+            
+            func delTag(project: Project){
+                do {
+                    try shellOut(to: .gitDelTag(tag: tag), at: project.directoryPath)
+                    if quiet != false {po(tip: "【\(project.name)】Del Tag完成", type: .tip)}
+                } catch {
+                    let error = error as! ShellOutError
+                    po(tip: "【\(project.name)】 Del Tag失败\n" + error.message + error.output,type: .error)
+                }
+            }
+            
             guard let project = Project.project(directoryPath: path ?? FileManager.default.currentDirectoryPath) else {
                 return po(tip: "\(path ?? FileManager.default.currentDirectoryPath)目录没有检索到工程", type: .error)
             }
             
             guard project.rootProject == project else {
-                do {
-                    try shellOut(to: .gitDelTag(tag: tag), at: project.directoryPath)
-                    po(tip: "【\(project.name)】Del Tag完成", type: .tip)
-                } catch {
-                    let error = error as! ShellOutError
-                    po(tip: "【\(project.name)】 Del Tag失败\n" + error.message + error.output,type: .error)
-                }
+                delTag(project: project)
                return
             }
             
-            po(tip: "======Del Tag开始======", type: .tip)
+            if quiet != false {po(tip: "======Del Tag开始======", type: .tip)}
             
-            do {
-                try shellOut(to: .gitDelTag(tag: tag), at: project.directoryPath)
-                po(tip: "【\(project.name)】Del Tag完成", type: .tip)
-            } catch {
-                let error = error as! ShellOutError
-                po(tip: "【\(project.name)】 Del Tag失败\n" + error.message + error.output,type: .error)
-            }
+            delTag(project: project)
             
-            if recursive != false {
+            if recursive != true {
                 return
             }
             
@@ -137,16 +135,10 @@ extension JKTool.Git.Tag {
                     po(tip: "\(record) 工程不存在，请检查 Modulefile.recordList 是否为最新内容",type: .warning)
                     break
                 }
-                do {
-                    try shellOut(to: .gitDelTag(tag: tag), at: pro.directoryPath)
-                    po(tip: "【\(pro.name)】Del Tag完成", type: .tip)
-                } catch {
-                    let error = error as! ShellOutError
-                    po(tip: "【\(pro.name)】 Del Tag失败\n" + error.message + error.output,type: .error)
-                }
+                delTag(project: pro)
             }
             
-            po(tip: "======Del Tag结束======")
+            if quiet != false {po(tip: "======Del Tag结束======")}
         }
     }
 }

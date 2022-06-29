@@ -34,6 +34,9 @@ struct BuildConfigModel: Decodable {
 
 private struct Options: ParsableArguments {
     
+    @Argument(help: "是否输出详细信息！")
+    var quiet: Bool?
+    
     @Argument(help: "尝试使用缓存")
     var cache: Bool?
 
@@ -67,14 +70,14 @@ extension JKTool.Build {
             }
             
             guard project.rootProject != project else {
-                po(tip:"【\(project.name)】build 开始")
+                if options.quiet != false {po(tip:"【\(project.name)】build 开始")}
                 let date = Date.init().timeIntervalSince1970
                 build(project: project)
-                po(tip:"【\(project.name)】build 完成:用时：" + String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")
+                if options.quiet != false {po(tip:"【\(project.name)】build 完成:用时：" + String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")}
                return
             }
             
-            po(tip: "======Static build项目开始======")
+            if options.quiet != false {po(tip: "======Static build项目开始======")}
             
             for record in project.recordList {
     
@@ -82,10 +85,10 @@ extension JKTool.Build {
                     po(tip:"\(record) 工程不存在，请检查 Modulefile.recordList 是否为最新内容",type: .warning)
                     break
                 }
-                po(tip:"【\(subProject.name)】build 开始")
+                if options.quiet != false {po(tip:"【\(subProject.name)】build 开始")}
                 let date = Date.init().timeIntervalSince1970
                 build(project: subProject)
-                po(tip:"【\(subProject.name)】:用时：" + String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")
+                if options.quiet != false {po(tip:"【\(subProject.name)】:用时：" + String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")}
                 
             }
             
@@ -111,7 +114,7 @@ extension JKTool.Build {
                 
                 
                 if options.cache == false || oldVersion != currentVersion {
-                    po(tip:"【\(project.name)】需重新编译")
+                    if options.quiet != false {po(tip:"【\(project.name)】需重新编译")}
                     // 删除历史build文件
                     _ = try? shellOut(to: .removeFolder(from: project.buildPath))
                     
@@ -155,7 +158,7 @@ extension JKTool.Build {
                 }
                 
             }
-            po(tip: "======Static build项目完成======")
+            if options.quiet != false {po(tip: "======Static build项目完成======")}
         }
     }
     
@@ -175,14 +178,14 @@ extension JKTool.Build {
             }
             
             guard project.rootProject == project else {
-                po(tip:"【\(project.name)】build 开始")
+                if options.quiet != false {po(tip:"【\(project.name)】build 开始")}
                 let date = Date.init().timeIntervalSince1970
                 build(project: project)
-                po(tip:"【\(project.name)】build 完成:用时：" + String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")
+                if options.quiet != false {po(tip:"【\(project.name)】build 完成:用时：" + String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")}
                return
             }
             
-            po(tip: "======Framework build项目开始======")
+            if options.quiet != false {po(tip: "======Framework build项目开始======")}
             
             for record in project.recordList {
     
@@ -190,10 +193,10 @@ extension JKTool.Build {
                     po(tip:"\(record) 工程不存在，请检查 Modulefile.recordList 是否为最新内容",type: .warning)
                     break
                 }
-                po(tip:"【\(subProject.name)】build 开始")
+                if options.quiet != false {po(tip:"【\(subProject.name)】build 开始")}
                 let date = Date.init().timeIntervalSince1970
                 build(project: subProject)
-                po(tip:"【\(subProject.name)】:用时：" + String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")
+                if options.quiet != false {po(tip:"【\(subProject.name)】:用时：" + String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")}
                 
             }
             
@@ -217,7 +220,7 @@ extension JKTool.Build {
                 let currentVersion  = ShellOutCommand.MD5(string: "\(status ?? "")\(code ?? "")")
                 
                 if options.cache == false || !String(oldVersion ?? "").contains(currentVersion) {
-                    po(tip:"【\(project.name)】需重新编译")
+                    if options.quiet != false {po(tip:"【\(project.name)】需重新编译")}
                     
                     // 删除历史build文件
                     _ = try? shellOut(to: .removeFolder(from: project.buildPath))
@@ -263,7 +266,7 @@ extension JKTool.Build {
                 }
                 
             }
-            po(tip: "======Framework build项目完成======")
+            if options.quiet != false {po(tip: "======Framework build项目完成======")}
         }
     }
     
@@ -283,14 +286,14 @@ extension JKTool.Build {
             }
             
             guard project.rootProject == project else {
-                po(tip:"【\(project.name)】build 开始")
+                if options.quiet != false {po(tip:"【\(project.name)】build 开始")}
                 let date = Date.init().timeIntervalSince1970
                 build(project: project)
-                po(tip:"【\(project.name)】build 完成:用时：" + String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")
+                if options.quiet != false {po(tip:"【\(project.name)】build 完成:用时：" + String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")}
                return
             }
             
-            po(tip: "======XCFramework build项目开始======")
+            if options.quiet != false { po(tip: "======XCFramework build项目开始======")}
             
             for record in project.recordList {
     
@@ -298,10 +301,10 @@ extension JKTool.Build {
                     po(tip:"\(record) 工程不存在，请检查 Modulefile.recordList 是否为最新内容",type: .warning)
                     break
                 }
-                po(tip:"【\(subProject.name)】build 开始")
+                if options.quiet != false { po(tip:"【\(subProject.name)】build 开始")}
                 let date = Date.init().timeIntervalSince1970
                 build(project: subProject)
-                po(tip:"【\(subProject.name)】:用时：" + String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")
+                if options.quiet != false {po(tip:"【\(subProject.name)】:用时：" + String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")}
                 
             }
             
@@ -325,7 +328,7 @@ extension JKTool.Build {
                 let currentVersion  = ShellOutCommand.MD5(string: "\(status ?? "")\(code ?? "")")
                 
                 if options.cache == false || oldVersion != currentVersion {
-                    po(tip:"【\(project.name)】需重新编译")
+                    if options.quiet != false {po(tip:"【\(project.name)】需重新编译")}
                     
                     // 删除历史build文件
                     _ = try? shellOut(to: .removeFolder(from: project.buildPath))
@@ -374,7 +377,7 @@ extension JKTool.Build {
                 }
                 
             }
-            po(tip: "======XCFramework build项目完成======")
+            if options.quiet != false {po(tip: "======XCFramework build项目完成======")}
         }
     }
 }

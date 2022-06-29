@@ -20,11 +20,11 @@ public class Project {
     
     public  enum ProjectType: String {
         case xcodeproj = ".xcodeproj"
-        case scworkspace = ".scworkspace"
+        case xcworkspace = ".xcworkspace"
         func isWorkSpace() -> Bool {
             switch self {
             case .xcodeproj: return false
-            case .scworkspace: return true
+            case .xcworkspace: return true
             }
         }
     }
@@ -127,10 +127,6 @@ public class Project {
         return buildPath
     }()
     
-    lazy var defaultConfigPath: String = {
-        let buildPath = self.directoryPath.appending("/defaultConfig.json")
-        return buildPath
-    }()
     
     lazy var rootProject: Project = {
         guard self.directoryPath.contains("/Module/checkouts") else {
@@ -151,7 +147,7 @@ public class Project {
 
 extension Project {
     
-    func writeRecordList(recordList: Array<String>) {
+    func writeRecordList(recordList: Array<String>, quiet: Bool?) {
         // 检查是否还有subModule。没有则直接return
         if recordList.isEmpty {
             return
@@ -195,7 +191,7 @@ extension Project {
             do {
                 let data = try JSONSerialization.data(withJSONObject: list, options: .fragmentsAllowed)
                 try data.write(to: URL(fileURLWithPath: self.recordListPath), options: .atomicWrite)
-                po(tip: "【\(self.name)】Modulefile.recordList 写入成功")
+                if quiet != false {po(tip: "【\(self.name)】Modulefile.recordList 写入成功")}
             } catch {
                 po(tip: "【\(self.name)】Modulefile.recordList 写入失败",type: .error)
             }
@@ -215,14 +211,14 @@ extension Project {
             if file == "Pods.xcodeproj" {
                 return nil
             }
-            if file.hasSuffix(".scworkspace") {
-                projectType = ProjectType.scworkspace
+            if file.hasSuffix(".xcworkspace") {
+                projectType = ProjectType.xcworkspace
                 break
             }
             
             if file.hasSuffix(".xcodeproj") {
                 projectType = ProjectType.xcodeproj
-                break
+                continue
             }
             
         }
@@ -242,7 +238,7 @@ extension Project {
                 return nil
             }
             
-            isProjectDirectoryPath = file.hasSuffix(".xcodeproj") || file.hasSuffix(".scworkspace")
+            isProjectDirectoryPath = file.hasSuffix(".xcodeproj") || file.hasSuffix(".xcworkspace")
             if isProjectDirectoryPath {
                 break
             }

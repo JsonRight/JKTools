@@ -24,15 +24,40 @@ extension JKTool.Git {
         var message: String
         
         @Argument(help: "工程存放路径！")
-        var path: String?
-        
-        @Argument(help: "工程存放路径！")
         var del: Bool?
         
         @Argument(help: "是否递归！")
         var recursive: Bool?
         
+        @Argument(help: "是否输出详细信息！")
+        var quiet: Bool?
+        
+        @Argument(help: "工程存放路径！")
+        var path: String?
+        
         mutating func run() {
+            
+            func squash(project: Project) {
+                JKTool.Git.Checkout.main([from,"\(false)","\(false)","\(false)",project.directoryPath])
+                
+                JKTool.Git.Pull.main(["\(false)","\(false)",project.directoryPath])
+                
+                JKTool.Git.Checkout.main([to,"\(false)","\(false)","\(false)",project.directoryPath])
+                
+                JKTool.Git.Pull.main(["\(false)","\(false)",project.directoryPath])
+                
+                JKTool.Git.Merge.main([from,"\(true)","\(false)","\(false)",project.directoryPath])
+                
+                JKTool.Git.Commit.main([message,"\(false)","\(false)",project.directoryPath])
+                
+                JKTool.Git.Push.main(["\(false)","\(false)",project.directoryPath])
+                
+                JKTool.Git.Del.Local.main([from,"\(false)","\(false)",project.directoryPath])
+                
+                JKTool.Git.Del.Origin.main([from,"\(false)","\(false)",project.directoryPath])
+                
+                if quiet != false {po(tip: "【\(project.name)】Merge squash完成", type: .tip)}
+            }
             
             guard let project = Project.project(directoryPath: path ?? FileManager.default.currentDirectoryPath) else {
                 return po(tip: "\(path ?? FileManager.default.currentDirectoryPath)目录没有检索到工程", type: .error)
@@ -40,51 +65,14 @@ extension JKTool.Git {
             
             guard project.rootProject == project else {
                 
-                JKTool.Git.Checkout.main([from,"\(false)",project.directoryPath,"\(false)"])
-                
-                JKTool.Git.Pull.main([project.directoryPath,"\(false)"])
-                
-                JKTool.Git.Checkout.main([to,"\(false)",project.directoryPath,"\(false)"])
-                
-                JKTool.Git.Pull.main([project.directoryPath,"\(false)"])
-                
-                JKTool.Git.Merge.main([from,project.directoryPath,"\(true)","\(false)"])
-                
-                JKTool.Git.Commit.main([message,project.directoryPath,"\(false)"])
-                
-                JKTool.Git.Push.main([project.directoryPath,"\(false)"])
-                
-                JKTool.Git.Del.Local.main([from,project.directoryPath,"\(false)"])
-                
-                JKTool.Git.Del.Origin.main([from,project.directoryPath,"\(false)"])
-                
-                po(tip: "【\(project.name)】Merge squash完成", type: .tip)
+                squash(project: project)
                return
             }
             
-            po(tip: "======Merge squash工程开始======", type: .tip)
+            if quiet != false {po(tip: "======Merge squash工程开始======", type: .tip)}
             
-            JKTool.Git.Checkout.main([from,"\(false)",project.directoryPath,"\(false)"])
-            
-            JKTool.Git.Pull.main([project.directoryPath,"\(false)"])
-            
-            JKTool.Git.Checkout.main([to,"\(false)",project.directoryPath,"\(false)"])
-            
-            JKTool.Git.Pull.main([project.directoryPath,"\(false)"])
-            
-            JKTool.Git.Merge.main([from,project.directoryPath,"\(true)","\(false)"])
-            
-            JKTool.Git.Commit.main([message,project.directoryPath,"\(false)"])
-            
-            JKTool.Git.Push.main([project.directoryPath,"\(false)"])
-            
-            JKTool.Git.Del.Local.main([from,project.directoryPath,"\(false)"])
-            
-            JKTool.Git.Del.Origin.main([from,project.directoryPath,"\(false)"])
-            
-            po(tip: "【\(project.name)】Merge squash完成", type: .tip)
-            
-            if recursive != false {
+            squash(project: project)
+            if recursive != true {
                 return
             }
             
@@ -95,28 +83,10 @@ extension JKTool.Git {
                     break
                 }
                 
-                JKTool.Git.Checkout.main([from,"\(false)",pro.directoryPath,"\(false)"])
-                
-                JKTool.Git.Pull.main([pro.directoryPath,"\(false)"])
-                
-                JKTool.Git.Checkout.main([to,"\(false)",pro.directoryPath,"\(false)"])
-                
-                JKTool.Git.Pull.main([pro.directoryPath,"\(false)"])
-                
-                JKTool.Git.Merge.main([from,pro.directoryPath,"\(true)","\(false)"])
-                
-                JKTool.Git.Commit.main([message,pro.directoryPath,"\(false)"])
-                
-                JKTool.Git.Push.main([pro.directoryPath,"\(false)"])
-                
-                JKTool.Git.Del.Local.main([from,pro.directoryPath,"\(false)"])
-                
-                JKTool.Git.Del.Origin.main([from,pro.directoryPath,"\(false)"])
-                
-                po(tip: "【\(pro.name)】Merge squash完成", type: .tip)
+                squash(project: pro)
             }
             
-            po(tip: "======Merge squash工程结束======")
+            if quiet != false {po(tip: "======Merge squash工程结束======")}
         }
     }
 }
