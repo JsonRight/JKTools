@@ -138,10 +138,10 @@ extension JKTool.Build {
                     po(tip:"\(record) 工程不存在，请检查 Modulefile.recordList 是否为最新内容",type: .warning)
                     break
                 }
-                if options.quiet != false {po(tip:"【\(subproject.scheme)】build 开始")}
+                if options.quiet != false {po(tip:"【\(subProject.scheme)】build 开始")}
                 let date = Date.init().timeIntervalSince1970
                 build(project: subProject)
-                if options.quiet != false {po(tip:"【\(subproject.scheme)】:用时：" + String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")}
+                if options.quiet != false {po(tip:"【\(subProject.scheme)】:用时：" + String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")}
                 
             }
             
@@ -247,10 +247,10 @@ extension JKTool.Build {
                     po(tip:"\(record) 工程不存在，请检查 Modulefile.recordList 是否为最新内容",type: .warning)
                     break
                 }
-                if options.quiet != false {po(tip:"【\(subproject.scheme)】build 开始")}
+                if options.quiet != false {po(tip:"【\(subProject.scheme)】build 开始")}
                 let date = Date.init().timeIntervalSince1970
                 build(project: subProject)
-                if options.quiet != false {po(tip:"【\(subproject.scheme)】:用时：" + String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")}
+                if options.quiet != false {po(tip:"【\(subProject.scheme)】:用时：" + String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")}
                 
             }
             
@@ -358,10 +358,10 @@ extension JKTool.Build {
                     po(tip:"\(record) 工程不存在，请检查 Modulefile.recordList 是否为最新内容",type: .warning)
                     break
                 }
-                if options.quiet != false { po(tip:"【\(subproject.scheme)】build 开始")}
+                if options.quiet != false { po(tip:"【\(subProject.scheme)】build 开始")}
                 let date = Date.init().timeIntervalSince1970
                 build(project: subProject)
-                if options.quiet != false {po(tip:"【\(subproject.scheme)】:用时：" + String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")}
+                if options.quiet != false {po(tip:"【\(subProject.scheme)】:用时：" + String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")}
                 
             }
             

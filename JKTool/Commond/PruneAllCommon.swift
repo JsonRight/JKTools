@@ -14,7 +14,7 @@ class PruneAllCommon: PruneCommon {
         do {
             let data = try Data(contentsOf: URL(fileURLWithPath: pro.rootProject.recordListPath))
             let recordList = try JSONSerialization.jsonObject(with: data, options: .mutableContainers) as! Array<String>
-            print(Colors.green("【\(pro.rootproject.scheme)】Modulefile.recordList 读取成功"))
+            print(Colors.green("【\(pro.rootProject.scheme)】Modulefile.recordList 读取成功"))
             for record in recordList {
         
                 guard let pro1 = Project.project(directoryPath: "\(pro.rootProject.checkoutsPath)/\(record)") else {
@@ -24,7 +24,7 @@ class PruneAllCommon: PruneCommon {
                 super.prune(pro: pro1, options: options)
             }
         } catch {
-            print(Colors.red("【\(pro.rootproject.scheme)】Modulefile.recordList 读取失败"))
+            print(Colors.red("【\(pro.rootProject.scheme)】Modulefile.recordList 读取失败"))
             exit(EXIT_FAILURE)
         }
     }
