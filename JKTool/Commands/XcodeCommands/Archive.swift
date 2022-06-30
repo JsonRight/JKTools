@@ -25,6 +25,8 @@ struct ArchiveConfigModel: Decodable {
     
     var scheme: String
     
+    var validArchs: [String]?
+    
     var macPwd: String
     
     var p12sPath: String
@@ -79,6 +81,7 @@ extension JKTool.Archive {
             }
             
             if configs.quiet != false {po(tip: "======Archive项目开始======")}
+            let date = Date.init().timeIntervalSince1970
             do {
                 try shellOut(to: .unlockSecurity(password: configs.macPwd))
             } catch  {
@@ -101,12 +104,12 @@ extension JKTool.Archive {
             }
             
             do {
-                try shellOut(to: .archive(scheme: configs.scheme, isWorkspace: project.projectType == .xcworkspace, projectPath: project.directoryPath, configuration: configs.configuration,sdk: configs.sdk, export: configs.export), at: project.directoryPath)
+                try shellOut(to: .archive(scheme: configs.scheme, isWorkspace: project.projectType.isWorkSpace(),projectName: project.projectType.name(), projectPath: project.directoryPath, configuration: configs.configuration,validArchs: configs.validArchs, sdk: configs.sdk, export: configs.export), at: project.directoryPath)
             } catch  {
                 let error = error as! ShellOutError
                 po(tip:  error.message + error.output,type: .error)
             }
-            if configs.quiet != false {po(tip: "======Archive项目完成======")}
+            if configs.quiet != false {po(tip: "======Archive项目完成:用时：" + String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s======")}
         }
     }
     struct Scheme: ParsableCommand {
@@ -128,6 +131,9 @@ extension JKTool.Archive {
         @Argument(help: "default：Release")
         var configuration: String?
         
+        @Argument(help: "default read Xcode VALID_ARCHS：iOS(arm64,armv7)")
+        var validArchs: String?
+        
         @Argument(help: "default：iOS")
         var sdk: String?
         
@@ -145,13 +151,14 @@ extension JKTool.Archive {
             }
             
             if quiet != false {po(tip: "======Archive项目开始======")}
+            let date = Date.init().timeIntervalSince1970
             do {
-                try shellOut(to: .archive(scheme: scheme, isWorkspace: project.projectType == .xcworkspace, projectPath: project.directoryPath, configuration: configuration ?? "Release", sdk: sdk ?? "iOS", export: export))
+                try shellOut(to: .archive(scheme: scheme, isWorkspace: project.projectType.isWorkSpace(),projectName: project.projectType.name(), projectPath: project.directoryPath, configuration: configuration ?? "Release", validArchs: (validArchs ?? "").split(separator: ",").map({ $0.base }), sdk: sdk ?? "iOS", export: export))
             } catch  {
                 let error = error as! ShellOutError
                 po(tip:  error.message + error.output,type: .error)
             }
-            if quiet != false {po(tip: "======Archive项目完成======")}
+            if quiet != false {po(tip: "======Archive项目完成:用时：" + String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s======")}
         }
     }
 }

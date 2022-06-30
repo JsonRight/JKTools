@@ -27,10 +27,10 @@ extension JKTool.Git {
             func reset(project: Project){
                 do {
                     try shellOut(to: .gitPull(), at: project.directoryPath)
-                    if quiet != false {po(tip: "【\(project.name)】Reset完成", type: .tip)}
+                    if quiet != false {po(tip: "【\(project.scheme)】Reset完成", type: .tip)}
                 } catch {
                     let error = error as! ShellOutError
-                    po(tip: "【\(project.name)】 Reset失败\n" + error.message + error.output,type: .error)
+                    po(tip: "【\(project.scheme)】 Reset失败\n" + error.message + error.output,type: .error)
                 }
             }
             

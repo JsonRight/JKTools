@@ -19,19 +19,6 @@ extension JKTool {
     }
 }
 
-struct BuildConfigModel: Decodable {
-    
-    var configuration: String
-    
-    var arch: String
-    
-    var sdk: String
-    
-    var cache: Bool
-
-    var path: String
-}
-
 private struct Options: ParsableArguments {
     
     @Argument(help: "是否输出详细信息！")
@@ -64,34 +51,6 @@ extension JKTool.Build {
         @OptionGroup private var options: Options
 
         mutating func run() {
-            
-            guard let project = Project.project(directoryPath: options.path ?? FileManager.default.currentDirectoryPath) else {
-                return po(tip: "\(options.path ?? FileManager.default.currentDirectoryPath)目录没有检索到工程", type: .error)
-            }
-            
-            guard project.rootProject != project else {
-                if options.quiet != false {po(tip:"【\(project.name)】build 开始")}
-                let date = Date.init().timeIntervalSince1970
-                build(project: project)
-                if options.quiet != false {po(tip:"【\(project.name)】build 完成:用时：" + String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")}
-               return
-            }
-            
-            if options.quiet != false {po(tip: "======Static build项目开始======")}
-            
-            for record in project.recordList {
-    
-                guard let subProject = Project.project(directoryPath: "\(project.checkoutsPath)/\(record)") else {
-                    po(tip:"\(record) 工程不存在，请检查 Modulefile.recordList 是否为最新内容",type: .warning)
-                    break
-                }
-                if options.quiet != false {po(tip:"【\(subProject.name)】build 开始")}
-                let date = Date.init().timeIntervalSince1970
-                build(project: subProject)
-                if options.quiet != false {po(tip:"【\(subProject.name)】:用时：" + String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")}
-                
-            }
-            
             func build(project:Project) {
                 // 创建Module/Builds link 依赖库
                 if project.recordList.count > 0 {
@@ -103,61 +62,89 @@ extension JKTool.Build {
                 }
                 
                 // 删除主项目旧.a相关文件
-                _ = try? shellOut(to: .removeFolder(from: project.rootProject.buildsPath + "/\(project.name)"))
+                _ = try? shellOut(to: .removeFolder(from: project.rootProject.buildsPath + "/\(project.scheme)"))
                 
                 let oldVersion = try? shellOut(to: .readVerison(path: "\(project.buildPath)/Build/Products/Universal/"))
-                let status = try? shellOut(to: .gitStatus(),at: project.rootProject.checkoutsPath + "/" + project.name)
-                let code = try? shellOut(to: .gitCodeVerison(),at: project.rootProject.checkoutsPath + "/" + project.name)
+                let status = try? shellOut(to: .gitStatus(),at: project.rootProject.checkoutsPath + "/" + project.scheme)
+                let code = try? shellOut(to: .gitCodeVerison(),at: project.rootProject.checkoutsPath + "/" + project.scheme)
                 
                 let currentVersion  = ShellOutCommand.MD5(string: "\(status ?? "")\(code ?? "")")
                 
                 
                 
                 if options.cache == false || oldVersion != currentVersion {
-                    if options.quiet != false {po(tip:"【\(project.name)】需重新编译")}
+                    if options.quiet != false {po(tip:"【\(project.scheme)】需重新编译")}
                     // 删除历史build文件
                     _ = try? shellOut(to: .removeFolder(from: project.buildPath))
                     
-                    let staticCommand = ShellOutCommand.staticBuild(projectName: project.name, projectFilePath: project.directoryPath + "/" + project.name + ".xcodeproj", derivedDataPath: project.buildPath, configuration: options.configuration ?? "Release", sdk: options.sdk ?? "iOS",verison: currentVersion,toStaticPath: project.rootProject.buildsPath + "/" + project.name,toHeaderPath: project.rootProject.buildsPath + "/" + project.name)
+                    let staticCommand = ShellOutCommand.staticBuild(scheme: project.scheme, projectPath: project.directoryPath + "/" + project.scheme + ".xcodeproj", derivedDataPath: project.buildPath, configuration: options.configuration ?? "Release", sdk: options.sdk ?? "iOS",verison: currentVersion,toStaticPath: project.rootProject.buildsPath + "/" + project.scheme,toHeaderPath: project.rootProject.buildsPath + "/" + project.scheme)
                     do {
                         try shellOut(to: staticCommand)
                     } catch  {
                         let error = error as! ShellOutError
-                        po(tip: "【\(project.name)】.a Build失败\n" +  error.message + error.output,type: .error)
+                        po(tip: "【\(project.scheme)】.a Build失败\n" +  error.message + error.output,type: .error)
                     }
                     
-                    if !project.fileManager.fileExists(atPath: project.directoryPath + "/" + project.name + "Bundle") {
+                    if !project.fileManager.fileExists(atPath: project.directoryPath + "/" + project.scheme + "Bundle") {
                        return
                     }
-                    let buildCommand = ShellOutCommand.buildBundle(projectName: project.name, projectFilePath: project.directoryPath + "/" + project.name + ".xcodeproj", derivedDataPath: project.buildPath, sdk: options.sdk ?? "iOS", verison: currentVersion, toBundlePath: project.rootProject.buildsPath + "/" + project.name)
+                    let buildCommand = ShellOutCommand.buildBundle(projectName: project.scheme, projectPath: project.directoryPath + "/" + project.scheme + ".xcodeproj", derivedDataPath: project.buildPath, sdk: options.sdk ?? "iOS", verison: currentVersion, toBundlePath: project.rootProject.buildsPath + "/" + project.scheme)
                     do {
                         try shellOut(to: buildCommand)
                     } catch  {
                         let error = error as! ShellOutError
-                        po(tip: "【\(project.name)】.bundle Build失败\n" + error.message + error.output,type: .error)
+                        po(tip: "【\(project.scheme)】.bundle Build失败\n" + error.message + error.output,type: .error)
                     }
                 } else {
-                    let staticCommand = ShellOutCommand.staticWithCache(projectName: project.name, derivedDataPath: project.buildPath, verison: currentVersion,toStaticPath: project.rootProject.buildsPath + "/" + project.name,toHeaderPath: project.rootProject.buildsPath + "/" + project.name)
+                    let staticCommand = ShellOutCommand.staticWithCache(projectName: project.scheme, derivedDataPath: project.buildPath, verison: currentVersion,toStaticPath: project.rootProject.buildsPath + "/" + project.scheme,toHeaderPath: project.rootProject.buildsPath + "/" + project.scheme)
                     do {
                         try shellOut(to: staticCommand)
                     } catch  {
                         let error = error as! ShellOutError
-                        po(tip: "【\(project.name)】.a copy失败\n" +  error.message + error.output,type: .error)
+                        po(tip: "【\(project.scheme)】.a copy失败\n" +  error.message + error.output,type: .error)
                     }
                     
-                    if !project.fileManager.fileExists(atPath: project.directoryPath + "/" + project.name + "Bundle") {
+                    if !project.fileManager.fileExists(atPath: project.directoryPath + "/" + project.scheme + "Bundle") {
                        return
                     }
-                    let buildCommand = ShellOutCommand.bundleWithCache(projectName: project.name, derivedDataPath: project.buildPath, verison: currentVersion, toBundlePath: project.rootProject.buildsPath + "/" + project.name)
+                    let buildCommand = ShellOutCommand.bundleWithCache(projectName: project.scheme, derivedDataPath: project.buildPath, verison: currentVersion, toBundlePath: project.rootProject.buildsPath + "/" + project.scheme)
                     do {
                         try shellOut(to: buildCommand)
                     } catch  {
                         let error = error as! ShellOutError
-                        po(tip: "【\(project.name)】.bundle copy失败\n" + error.message + error.output,type: .error)
+                        po(tip: "【\(project.scheme)】.bundle copy失败\n" + error.message + error.output,type: .error)
                     }
                 }
                 
             }
+            
+            guard let project = Project.project(directoryPath: options.path ?? FileManager.default.currentDirectoryPath) else {
+                return po(tip: "\(options.path ?? FileManager.default.currentDirectoryPath)目录没有检索到工程", type: .error)
+            }
+            
+            guard project.rootProject != project else {
+                if options.quiet != false {po(tip:"【\(project.scheme)】build 开始")}
+                let date = Date.init().timeIntervalSince1970
+                build(project: project)
+                if options.quiet != false {po(tip:"【\(project.scheme)】build 完成:用时：" + String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")}
+               return
+            }
+            
+            if options.quiet != false {po(tip: "======Static build项目开始======")}
+            
+            for record in project.recordList {
+    
+                guard let subProject = Project.project(directoryPath: "\(project.checkoutsPath)/\(record)") else {
+                    po(tip:"\(record) 工程不存在，请检查 Modulefile.recordList 是否为最新内容",type: .warning)
+                    break
+                }
+                if options.quiet != false {po(tip:"【\(subproject.scheme)】build 开始")}
+                let date = Date.init().timeIntervalSince1970
+                build(project: subProject)
+                if options.quiet != false {po(tip:"【\(subproject.scheme)】:用时：" + String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")}
+                
+            }
+            
             if options.quiet != false {po(tip: "======Static build项目完成======")}
         }
     }
@@ -173,33 +160,6 @@ extension JKTool.Build {
 
         mutating func run() {
             
-            guard let project = Project.project(directoryPath: options.path ?? FileManager.default.currentDirectoryPath) else {
-                return po(tip: "\(options.path ?? FileManager.default.currentDirectoryPath)目录没有检索到工程", type: .error)
-            }
-            
-            guard project.rootProject == project else {
-                if options.quiet != false {po(tip:"【\(project.name)】build 开始")}
-                let date = Date.init().timeIntervalSince1970
-                build(project: project)
-                if options.quiet != false {po(tip:"【\(project.name)】build 完成:用时：" + String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")}
-               return
-            }
-            
-            if options.quiet != false {po(tip: "======Framework build项目开始======")}
-            
-            for record in project.recordList {
-    
-                guard let subProject = Project.project(directoryPath: "\(project.checkoutsPath)/\(record)") else {
-                    po(tip:"\(record) 工程不存在，请检查 Modulefile.recordList 是否为最新内容",type: .warning)
-                    break
-                }
-                if options.quiet != false {po(tip:"【\(subProject.name)】build 开始")}
-                let date = Date.init().timeIntervalSince1970
-                build(project: subProject)
-                if options.quiet != false {po(tip:"【\(subProject.name)】:用时：" + String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")}
-                
-            }
-            
             func build(project:Project) {
                 // 创建Module/Builds link 依赖库
                 if project.recordList.count > 0 {
@@ -211,61 +171,89 @@ extension JKTool.Build {
                 }
                 
                 // 删除主项目旧.framework相关文件
-                _ = try? shellOut(to: .removeFolder(from: project.rootProject.buildsPath + "/\(project.name).framework"))
+                _ = try? shellOut(to: .removeFolder(from: project.rootProject.buildsPath + "/\(project.scheme).framework"))
                 
                 let oldVersion = (try? shellOut(to: .readVerison(path: "\(project.buildPath)/Universal/")))
-                let status = try? shellOut(to: .gitStatus(),at: project.rootProject.checkoutsPath + "/" + project.name)
-                let code = try? shellOut(to: .gitCodeVerison(),at: project.rootProject.checkoutsPath + "/" + project.name)
+                let status = try? shellOut(to: .gitStatus(),at: project.rootProject.checkoutsPath + "/" + project.scheme)
+                let code = try? shellOut(to: .gitCodeVerison(),at: project.rootProject.checkoutsPath + "/" + project.scheme)
                 
                 let currentVersion  = ShellOutCommand.MD5(string: "\(status ?? "")\(code ?? "")")
                 
                 if options.cache == false || !String(oldVersion ?? "").contains(currentVersion) {
-                    if options.quiet != false {po(tip:"【\(project.name)】需重新编译")}
+                    if options.quiet != false {po(tip:"【\(project.scheme)】需重新编译")}
                     
                     // 删除历史build文件
                     _ = try? shellOut(to: .removeFolder(from: project.buildPath))
                     
-                    let frameworkCommand = ShellOutCommand.frameworkBuild(projectName: project.name, projectFilePath: project.directoryPath + "/" + project.name + ".xcodeproj", derivedDataPath: project.buildPath, configuration: options.configuration ?? "Release", sdk: options.sdk ?? "iOS", verison: currentVersion, toPath: project.rootProject.buildsPath)
+                    let frameworkCommand = ShellOutCommand.frameworkBuild(projectName: project.scheme, projectPath: project.directoryPath + "/" + project.scheme + ".xcodeproj", derivedDataPath: project.buildPath, configuration: options.configuration ?? "Release", sdk: options.sdk ?? "iOS", verison: currentVersion, toPath: project.rootProject.buildsPath)
                     
                     do {
                         try shellOut(to: frameworkCommand)
                     } catch  {
                         let error = error as! ShellOutError
-                        po(tip: "【\(project.name)】.framework Build失败\n" + error.message + error.output,type: .error)
+                        po(tip: "【\(project.scheme)】.framework Build失败\n" + error.message + error.output,type: .error)
                     }
                     
-                    if !project.fileManager.fileExists(atPath: project.directoryPath + "/" + project.name + "Bundle") {
+                    if !project.fileManager.fileExists(atPath: project.directoryPath + "/" + project.scheme + "Bundle") {
                        return
                     }
-                    let buildCommand = ShellOutCommand.buildBundle(projectName: project.name, projectFilePath: project.directoryPath + "/" + project.name + ".xcodeproj", derivedDataPath: project.buildPath, sdk: options.sdk ?? "iOS", verison: currentVersion, toBundlePath: project.rootProject.buildsPath + "/" + project.name + ".framework")
+                    let buildCommand = ShellOutCommand.buildBundle(projectName: project.scheme, projectPath: project.directoryPath + "/" + project.scheme + ".xcodeproj", derivedDataPath: project.buildPath, sdk: options.sdk ?? "iOS", verison: currentVersion, toBundlePath: project.rootProject.buildsPath + "/" + project.scheme + ".framework")
                     do {
                         try shellOut(to: buildCommand)
                     } catch  {
                         let error = error as! ShellOutError
-                        po(tip: "【\(project.name)】.bundle Build失败\n" + error.message + error.output,type: .error)
+                        po(tip: "【\(project.scheme)】.bundle Build失败\n" + error.message + error.output,type: .error)
                     }
                 } else {
-                    let frameworkCommand = ShellOutCommand.frameworkWithCache(projectName: project.name, derivedDataPath: project.buildPath, verison: currentVersion, toPath: project.rootProject.buildsPath)
+                    let frameworkCommand = ShellOutCommand.frameworkWithCache(projectName: project.scheme, derivedDataPath: project.buildPath, verison: currentVersion, toPath: project.rootProject.buildsPath)
                     do {
                         try shellOut(to: frameworkCommand)
                     } catch  {
                         let error = error as! ShellOutError
-                        po(tip: "【\(project.name)】.framework copy失败\n" + error.message + error.output,type: .error)
+                        po(tip: "【\(project.scheme)】.framework copy失败\n" + error.message + error.output,type: .error)
                     }
                     
-                    if !project.fileManager.fileExists(atPath: project.directoryPath + "/" + project.name + "Bundle") {
+                    if !project.fileManager.fileExists(atPath: project.directoryPath + "/" + project.scheme + "Bundle") {
                        return
                     }
-                    let buildCommand = ShellOutCommand.bundleWithCache(projectName: project.name, derivedDataPath: project.buildPath, verison: currentVersion, toBundlePath: project.rootProject.buildsPath + "/" + project.name + ".framework")
+                    let buildCommand = ShellOutCommand.bundleWithCache(projectName: project.scheme, derivedDataPath: project.buildPath, verison: currentVersion, toBundlePath: project.rootProject.buildsPath + "/" + project.scheme + ".framework")
                     do {
                         try shellOut(to: buildCommand)
                     } catch  {
                         let error = error as! ShellOutError
-                        po(tip: "【\(project.name)】.bundle copy失败\n" + error.message + error.output,type: .error)
+                        po(tip: "【\(project.scheme)】.bundle copy失败\n" + error.message + error.output,type: .error)
                     }
                 }
                 
             }
+            
+            guard let project = Project.project(directoryPath: options.path ?? FileManager.default.currentDirectoryPath) else {
+                return po(tip: "\(options.path ?? FileManager.default.currentDirectoryPath)目录没有检索到工程", type: .error)
+            }
+            
+            guard project.rootProject == project else {
+                if options.quiet != false {po(tip:"【\(project.scheme)】build 开始")}
+                let date = Date.init().timeIntervalSince1970
+                build(project: project)
+                if options.quiet != false {po(tip:"【\(project.scheme)】build 完成:用时：" + String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")}
+               return
+            }
+            
+            if options.quiet != false {po(tip: "======Framework build项目开始======")}
+            
+            for record in project.recordList {
+    
+                guard let subProject = Project.project(directoryPath: "\(project.checkoutsPath)/\(record)") else {
+                    po(tip:"\(record) 工程不存在，请检查 Modulefile.recordList 是否为最新内容",type: .warning)
+                    break
+                }
+                if options.quiet != false {po(tip:"【\(subproject.scheme)】build 开始")}
+                let date = Date.init().timeIntervalSince1970
+                build(project: subProject)
+                if options.quiet != false {po(tip:"【\(subproject.scheme)】:用时：" + String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")}
+                
+            }
+            
             if options.quiet != false {po(tip: "======Framework build项目完成======")}
         }
     }
@@ -280,34 +268,6 @@ extension JKTool.Build {
         @OptionGroup private var options: Options
 
         mutating func run() {
-            
-            guard let project = Project.project(directoryPath: options.path ?? FileManager.default.currentDirectoryPath) else {
-                return po(tip: "\(options.path ?? FileManager.default.currentDirectoryPath)目录没有检索到工程", type: .error)
-            }
-            
-            guard project.rootProject == project else {
-                if options.quiet != false {po(tip:"【\(project.name)】build 开始")}
-                let date = Date.init().timeIntervalSince1970
-                build(project: project)
-                if options.quiet != false {po(tip:"【\(project.name)】build 完成:用时：" + String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")}
-               return
-            }
-            
-            if options.quiet != false { po(tip: "======XCFramework build项目开始======")}
-            
-            for record in project.recordList {
-    
-                guard let subProject = Project.project(directoryPath: "\(project.checkoutsPath)/\(record)") else {
-                    po(tip:"\(record) 工程不存在，请检查 Modulefile.recordList 是否为最新内容",type: .warning)
-                    break
-                }
-                if options.quiet != false { po(tip:"【\(subProject.name)】build 开始")}
-                let date = Date.init().timeIntervalSince1970
-                build(project: subProject)
-                if options.quiet != false {po(tip:"【\(subProject.name)】:用时：" + String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")}
-                
-            }
-            
             func build(project:Project) {
                 // 创建Module/Builds link 依赖库
                 if project.recordList.count > 0 {
@@ -319,64 +279,92 @@ extension JKTool.Build {
                 }
                 
                 // 删除主项目旧.framework相关文件
-                _ = try? shellOut(to: .removeFolder(from: project.rootProject.buildsPath + "/\(project.name).xcframework"))
+                _ = try? shellOut(to: .removeFolder(from: project.rootProject.buildsPath + "/\(project.scheme).xcframework"))
                 
                 let oldVersion = try? shellOut(to: .readVerison(path: "\(project.buildPath)/Build/Products/Universal/"))
-                let status = try? shellOut(to: .gitStatus(),at: project.rootProject.checkoutsPath + "/" + project.name)
-                let code = try? shellOut(to: .gitCodeVerison(),at: project.rootProject.checkoutsPath + "/" + project.name)
+                let status = try? shellOut(to: .gitStatus(),at: project.rootProject.checkoutsPath + "/" + project.scheme)
+                let code = try? shellOut(to: .gitCodeVerison(),at: project.rootProject.checkoutsPath + "/" + project.scheme)
                 
                 let currentVersion  = ShellOutCommand.MD5(string: "\(status ?? "")\(code ?? "")")
                 
                 if options.cache == false || oldVersion != currentVersion {
-                    if options.quiet != false {po(tip:"【\(project.name)】需重新编译")}
+                    if options.quiet != false {po(tip:"【\(project.scheme)】需重新编译")}
                     
                     // 删除历史build文件
                     _ = try? shellOut(to: .removeFolder(from: project.buildPath))
                     
-                    let xcframeworkCommand = ShellOutCommand.xcframeworkBuild(projectName: project.name, projectFilePath: project.directoryPath + "/" + project.name + ".xcodeproj", derivedDataPath: project.buildPath, configuration: options.configuration ?? "Release", sdk: options.sdk ?? "iOS", verison: currentVersion, toPath: project.rootProject.buildsPath)
+                    let xcframeworkCommand = ShellOutCommand.xcframeworkBuild(projectName: project.scheme, projectPath: project.directoryPath + "/" + project.scheme + ".xcodeproj", derivedDataPath: project.buildPath, configuration: options.configuration ?? "Release", sdk: options.sdk ?? "iOS", verison: currentVersion, toPath: project.rootProject.buildsPath)
                     
                     do {
                         try shellOut(to: xcframeworkCommand)
                     } catch  {
                         let error = error as! ShellOutError
-                        po(tip: "【\(project.name)】.xcframework Build失败\n" + error.message + error.output,type: .error)
+                        po(tip: "【\(project.scheme)】.xcframework Build失败\n" + error.message + error.output,type: .error)
                     }
                     
-                    if !project.fileManager.fileExists(atPath: project.directoryPath + "/" + project.name + "Bundle") {
+                    if !project.fileManager.fileExists(atPath: project.directoryPath + "/" + project.scheme + "Bundle") {
                        return
                     }
-                    let buildCommand = ShellOutCommand.buildBundle(projectName: project.name, projectFilePath: project.directoryPath + "/" + project.name + ".xcodeproj", derivedDataPath: project.buildPath, sdk: options.sdk ?? "iOS", verison: currentVersion, toBundlePath: project.rootProject.buildsPath + "/" + project.name + ".xcframework")
+                    let buildCommand = ShellOutCommand.buildBundle(projectName: project.scheme, projectPath: project.directoryPath + "/" + project.scheme + ".xcodeproj", derivedDataPath: project.buildPath, sdk: options.sdk ?? "iOS", verison: currentVersion, toBundlePath: project.rootProject.buildsPath + "/" + project.scheme + ".xcframework")
                     do {
                         try shellOut(to: buildCommand)
                     } catch  {
-                        print(Colors.red("【\(project.name)】.bundle Build失败"))
+                        print(Colors.red("【\(project.scheme)】.bundle Build失败"))
                         let error = error as! ShellOutError
-                        po(tip: "【\(project.name)】.bundle Build失败\n" + error.message + error.output,type: .error)
+                        po(tip: "【\(project.scheme)】.bundle Build失败\n" + error.message + error.output,type: .error)
                     }
                 }else{
-                    let xcframeworkCommand = ShellOutCommand.xcframeworkWithCache(projectName: project.name, derivedDataPath: project.buildPath, verison: currentVersion, toPath: project.rootProject.buildsPath)
+                    let xcframeworkCommand = ShellOutCommand.xcframeworkWithCache(projectName: project.scheme, derivedDataPath: project.buildPath, verison: currentVersion, toPath: project.rootProject.buildsPath)
                     
                     do {
                         try shellOut(to: xcframeworkCommand)
                     } catch  {
                         let error = error as! ShellOutError
-                        po(tip: "【\(project.name)】.xcframework copy失败\n" + error.message + error.output,type: .error)
+                        po(tip: "【\(project.scheme)】.xcframework copy失败\n" + error.message + error.output,type: .error)
                     }
                     
-                    if !project.fileManager.fileExists(atPath: project.directoryPath + "/" + project.name + "Bundle") {
+                    if !project.fileManager.fileExists(atPath: project.directoryPath + "/" + project.scheme + "Bundle") {
                        return
                     }
-                    let buildCommand = ShellOutCommand.bundleWithCache(projectName: project.name, derivedDataPath: project.buildPath, verison: currentVersion, toBundlePath: project.rootProject.buildsPath + "/" + project.name + ".xcframework")
+                    let buildCommand = ShellOutCommand.bundleWithCache(projectName: project.scheme, derivedDataPath: project.buildPath, verison: currentVersion, toBundlePath: project.rootProject.buildsPath + "/" + project.scheme + ".xcframework")
                     do {
                         try shellOut(to: buildCommand)
                     } catch  {
-                        print(Colors.red("【\(project.name)】.bundle Build失败"))
+                        print(Colors.red("【\(project.scheme)】.bundle Build失败"))
                         let error = error as! ShellOutError
-                        po(tip: "【\(project.name)】.bundle copy失败\n" + error.message + error.output,type: .error)
+                        po(tip: "【\(project.scheme)】.bundle copy失败\n" + error.message + error.output,type: .error)
                     }
                 }
                 
             }
+            
+            guard let project = Project.project(directoryPath: options.path ?? FileManager.default.currentDirectoryPath) else {
+                return po(tip: "\(options.path ?? FileManager.default.currentDirectoryPath)目录没有检索到工程", type: .error)
+            }
+            
+            guard project.rootProject == project else {
+                if options.quiet != false {po(tip:"【\(project.scheme)】build 开始")}
+                let date = Date.init().timeIntervalSince1970
+                build(project: project)
+                if options.quiet != false {po(tip:"【\(project.scheme)】build 完成:用时：" + String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")}
+               return
+            }
+            
+            if options.quiet != false { po(tip: "======XCFramework build项目开始======")}
+            
+            for record in project.recordList {
+    
+                guard let subProject = Project.project(directoryPath: "\(project.checkoutsPath)/\(record)") else {
+                    po(tip:"\(record) 工程不存在，请检查 Modulefile.recordList 是否为最新内容",type: .warning)
+                    break
+                }
+                if options.quiet != false { po(tip:"【\(subproject.scheme)】build 开始")}
+                let date = Date.init().timeIntervalSince1970
+                build(project: subProject)
+                if options.quiet != false {po(tip:"【\(subproject.scheme)】:用时：" + String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")}
+                
+            }
+            
             if options.quiet != false {po(tip: "======XCFramework build项目完成======")}
         }
     }

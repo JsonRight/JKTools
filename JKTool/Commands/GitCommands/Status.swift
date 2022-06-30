@@ -28,10 +28,10 @@ extension JKTool.Git {
             func status(project: Project){
                 do {
                     try shellOut(to: .gitStatus(), at: project.directoryPath)
-                    if quiet != false { po(tip: "【\(project.name)】Status完成", type: .tip)}
+                    if quiet != false { po(tip: "【\(project.scheme)】Status完成", type: .tip)}
                 } catch {
                     let error = error as! ShellOutError
-                    po(tip: "【\(project.name)】 Status失败\n" + error.message + error.output,type: .error)
+                    po(tip: "【\(project.scheme)】 Status失败\n" + error.message + error.output,type: .error)
                 }
             }
             

@@ -61,10 +61,10 @@ public enum ConfigOptions: String {
     case Debug = "Debug"
     case Release = "Release"
     public init(_ string: String) {
-        if string == "Debug" {
-            self = .Debug
-        }else{
+        if string == "Release" {
             self = .Release
+        }else{
+            self = .Debug
         }
     }
     public func archs()-> String {

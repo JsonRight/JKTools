@@ -46,7 +46,7 @@ class BuildStaticCommon: BaseBuildCommon {
         
         if needMerge {
             do {
-                try shellOut(to:.buildDebugStaticIOS(projectName: pro.name, projectFilePath: pro.directoryPath + "/" + pro.name + ".xcodeproj", derivedDataPath: pro.buildPath))
+                try shellOut(to:.buildDebugStaticIOS(projectName: pro.name, projectPath: pro.directoryPath + "/" + pro.name + ".xcodeproj", derivedDataPath: pro.buildPath))
             } catch  {
                 print(Colors.red("【\(pro.name)】\(librarySuffix()) Build Debug 失败"))
                 let error = error as! ShellOutError
@@ -56,7 +56,7 @@ class BuildStaticCommon: BaseBuildCommon {
         }
         
         do {
-            try shellOut(to:.buildReleaseStaticIOS(projectName: pro.name, projectFilePath: pro.directoryPath + "/" + pro.name + ".xcodeproj", derivedDataPath: pro.buildPath))
+            try shellOut(to:.buildReleaseStaticIOS(projectName: pro.name, projectPath: pro.directoryPath + "/" + pro.name + ".xcodeproj", derivedDataPath: pro.buildPath))
         } catch  {
             print(Colors.red("【\(pro.name)】\(librarySuffix()) Build Release 失败"))
             let error = error as! ShellOutError
@@ -74,7 +74,7 @@ class BuildStaticCommon: BaseBuildCommon {
         }
         
         do {
-            try shellOut(to: .copyStaticHeaderIOS(projectName: pro.name, projectFilePath: pro.directoryPath + "/" + pro.name + ".xcodeproj", derivedDataPath: pro.buildPath, toHeaderPath: pro.rootProject.buildsPath + "/" + pro.name))
+            try shellOut(to: .copyStaticHeaderIOS(projectName: pro.name, projectPath: pro.directoryPath + "/" + pro.name + ".xcodeproj", derivedDataPath: pro.buildPath, toHeaderPath: pro.rootProject.buildsPath + "/" + pro.name))
         } catch  {
             print(Colors.red("【\(pro.name)】copy头文件 失败"))
             let error = error as! ShellOutError
@@ -86,7 +86,7 @@ class BuildStaticCommon: BaseBuildCommon {
            return
         }
         do {
-            try shellOut(to:.buildBundleIOS(projectName: pro.name, projectFilePath: pro.directoryPath + "/" + pro.name + ".xcodeproj", derivedDataPath: pro.buildPath, toBundlePath: pro.rootProject.buildsPath + "/" + pro.name))
+            try shellOut(to:.buildBundleIOS(projectName: pro.name, projectPath: pro.directoryPath + "/" + pro.name + ".xcodeproj", derivedDataPath: pro.buildPath, toBundlePath: pro.rootProject.buildsPath + "/" + pro.name))
         } catch  {
             print(Colors.red("【\(pro.name)】.bundle Build失败"))
             let error = error as! ShellOutError

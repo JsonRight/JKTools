@@ -42,9 +42,9 @@ class CloneCommon: CommonProtocol {
             do {
                 let data = try JSONSerialization.data(withJSONObject: recordList, options: .fragmentsAllowed)
                 try data.write(to: URL(fileURLWithPath: project.rootProject.recordListPath), options: .atomicWrite)
-                print(Colors.green("【\(project.name)】Modulefile.recordList 写入成功"))
+                print(Colors.green("【\(project.scheme)】Modulefile.recordList 写入成功"))
             } catch {
-                print(Colors.yellow("【\(project.name)】Modulefile.recordList 写入失败"))
+                print(Colors.yellow("【\(project.scheme)】Modulefile.recordList 写入失败"))
             }
         }
         

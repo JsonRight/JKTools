@@ -18,13 +18,23 @@ public func schemeForPath(path: String) ->String {
 
 public class Project {
     
-    public  enum ProjectType: String {
-        case xcodeproj = ".xcodeproj"
-        case xcworkspace = ".xcworkspace"
+    public  enum ProjectType {
+        case xcodeproj(String)
+        case xcworkspace(String)
         func isWorkSpace() -> Bool {
             switch self {
-            case .xcodeproj: return false
-            case .xcworkspace: return true
+            case .xcodeproj(_):
+                return false
+            case .xcworkspace(_):
+                return true
+            }
+        }
+        func name() -> String {
+            switch self {
+            case .xcodeproj(let string):
+                return string
+            case .xcworkspace(let string):
+                return string
             }
         }
     }
@@ -65,7 +75,6 @@ public class Project {
                 // The line was all whitespace.
                 return
             }
-            
             
             var remainingString = scannerWithComments.string.replacingOccurrences(of: "\"", with: "")
             
@@ -160,31 +169,6 @@ extension Project {
                 list.append(item)
             }
         }
-//         当前Project如果不是根Project则创建子Project的工程软链接
-//        if module.rootProject != module {
-//            //删除当前subModule的checkoutsPath
-//            do {
-//                try shellOut(to: .removeFolder(from: module.checkoutsPath))
-//            } catch {
-//                print(Colors.yellow("【\(module.name)】Clone 命令执行异常！删除工程Module文件夹失败"))
-//            }
-//            //重建当前subModule的checkoutsPath
-//            do {
-//                try shellOut(to: .createFolder(path: module.checkoutsPath))
-//            } catch {
-//                print(Colors.yellow("【\(module.name)】创建'checkouts'目录 失败，可能已经存在"))
-//            }
-//            //创建子Project的工程软链接
-//            for item in recordList {
-//                let subModulePath = module.rootProject.checkoutsPath + "/" + item
-//                do {
-//                    try shellOut(to: .createSymlink(to: subModulePath, at: module.checkoutsPath))
-//                    print(Colors.green("【\(module.name)】创建\(item) links 成功"))
-//                } catch {
-//                    print(Colors.yellow("【\(module.name)】创建\(item) links 失败，可能已经存在"))
-//                }
-//            }
-//        }
         // 写入当前工程所有subModule
         let oldRecordList = self.recordList
         if oldRecordList.isEmpty || !list.elementsEqual(oldRecordList)  {
@@ -212,12 +196,12 @@ extension Project {
                 return nil
             }
             if file.hasSuffix(".xcworkspace") {
-                projectType = ProjectType.xcworkspace
+                projectType = .xcworkspace("\(file)")
                 break
             }
             
             if file.hasSuffix(".xcodeproj") {
-                projectType = ProjectType.xcodeproj
+                projectType = .xcodeproj("\(file)")
                 continue
             }
             
@@ -226,24 +210,6 @@ extension Project {
     }
     
     static func project(directoryPath: String = FileManager.default.currentDirectoryPath) -> Project? {
-        let fileManager = FileManager.default
-        
-        guard let fileList = try? fileManager.contentsOfDirectory(atPath: directoryPath) else {
-            return nil
-        }
-        var isProjectDirectoryPath = false
-        
-        for file in fileList {
-            if file == "Pods.xcodeproj" {
-                return nil
-            }
-            
-            isProjectDirectoryPath = file.hasSuffix(".xcodeproj") || file.hasSuffix(".xcworkspace")
-            if isProjectDirectoryPath {
-                break
-            }
-        
-        }
         
         guard let projectType = check(directoryPath: directoryPath) else {
             return nil

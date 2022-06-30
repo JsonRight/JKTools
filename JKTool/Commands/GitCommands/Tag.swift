@@ -44,10 +44,10 @@ extension JKTool.Git.Tag {
             func addTag(project: Project){
                 do {
                     try shellOut(to: .gitAddTag(tag: tag), at: project.directoryPath)
-                    if quiet != false {po(tip: "【\(project.name)】Add Tag完成", type: .tip)}
+                    if quiet != false {po(tip: "【\(project.scheme)】Add Tag完成", type: .tip)}
                 } catch {
                     let error = error as! ShellOutError
-                    po(tip: "【\(project.name)】 Add Tag失败\n" + error.message + error.output,type: .error)
+                    po(tip: "【\(project.scheme)】 Add Tag失败\n" + error.message + error.output,type: .error)
                 }
             }
             
@@ -105,10 +105,10 @@ extension JKTool.Git.Tag {
             func delTag(project: Project){
                 do {
                     try shellOut(to: .gitDelTag(tag: tag), at: project.directoryPath)
-                    if quiet != false {po(tip: "【\(project.name)】Del Tag完成", type: .tip)}
+                    if quiet != false {po(tip: "【\(project.scheme)】Del Tag完成", type: .tip)}
                 } catch {
                     let error = error as! ShellOutError
-                    po(tip: "【\(project.name)】 Del Tag失败\n" + error.message + error.output,type: .error)
+                    po(tip: "【\(project.scheme)】 Del Tag失败\n" + error.message + error.output,type: .error)
                 }
             }
             

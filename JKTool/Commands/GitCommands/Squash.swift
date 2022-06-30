@@ -56,7 +56,7 @@ extension JKTool.Git {
                 
                 JKTool.Git.Del.Origin.main([from,"\(false)","\(false)",project.directoryPath])
                 
-                if quiet != false {po(tip: "【\(project.name)】Merge squash完成", type: .tip)}
+                if quiet != false {po(tip: "【\(project.scheme)】Merge squash完成", type: .tip)}
             }
             
             guard let project = Project.project(directoryPath: path ?? FileManager.default.currentDirectoryPath) else {

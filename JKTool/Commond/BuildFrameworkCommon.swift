@@ -55,7 +55,7 @@ class BuildFrameworkCommon: BaseBuildCommon {
         
         if needMerge {
             do {
-                try shellOut(to:.buildDebugFrameworkIOS(projectName: pro.name, projectFilePath: pro.directoryPath + "/" + pro.name + ".xcodeproj", derivedDataPath: pro.buildPath))
+                try shellOut(to:.buildDebugFrameworkIOS(projectName: pro.name, projectPath: pro.directoryPath + "/" + pro.name + ".xcodeproj", derivedDataPath: pro.buildPath))
             } catch {
                 print(Colors.red("【\(pro.name)】\(librarySuffix()) Build Debug 失败"))
                 let error = error as! ShellOutError
@@ -65,7 +65,7 @@ class BuildFrameworkCommon: BaseBuildCommon {
         }
         
         do {
-            try shellOut(to:.buildReleaseFrameworkIOS(projectName: pro.name, projectFilePath: pro.directoryPath + "/" + pro.name + ".xcodeproj", derivedDataPath: pro.buildPath))
+            try shellOut(to:.buildReleaseFrameworkIOS(projectName: pro.name, projectPath: pro.directoryPath + "/" + pro.name + ".xcodeproj", derivedDataPath: pro.buildPath))
         } catch {
             print(Colors.red("【\(pro.name)】\(librarySuffix()) Build Release 失败"))
             let error = error as! ShellOutError
@@ -98,7 +98,7 @@ class BuildFrameworkCommon: BaseBuildCommon {
            return
         }
         do {
-            try shellOut(to:.buildBundleIOS(projectName: pro.name, projectFilePath: pro.directoryPath + "/" + pro.name + ".xcodeproj", derivedDataPath: pro.buildPath, toBundlePath: pro.rootProject.buildsPath + "/" + pro.name + librarySuffix()))
+            try shellOut(to:.buildBundleIOS(projectName: pro.name, projectPath: pro.directoryPath + "/" + pro.name + ".xcodeproj", derivedDataPath: pro.buildPath, toBundlePath: pro.rootProject.buildsPath + "/" + pro.name + librarySuffix()))
         } catch {
             print(Colors.yellow("【\(pro.name)】.bundle Build失败"))
             let error = error as! ShellOutError

@@ -427,9 +427,9 @@ public extension ShellOutCommand {
 /// IOS build Framework commands
 public extension ShellOutCommand {
     /// IOS build Framework
-//    static func buildFrameworkIOS(projectName:String,projectFilePath:String, derivedDataPath: String,toPath: String?) -> ShellOutCommand {
-//        var release = "xcodebuild -project \(projectFilePath) -scheme \(projectName) -configuration Release -sdk iphoneos ONLY_ACTIVE_ARCH=NO ODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY= CARTHAGE=YES"
-//        var debug = "xcodebuild -project \(projectFilePath) -scheme \(projectName) -configuration Debug -arch x86_64 -sdk iphonesimulator  ONLY_ACTIVE_ARCH=NO ODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY= CARTHAGE=YES"
+//    static func buildFrameworkIOS(projectName:String,projectPath:String, derivedDataPath: String,toPath: String?) -> ShellOutCommand {
+//        var release = "xcodebuild -project \(projectPath) -scheme \(projectName) -configuration Release -sdk iphoneos ONLY_ACTIVE_ARCH=NO ODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY= CARTHAGE=YES"
+//        var debug = "xcodebuild -project \(projectPath) -scheme \(projectName) -configuration Debug -arch x86_64 -sdk iphonesimulator  ONLY_ACTIVE_ARCH=NO ODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY= CARTHAGE=YES"
 ////        var lipoArm64 = ""
 //        var mkdirUniversal = ""
 //        var cpUniversal = ""
@@ -450,16 +450,16 @@ public extension ShellOutCommand {
 //        return ShellOutCommand(string:release + " && " + debug + " && " + mkdirUniversal + " && " + cpUniversal + " && " + lipo + " && " + mkdir + " && " + cp)
 //    }
 
-    static func buildDebugFrameworkIOS(projectName:String,projectFilePath:String, derivedDataPath: String) -> ShellOutCommand {
-        var debug = "xcodebuild -project \(projectFilePath) -scheme \(projectName) -configuration Debug -arch x86_64 -sdk iphonesimulator  ONLY_ACTIVE_ARCH=NO ODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY= CARTHAGE=YES BUILD_LIBRARY_FOR_DISTRIBUTION=YES"
+    static func buildDebugFrameworkIOS(projectName:String,projectPath:String, derivedDataPath: String) -> ShellOutCommand {
+        var debug = "xcodebuild -project \(projectPath) -scheme \(projectName) -configuration Debug -arch x86_64 -sdk iphonesimulator  ONLY_ACTIVE_ARCH=NO ODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY= CARTHAGE=YES BUILD_LIBRARY_FOR_DISTRIBUTION=YES"
         let standarizedPath = URL(fileURLWithPath: (derivedDataPath as NSString).expandingTildeInPath).standardizedFileURL.path
         debug += " -derivedDataPath \(standarizedPath)"
         
         return ShellOutCommand(string:debug)
     }
     
-    static func buildReleaseFrameworkIOS(projectName:String,projectFilePath:String, derivedDataPath: String) -> ShellOutCommand {
-        var release = "xcodebuild -project \(projectFilePath) -scheme \(projectName) -configuration Release -sdk iphoneos ONLY_ACTIVE_ARCH=NO ODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY= CARTHAGE=YES BUILD_LIBRARY_FOR_DISTRIBUTION=YES"
+    static func buildReleaseFrameworkIOS(projectName:String,projectPath:String, derivedDataPath: String) -> ShellOutCommand {
+        var release = "xcodebuild -project \(projectPath) -scheme \(projectName) -configuration Release -sdk iphoneos ONLY_ACTIVE_ARCH=NO ODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY= CARTHAGE=YES BUILD_LIBRARY_FOR_DISTRIBUTION=YES"
         let standarizedPath = URL(fileURLWithPath: (derivedDataPath as NSString).expandingTildeInPath).standardizedFileURL.path
         release += " -derivedDataPath \(standarizedPath)"
         
@@ -521,9 +521,9 @@ public extension ShellOutCommand {
 
 public extension ShellOutCommand {
     
-//    static func buildStaticIOS(projectName:String,projectFilePath:String, derivedDataPath: String,toStaticPath: String?) -> ShellOutCommand {
-//        var release = "xcodebuild -project \(projectFilePath) -scheme \(projectName) -configuration Release -sdk iphoneos ONLY_ACTIVE_ARCH=NO ODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY= CARTHAGE=YES"
-//        var debug = " &&  xcodebuild -project \(projectFilePath) -scheme \(projectName) -configuration Debug -arch x86_64 -sdk iphonesimulator  ONLY_ACTIVE_ARCH=NO ODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY= CARTHAGE=YES"
+//    static func buildStaticIOS(projectName:String,projectPath:String, derivedDataPath: String,toStaticPath: String?) -> ShellOutCommand {
+//        var release = "xcodebuild -project \(projectPath) -scheme \(projectName) -configuration Release -sdk iphoneos ONLY_ACTIVE_ARCH=NO ODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY= CARTHAGE=YES"
+//        var debug = " &&  xcodebuild -project \(projectPath) -scheme \(projectName) -configuration Debug -arch x86_64 -sdk iphonesimulator  ONLY_ACTIVE_ARCH=NO ODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY= CARTHAGE=YES"
 //        var mkdirUniversal = ""
 //        var lipo = ""
 //        var mkdir = ""
@@ -542,16 +542,16 @@ public extension ShellOutCommand {
 //    }
     
     /// IOS build Static.a
-    static func buildDebugStaticIOS(projectName:String,projectFilePath:String, derivedDataPath: String) -> ShellOutCommand {
-        var debug = "xcodebuild -project \(projectFilePath) -scheme \(projectName) -configuration Debug -arch x86_64 -sdk iphonesimulator  ONLY_ACTIVE_ARCH=NO ODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY= CARTHAGE=YES"
+    static func buildDebugStaticIOS(projectName:String,projectPath:String, derivedDataPath: String) -> ShellOutCommand {
+        var debug = "xcodebuild -project \(projectPath) -scheme \(projectName) -configuration Debug -arch x86_64 -sdk iphonesimulator  ONLY_ACTIVE_ARCH=NO ODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY= CARTHAGE=YES"
         
         let standarizedPath = URL(fileURLWithPath: (derivedDataPath as NSString).expandingTildeInPath).standardizedFileURL.path
         debug += " -derivedDataPath \(standarizedPath)"
         return ShellOutCommand(string:debug)
     }
     
-    static func buildReleaseStaticIOS(projectName:String,projectFilePath:String, derivedDataPath: String) -> ShellOutCommand {
-        var release = "xcodebuild -project \(projectFilePath) -scheme \(projectName) -configuration Release -sdk iphoneos ONLY_ACTIVE_ARCH=NO ODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY= CARTHAGE=YES"
+    static func buildReleaseStaticIOS(projectName:String,projectPath:String, derivedDataPath: String) -> ShellOutCommand {
+        var release = "xcodebuild -project \(projectPath) -scheme \(projectName) -configuration Release -sdk iphoneos ONLY_ACTIVE_ARCH=NO ODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY= CARTHAGE=YES"
         let standarizedPath = URL(fileURLWithPath: (derivedDataPath as NSString).expandingTildeInPath).standardizedFileURL.path
         release += " -derivedDataPath \(standarizedPath)"
         return ShellOutCommand(string:release)
@@ -574,7 +574,7 @@ public extension ShellOutCommand {
     }
     
     /// IOS copy Header
-    static func copyStaticHeaderIOS(projectName:String,projectFilePath:String, derivedDataPath: String,toHeaderPath: String?) -> ShellOutCommand {
+    static func copyStaticHeaderIOS(projectName:String,projectPath:String, derivedDataPath: String,toHeaderPath: String?) -> ShellOutCommand {
         var mkdir = ""
         var cpHeader = ""
         let standarizedPath = URL(fileURLWithPath: (derivedDataPath as NSString).expandingTildeInPath).standardizedFileURL.path
@@ -589,8 +589,8 @@ public extension ShellOutCommand {
 /// IOS build Bundle commands
 public extension ShellOutCommand {
     /// IOS build Bundle
-    static func buildBundleIOS(projectName:String,projectFilePath:String, derivedDataPath: String?,toBundlePath: String?) -> ShellOutCommand {
-        var bundle = "xcodebuild -project \(projectFilePath) -scheme \(projectName)Bundle -configuration Release -sdk iphoneos"
+    static func buildBundleIOS(projectName:String,projectPath:String, derivedDataPath: String?,toBundlePath: String?) -> ShellOutCommand {
+        var bundle = "xcodebuild -project \(projectPath) -scheme \(projectName)Bundle -configuration Release -sdk iphoneos"
         var mkdir = ""
         var cpBundle = ""
         if let derivedDataPath = derivedDataPath {
