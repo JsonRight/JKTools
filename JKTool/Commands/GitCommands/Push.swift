@@ -27,10 +27,10 @@ extension JKTool.Git {
             func push(project: Project){
                 do {
                     try shellOut(to: .gitPush(), at: project.directoryPath)
-                    if quiet != false {po(tip: "【\(project.scheme)】Push完成======", type: .tip)}
+                    if quiet != false {po(tip: "【\(project.name)】Push完成======", type: .tip)}
                 } catch {
                     let error = error as! ShellOutError
-                    po(tip: "【\(project.scheme)】 Push失败\n" + error.message + error.output,type: .error)
+                    po(tip: "【\(project.name)】 Push失败\n" + error.message + error.output,type: .error)
                 }
             }
             

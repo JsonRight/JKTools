@@ -55,10 +55,10 @@ extension JKTool.Git.subModule {
             
             do {
                 try shellOut(to: .gitSubmoduleUpdate(initializeIfNeeded: i ?? false, recursive: recursive ?? false), at: project.directoryPath)
-                if quiet != false {po(tip: "【\(project.scheme)】Updata完成", type: .tip)}
+                if quiet != false {po(tip: "【\(project.name)】Updata完成", type: .tip)}
             } catch {
                 let error = error as! ShellOutError
-                po(tip:  "【\(project.scheme)】Update失败\n" + error.message + error.output,type: .error)
+                po(tip:  "【\(project.name)】Update失败\n" + error.message + error.output,type: .error)
             }
             if quiet != false {po(tip: "======Updata工程完成======", type: .tip)}
         }

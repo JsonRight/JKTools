@@ -35,10 +35,10 @@ extension JKTool.Git {
             func merge(project: Project){
                 do {
                     try shellOut(to: .gitMerge(branch: branch, squash: squash), at: project.directoryPath)
-                    if quiet != false {po(tip: "【\(project.scheme)】Merge完成", type: .tip)}
+                    if quiet != false {po(tip: "【\(project.name)】Merge完成", type: .tip)}
                 } catch {
                     let error = error as! ShellOutError
-                    po(tip: "【\(project.scheme)】 Merge失败\n" + error.message + error.output,type: .error)
+                    po(tip: "【\(project.name)】 Merge失败\n" + error.message + error.output,type: .error)
                 }
             }
             

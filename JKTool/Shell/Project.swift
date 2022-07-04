@@ -49,9 +49,6 @@ public class Project {
         return nameForPath(path: self.directoryPath)
     }()
     
-    lazy var scheme: String = {
-        return schemeForPath(path: self.directoryPath)
-    }()
     lazy var modulefilePath: String = {
         return self.directoryPath.appending("/Modulefile")
     }()

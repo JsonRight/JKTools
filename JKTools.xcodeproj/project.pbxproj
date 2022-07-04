@@ -708,7 +708,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "mkdir -p ${SRCROOT}/build\ncp -R ${BUILD_DIR}/Debug/${TARGET_NAME} ${SRCROOT}/build\n";
+			shellScript = "mkdir -p ${SRCROOT}/build\ncp -R ${BUILD_DIR}/Debug/${TARGET_NAME} ${SRCROOT}/build\ncp -R ${BUILD_DIR}/Debug/${TARGET_NAME} /usr/local/bin\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 

@@ -30,10 +30,10 @@ extension JKTool.Git {
             func pull(project: Project){
                 do {
                     try shellOut(to: .gitPull(), at: project.directoryPath)
-                    if quiet != false {po(tip: "【\(project.scheme)】Pull完成", type: .tip)}
+                    if quiet != false {po(tip: "【\(project.name)】Pull完成", type: .tip)}
                 } catch {
                     let error = error as! ShellOutError
-                    po(tip: "【\(project.scheme)】 Pull失败\n" + error.message + error.output,type: .error)
+                    po(tip: "【\(project.name)】 Pull失败\n" + error.message + error.output,type: .error)
                 }
             }
             

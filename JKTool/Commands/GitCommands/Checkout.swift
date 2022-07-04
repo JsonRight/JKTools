@@ -33,10 +33,10 @@ extension JKTool.Git {
             func checkout(project: Project){
                 do {
                     try shellOut(to: .gitCheckout(branch: branch, force: force ?? false), at: project.directoryPath)
-                    if quiet != false {po(tip: "【\(project.scheme)】Checkout完成", type: .tip)}
+                    if quiet != false {po(tip: "【\(project.name)】Checkout完成", type: .tip)}
                 } catch {
                     let error = error as! ShellOutError
-                    po(tip: "【\(project.scheme)】 Checkout失败\n" + error.message + error.output,type: .error)
+                    po(tip: "【\(project.name)】 Checkout失败\n" + error.message + error.output,type: .error)
                 }
             }
             

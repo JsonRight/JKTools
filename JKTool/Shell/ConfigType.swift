@@ -113,85 +113,74 @@ enum Platform: String {
     case iOS,iPadOS,macOS,tvOS,watchOS,carPlayOS
     
     init(_ string: String) {
-        if string == "iOS" {
+        switch string {
+        case Platform.iOS.rawValue:
             self = .iOS
-        } else if string == "iPadOS" {
+        case Platform.iPadOS.rawValue:
             self = .iPadOS
-        } else if string == "macOS" {
+        case Platform.macOS.rawValue:
             self = .macOS
-        } else if string == "tvOS" {
+        case Platform.tvOS.rawValue:
             self = .tvOS
-        } else if string == "tvOS" {
-            self = .tvOS
-        } else if string == "watchOS" {
+        case Platform.watchOS.rawValue:
             self = .watchOS
-        } else if string == "carPlayOS" {
+        case Platform.carPlayOS.rawValue:
             self = .carPlayOS
-        } else {
+        default:
             self = .iOS
         }
     }
     
     func sdk(_ config: ConfigOptions) -> String {
         switch self {
+        case .iOS where config == .Debug:
+            return "iphonesimulator"
         case .iOS:
-            if config == .Debug {
-                return "iphonesimulator"
-            }
             return "iphoneos"
+        case .iPadOS where config == .Debug:
+            return "ipadsimulator"
         case .iPadOS:
-            if config == .Debug {
-                return "iphonesimulator"
-            }
-            return "iphoneos"
+            return "ipados"
         case .macOS:
             return "macosx"
+        case .tvOS where config == .Debug:
+            return "appletvsimulator"
         case .tvOS:
-            if config == .Debug {
-                return "appletvsimulator"
-            }
             return "appletvos"
+        case .watchOS where config == .Debug:
+            return "watchsimulator"
         case .watchOS:
-            if config == .Debug {
-                return "watchsimulator"
-            }
             return "watchos"
+        case .carPlayOS where config == .Debug:
+            return "carplaysimulator"
         case .carPlayOS:
-            if config == .Debug {
-                return "carplaysimulator"
-            }
             return "carplayos"
         }
     }
     
     func platform(_ config: ConfigOptions) -> String {
         switch self {
+        case .iOS where config == .Debug:
+            return "iOS Simulator"
         case .iOS:
-            if config == .Debug {
-                return "iOS Simulator"
-            }
             return "iOS"
+        case .iPadOS where config == .Debug:
+            return "iPadOS Simulator"
         case .iPadOS:
-            if config == .Debug {
-                return "iPadOS Simulator"
-            }
             return "iPadOS"
         case .macOS:
             return "macOS"
+        case .tvOS where config == .Debug:
+            return "tvOS Simulator"
         case .tvOS:
-            if config == .Debug {
-                return "tvOS Simulator"
-            }
             return "tvOS"
+        case .watchOS where config == .Debug:
+            return "watchOS Simulator"
         case .watchOS:
-            if config == .Debug {
-                return "watchOS Simulator"
-            }
             return "watchOS"
+        case .carPlayOS where config == .Debug:
+            return "carPlayOS Simulator"
         case .carPlayOS:
-            if config == .Debug {
-                return "carPlayOS Simulator"
-            }
             return "carPlayOS"
         }
     }
