@@ -126,11 +126,11 @@
          </CommandLineArgument>
          <CommandLineArgument
             argument = "framework"
-            isEnabled = "NO">
+            isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "xcframework"
-            isEnabled = "YES">
+            isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "cache"

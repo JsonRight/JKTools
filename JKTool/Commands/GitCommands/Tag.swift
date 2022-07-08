@@ -27,16 +27,16 @@ extension JKTool.Git.Tag {
             abstract: "tag add",
             version: "1.0.0")
         
-        @Argument(help: "工程存放路径！")
+        @Argument(help: "tag")
         var tag: String
         
-        @Argument(help: "是否递归！")
+        @Argument(help: "递归子模块")
         var recursive: Bool?
         
-        @Argument(help: "是否输出详细信息！")
+        @Argument(help: "执行日志")
         var quiet: Bool?
         
-        @Argument(help: "工程存放路径！")
+        @Argument(help: "执行路径")
         var path: String?
         
         mutating func run() {
@@ -88,16 +88,16 @@ extension JKTool.Git.Tag {
             abstract: "tag del",
             version: "1.0.0")
         
-        @Argument(help: "工程存放路径！")
+        @Argument(help: "tag")
         var tag: String
         
-        @Argument(help: "是否递归！")
+        @Argument(help: "递归子模块")
         var recursive: Bool?
         
-        @Argument(help: "是否输出详细信息！")
+        @Argument(help: "执行日志")
         var quiet: Bool?
         
-        @Argument(help: "工程存放路径！")
+        @Argument(help: "执行路径")
         var path: String?
         
         mutating func run() {

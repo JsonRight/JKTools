@@ -7,5 +7,5 @@
 
 
 //JKTool.run(arguments: Swift.CommandLine.arguments)
-print(Swift.CommandLine.arguments)
+
 JKTool.main()

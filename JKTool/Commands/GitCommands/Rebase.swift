@@ -17,7 +17,7 @@ extension JKTool.Git {
         @Argument(help: "Rebase by branch")
         var branch: String
         
-        @Argument(help: "是否输出详细信息！")
+        @Argument(help: "执行日志")
         var quiet: Bool?
         
         mutating func run() {

@@ -15,10 +15,10 @@ extension JKTool.Git {
             abstract: "init",
             version: "1.0.0")
         
-        @Argument(help: "是否输出详细信息！")
+        @Argument(help: "执行日志")
         var quiet: Bool?
         
-        @Argument(help: "init git仓库路径！")
+        @Argument(help: "执行目录")
         var path: String?
         
         mutating func run() {

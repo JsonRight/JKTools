@@ -17,13 +17,13 @@ extension JKTool.Git {
         @Argument(help: "commit的信息")
         var message: String
         
-        @Argument(help: "是否递归！")
+        @Argument(help: "递归子模块")
         var recursive: Bool?
         
-        @Argument(help: "是否输出详细信息！")
+        @Argument(help: "执行日志")
         var quiet: Bool?
 
-        @Argument(help: "工程存放路径！")
+        @Argument(help: "执行目录")
         var path: String?
         
         mutating func run() {

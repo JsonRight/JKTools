@@ -55,7 +55,7 @@ extension JKTool.Archive {
         @Argument(help: "Archive 本地化配置路径")
         var configPath: String
         
-        @Argument(help: "工程存放路径")
+        @Argument(help: "执行路径")
         var path: String?
 
         mutating func run() {
@@ -125,19 +125,19 @@ extension JKTool.Archive {
         @Argument(help: "export.plist存放路径")
         var export: String
         
-        @Argument(help: "是否输出详细信息！")
+        @Argument(help: "执行日志")
         var quiet: Bool?
         
-        @Argument(help: "default：Release")
+        @Argument(help: "代码环境，default：Release")
         var configuration: String?
         
-        @Argument(help: "default read Xcode VALID_ARCHS：iOS(arm64,armv7)")
+        @Argument(help: "编译架构，default read Xcode VALID_ARCHS：iOS(arm64,armv7)")
         var validArchs: String?
         
-        @Argument(help: "default：iOS")
+        @Argument(help: "设备类型，default：iOS")
         var sdk: String?
         
-        @Argument(help: "工程存放路径")
+        @Argument(help: "执行路径")
         var path: String?
 
         mutating func run() {

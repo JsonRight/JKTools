@@ -30,16 +30,16 @@ extension JKTool.Git.subModule {
             abstract: "submodule updata",
             version: "1.0.0")
 
-        @Argument(help: "need init！")
+        @Argument(help: "是否先init")
         var i: Bool?
         
-        @Argument(help: "need recursive！")
+        @Argument(help: "递归子模块")
         var recursive: Bool?
         
-        @Argument(help: "是否输出详细信息！")
+        @Argument(help: "执行日志")
         var quiet: Bool?
         
-        @Argument(help: "工程存放路径！")
+        @Argument(help: "执行路径")
         var path: String?
 
         mutating func run() {

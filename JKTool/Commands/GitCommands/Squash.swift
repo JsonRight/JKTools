@@ -23,16 +23,16 @@ extension JKTool.Git {
         @Argument(help: "commit的信息")
         var message: String
         
-        @Argument(help: "工程存放路径！")
+        @Argument(help: "删除 from 分支")
         var del: Bool?
         
-        @Argument(help: "是否递归！")
+        @Argument(help: "递归子模块")
         var recursive: Bool?
         
-        @Argument(help: "是否输出详细信息！")
+        @Argument(help: "执行日志")
         var quiet: Bool?
         
-        @Argument(help: "工程存放路径！")
+        @Argument(help: "执行路径")
         var path: String?
         
         mutating func run() {
@@ -52,9 +52,9 @@ extension JKTool.Git {
                 
                 JKTool.Git.Push.main(["\(false)","\(false)",project.directoryPath])
                 
-                JKTool.Git.Del.Local.main([from,"\(false)","\(false)",project.directoryPath])
+                JKTool.Git.Branch.Del.Local.main([from,"\(false)","\(false)",project.directoryPath])
                 
-                JKTool.Git.Del.Origin.main([from,"\(false)","\(false)",project.directoryPath])
+                JKTool.Git.Branch.Del.Origin.main([from,"\(false)","\(false)",project.directoryPath])
                 
                 if quiet != false {po(tip: "【\(project.name)】Merge squash完成", type: .tip)}
             }

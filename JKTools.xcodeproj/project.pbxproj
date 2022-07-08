@@ -84,6 +84,8 @@
 		BF69D6C5286478DE009CE7D1 /* Checkout.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF69D6C4286478DE009CE7D1 /* Checkout.swift */; };
 		BF69D6C7286478EC009CE7D1 /* Status.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF69D6C6286478EC009CE7D1 /* Status.swift */; };
 		BF69D6C9286478F8009CE7D1 /* Reset.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF69D6C8286478F8009CE7D1 /* Reset.swift */; };
+		BF7076FF28781FC500F71AEB /* Shell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7076FE28781FC500F71AEB /* Shell.swift */; };
+		BF70770228782F9500F71AEB /* Branch.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF70770128782F9500F71AEB /* Branch.swift */; };
 		BFA528EC26351606003427A8 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA528EB26351606003427A8 /* main.swift */; };
 		BFA528F326351634003427A8 /* JKTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA528F226351634003427A8 /* JKTool.swift */; };
 		BFA528FB26351659003427A8 /* ANSIProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA528F726351659003427A8 /* ANSIProperties.swift */; };
@@ -119,7 +121,6 @@
 		BFB7CA86270092080099B634 /* Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFB7CA84270092080099B634 /* Alert.swift */; };
 		BFB7CA87270092C80099B634 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFB7CA812700893F0099B634 /* Constants.swift */; };
 		BFEB07B5286AA7DB00B5D197 /* Merge.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFEB07B4286AA7DB00B5D197 /* Merge.swift */; };
-		BFEB07D0286B0A6C00B5D197 /* Del.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFEB07CF286B0A6B00B5D197 /* Del.swift */; };
 		BFEB07D2286B0ECD00B5D197 /* Squash.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFEB07D1286B0ECD00B5D197 /* Squash.swift */; };
 		BFEBAE6828608295006928AD /* ExecutableBuild.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFEBAE6728608295006928AD /* ExecutableBuild.swift */; };
 /* End PBXBuildFile section */
@@ -235,6 +236,8 @@
 		BF69D6C4286478DE009CE7D1 /* Checkout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Checkout.swift; sourceTree = "<group>"; };
 		BF69D6C6286478EC009CE7D1 /* Status.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Status.swift; sourceTree = "<group>"; };
 		BF69D6C8286478F8009CE7D1 /* Reset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reset.swift; sourceTree = "<group>"; };
+		BF7076FE28781FC500F71AEB /* Shell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shell.swift; sourceTree = "<group>"; };
+		BF70770128782F9500F71AEB /* Branch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Branch.swift; sourceTree = "<group>"; };
 		BFA528E926351606003427A8 /* JKTool */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = JKTool; sourceTree = BUILT_PRODUCTS_DIR; };
 		BFA528EB26351606003427A8 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		BFA528F226351634003427A8 /* JKTool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JKTool.swift; sourceTree = "<group>"; };
@@ -269,7 +272,6 @@
 		BFB7CA812700893F0099B634 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		BFB7CA84270092080099B634 /* Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alert.swift; sourceTree = "<group>"; };
 		BFEB07B4286AA7DB00B5D197 /* Merge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Merge.swift; sourceTree = "<group>"; };
-		BFEB07CF286B0A6B00B5D197 /* Del.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Del.swift; sourceTree = "<group>"; };
 		BFEB07D1286B0ECD00B5D197 /* Squash.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Squash.swift; sourceTree = "<group>"; };
 		BFEBAE6728608295006928AD /* ExecutableBuild.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExecutableBuild.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -486,7 +488,7 @@
 				BF69D6C2286478D2009CE7D1 /* Rebase.swift */,
 				BFEB07B4286AA7DB00B5D197 /* Merge.swift */,
 				BFEB07D1286B0ECD00B5D197 /* Squash.swift */,
-				BFEB07CF286B0A6B00B5D197 /* Del.swift */,
+				BF70770128782F9500F71AEB /* Branch.swift */,
 				BF69D6C4286478DE009CE7D1 /* Checkout.swift */,
 				BF69D6C6286478EC009CE7D1 /* Status.swift */,
 				BF69D6C8286478F8009CE7D1 /* Reset.swift */,
@@ -502,8 +504,17 @@
 			children = (
 				BF69D6A82862F662009CE7D1 /* GitCommands */,
 				BF69D6A72862F64D009CE7D1 /* XcodeCommands */,
+				BF70770028781FCC00F71AEB /* ShellCommands */,
 			);
 			path = Commands;
+			sourceTree = "<group>";
+		};
+		BF70770028781FCC00F71AEB /* ShellCommands */ = {
+			isa = PBXGroup;
+			children = (
+				BF7076FE28781FC500F71AEB /* Shell.swift */,
+			);
+			path = ShellCommands;
 			sourceTree = "<group>";
 		};
 		BFA528EA26351606003427A8 /* JKTool */ = {
@@ -757,10 +768,10 @@
 				BFA52936263516AE003427A8 /* HelperCommon.swift in Sources */,
 				BF69D68D2861BF01009CE7D1 /* CommandParser.swift in Sources */,
 				BF69D67B2861BF01009CE7D1 /* UsageGenerator.swift in Sources */,
+				BF70770228782F9500F71AEB /* Branch.swift in Sources */,
 				BF69D6772861BF01009CE7D1 /* ZshCompletionsGenerator.swift in Sources */,
 				BF69D6B428632EC1009CE7D1 /* subModule.swift in Sources */,
 				BF69D6802861BF01009CE7D1 /* Tree.swift in Sources */,
-				BFEB07D0286B0A6C00B5D197 /* Del.swift in Sources */,
 				BF69D68A2861BF01009CE7D1 /* Flag.swift in Sources */,
 				BFEB07D2286B0ECD00B5D197 /* Squash.swift in Sources */,
 				BFB4B1E826394D96002E7072 /* PruneCommon.swift in Sources */,
@@ -823,6 +834,7 @@
 				BFA52931263516AE003427A8 /* CommonProtocol.swift in Sources */,
 				BF69D6A62862EA8D009CE7D1 /* Git.swift in Sources */,
 				BF69D6932861BF01009CE7D1 /* SplitArguments.swift in Sources */,
+				BF7076FF28781FC500F71AEB /* Shell.swift in Sources */,
 				BF69D6C9286478F8009CE7D1 /* Reset.swift in Sources */,
 				BF69D6A02862C776009CE7D1 /* Clone.swift in Sources */,
 				BFA52927263516AE003427A8 /* CloneCommon.swift in Sources */,

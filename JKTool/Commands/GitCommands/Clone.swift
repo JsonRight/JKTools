@@ -27,13 +27,13 @@ extension JKTool.Git.Clone {
             version: "1.0.0")
 
         
-        @Argument(help: "force Clone")
+        @Argument(help: "强制 clone")
         var force: Bool?
         
-        @Argument(help: "是否输出详细信息！")
+        @Argument(help: "执行日志")
         var quiet: Bool?
         
-        @Argument(help: "工程存放路径！")
+        @Argument(help: "执行目录")
         var path: String?
         
         mutating func run() {
@@ -105,16 +105,16 @@ extension JKTool.Git.Clone {
             abstract: "clone all",
             version: "1.0.0")
 
-        @Argument(help: "工程 git url！")
+        @Argument(help: "项目git地址")
         var url: String
         
-        @Argument(help: "工程存放路径！")
+        @Argument(help: "保存目录")
         var path: String
         
-        @Argument(help: "是否输出详细信息！")
+        @Argument(help: "执行日志")
         var quiet: Bool?
         
-        @Argument(help: "Clone by branch")
+        @Argument(help: "分支名")
         var branch: String?
         
         mutating func run() {

@@ -13,7 +13,7 @@ struct JKTool: ParsableCommand {
         commandName: "JKTool",
         abstract: "JKTool",
         version: "1.0.0",
-        subcommands: [Build.self,Git.self,Archive.self],
+        subcommands: [Build.self,Git.self,Archive.self,Shell.self],
         defaultSubcommand: Build.self)
     
 //   static func run(arguments: [String])  {

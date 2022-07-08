@@ -21,19 +21,19 @@ extension JKTool {
 
 private struct Options: ParsableArguments {
     
-    @Argument(help: "是否输出详细信息！")
+    @Argument(help: "执行日志")
     var quiet: Bool?
     
-    @Argument(help: "尝试使用缓存")
+    @Argument(help: "是否使用缓存")
     var cache: Bool?
 
-    @Argument(help: "default：Release")
+    @Argument(help: "代码环境，default：Release")
     var configuration: String?
     
-    @Argument(help: "default：iOS")
+    @Argument(help: "设备类型，default：iOS")
     var sdk: String?
 
-    @Argument(help: "工程存放路径")
+    @Argument(help: "执行路径")
     var path: String?
 
 }

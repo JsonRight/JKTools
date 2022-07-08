@@ -21,7 +21,7 @@ extension JKTool {
                           Rebase.self,
                           Merge.self,
                           Squash.self,
-                          Del.self,
+                          Branch.self,
                           Checkout.self,
                           Status.self,
                           Reset.self,

@@ -155,9 +155,8 @@ public extension ShellOutCommand {
     }
 
     /// Perform a git push
-    static func gitPush(remote: String? = nil, branch: String? = nil) -> ShellOutCommand {
-        var command = "git push"
-        remote.map { command.append(argument: $0) }
+    static func gitPush(branch: String? = nil) -> ShellOutCommand {
+        var command = "git push origin"
         branch.map { command.append(argument: $0) }
         command.append(" --quiet")
 
@@ -165,21 +164,16 @@ public extension ShellOutCommand {
     }
 
     /// Perform a git pull
-    static func gitPull(remote: String? = nil, branch: String? = nil) -> ShellOutCommand {
-        var command = "git pull"
-        remote.map { command.append(argument: $0) }
-        branch.map { command.append(argument: $0) }
+    static func gitPull() -> ShellOutCommand {
+        var command = "git pull origin"
         command.append(" --quiet")
 
         return ShellOutCommand(string: command)
     }
     
     /// Perform a git pull
-    static func gitPrune(remote: String? = nil, branch: String? = nil) -> ShellOutCommand {
-        var command = "git remote prune origin"
-        remote.map { command.append(argument: $0) }
-        branch.map { command.append(argument: $0) }
-
+    static func gitPrune() -> ShellOutCommand {
+        let command = "git remote prune origin"
         return ShellOutCommand(string: command)
     }
     
@@ -200,6 +194,14 @@ public extension ShellOutCommand {
         }
         command.append(" --quiet")
 
+        return ShellOutCommand(string: command)
+    }
+    
+    /// Perform a git create branch
+    static func gitCreateBranch(branch: String) -> ShellOutCommand {
+        var command = "git branch \(branch)"
+        command.append(" --quiet && ")
+        command.append("git push origin \(branch)")
         return ShellOutCommand(string: command)
     }
     
@@ -625,7 +627,7 @@ public extension ShellOutCommand {
 
 }
 
-/// IOS build Bundle commands
+///
 public extension ShellOutCommand {
     /// IOS framework cache
     static func readVerisonIOS(plistPath:String,plistName:String) -> ShellOutCommand {
