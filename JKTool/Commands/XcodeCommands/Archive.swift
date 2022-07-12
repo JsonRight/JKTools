@@ -128,7 +128,7 @@ extension JKTool.Archive {
         @Argument(help: "export.plist存放路径")
         var export: String
         
-        @Argument(help: "执行日志")
+        @Argument(help: "执行日志，default：true")
         var quiet: Bool?
         
         @Argument(help: "代码环境，default：Release")

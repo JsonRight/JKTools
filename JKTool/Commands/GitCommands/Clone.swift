@@ -28,10 +28,10 @@ extension JKTool.Git.Clone {
             version: "1.0.0")
 
         
-        @Argument(help: "强制 clone")
+        @Argument(help: "强制 clone，default：false")
         var force: Bool?
         
-        @Argument(help: "执行日志")
+        @Argument(help: "是否输出执行日志，default：true")
         var quiet: Bool?
         
         @Argument(help: "执行目录")

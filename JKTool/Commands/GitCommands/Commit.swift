@@ -17,10 +17,10 @@ extension JKTool.Git {
         @Argument(help: "commit的信息")
         var message: String
         
-        @Argument(help: "递归子模块")
+        @Argument(help: "递归子模块，default：false")
         var recursive: Bool?
         
-        @Argument(help: "执行日志")
+        @Argument(help: "执行日志，default：true")
         var quiet: Bool?
 
         @Argument(help: "执行目录")

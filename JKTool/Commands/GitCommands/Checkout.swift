@@ -16,13 +16,13 @@ extension JKTool.Git {
         @Argument(help: "Checkout branch")
         var branch: String
         
-        @Argument(help: "强制")
+        @Argument(help: "强制 checkout，default：false")
         var force: Bool?
         
-        @Argument(help: "递归子模块")
+        @Argument(help: "递归子模块，default：false")
         var recursive: Bool?
         
-        @Argument(help: "执行日志")
+        @Argument(help: "执行日志，default：true")
         var quiet: Bool?
         
         @Argument(help: "执行路径")

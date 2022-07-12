@@ -30,10 +30,10 @@ extension JKTool.Git.Tag {
         @Argument(help: "tag")
         var tag: String
         
-        @Argument(help: "递归子模块")
+        @Argument(help: "递归子模块，default：false")
         var recursive: Bool?
         
-        @Argument(help: "执行日志")
+        @Argument(help: "执行日志，default：true")
         var quiet: Bool?
         
         @Argument(help: "执行路径")
@@ -91,10 +91,10 @@ extension JKTool.Git.Tag {
         @Argument(help: "tag")
         var tag: String
         
-        @Argument(help: "递归子模块")
+        @Argument(help: "递归子模块，default：false")
         var recursive: Bool?
         
-        @Argument(help: "执行日志")
+        @Argument(help: "执行日志，default：true")
         var quiet: Bool?
         
         @Argument(help: "执行路径")

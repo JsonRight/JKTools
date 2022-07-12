@@ -65,7 +65,7 @@ extension JKTool.Upload {
             abstract: "upload scheme",
             version: "1.0.0")
 
-        @Argument(help: "执行日志")
+        @Argument(help: "执行日志，default：true")
         var quiet: Bool?
         
         @Argument(help: "appleid账号")

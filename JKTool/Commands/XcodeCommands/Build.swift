@@ -24,7 +24,7 @@ private struct Options: ParsableArguments {
     @Argument(help: "执行日志")
     var quiet: Bool?
     
-    @Argument(help: "是否使用缓存")
+    @Argument(help: "是否使用缓存，default：true")
     var cache: Bool?
 
     @Argument(help: "代码环境，default：Release")

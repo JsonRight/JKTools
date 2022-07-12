@@ -17,13 +17,13 @@ extension JKTool.Git {
         @Argument(help: "Rebase by branch")
         var branch: String
         
-        @Argument(help: "squash")
+        @Argument(help: "squash，default：false")
         var squash: Bool?
         
-        @Argument(help: "递归子模块")
+        @Argument(help: "递归子模块，default：false")
         var recursive: Bool?
         
-        @Argument(help: "执行日志")
+        @Argument(help: "执行日志，default：true")
         var quiet: Bool?
         
         @Argument(help: "执行路径")

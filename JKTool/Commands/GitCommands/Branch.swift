@@ -29,10 +29,10 @@ extension JKTool.Git.Branch {
         @Argument(help: "del by branch")
         var branch: String
         
-        @Argument(help: "递归子模块")
+        @Argument(help: "递归子模块，default：false")
         var recursive: Bool?
         
-        @Argument(help: "执行日志")
+        @Argument(help: "执行日志，default：true")
         var quiet: Bool?
         
         @Argument(help: "执行路径")
@@ -108,10 +108,10 @@ extension JKTool.Git.Branch.Del {
         @Argument(help: "del by branch")
         var branch: String
         
-        @Argument(help: "递归子模块")
+        @Argument(help: "递归子模块，default：false")
         var recursive: Bool?
         
-        @Argument(help: "执行日志")
+        @Argument(help: "执行日志，default：true")
         var quiet: Bool?
         
         @Argument(help: "执行路径")
@@ -171,10 +171,10 @@ extension JKTool.Git.Branch.Del {
         @Argument(help: "del by branch")
         var branch: String
         
-        @Argument(help: "是否递归！")
+        @Argument(help: "是否递归，default：false")
         var recursive: Bool?
         
-        @Argument(help: "是否输出详细信息！")
+        @Argument(help: "是否输出详细信息，default：true")
         var quiet: Bool?
         
         @Argument(help: "工程存放路径！")
