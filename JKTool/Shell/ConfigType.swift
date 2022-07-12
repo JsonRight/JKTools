@@ -186,4 +186,70 @@ enum Platform: String {
     }
 }
 
+struct ProjectConfigModel: Decodable {
+    
+    struct SaveConfigModel:Decodable {
+        
+        var nameSuffix: String
+        
+        var path: String
+        
+    }
+    
+    struct ActiveConfigModel:Decodable {
+        
+        var configuration: String
+        
+        var scheme: String
+        
+        var validArchs: [String]?
+        
+        var sdk: String
+        
+        var export: String
+        
+        var saveConfig: SaveConfigModel?
+        
+    }
+    
+    struct CertificateConfigModel:Decodable {
+        
+        var macPwd: String
+        
+        var p12sPath: String
+        
+        var p12Pwd: String
+        
+        var profilesPath: String
+        
+    }
+    
+    struct UploadConfigModel:Decodable {
+        
+        var username: String
+        
+        var password: String
+        
+        var path: String
+        
+    }
+    
+    var activeConfig: ActiveConfigModel
+    
+    var certificateConfig: CertificateConfigModel
+    
+    var uploadConfig: UploadConfigModel
+    
+    var quiet: Bool?
+    
+}
 
+struct ProjectListsModel: Decodable {
+    struct ProjectModel: Decodable {
+        var configurations:[String]
+        var name: String
+        var schemes: [String]
+        var targets: [String]
+    }
+    var project: ProjectModel
+}

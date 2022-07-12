@@ -18,6 +18,7 @@ extension JKTool.Git {
     }
 }
 
+
 extension JKTool.Git.Clone {
     struct Sub: ParsableCommand {
         static var configuration = CommandConfiguration(
@@ -108,7 +109,7 @@ extension JKTool.Git.Clone {
         @Argument(help: "项目git地址")
         var url: String
         
-        @Argument(help: "保存目录")
+        @Argument(help: "保存目录【绝对路径】")
         var path: String
         
         @Argument(help: "执行日志")

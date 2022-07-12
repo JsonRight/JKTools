@@ -14,35 +14,11 @@ extension JKTool {
             _superCommandName: "JKTool",
             abstract: "archive",
             version: "1.0.0",
-            subcommands: [Config.self,Scheme.self]
+            subcommands: [Config.self,Scheme.self],
+            defaultSubcommand: Config.self
         )
     }
 }
-
-struct ArchiveConfigModel: Decodable {
-    
-    var configuration: String
-    
-    var scheme: String
-    
-    var validArchs: [String]?
-    
-    var macPwd: String
-    
-    var p12sPath: String
-    
-    var p12Pwd: String
-    
-    var profilesPath: String
-    
-    var sdk: String
-    
-    var export: String
-    
-    var quiet: Bool?
-    
-}
-
 
 extension JKTool.Archive {
     struct Config: ParsableCommand {
@@ -52,7 +28,38 @@ extension JKTool.Archive {
             abstract: "archive config",
             version: "1.0.0")
 
-        @Argument(help: "Archive 本地化配置路径")
+        @Argument(help: """
+                        Archive 本地化配置路径
+                        ‘’‘
+                        {
+                          "activeConfig": {
+                            "configuration": "Debug/Release",
+                            "scheme": "String",
+                            "validArchs": [
+                              "arm64 armv7 | x86_64 i386"
+                            ],
+                            "sdk": "iOS/iPadOS/macOS/tvOS/watchOS/carPlayOS",
+                            "export": "export.plist绝对路径",
+                            "saveConfig": {
+                              "nameSuffix": "String",
+                              "path": "绝对路径"
+                            }
+                          },
+                          "certificateConfig": {
+                            "macPwd": "mac密码",
+                            "p12sPath": "路径",
+                            "p12Pwd": "p12文件密码",
+                            "profilesPath": "路径"
+                          },
+                          "uploadConfig": {
+                            "username": "appleid账户",
+                            "password": "appleid密码",
+                            "path": "ipa路径"
+                          },
+                          "quiet": false
+                        }
+                        ’‘’
+                        """)
         var configPath: String
         
         @Argument(help: "执行路径")
@@ -68,43 +75,39 @@ extension JKTool.Archive {
                 return po(tip: "请在项目根目录执行脚本", type: .error)
             }
             
-            if configPath.lowercased() == "default" {
-                configPath = project.directoryPath + "/defaultCOnfig.json"
-            }
-            
-            guard let data = try? Data(contentsOf: URL(fileURLWithPath: configPath)) else {
+            guard let data = try? Data(contentsOf: URL(fileURLWithPath: configPath.convertRelativePath())) else {
                 return po(tip: "请检查配置文件是否存在，或者格式是否正确！",type: .error)
             }
             
-            guard let configs = try? JSONDecoder().decode(ArchiveConfigModel.self, from: data) else {
+            guard let configs = try? JSONDecoder().decode(ProjectConfigModel.self, from: data) else {
                 return po(tip: "请检查配置文件是否存在，或者格式是否正确！",type: .error)
             }
             
             if configs.quiet != false {po(tip: "======Archive项目开始======")}
             let date = Date.init().timeIntervalSince1970
             do {
-                try shellOut(to: .unlockSecurity(password: configs.macPwd))
+                try shellOut(to: .unlockSecurity(password: configs.certificateConfig.macPwd))
             } catch  {
                 let error = error as! ShellOutError
                 po(tip: "unlockSecurity" + error.message + error.output,type: .error)
             }
             
             do {
-                try shellOut(to: .importP12(p12sPath: configs.p12sPath, password: configs.p12Pwd), at: project.directoryPath)
+                try shellOut(to: .importP12(p12sPath: configs.certificateConfig.p12sPath.convertRelativePath(), password: configs.certificateConfig.p12Pwd), at: project.directoryPath)
             } catch  {
                 let error = error as! ShellOutError
                 po(tip:  "importP12" + error.message + error.output,type: .error)
             }
             
             do {
-                try shellOut(to: .installProfiles(profilesPath: configs.profilesPath), at: project.directoryPath)
+                try shellOut(to: .installProfiles(profilesPath: configs.certificateConfig.profilesPath.convertRelativePath()), at: project.directoryPath)
             } catch  {
                 let error = error as! ShellOutError
                 po(tip:  "installProfiles:" + error.message + error.output,type: .error)
             }
             
             do {
-                try shellOut(to: .archive(scheme: configs.scheme, isWorkspace: project.projectType.isWorkSpace(),projectName: project.projectType.name(), projectPath: project.directoryPath, configuration: configs.configuration,validArchs: configs.validArchs, sdk: configs.sdk, export: configs.export), at: project.directoryPath)
+                try shellOut(to: .archive(scheme: configs.activeConfig.scheme, isWorkspace: project.projectType.isWorkSpace(),projectName: project.projectType.name(), projectPath: project.directoryPath, configuration: configs.activeConfig.configuration,validArchs: configs.activeConfig.validArchs, sdk: configs.activeConfig.sdk, export: configs.activeConfig.export.convertRelativePath(), nameSuffix: configs.activeConfig.saveConfig?.nameSuffix,toSavePath: configs.activeConfig.saveConfig?.path), at: project.directoryPath)
             } catch  {
                 let error = error as! ShellOutError
                 po(tip:  error.message + error.output,type: .error)
@@ -137,6 +140,12 @@ extension JKTool.Archive {
         @Argument(help: "设备类型，default：iOS")
         var sdk: String?
         
+        @Argument(help: "ipa另存地址")
+        var toPath: String?
+        
+        @Argument(help: "ipa名称后缀")
+        var nameSuffix: String?
+        
         @Argument(help: "执行路径")
         var path: String?
 
@@ -153,7 +162,7 @@ extension JKTool.Archive {
             if quiet != false {po(tip: "======Archive项目开始======")}
             let date = Date.init().timeIntervalSince1970
             do {
-                try shellOut(to: .archive(scheme: scheme, isWorkspace: project.projectType.isWorkSpace(),projectName: project.projectType.name(), projectPath: project.directoryPath, configuration: configuration ?? "Release", validArchs: (validArchs ?? "").split(separator: ",").map({ $0.base }), sdk: sdk ?? "iOS", export: export))
+                try shellOut(to: .archive(scheme: scheme, isWorkspace: project.projectType.isWorkSpace(),projectName: project.projectType.name(), projectPath: project.directoryPath, configuration: configuration ?? "Release", validArchs: (validArchs ?? "").split(separator: ",").map({ $0.base }), sdk: sdk ?? "iOS", export: export, nameSuffix: nameSuffix,toSavePath: toPath),at: project.directoryPath)
             } catch  {
                 let error = error as! ShellOutError
                 po(tip:  error.message + error.output,type: .error)

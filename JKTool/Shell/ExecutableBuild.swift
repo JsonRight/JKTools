@@ -153,7 +153,7 @@ public extension ShellOutCommand {
 public extension ShellOutCommand {
     
     /// IOS archive VALID_ARCHS=\("arm64")
-    static func archive(scheme:String, isWorkspace:Bool,projectName: String, projectPath:String,configuration:String, validArchs:[String]?, sdk: String, export:String) -> ShellOutCommand {
+    static func archive(scheme:String, isWorkspace:Bool,projectName: String, projectPath:String,configuration:String, validArchs:[String]?, sdk: String, export:String, nameSuffix:String?,toSavePath:String?) -> ShellOutCommand {
         
         var shell = "xcodebuild clean \(isWorkspace ? "-workspace" : "-project") \(projectName) -scheme \(scheme) -configuration \(configuration)"
         shell.connected(andCommand: "xcodebuild archive \(isWorkspace ? "-workspace" : "-project") \(projectName) -scheme \(scheme) -configuration \(configuration)")
@@ -162,6 +162,21 @@ public extension ShellOutCommand {
         }
         shell.connected(spaceCommand: "-archivePath \(projectPath)/Build/\(configuration)/\(scheme).xcarchive")
         shell.connected(andCommand: "xcodebuild -exportArchive -archivePath \(projectPath)/Build/\(configuration)/\(scheme).xcarchive -exportPath \(projectPath)/Build/\(configuration) -exportOptionsPlist \(export)")
+        if let toSavePath = toSavePath ,toSavePath != "" {
+            shell.connected(andCommand: "cp -R \(projectPath)/Build/\(configuration)/\(scheme).ipa \(toSavePath)/\(scheme)\(configuration)\(nameSuffix ?? "").ipa")
+        }
+        return ShellOutCommand(string: shell)
+    }
+}
+
+/// archive commands
+public extension ShellOutCommand {
+    
+    /// IOS archive VALID_ARCHS=\("arm64")
+    static func upload(path:String, username: String, password: String) -> ShellOutCommand {
+        
+        var shell = "altool --validate-app -f \(path) -u \(username) -p \(password) --output-format xml"
+        shell.connected(andCommand: "altool --upload-app -f \(path) -u \(username) -p \(password) --output-format xml")
         return ShellOutCommand(string: shell)
     }
 }

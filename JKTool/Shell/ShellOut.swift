@@ -426,207 +426,6 @@ public extension ShellOutCommand {
     }
 }
 
-/// IOS build Framework commands
-public extension ShellOutCommand {
-    /// IOS build Framework
-//    static func buildFrameworkIOS(projectName:String,projectPath:String, derivedDataPath: String,toPath: String?) -> ShellOutCommand {
-//        var release = "xcodebuild -project \(projectPath) -scheme \(projectName) -configuration Release -sdk iphoneos ONLY_ACTIVE_ARCH=NO ODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY= CARTHAGE=YES"
-//        var debug = "xcodebuild -project \(projectPath) -scheme \(projectName) -configuration Debug -arch x86_64 -sdk iphonesimulator  ONLY_ACTIVE_ARCH=NO ODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY= CARTHAGE=YES"
-////        var lipoArm64 = ""
-//        var mkdirUniversal = ""
-//        var cpUniversal = ""
-//        var lipo = ""
-//        var mkdir = ""
-//        var cp = ""
-//        let standarizedPath = URL(fileURLWithPath: (derivedDataPath as NSString).expandingTildeInPath).standardizedFileURL.path
-//        release += " -derivedDataPath \(standarizedPath)"
-//        debug += " -derivedDataPath \(standarizedPath)"
-//        mkdirUniversal = "mkdir " + standarizedPath + "/Build/Products/\(projectName)-Universal/"
-//        cpUniversal = "cp -R \(standarizedPath)/Build/Products/Release-iphoneos/\(projectName).framework \(standarizedPath)/Build/Products/\(projectName)-Universal/"
-//        lipo = "lipo -create \(standarizedPath)/Build/Products/Release-iphoneos/\(projectName).framework/\(projectName) \(standarizedPath)/Build/Products/Debug-iphonesimulator/\(projectName).framework/\(projectName) -output \(standarizedPath)/Build/Products/\(projectName)-Universal/\(projectName).framework/\(projectName)"
-//        if let toPath = toPath {
-//            mkdir = "mkdir -p " + toPath
-//            cp = "cp -R \(standarizedPath)/Build/Products/\(projectName)-Universal/\(projectName).framework \(toPath)"
-//        }
-//
-//        return ShellOutCommand(string:release + " && " + debug + " && " + mkdirUniversal + " && " + cpUniversal + " && " + lipo + " && " + mkdir + " && " + cp)
-//    }
-
-    static func buildDebugFrameworkIOS(projectName:String,projectPath:String, derivedDataPath: String) -> ShellOutCommand {
-        var debug = "xcodebuild -project \(projectPath) -scheme \(projectName) -configuration Debug -arch x86_64 -sdk iphonesimulator  ONLY_ACTIVE_ARCH=NO ODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY= CARTHAGE=YES BUILD_LIBRARY_FOR_DISTRIBUTION=YES"
-        let standarizedPath = URL(fileURLWithPath: (derivedDataPath as NSString).expandingTildeInPath).standardizedFileURL.path
-        debug += " -derivedDataPath \(standarizedPath)"
-        
-        return ShellOutCommand(string:debug)
-    }
-    
-    static func buildReleaseFrameworkIOS(projectName:String,projectPath:String, derivedDataPath: String) -> ShellOutCommand {
-        var release = "xcodebuild -project \(projectPath) -scheme \(projectName) -configuration Release -sdk iphoneos ONLY_ACTIVE_ARCH=NO ODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY= CARTHAGE=YES BUILD_LIBRARY_FOR_DISTRIBUTION=YES"
-        let standarizedPath = URL(fileURLWithPath: (derivedDataPath as NSString).expandingTildeInPath).standardizedFileURL.path
-        release += " -derivedDataPath \(standarizedPath)"
-        
-        return ShellOutCommand(string:release)
-    }
-    
-  
-}
-
-
-public extension ShellOutCommand {
-    static func createXCFrameworkIOS(projectName:String, derivedDataPath: String,toPath: String?) -> ShellOutCommand {
-        var mkdirUniversal = ""
-        var lipo = ""
-        var mkdir = ""
-        var cp = ""
-        
-        let standarizedPath = URL(fileURLWithPath: (derivedDataPath as NSString).expandingTildeInPath).standardizedFileURL.path
-        
-        mkdirUniversal = "mkdir " + standarizedPath + "/Build/Products/\(projectName)-Universal/"
-        
-        lipo = " && xcodebuild -create-xcframework -framework \(standarizedPath)/Build/Products/Release-iphoneos/\(projectName).framework -framework \(standarizedPath)/Build/Products/Debug-iphonesimulator/\(projectName).framework -output \(standarizedPath)/Build/Products/\(projectName)-Universal/\(projectName).xcframework"
-        
-        if let toPath = toPath {
-            mkdir = " && mkdir -p " + toPath
-            cp = " && cp -R \(standarizedPath)/Build/Products/\(projectName)-Universal/\(projectName).xcframework \(toPath)"
-        }
-        
-        return ShellOutCommand(string:mkdirUniversal + lipo + mkdir + cp)
-    }
-}
-
-public extension ShellOutCommand {
-    static func lipoCreateFrameworkIOS(projectName:String, derivedDataPath: String,toPath: String?, needMerge: Bool) -> ShellOutCommand {
-        var mkdirUniversal = ""
-        var cpUniversal = ""
-        var lipo = ""
-        var mkdir = ""
-        var cp = ""
-        
-        let standarizedPath = URL(fileURLWithPath: (derivedDataPath as NSString).expandingTildeInPath).standardizedFileURL.path
-        
-        mkdirUniversal = "mkdir " + standarizedPath + "/Build/Products/\(projectName)-Universal/"
-        cpUniversal = " && cp -R \(standarizedPath)/Build/Products/Release-iphoneos/\(projectName).framework \(standarizedPath)/Build/Products/\(projectName)-Universal/"
-        
-        
-        if needMerge {
-            lipo = " && lipo -create \(standarizedPath)/Build/Products/Release-iphoneos/\(projectName).framework/\(projectName) \(standarizedPath)/Build/Products/Debug-iphonesimulator/\(projectName).framework/\(projectName) -output \(standarizedPath)/Build/Products/\(projectName)-Universal/\(projectName).framework/\(projectName)"
-        }
-        
-        if let toPath = toPath {
-            mkdir = " && mkdir -p " + toPath
-            cp = " && cp -R \(standarizedPath)/Build/Products/\(projectName)-Universal/\(projectName).framework \(toPath)"
-        }
-        
-        return ShellOutCommand(string:mkdirUniversal + cpUniversal + lipo + mkdir + cp)
-    }
-}
-
-public extension ShellOutCommand {
-    
-//    static func buildStaticIOS(projectName:String,projectPath:String, derivedDataPath: String,toStaticPath: String?) -> ShellOutCommand {
-//        var release = "xcodebuild -project \(projectPath) -scheme \(projectName) -configuration Release -sdk iphoneos ONLY_ACTIVE_ARCH=NO ODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY= CARTHAGE=YES"
-//        var debug = " &&  xcodebuild -project \(projectPath) -scheme \(projectName) -configuration Debug -arch x86_64 -sdk iphonesimulator  ONLY_ACTIVE_ARCH=NO ODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY= CARTHAGE=YES"
-//        var mkdirUniversal = ""
-//        var lipo = ""
-//        var mkdir = ""
-//        var cpStatic = ""
-//        let standarizedPath = URL(fileURLWithPath: (derivedDataPath as NSString).expandingTildeInPath).standardizedFileURL.path
-//        release += " -derivedDataPath \(standarizedPath)"
-//        debug += " -derivedDataPath \(standarizedPath)"
-//        mkdirUniversal = " && mkdir " + standarizedPath + "/Build/Products/\(projectName)-Universal/"
-//        lipo = " && lipo -create \(standarizedPath)/Build/Products/Release-iphoneos/\(projectName).a \(standarizedPath)/Build/Products/Debug-iphonesimulator/\(projectName).a -output \(standarizedPath)/Build/Products/\(projectName)-Universal/\(projectName).a"
-//        if let toStaticPath = toStaticPath {
-//            mkdir = " && mkdir -p " + toStaticPath
-//            cpStatic = " && cp -R \(standarizedPath)/Build/Products/\(projectName)-Universal/\(projectName).a \(toStaticPath)"
-//        }
-//
-//        return ShellOutCommand(string:release + debug + mkdirUniversal + lipo + mkdir + cpStatic)
-//    }
-    
-    /// IOS build Static.a
-    static func buildDebugStaticIOS(projectName:String,projectPath:String, derivedDataPath: String) -> ShellOutCommand {
-        var debug = "xcodebuild -project \(projectPath) -scheme \(projectName) -configuration Debug -arch x86_64 -sdk iphonesimulator  ONLY_ACTIVE_ARCH=NO ODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY= CARTHAGE=YES"
-        
-        let standarizedPath = URL(fileURLWithPath: (derivedDataPath as NSString).expandingTildeInPath).standardizedFileURL.path
-        debug += " -derivedDataPath \(standarizedPath)"
-        return ShellOutCommand(string:debug)
-    }
-    
-    static func buildReleaseStaticIOS(projectName:String,projectPath:String, derivedDataPath: String) -> ShellOutCommand {
-        var release = "xcodebuild -project \(projectPath) -scheme \(projectName) -configuration Release -sdk iphoneos ONLY_ACTIVE_ARCH=NO ODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY= CARTHAGE=YES"
-        let standarizedPath = URL(fileURLWithPath: (derivedDataPath as NSString).expandingTildeInPath).standardizedFileURL.path
-        release += " -derivedDataPath \(standarizedPath)"
-        return ShellOutCommand(string:release)
-    }
-    
-    static func lipoCreateStaticIOS(projectName:String, derivedDataPath: String,toStaticPath: String?, needMerge: Bool) -> ShellOutCommand {
-        var mkdirUniversal = ""
-        var lipo = ""
-        var mkdir = ""
-        var cpStatic = ""
-        let standarizedPath = URL(fileURLWithPath: (derivedDataPath as NSString).expandingTildeInPath).standardizedFileURL.path
-        mkdirUniversal = "mkdir " + standarizedPath + "/Build/Products/\(projectName)-Universal/"
-        lipo = " && lipo -create \(standarizedPath)/Build/Products/Release-iphoneos/\(projectName).a \(standarizedPath)/Build/Products/Debug-iphonesimulator/\(projectName).a -output \(standarizedPath)/Build/Products/\(projectName)-Universal/\(projectName).a"
-        if let toStaticPath = toStaticPath {
-            mkdir = " && mkdir -p " + toStaticPath
-            cpStatic = " && cp -R \(standarizedPath)/Build/Products/\(projectName)-Universal/\(projectName).a \(toStaticPath)"
-        }
-        
-        return ShellOutCommand(string:mkdirUniversal + lipo + mkdir + cpStatic)
-    }
-    
-    /// IOS copy Header
-    static func copyStaticHeaderIOS(projectName:String,projectPath:String, derivedDataPath: String,toHeaderPath: String?) -> ShellOutCommand {
-        var mkdir = ""
-        var cpHeader = ""
-        let standarizedPath = URL(fileURLWithPath: (derivedDataPath as NSString).expandingTildeInPath).standardizedFileURL.path
-        if let toHeaderPath = toHeaderPath {
-            mkdir = "mkdir -p " + toHeaderPath
-            cpHeader = "cp -R \(standarizedPath)/Build/Products/Release-iphoneos/include/\(projectName) \(toHeaderPath)"
-        }
-        return ShellOutCommand(string: mkdir + " && " + cpHeader)
-    }
-}
-
-/// IOS build Bundle commands
-public extension ShellOutCommand {
-    /// IOS build Bundle
-    static func buildBundleIOS(projectName:String,projectPath:String, derivedDataPath: String?,toBundlePath: String?) -> ShellOutCommand {
-        var bundle = "xcodebuild -project \(projectPath) -scheme \(projectName)Bundle -configuration Release -sdk iphoneos"
-        var mkdir = ""
-        var cpBundle = ""
-        if let derivedDataPath = derivedDataPath {
-            let standarizedPath = URL(fileURLWithPath: (derivedDataPath as NSString).expandingTildeInPath).standardizedFileURL.path
-            if !derivedDataPath.isEmpty && !standarizedPath.isEmpty {
-                bundle +=  " -derivedDataPath \(standarizedPath)"
-                if let toBundlePath = toBundlePath {
-                    mkdir = "mkdir -p " + toBundlePath
-                    cpBundle = "cp -R \(standarizedPath)/Build/Products/Release-iphoneos/\(projectName)Bundle.bundle \(toBundlePath)"
-                }
-            }
-        }
-        return ShellOutCommand(string: bundle + " && " + mkdir + " && " + cpBundle)
-    }
-}
-
-/// IOS archive upload fir  commands
-public extension ShellOutCommand {
-    /// IOS archive
-    static func archiveIOS(scheme:String,projectPath:String,config:String, exportName:String) -> ShellOutCommand {
-        let clean = "xcodebuild clean -workspace \(scheme).xcworkspace -scheme \(scheme) -configuration \(config)"
-        let archive = "xcodebuild archive -workspace \(scheme).xcworkspace -scheme \(scheme) -configuration \(config) -destination generic/platform=iOS -archivePath \(projectPath)/Build/\(config)/\(scheme).xcarchive"
-        let export = "xcodebuild -exportArchive -archivePath \(projectPath)/Build/\(config)/\(scheme).xcarchive -exportPath \(projectPath)/Build/\(config) -exportOptionsPlist \(projectPath)/\(exportName)"
-        return ShellOutCommand(string:clean + " && " + archive + " && " + export)
-    }
-    
-    /// IOS upload
-    static func uploadIOS(scheme:String,projectPath:String,config:String,desc:String?) -> ShellOutCommand {
-        let upload = "fir publish \(projectPath)/Build/\(config)/\(scheme).ipa \(String(describing: desc))"
-        return ShellOutCommand(string:upload)
-    }
-
-}
-
 ///
 public extension ShellOutCommand {
     /// IOS framework cache
@@ -889,4 +688,16 @@ public extension String {
         self = connecting(orCommand: orCommand)
     }
    
+}
+
+
+public extension String {
+    func convertRelativePath(absolutPath: String = FileManager.default.currentDirectoryPath) -> String {
+        do {
+            let regular = try NSRegularExpression(pattern: "(=['|\"])[/|.]+", options: .caseInsensitive)
+            return regular.stringByReplacingMatches(in: self, options: .reportCompletion, range: NSRange(location: 0, length: self.count), withTemplate: "$1\(absolutPath)/")
+        } catch {
+            return self
+        }
+    }
 }

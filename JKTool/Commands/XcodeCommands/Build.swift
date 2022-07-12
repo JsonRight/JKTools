@@ -35,17 +35,6 @@ private struct Options: ParsableArguments {
 
     @Argument(help: "执行路径")
     var path: String?
-
-}
-
-struct ProjectListsModel: Decodable {
-    struct ProjectModel: Decodable {
-        var configurations:[String]
-        var name: String
-        var schemes: [String]
-        var targets: [String]
-    }
-    var project: ProjectModel
 }
 
 extension JKTool.Build {
@@ -93,7 +82,13 @@ extension JKTool.Build {
                     _ = try? shellOut(to: .createFolder(path: project.buildsPath + "/"))
                     
                     for moduleName in project.recordList {
-                        _ = try? shellOut(to: .createSymlink(to: project.rootProject.buildsPath + "/" + moduleName, at: project.buildsPath))
+                        guard let project = Project.project(directoryPath: project.rootProject.buildsPath + "/" + moduleName) else {
+                            return po(tip: "\(options.path ?? FileManager.default.currentDirectoryPath)目录没有检索到工程", type: .error)
+                        }
+                        
+                        if project.projectType.vaild() {
+                            _ = try? shellOut(to: .createSymlink(to: project.rootProject.buildsPath + "/" + moduleName, at: project.buildsPath))
+                        }
                     }
                 }
                 
@@ -159,6 +154,9 @@ extension JKTool.Build {
             }
             
             guard project.rootProject != project else {
+                if !project.projectType.vaild() {
+                    return
+                }
                 if options.quiet != false {po(tip:"【\(project.name)】build 开始")}
                 let date = Date.init().timeIntervalSince1970
                 build(project: project)
@@ -172,7 +170,10 @@ extension JKTool.Build {
     
                 guard let subProject = Project.project(directoryPath: "\(project.checkoutsPath)/\(record)") else {
                     po(tip:"\(record) 工程不存在，请检查 Modulefile.recordList 是否为最新内容",type: .warning)
-                    break
+                    continue
+                }
+                if !subProject.projectType.vaild() {
+                    continue
                 }
                 if options.quiet != false {po(tip:"【\(subProject.name)】build 开始")}
                 let date = Date.init().timeIntervalSince1970
@@ -227,7 +228,13 @@ extension JKTool.Build {
                     _ = try? shellOut(to: .createFolder(path: project.buildsPath + "/"))
                     
                     for moduleName in project.recordList {
-                        _ = try? shellOut(to: .createSymlink(to: project.rootProject.buildsPath + "/" + moduleName, at: project.buildsPath))
+                        guard let project = Project.project(directoryPath: project.rootProject.buildsPath + "/" + moduleName) else {
+                            return po(tip: "\(options.path ?? FileManager.default.currentDirectoryPath)目录没有检索到工程", type: .error)
+                        }
+                        
+                        if project.projectType.vaild() {
+                            _ = try? shellOut(to: .createSymlink(to: project.rootProject.buildsPath + "/" + moduleName, at: project.buildsPath))
+                        }
                     }
                 }
                 
@@ -293,6 +300,9 @@ extension JKTool.Build {
             }
             
             guard project.rootProject == project else {
+                if !project.projectType.vaild() {
+                    return
+                }
                 if options.quiet != false {po(tip:"【\(project.name)】build 开始")}
                 let date = Date.init().timeIntervalSince1970
                 build(project: project)
@@ -306,7 +316,10 @@ extension JKTool.Build {
     
                 guard let subProject = Project.project(directoryPath: "\(project.checkoutsPath)/\(record)") else {
                     po(tip:"\(record) 工程不存在，请检查 Modulefile.recordList 是否为最新内容",type: .warning)
-                    break
+                    continue
+                }
+                if !subProject.projectType.vaild() {
+                    continue
                 }
                 if options.quiet != false {po(tip:"【\(subProject.name)】build 开始")}
                 let date = Date.init().timeIntervalSince1970
@@ -361,7 +374,13 @@ extension JKTool.Build {
                     _ = try? shellOut(to: .createFolder(path: project.buildsPath + "/"))
                     
                     for moduleName in project.recordList {
-                        _ = try? shellOut(to: .createSymlink(to: project.rootProject.buildsPath + "/" + moduleName, at: project.buildsPath))
+                        guard let project = Project.project(directoryPath: project.rootProject.buildsPath + "/" + moduleName) else {
+                            return po(tip: "\(options.path ?? FileManager.default.currentDirectoryPath)目录没有检索到工程", type: .error)
+                        }
+                        
+                        if project.projectType.vaild() {
+                            _ = try? shellOut(to: .createSymlink(to: project.rootProject.buildsPath + "/" + moduleName, at: project.buildsPath))
+                        }
                     }
                 }
                 
@@ -430,6 +449,9 @@ extension JKTool.Build {
             }
             
             guard project.rootProject == project else {
+                if !project.projectType.vaild() {
+                    return
+                }
                 if options.quiet != false {po(tip:"【\(project.name)】build 开始")}
                 let date = Date.init().timeIntervalSince1970
                 build(project: project)
@@ -443,7 +465,10 @@ extension JKTool.Build {
     
                 guard let subProject = Project.project(directoryPath: "\(project.checkoutsPath)/\(record)") else {
                     po(tip:"\(record) 工程不存在，请检查 Modulefile.recordList 是否为最新内容",type: .warning)
-                    break
+                    continue
+                }
+                if !subProject.projectType.vaild() {
+                    return
                 }
                 if options.quiet != false { po(tip:"【\(subProject.name)】build 开始")}
                 let date = Date.init().timeIntervalSince1970

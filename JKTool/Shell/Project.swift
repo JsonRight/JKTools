@@ -21,12 +21,27 @@ public class Project {
     public  enum ProjectType {
         case xcodeproj(String)
         case xcworkspace(String)
+        case other
+        
+        func vaild() -> Bool {
+            switch self {
+            case .xcodeproj(_):
+                return true
+            case .xcworkspace(_):
+                return true
+            case .other:
+                return false
+            }
+        }
+        
         func isWorkSpace() -> Bool {
             switch self {
             case .xcodeproj(_):
                 return false
             case .xcworkspace(_):
                 return true
+            case .other:
+                return false
             }
         }
         func name() -> String {
@@ -35,6 +50,8 @@ public class Project {
                 return string
             case .xcworkspace(let string):
                 return string
+            case .other:
+                return ""
             }
         }
     }
@@ -43,7 +60,33 @@ public class Project {
     
     let directoryPath: String
     
-    let projectType: ProjectType
+    lazy var projectType: ProjectType = {
+        
+        var projectType = ProjectType.other
+        
+        let fileManager = FileManager.default
+        
+        guard let fileList = try? fileManager.contentsOfDirectory(atPath: self.directoryPath) else {
+            return projectType
+        }
+        
+        for file in fileList {
+            if file == "Pods.xcodeproj" {
+                return projectType
+            }
+            if file.hasSuffix(".xcworkspace") {
+                projectType = .xcworkspace("\(file)")
+                break
+            }
+            
+            if file.hasSuffix(".xcodeproj") {
+                projectType = .xcodeproj("\(file)")
+                continue
+            }
+            
+        }
+        return projectType
+    }()
     
     lazy var name: String = {
         return nameForPath(path: self.directoryPath)
@@ -143,9 +186,8 @@ public class Project {
     }()
     
     
-    init(directoryPath: String, projectType: ProjectType) {
+    init(directoryPath: String) {
         self.directoryPath = directoryPath
-        self.projectType = projectType
     }
 
 }
@@ -178,40 +220,13 @@ extension Project {
             }
         }
     }
-    
-    private static func check(directoryPath: String) -> ProjectType? {
-        
-        let fileManager = FileManager.default
-        
-        guard let fileList = try? fileManager.contentsOfDirectory(atPath: directoryPath) else {
+
+    static func project(directoryPath: String = FileManager.default.currentDirectoryPath) -> Project?{
+        let exist = FileManager.default.fileExists(atPath: directoryPath)
+        if !exist {
             return nil
         }
-        var projectType: ProjectType?
-        
-        for file in fileList {
-            if file == "Pods.xcodeproj" {
-                return nil
-            }
-            if file.hasSuffix(".xcworkspace") {
-                projectType = .xcworkspace("\(file)")
-                break
-            }
-            
-            if file.hasSuffix(".xcodeproj") {
-                projectType = .xcodeproj("\(file)")
-                continue
-            }
-            
-        }
-        return projectType
-    }
-    
-    static func project(directoryPath: String = FileManager.default.currentDirectoryPath) -> Project? {
-        
-        guard let projectType = check(directoryPath: directoryPath) else {
-            return nil
-        }
-        return Project(directoryPath: directoryPath, projectType: projectType)
+        return Project(directoryPath: directoryPath)
     }
 }
 
