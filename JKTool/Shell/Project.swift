@@ -18,13 +18,40 @@ public func schemeForPath(path: String) ->String {
 
 public class Project {
     
-    public  enum ProjectType: String {
-        case xcodeproj = ".xcodeproj"
-        case scworkspace = ".scworkspace"
+    public  enum ProjectType {
+        case xcodeproj(String)
+        case xcworkspace(String)
+        case other
+        
+        func vaild() -> Bool {
+            switch self {
+            case .xcodeproj(_):
+                return true
+            case .xcworkspace(_):
+                return true
+            case .other:
+                return false
+            }
+        }
+        
         func isWorkSpace() -> Bool {
             switch self {
-            case .xcodeproj: return false
-            case .scworkspace: return true
+            case .xcodeproj(_):
+                return false
+            case .xcworkspace(_):
+                return true
+            case .other:
+                return false
+            }
+        }
+        func name() -> String {
+            switch self {
+            case .xcodeproj(let string):
+                return string
+            case .xcworkspace(let string):
+                return string
+            case .other:
+                return ""
             }
         }
     }
@@ -33,15 +60,38 @@ public class Project {
     
     let directoryPath: String
     
-    let projectType: ProjectType
+    lazy var projectType: ProjectType = {
+        
+        var projectType = ProjectType.other
+        
+        let fileManager = FileManager.default
+        
+        guard let fileList = try? fileManager.contentsOfDirectory(atPath: self.directoryPath) else {
+            return projectType
+        }
+        
+        for file in fileList {
+            if file == "Pods.xcodeproj" {
+                return projectType
+            }
+            if file.hasSuffix(".xcworkspace") {
+                projectType = .xcworkspace("\(file)")
+                break
+            }
+            
+            if file.hasSuffix(".xcodeproj") {
+                projectType = .xcodeproj("\(file)")
+                continue
+            }
+            
+        }
+        return projectType
+    }()
     
     lazy var name: String = {
         return nameForPath(path: self.directoryPath)
     }()
     
-    lazy var scheme: String = {
-        return schemeForPath(path: self.directoryPath)
-    }()
     lazy var modulefilePath: String = {
         return self.directoryPath.appending("/Modulefile")
     }()
@@ -65,7 +115,6 @@ public class Project {
                 // The line was all whitespace.
                 return
             }
-            
             
             var remainingString = scannerWithComments.string.replacingOccurrences(of: "\"", with: "")
             
@@ -127,6 +176,7 @@ public class Project {
         return buildPath
     }()
     
+    
     lazy var rootProject: Project = {
         guard self.directoryPath.contains("/Module/checkouts") else {
             return self
@@ -136,9 +186,8 @@ public class Project {
     }()
     
     
-    init(directoryPath: String, projectType: ProjectType) {
+    init(directoryPath: String) {
         self.directoryPath = directoryPath
-        self.projectType = projectType
     }
 
 }
@@ -146,57 +195,38 @@ public class Project {
 
 extension Project {
     
-    private static func check(directoryPath: String) -> ProjectType? {
-        
-        let fileManager = FileManager.default
-        
-        guard let fileList = try? fileManager.contentsOfDirectory(atPath: directoryPath) else {
-            return nil
+    func writeRecordList(recordList: Array<String>, quiet: Bool?) {
+        // 检查是否还有subModule。没有则直接return
+        if recordList.isEmpty {
+            return
         }
-        var projectType: ProjectType?
         
-        for file in fileList {
-            if file == "Pods.xcodeproj" {
-                return nil
+        // 过滤当前module的subModule，按照工程层级
+        var list:[String] = []
+        for item in recordList {
+            if !list.contains(item) {
+                list.append(item)
             }
-            if file.hasSuffix(".scworkspace") {
-                projectType = ProjectType.scworkspace
-                break
-            }
-            
-            if file.hasSuffix(".xcodeproj") {
-                projectType = ProjectType.xcodeproj
-                break
-            }
-            
         }
-        return projectType
+        // 写入当前工程所有subModule
+        let oldRecordList = self.recordList
+        if oldRecordList.isEmpty || !list.elementsEqual(oldRecordList)  {
+            do {
+                let data = try JSONSerialization.data(withJSONObject: list, options: .fragmentsAllowed)
+                try data.write(to: URL(fileURLWithPath: self.recordListPath), options: .atomicWrite)
+                if quiet != false {po(tip: "【\(self.name)】Modulefile.recordList 写入成功")}
+            } catch {
+                po(tip: "【\(self.name)】Modulefile.recordList 写入失败",type: .error)
+            }
+        }
     }
-    
-    static func project(directoryPath: String = FileManager.default.currentDirectoryPath) -> Project? {
-        let fileManager = FileManager.default
-        
-        guard let fileList = try? fileManager.contentsOfDirectory(atPath: directoryPath) else {
+
+    static func project(directoryPath: String = FileManager.default.currentDirectoryPath) -> Project?{
+        let exist = FileManager.default.fileExists(atPath: directoryPath)
+        if !exist {
             return nil
         }
-        var isProjectDirectoryPath = false
-        
-        for file in fileList {
-            if file == "Pods.xcodeproj" {
-                return nil
-            }
-            
-            isProjectDirectoryPath = file.hasSuffix(".xcodeproj") || file.hasSuffix(".scworkspace")
-            if isProjectDirectoryPath {
-                break
-            }
-        
-        }
-        
-        guard let projectType = check(directoryPath: directoryPath) else {
-            return nil
-        }
-        return Project(directoryPath: directoryPath, projectType: projectType)
+        return Project(directoryPath: directoryPath)
     }
 }
 

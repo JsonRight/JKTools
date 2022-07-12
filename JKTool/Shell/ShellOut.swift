@@ -131,13 +131,13 @@ public extension ShellOutCommand {
     }
 
     /// Clone a git repository at a given URL
-    static func gitClone(url: URL, to path: String? = nil, branch: String? = nil, allowingPrompt: Bool = true) -> ShellOutCommand {
-        return gitClone(url: url.absoluteString ,to: path, branch: branch, allowingPrompt: allowingPrompt)
+    static func gitClone(url: URL, to path: String? = nil, branch: String? = nil) -> ShellOutCommand {
+        return gitClone(url: url.absoluteString ,to: path, branch: branch)
     }
     
     /// Clone a git repository at a given URLString
-    static func gitClone(url: String, to path: String? = nil, branch: String? = nil, allowingPrompt: Bool = true) -> ShellOutCommand {
-        var command = "\(git(allowingPrompt: allowingPrompt)) clone \(url)"
+    static func gitClone(url: String, to path: String? = nil, branch: String? = nil) -> ShellOutCommand {
+        var command = "git clone \(url)"
         path.map { command.append(argument: $0) }
         command.append(" -b \(branch ?? "master")")
         command.append(" --quiet")
@@ -146,8 +146,8 @@ public extension ShellOutCommand {
     }
 
     /// Create a git commit with a given message (also adds all untracked file to the index)
-    static func gitCommit(message: String, allowingPrompt: Bool = true) -> ShellOutCommand {
-        var command = "\(git(allowingPrompt: allowingPrompt)) add . && git commit -a -m"
+    static func gitCommit(message: String) -> ShellOutCommand {
+        var command = "git add . && git commit -a -m"
         command.append(argument: message)
         command.append(" --quiet")
 
@@ -155,9 +155,8 @@ public extension ShellOutCommand {
     }
 
     /// Perform a git push
-    static func gitPush(remote: String? = nil, branch: String? = nil, allowingPrompt: Bool = true) -> ShellOutCommand {
-        var command = "\(git(allowingPrompt: allowingPrompt)) push"
-        remote.map { command.append(argument: $0) }
+    static func gitPush(branch: String? = nil) -> ShellOutCommand {
+        var command = "git push origin"
         branch.map { command.append(argument: $0) }
         command.append(" --quiet")
 
@@ -165,53 +164,83 @@ public extension ShellOutCommand {
     }
 
     /// Perform a git pull
-    static func gitPull(remote: String? = nil, branch: String? = nil, allowingPrompt: Bool = true) -> ShellOutCommand {
-        var command = "\(git(allowingPrompt: allowingPrompt)) pull"
-        remote.map { command.append(argument: $0) }
-        branch.map { command.append(argument: $0) }
+    static func gitPull() -> ShellOutCommand {
+        var command = "git pull origin"
         command.append(" --quiet")
 
         return ShellOutCommand(string: command)
     }
     
     /// Perform a git pull
-    static func gitPrune(remote: String? = nil, branch: String? = nil, allowingPrompt: Bool = true) -> ShellOutCommand {
-        var command = "\(git(allowingPrompt: allowingPrompt)) remote prune origin"
-        remote.map { command.append(argument: $0) }
-        branch.map { command.append(argument: $0) }
-
+    static func gitPrune() -> ShellOutCommand {
+        let command = "git remote prune origin"
         return ShellOutCommand(string: command)
     }
     
     /// Perform a git Rebase
-    static func gitRebase(remote: String? = nil, masterBranch: String? = nil, allowingPrompt: Bool = true) -> ShellOutCommand {
-        var command = "\(git(allowingPrompt: allowingPrompt)) rebase -i"
-//        remote.map { command.append(argument: $0) }
-        masterBranch.map { command.append(argument: $0) }
+    static func gitRebase(branch: String? = nil) -> ShellOutCommand {
+        var command = "git rebase -i"
+        branch.map { command.append(argument: $0) }
         command.append(" --quiet")
 
         return ShellOutCommand(string: command)
     }
     
-    /// Perform a git tag
-    static func gitAddTag(tag: String, allowingPrompt: Bool = true) -> ShellOutCommand {
-        var command = "\(git(allowingPrompt: allowingPrompt)) tag \(tag)"
+    /// Perform a git merge
+    static func gitMerge(branch: String, squash: Bool?) -> ShellOutCommand {
+        var command = "git merge \(branch)"
+        if squash != false {
+            command.append(" --squash")
+        }
+        command.append(" --quiet")
+
+        return ShellOutCommand(string: command)
+    }
+    
+    /// Perform a git create branch
+    static func gitCreateBranch(branch: String) -> ShellOutCommand {
+        var command = "git branch \(branch)"
         command.append(" --quiet && ")
-        command.append("\(git(allowingPrompt: allowingPrompt)) push origin \(tag)")
+        command.append("git push origin \(branch)")
+        return ShellOutCommand(string: command)
+    }
+    
+    /// Perform a git delete branch
+    static func gitDelLocalBranch(branch: String? = nil) -> ShellOutCommand {
+        var command = "git branch -d"
+        branch.map { command.append(argument: $0) }
+        command.append(" --quiet")
+
+        return ShellOutCommand(string: command)
+    }
+    
+    /// Perform a git delete branch
+    static func gitDelOriginBranch(branch: String? = nil) -> ShellOutCommand {
+        var command = "git push origin -d"
+        branch.map { command.append(argument: $0) }
+        command.append(" --quiet")
+        return ShellOutCommand(string: command)
+    }
+    
+    /// Perform a git tag
+    static func gitAddTag(tag: String) -> ShellOutCommand {
+        var command = "git tag \(tag)"
+        command.append(" --quiet && ")
+        command.append("git push origin \(tag)")
         return ShellOutCommand(string: command)
     }
     
     /// del a git tag
-    static func gitDelTag(tag: String, allowingPrompt: Bool = true) -> ShellOutCommand {
-        var command = "\(git(allowingPrompt: allowingPrompt)) tag -d \(tag)"
+    static func gitDelTag(tag: String) -> ShellOutCommand {
+        var command = "git tag -d \(tag)"
         command.append(" --quiet && ")
-        command.append("\(git(allowingPrompt: allowingPrompt)) push origin :refs/tags/\(tag)")
+        command.append("git push origin :refs/tags/\(tag)")
         return ShellOutCommand(string: command)
     }
 
     /// Run a git submodule update
-    static func gitSubmoduleUpdate(initializeIfNeeded: Bool = true, recursive: Bool = true, allowingPrompt: Bool = true) -> ShellOutCommand {
-        var command = "\(git(allowingPrompt: allowingPrompt)) submodule update"
+    static func gitSubmoduleUpdate(initializeIfNeeded: Bool = true, recursive: Bool = true) -> ShellOutCommand {
+        var command = "git submodule update"
 
         if initializeIfNeeded {
             command.append(" --init")
@@ -226,27 +255,31 @@ public extension ShellOutCommand {
     }
 
     /// Checkout a given git branch
-    static func gitCheckout(branch: String) -> ShellOutCommand {
-        let command = "git checkout".appending(argument: branch)
-                                    .appending(" --quiet")
+    static func gitCheckout(branch: String, force: Bool = false) -> ShellOutCommand {
+        var command = "\(git(force: force)) checkout"
+        command.append(argument: branch)
+        command.append(" --quiet")
 
         return ShellOutCommand(string: command)
     }
     
-    /// Clone a git repository at a given URLString
     static func gitStatus() -> ShellOutCommand {
-         let command = "git diff"
+         let command = "git diff HEAD"
         return ShellOutCommand(string: command)
     }
     
-    /// Clone a git repository at a given URLString
-       static func gitCodeVerison() -> ShellOutCommand {
-            let command = "git rev-parse HEAD"
-           return ShellOutCommand(string: command)
-       }
+    static func gitCodeVerison() -> ShellOutCommand {
+        let command = "git rev-parse HEAD"
+       return ShellOutCommand(string: command)
+    }
+    
+    static func gitCodeReset() -> ShellOutCommand {
+        let command = "git reset --hard HEAD"
+       return ShellOutCommand(string: command)
+    }
 
-    private static func git(allowingPrompt: Bool) -> String {
-        return allowingPrompt ? "git" : "env GIT_TERMINAL_PROMPT=0 git"
+    private static func git(force: Bool) -> String {
+        return force ? "git --force" : "git"
     }
 }
 
@@ -393,208 +426,7 @@ public extension ShellOutCommand {
     }
 }
 
-/// IOS build Framework commands
-public extension ShellOutCommand {
-    /// IOS build Framework
-//    static func buildFrameworkIOS(projectName:String,projectFilePath:String, derivedDataPath: String,toPath: String?) -> ShellOutCommand {
-//        var release = "xcodebuild -project \(projectFilePath) -scheme \(projectName) -configuration Release -sdk iphoneos ONLY_ACTIVE_ARCH=NO ODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY= CARTHAGE=YES"
-//        var debug = "xcodebuild -project \(projectFilePath) -scheme \(projectName) -configuration Debug -arch x86_64 -sdk iphonesimulator  ONLY_ACTIVE_ARCH=NO ODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY= CARTHAGE=YES"
-////        var lipoArm64 = ""
-//        var mkdirUniversal = ""
-//        var cpUniversal = ""
-//        var lipo = ""
-//        var mkdir = ""
-//        var cp = ""
-//        let standarizedPath = URL(fileURLWithPath: (derivedDataPath as NSString).expandingTildeInPath).standardizedFileURL.path
-//        release += " -derivedDataPath \(standarizedPath)"
-//        debug += " -derivedDataPath \(standarizedPath)"
-//        mkdirUniversal = "mkdir " + standarizedPath + "/Build/Products/\(projectName)-Universal/"
-//        cpUniversal = "cp -R \(standarizedPath)/Build/Products/Release-iphoneos/\(projectName).framework \(standarizedPath)/Build/Products/\(projectName)-Universal/"
-//        lipo = "lipo -create \(standarizedPath)/Build/Products/Release-iphoneos/\(projectName).framework/\(projectName) \(standarizedPath)/Build/Products/Debug-iphonesimulator/\(projectName).framework/\(projectName) -output \(standarizedPath)/Build/Products/\(projectName)-Universal/\(projectName).framework/\(projectName)"
-//        if let toPath = toPath {
-//            mkdir = "mkdir -p " + toPath
-//            cp = "cp -R \(standarizedPath)/Build/Products/\(projectName)-Universal/\(projectName).framework \(toPath)"
-//        }
-//
-//        return ShellOutCommand(string:release + " && " + debug + " && " + mkdirUniversal + " && " + cpUniversal + " && " + lipo + " && " + mkdir + " && " + cp)
-//    }
-
-    static func buildDebugFrameworkIOS(projectName:String,projectFilePath:String, derivedDataPath: String) -> ShellOutCommand {
-        var debug = "xcodebuild -project \(projectFilePath) -scheme \(projectName) -configuration Debug -arch x86_64 -sdk iphonesimulator  ONLY_ACTIVE_ARCH=NO ODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY= CARTHAGE=YES BUILD_LIBRARY_FOR_DISTRIBUTION=YES"
-        let standarizedPath = URL(fileURLWithPath: (derivedDataPath as NSString).expandingTildeInPath).standardizedFileURL.path
-        debug += " -derivedDataPath \(standarizedPath)"
-        
-        return ShellOutCommand(string:debug)
-    }
-    
-    static func buildReleaseFrameworkIOS(projectName:String,projectFilePath:String, derivedDataPath: String) -> ShellOutCommand {
-        var release = "xcodebuild -project \(projectFilePath) -scheme \(projectName) -configuration Release -sdk iphoneos ONLY_ACTIVE_ARCH=NO ODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY= CARTHAGE=YES BUILD_LIBRARY_FOR_DISTRIBUTION=YES"
-        let standarizedPath = URL(fileURLWithPath: (derivedDataPath as NSString).expandingTildeInPath).standardizedFileURL.path
-        release += " -derivedDataPath \(standarizedPath)"
-        
-        return ShellOutCommand(string:release)
-    }
-    
-  
-}
-
-
-public extension ShellOutCommand {
-    static func createXCFrameworkIOS(projectName:String, derivedDataPath: String,toPath: String?) -> ShellOutCommand {
-        var mkdirUniversal = ""
-        var lipo = ""
-        var mkdir = ""
-        var cp = ""
-        
-        let standarizedPath = URL(fileURLWithPath: (derivedDataPath as NSString).expandingTildeInPath).standardizedFileURL.path
-        
-        mkdirUniversal = "mkdir " + standarizedPath + "/Build/Products/\(projectName)-Universal/"
-        
-        lipo = " && xcodebuild -create-xcframework -framework \(standarizedPath)/Build/Products/Release-iphoneos/\(projectName).framework -framework \(standarizedPath)/Build/Products/Debug-iphonesimulator/\(projectName).framework -output \(standarizedPath)/Build/Products/\(projectName)-Universal/\(projectName).xcframework"
-        
-        if let toPath = toPath {
-            mkdir = " && mkdir -p " + toPath
-            cp = " && cp -R \(standarizedPath)/Build/Products/\(projectName)-Universal/\(projectName).xcframework \(toPath)"
-        }
-        
-        return ShellOutCommand(string:mkdirUniversal + lipo + mkdir + cp)
-    }
-}
-
-public extension ShellOutCommand {
-    static func lipoCreateFrameworkIOS(projectName:String, derivedDataPath: String,toPath: String?, needMerge: Bool) -> ShellOutCommand {
-        var mkdirUniversal = ""
-        var cpUniversal = ""
-        var lipo = ""
-        var mkdir = ""
-        var cp = ""
-        
-        let standarizedPath = URL(fileURLWithPath: (derivedDataPath as NSString).expandingTildeInPath).standardizedFileURL.path
-        
-        mkdirUniversal = "mkdir " + standarizedPath + "/Build/Products/\(projectName)-Universal/"
-        cpUniversal = " && cp -R \(standarizedPath)/Build/Products/Release-iphoneos/\(projectName).framework \(standarizedPath)/Build/Products/\(projectName)-Universal/"
-        
-        
-        if needMerge {
-            lipo = " && lipo -create \(standarizedPath)/Build/Products/Release-iphoneos/\(projectName).framework/\(projectName) \(standarizedPath)/Build/Products/Debug-iphonesimulator/\(projectName).framework/\(projectName) -output \(standarizedPath)/Build/Products/\(projectName)-Universal/\(projectName).framework/\(projectName)"
-        }
-        
-        if let toPath = toPath {
-            mkdir = " && mkdir -p " + toPath
-            cp = " && cp -R \(standarizedPath)/Build/Products/\(projectName)-Universal/\(projectName).framework \(toPath)"
-        }
-        
-        return ShellOutCommand(string:mkdirUniversal + cpUniversal + lipo + mkdir + cp)
-    }
-}
-
-public extension ShellOutCommand {
-    
-//    static func buildStaticIOS(projectName:String,projectFilePath:String, derivedDataPath: String,toStaticPath: String?) -> ShellOutCommand {
-//        var release = "xcodebuild -project \(projectFilePath) -scheme \(projectName) -configuration Release -sdk iphoneos ONLY_ACTIVE_ARCH=NO ODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY= CARTHAGE=YES"
-//        var debug = " &&  xcodebuild -project \(projectFilePath) -scheme \(projectName) -configuration Debug -arch x86_64 -sdk iphonesimulator  ONLY_ACTIVE_ARCH=NO ODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY= CARTHAGE=YES"
-//        var mkdirUniversal = ""
-//        var lipo = ""
-//        var mkdir = ""
-//        var cpStatic = ""
-//        let standarizedPath = URL(fileURLWithPath: (derivedDataPath as NSString).expandingTildeInPath).standardizedFileURL.path
-//        release += " -derivedDataPath \(standarizedPath)"
-//        debug += " -derivedDataPath \(standarizedPath)"
-//        mkdirUniversal = " && mkdir " + standarizedPath + "/Build/Products/\(projectName)-Universal/"
-//        lipo = " && lipo -create \(standarizedPath)/Build/Products/Release-iphoneos/\(projectName).a \(standarizedPath)/Build/Products/Debug-iphonesimulator/\(projectName).a -output \(standarizedPath)/Build/Products/\(projectName)-Universal/\(projectName).a"
-//        if let toStaticPath = toStaticPath {
-//            mkdir = " && mkdir -p " + toStaticPath
-//            cpStatic = " && cp -R \(standarizedPath)/Build/Products/\(projectName)-Universal/\(projectName).a \(toStaticPath)"
-//        }
-//
-//        return ShellOutCommand(string:release + debug + mkdirUniversal + lipo + mkdir + cpStatic)
-//    }
-    
-    /// IOS build Static.a
-    static func buildDebugStaticIOS(projectName:String,projectFilePath:String, derivedDataPath: String) -> ShellOutCommand {
-        var debug = "xcodebuild -project \(projectFilePath) -scheme \(projectName) -configuration Debug -arch x86_64 -sdk iphonesimulator  ONLY_ACTIVE_ARCH=NO ODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY= CARTHAGE=YES"
-        
-        let standarizedPath = URL(fileURLWithPath: (derivedDataPath as NSString).expandingTildeInPath).standardizedFileURL.path
-        debug += " -derivedDataPath \(standarizedPath)"
-        return ShellOutCommand(string:debug)
-    }
-    
-    static func buildReleaseStaticIOS(projectName:String,projectFilePath:String, derivedDataPath: String) -> ShellOutCommand {
-        var release = "xcodebuild -project \(projectFilePath) -scheme \(projectName) -configuration Release -sdk iphoneos ONLY_ACTIVE_ARCH=NO ODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY= CARTHAGE=YES"
-        let standarizedPath = URL(fileURLWithPath: (derivedDataPath as NSString).expandingTildeInPath).standardizedFileURL.path
-        release += " -derivedDataPath \(standarizedPath)"
-        return ShellOutCommand(string:release)
-    }
-    
-    static func lipoCreateStaticIOS(projectName:String, derivedDataPath: String,toStaticPath: String?, needMerge: Bool) -> ShellOutCommand {
-        var mkdirUniversal = ""
-        var lipo = ""
-        var mkdir = ""
-        var cpStatic = ""
-        let standarizedPath = URL(fileURLWithPath: (derivedDataPath as NSString).expandingTildeInPath).standardizedFileURL.path
-        mkdirUniversal = "mkdir " + standarizedPath + "/Build/Products/\(projectName)-Universal/"
-        lipo = " && lipo -create \(standarizedPath)/Build/Products/Release-iphoneos/\(projectName).a \(standarizedPath)/Build/Products/Debug-iphonesimulator/\(projectName).a -output \(standarizedPath)/Build/Products/\(projectName)-Universal/\(projectName).a"
-        if let toStaticPath = toStaticPath {
-            mkdir = " && mkdir -p " + toStaticPath
-            cpStatic = " && cp -R \(standarizedPath)/Build/Products/\(projectName)-Universal/\(projectName).a \(toStaticPath)"
-        }
-        
-        return ShellOutCommand(string:mkdirUniversal + lipo + mkdir + cpStatic)
-    }
-    
-    /// IOS copy Header
-    static func copyStaticHeaderIOS(projectName:String,projectFilePath:String, derivedDataPath: String,toHeaderPath: String?) -> ShellOutCommand {
-        var mkdir = ""
-        var cpHeader = ""
-        let standarizedPath = URL(fileURLWithPath: (derivedDataPath as NSString).expandingTildeInPath).standardizedFileURL.path
-        if let toHeaderPath = toHeaderPath {
-            mkdir = "mkdir -p " + toHeaderPath
-            cpHeader = "cp -R \(standarizedPath)/Build/Products/Release-iphoneos/include/\(projectName) \(toHeaderPath)"
-        }
-        return ShellOutCommand(string: mkdir + " && " + cpHeader)
-    }
-}
-
-/// IOS build Bundle commands
-public extension ShellOutCommand {
-    /// IOS build Bundle
-    static func buildBundleIOS(projectName:String,projectFilePath:String, derivedDataPath: String?,toBundlePath: String?) -> ShellOutCommand {
-        var bundle = "xcodebuild -project \(projectFilePath) -scheme \(projectName)Bundle -configuration Release -sdk iphoneos"
-        var mkdir = ""
-        var cpBundle = ""
-        if let derivedDataPath = derivedDataPath {
-            let standarizedPath = URL(fileURLWithPath: (derivedDataPath as NSString).expandingTildeInPath).standardizedFileURL.path
-            if !derivedDataPath.isEmpty && !standarizedPath.isEmpty {
-                bundle +=  " -derivedDataPath \(standarizedPath)"
-                if let toBundlePath = toBundlePath {
-                    mkdir = "mkdir -p " + toBundlePath
-                    cpBundle = "cp -R \(standarizedPath)/Build/Products/Release-iphoneos/\(projectName)Bundle.bundle \(toBundlePath)"
-                }
-            }
-        }
-        return ShellOutCommand(string: bundle + " && " + mkdir + " && " + cpBundle)
-    }
-}
-
-/// IOS archive upload fir  commands
-public extension ShellOutCommand {
-    /// IOS archive
-    static func archiveIOS(scheme:String,projectPath:String,config:String, exportName:String) -> ShellOutCommand {
-        let clean = "xcodebuild clean -workspace \(scheme).xcworkspace -scheme \(scheme) -configuration \(config)"
-        let archive = "xcodebuild archive -workspace \(scheme).xcworkspace -scheme \(scheme) -configuration \(config) -destination generic/platform=iOS -archivePath \(projectPath)/Build/\(config)/\(scheme).xcarchive"
-        let export = "xcodebuild -exportArchive -archivePath \(projectPath)/Build/\(config)/\(scheme).xcarchive -exportPath \(projectPath)/Build/\(config) -exportOptionsPlist \(projectPath)/\(exportName)"
-        return ShellOutCommand(string:clean + " && " + archive + " && " + export)
-    }
-    
-    /// IOS upload
-    static func uploadIOS(scheme:String,projectPath:String,config:String,desc:String?) -> ShellOutCommand {
-        let upload = "fir publish \(projectPath)/Build/\(config)/\(scheme).ipa \(String(describing: desc))"
-        return ShellOutCommand(string:upload)
-    }
-
-}
-
-/// IOS build Bundle commands
+///
 public extension ShellOutCommand {
     /// IOS framework cache
     static func readVerisonIOS(plistPath:String,plistName:String) -> ShellOutCommand {
@@ -821,3 +653,68 @@ extension String {
     }
 }
 
+public extension String {
+    
+    func connecting(andCommand: String?) -> String {
+        if let andCommand = andCommand {
+            return "\(self) && \(andCommand)"
+        }
+        return self
+    }
+    
+    mutating func connected(andCommand: String?) {
+        self = connecting(andCommand: andCommand)
+    }
+    
+    func connecting(spaceCommand: String?) -> String {
+        if let spaceCommand = spaceCommand {
+            return "\(self) \(spaceCommand)"
+        }
+        return self
+    }
+    
+    mutating func connected(spaceCommand: String?) {
+        self = connecting(spaceCommand: spaceCommand)
+    }
+    
+    func connecting(orCommand: String?) -> String {
+        if let orCommand = orCommand {
+            return "\(self) || \(orCommand)"
+        }
+        return self
+    }
+    
+    mutating func connected(orCommand: String?) {
+        self = connecting(orCommand: orCommand)
+    }
+   
+}
+
+
+public extension String {
+    func convertRelativePath(absolutPath: String = FileManager.default.currentDirectoryPath) -> String {
+        
+        if self.hasPrefix("/") {
+            return self
+        }
+        
+        guard var path = self.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),let urlStr = absolutPath.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed), var url = URL(string: urlStr) else {
+            return self
+        }
+        
+        while path.hasPrefix("../") {
+            let index = path.index(path.startIndex, offsetBy: 3)
+            path = String(path[index...])
+            url.deleteLastPathComponent()
+        }
+        
+        while path.hasPrefix("./") {
+            let index = path.index(path.startIndex, offsetBy: 2)
+            path = String(path[index...])
+            url.deleteLastPathComponent()
+        }
+        
+        return url.appendingPathComponent(path).absoluteString.removingPercentEncoding ?? ""
+        
+    }
+}

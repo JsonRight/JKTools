@@ -7,22 +7,249 @@
 //
 
 import Foundation
-public struct ConfigType {
-    public let name: String
 
-    public init(_ name: String) {
-        self.name = name
-    }
+public protocol ExecutableTypeProtocol {
+    var value: String {set get}
+    init(_ value: String)
 }
 
-extension ConfigType: Equatable {
-    public static func == (lhs: ConfigType, rhs: ConfigType) -> Bool {
-        return lhs.name == rhs.name
+public class ExecutableType: ExecutableTypeProtocol, CustomStringConvertible, Equatable {
+    public var value: String
+    
+    required public init(_ value: String) {
+        self.value = value
     }
-}
-
-extension ConfigType: CustomStringConvertible {
+    
+    public static func == (lhs: ExecutableType, rhs: ExecutableType) -> Bool {
+        return lhs.value == rhs.value
+    }
+    
     public var description: String {
-        return name
+        return value
     }
+    
+}
+
+public class ConfigType: ExecutableType {
+    init(_ options: ConfigOptions) {
+        super.init(options.rawValue)
+    }
+    
+    required public init(_ value: String) {
+        super.init(value)
+    }
+}
+
+public class LibraryType: ExecutableType {
+    init(_ options: LibraryOptions) {
+        super.init(options.rawValue)
+    }
+    
+    required public init(_ value: String) {
+        super.init(value)
+    }
+}
+
+
+public enum LibraryOptions: String {
+    case Framework = "Framework"
+    case XCFramework = "XCFramework"
+    case Static = "Static"
+}
+
+public enum ConfigOptions: String {
+    case Debug = "Debug"
+    case Release = "Release"
+    public init(_ string: String) {
+        if string == "Release" {
+            self = .Release
+        }else{
+            self = .Debug
+        }
+    }
+    public func archs()-> String {
+        switch self {
+        case .Debug:
+            return "x86_64 i386"
+        case .Release:
+            return "arm64 armv7"
+        }
+    }
+}
+
+public enum ValidArchs {
+    case framework(ConfigOptions)
+    case xcframework(ConfigOptions)
+    case a(ConfigOptions)
+    
+    public func archs()-> String {
+        switch self {
+        case .framework(let configOptions):
+            switch configOptions {
+            case .Debug:
+                return "x86_64 i386"
+            case .Release:
+                return "arm64 armv7"
+            }
+        case .xcframework(let configOptions):
+            switch configOptions {
+            case .Debug:
+                return "x86_64 i386"
+            case .Release:
+                return "arm64 armv7"
+            }
+        case .a(let configOptions):
+            switch configOptions {
+            case .Debug:
+                return "x86_64 i386"
+            case .Release:
+                return "arm64 armv7"
+            }
+        }
+    }
+}
+
+enum Platform: String {
+    case iOS,iPadOS,macOS,tvOS,watchOS,carPlayOS
+    
+    init(_ string: String) {
+        switch string {
+        case Platform.iOS.rawValue:
+            self = .iOS
+        case Platform.iPadOS.rawValue:
+            self = .iPadOS
+        case Platform.macOS.rawValue:
+            self = .macOS
+        case Platform.tvOS.rawValue:
+            self = .tvOS
+        case Platform.watchOS.rawValue:
+            self = .watchOS
+        case Platform.carPlayOS.rawValue:
+            self = .carPlayOS
+        default:
+            self = .iOS
+        }
+    }
+    
+    func sdk(_ config: ConfigOptions) -> String {
+        switch self {
+        case .iOS where config == .Debug:
+            return "iphonesimulator"
+        case .iOS:
+            return "iphoneos"
+        case .iPadOS where config == .Debug:
+            return "ipadsimulator"
+        case .iPadOS:
+            return "ipados"
+        case .macOS:
+            return "macosx"
+        case .tvOS where config == .Debug:
+            return "appletvsimulator"
+        case .tvOS:
+            return "appletvos"
+        case .watchOS where config == .Debug:
+            return "watchsimulator"
+        case .watchOS:
+            return "watchos"
+        case .carPlayOS where config == .Debug:
+            return "carplaysimulator"
+        case .carPlayOS:
+            return "carplayos"
+        }
+    }
+    
+    func platform(_ config: ConfigOptions) -> String {
+        switch self {
+        case .iOS where config == .Debug:
+            return "iOS Simulator"
+        case .iOS:
+            return "iOS"
+        case .iPadOS where config == .Debug:
+            return "iPadOS Simulator"
+        case .iPadOS:
+            return "iPadOS"
+        case .macOS:
+            return "macOS"
+        case .tvOS where config == .Debug:
+            return "tvOS Simulator"
+        case .tvOS:
+            return "tvOS"
+        case .watchOS where config == .Debug:
+            return "watchOS Simulator"
+        case .watchOS:
+            return "watchOS"
+        case .carPlayOS where config == .Debug:
+            return "carPlayOS Simulator"
+        case .carPlayOS:
+            return "carPlayOS"
+        }
+    }
+}
+
+struct ProjectConfigModel: Decodable {
+    
+    struct SaveConfigModel:Decodable {
+        
+        var nameSuffix: String
+        
+        var path: String
+        
+    }
+    
+    struct ActiveConfigModel:Decodable {
+        
+        var configuration: String
+        
+        var scheme: String
+        
+        var validArchs: [String]?
+        
+        var sdk: String
+        
+        var export: String
+        
+        var saveConfig: SaveConfigModel?
+        
+    }
+    
+    struct CertificateConfigModel:Decodable {
+        
+        var macPwd: String
+        
+        var p12sPath: String
+        
+        var p12Pwd: String
+        
+        var profilesPath: String
+        
+    }
+    
+    struct UploadConfigModel:Decodable {
+        
+        var username: String
+        
+        var password: String
+        
+        var path: String
+        
+    }
+    
+    var activeConfig: ActiveConfigModel
+    
+    var certificateConfig: CertificateConfigModel
+    
+    var uploadConfig: UploadConfigModel
+    
+    var quiet: Bool?
+    
+}
+
+struct ProjectListsModel: Decodable {
+    struct ProjectModel: Decodable {
+        var configurations:[String]
+        var name: String
+        var schemes: [String]
+        var targets: [String]
+    }
+    var project: ProjectModel
 }
