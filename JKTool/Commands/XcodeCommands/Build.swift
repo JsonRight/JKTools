@@ -12,7 +12,7 @@ extension JKTool {
         static var configuration = CommandConfiguration(
             commandName: "build",
             _superCommandName: "JKTool",
-            abstract: "build",
+            abstract: "build部分命令对于固定工程格式封装",
             version: "1.0.0",
             subcommands: [Static.self,Framework.self,XCFramework.self],
             defaultSubcommand: Framework.self, helpNames: nil)

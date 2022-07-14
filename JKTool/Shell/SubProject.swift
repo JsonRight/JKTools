@@ -8,7 +8,7 @@
 
 import Foundation
 
-public class SubModule {
+public class SubProject {
     
     var source:String
     var url:String

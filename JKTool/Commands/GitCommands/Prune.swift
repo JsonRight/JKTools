@@ -27,8 +27,8 @@ extension JKTool.Git {
             
             func prune(project: Project){
                 do {
-                    try shellOut(to: .gitPrune(), at: project.directoryPath)
-                    if quiet != false {po(tip: "【\(project.name)】Prune完成", type: .tip)}
+                    let result = try shellOut(to: .gitPrune(), at: project.directoryPath)
+                    if quiet != false {po(tip: "【\(project.name)】Prune完成\n\(result)", type: .tip)}
                 } catch {
                     let error = error as! ShellOutError
                     po(tip: "【\(project.name)】 Prune失败\n" + error.message + error.output,type: .error)
@@ -45,10 +45,11 @@ extension JKTool.Git {
             }
             
             if quiet != false {po(tip: "======Prune工程开始======", type: .tip)}
-            
-            prune(project: project)
-            
+           
             if recursive != true {
+                
+                prune(project: project)
+                
                 return
             }
             
@@ -56,10 +57,12 @@ extension JKTool.Git {
         
                 guard let pro = Project.project(directoryPath: "\(project.checkoutsPath)/\(record)/") else {
                     po(tip: "\(record) 工程不存在，请检查 Modulefile.recordList 是否为最新内容",type: .warning)
-                    break
+                    continue
                 }
                 prune(project: pro)
             }
+            
+            prune(project: project)
             
             if quiet != false {po(tip: "======Prune工程结束======")}
         }

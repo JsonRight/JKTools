@@ -27,8 +27,8 @@ extension JKTool.Git {
             
             func status(project: Project){
                 do {
-                    try shellOut(to: .gitStatus(), at: project.directoryPath)
-                    if quiet != false { po(tip: "【\(project.name)】Status完成", type: .tip)}
+                    let status = try shellOut(to: .gitStatus(), at: project.directoryPath)
+                    if quiet != false { po(tip: "【\(project.name)】Status完成\n\(status)", type: .tip)}
                 } catch {
                     let error = error as! ShellOutError
                     po(tip: "【\(project.name)】 Status失败\n" + error.message + error.output,type: .error)
@@ -46,9 +46,10 @@ extension JKTool.Git {
             
             if quiet != false {po(tip: "======Status工程开始======", type: .tip)}
             
-            status(project: project)
-            
             if recursive != true {
+                
+                status(project: project)
+                
                 return
             }
             
@@ -56,11 +57,13 @@ extension JKTool.Git {
         
                 guard let pro = Project.project(directoryPath: "\(project.checkoutsPath)/\(record)/") else {
                     po(tip: "\(record) 工程不存在，请检查 Modulefile.recordList 是否为最新内容",type: .warning)
-                    break
+                    continue
                 }
                 
                 status(project: pro)
             }
+            
+            status(project: project)
             
             if quiet != false {po(tip: "======Status工程结束======")}
         }

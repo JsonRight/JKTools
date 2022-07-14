@@ -62,9 +62,10 @@ extension JKTool.Git.Tag {
             
             if quiet != false {po(tip: "======Add Tag开始======", type: .tip)}
             
-            addTag(project: project)
-            
             if recursive != true {
+                
+                addTag(project: project)
+                
                 return
             }
             
@@ -76,6 +77,8 @@ extension JKTool.Git.Tag {
                 }
                 addTag(project: pro)
             }
+            
+            addTag(project: project)
             
             if quiet != false {po(tip: "======Add Tag结束======")}
         }
@@ -123,9 +126,10 @@ extension JKTool.Git.Tag {
             
             if quiet != false {po(tip: "======Del Tag开始======", type: .tip)}
             
-            delTag(project: project)
-            
             if recursive != true {
+                
+                delTag(project: project)
+                
                 return
             }
             
@@ -133,10 +137,12 @@ extension JKTool.Git.Tag {
         
                 guard let pro = Project.project(directoryPath: "\(project.checkoutsPath)/\(record)/") else {
                     po(tip: "\(record) 工程不存在，请检查 Modulefile.recordList 是否为最新内容",type: .warning)
-                    break
+                    continue
                 }
                 delTag(project: pro)
             }
+            
+            delTag(project: project)
             
             if quiet != false {po(tip: "======Del Tag结束======")}
         }

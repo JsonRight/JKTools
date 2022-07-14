@@ -103,8 +103,8 @@ public class Project {
             return ""
         }
     }()
-    lazy var moduleList:[SubModule] = {
-        var list:[SubModule] = []
+    lazy var moduleList:[SubProject] = {
+        var list:[SubProject] = []
         self.modulefile.enumerateLines { (line, stop) in
             let scannerWithComments = Scanner(string: line)
 
@@ -136,7 +136,7 @@ public class Project {
                 
             }
             
-            let module = SubModule(source: arr[0], url: arr[1], branch: (arr.count >= 3) ? (arr[2]) : "master" )
+            let module = SubProject(source: arr[0], url: arr[1], branch: (arr.count >= 3) ? (arr[2]) : "master" )
             list.append(module)
         }
         return list
@@ -195,20 +195,20 @@ public class Project {
 
 extension Project {
     
-    func writeRecordList(recordList: Array<String>, quiet: Bool?) {
-        // 检查是否还有subModule。没有则直接return
+    func writeRecordList(recordList: Array<String>, quiet: Bool?) -> [String] {
+        // 检查是否还有SubProject。没有则直接return
         if recordList.isEmpty {
-            return
+            return []
         }
         
-        // 过滤当前module的subModule，按照工程层级
+        // 过滤当前module的SubProject，按照工程层级
         var list:[String] = []
         for item in recordList {
             if !list.contains(item) {
                 list.append(item)
             }
         }
-        // 写入当前工程所有subModule
+        // 写入当前工程所有SubProject
         let oldRecordList = self.recordList
         if oldRecordList.isEmpty || !list.elementsEqual(oldRecordList)  {
             do {
@@ -218,7 +218,14 @@ extension Project {
             } catch {
                 po(tip: "【\(self.name)】Modulefile.recordList 写入失败",type: .error)
             }
+            return oldRecordList.compactMap { record in
+                if !list.contains(record) {
+                    return record
+                }
+                return nil
+            }
         }
+        return []
     }
 
     static func project(directoryPath: String = FileManager.default.currentDirectoryPath) -> Project?{

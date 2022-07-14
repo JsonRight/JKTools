@@ -29,6 +29,13 @@ extension JKTool.Git {
         mutating func run() {
             
             func commit(project: Project){
+                let status = try? shellOut(to: .gitStatus(), at: project.directoryPath)
+                
+                guard  status?.count ?? 0 > 0 else {
+                    po(tip: "【\(project.name)】 没有需要提交的内容\n",type: .tip)
+                    return
+                }
+                
                 do {
                     try shellOut(to: .gitCommit(message: message), at: project.directoryPath)
                     if quiet != false {po(tip: "【\(project.name)】Commit完成", type: .tip)}
@@ -41,6 +48,13 @@ extension JKTool.Git {
                 return po(tip: "\(path ?? FileManager.default.currentDirectoryPath)目录没有检索到工程", type: .error)
             }
             
+            let status = try? shellOut(to: .gitStatus(), at: project.directoryPath)
+            
+            guard  status?.count ?? 0 > 0 else {
+                po(tip: "【\(project.name)】 没有需要提交的内容\n",type: .tip)
+                return
+            }
+            
             guard project.rootProject == project else {
                 commit(project: project)
                return
@@ -48,9 +62,8 @@ extension JKTool.Git {
             
             if quiet != false {po(tip: "======Commit工程开始======", type: .tip)}
             
-            commit(project: project)
-            
             if recursive != true {
+                commit(project: project)
                 return
             }
             
@@ -58,10 +71,12 @@ extension JKTool.Git {
         
                 guard let pro = Project.project(directoryPath: "\(project.checkoutsPath)/\(record)/") else {
                     po(tip: "\(record) 工程不存在，请检查 Modulefile.recordList 是否为最新内容",type: .warning)
-                    break
+                    continue
                 }
                 commit(project: pro)
             }
+            
+            commit(project: project)
             
             if quiet != false {po(tip: "======Commit工程完成======")}
         }

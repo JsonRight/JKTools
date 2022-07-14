@@ -36,7 +36,7 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       launchStyle = "0"
       useCustomWorkingDirectory = "YES"
-      customWorkingDirectory = "/Users/jiangkui/Desktop/&#x8fd8;&#x5457;App/HB_App/LBKShell"
+      customWorkingDirectory = "/Users/jiangkui/Desktop/JKProject/Notebook"
       ignoresPersistentStateOnLaunch = "NO"
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
@@ -54,27 +54,47 @@
       <CommandLineArguments>
          <CommandLineArgument
             argument = "git"
+            isEnabled = "YES">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "submodule"
             isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "squash"
+            isEnabled = "YES">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "push"
             isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
-            argument = "hehe"
+            argument = "update"
             isEnabled = "NO">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "sub"
+            isEnabled = "NO">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "commit"
+            isEnabled = "NO">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "feature/jiangkui/test1"
+            isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "master"
-            isEnabled = "NO">
+            isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
-            argument = "wawawa"
-            isEnabled = "NO">
+            argument = "hehe"
+            isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "true"
-            isEnabled = "NO">
+            isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "false"
@@ -98,7 +118,7 @@
          </CommandLineArgument>
          <CommandLineArgument
             argument = "archive"
-            isEnabled = "YES">
+            isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "scheme"
@@ -106,7 +126,7 @@
          </CommandLineArgument>
          <CommandLineArgument
             argument = "config"
-            isEnabled = "YES">
+            isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "default"
@@ -114,7 +134,7 @@
          </CommandLineArgument>
          <CommandLineArgument
             argument = "&quot;/Users/jiangkui/Desktop/&#x8fd8;&#x5457;App/HB_App/LBKShell/DefaultConfig.jsonc&quot;"
-            isEnabled = "YES">
+            isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "Loan"
@@ -138,7 +158,7 @@
          </CommandLineArgument>
          <CommandLineArgument
             argument = "true"
-            isEnabled = "NO">
+            isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "false"

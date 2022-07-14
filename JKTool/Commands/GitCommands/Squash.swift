@@ -38,19 +38,20 @@ extension JKTool.Git {
         mutating func run() {
             
             func squash(project: Project) {
-                JKTool.Git.Checkout.main([from,"\(false)","\(recursive ?? false)","\(false)",project.directoryPath])
                 
-                JKTool.Git.Pull.main(["\(recursive ?? false)","\(false)",project.directoryPath])
+                JKTool.Git.Checkout.main([from,"\(false)","\(false)","\(false)",project.directoryPath])
                 
-                JKTool.Git.Checkout.main([to,"\(false)","\(recursive ?? false)","\(false)",project.directoryPath])
+                JKTool.Git.Pull.main(["\(false)","\(false)",project.directoryPath])
                 
-                JKTool.Git.Pull.main(["\(recursive ?? false)","\(false)",project.directoryPath])
+                JKTool.Git.Checkout.main([to,"\(false)","\(false)","\(false)",project.directoryPath])
                 
-                JKTool.Git.Merge.main([from,"\(true)","\(recursive ?? false)","\(false)",project.directoryPath])
+                JKTool.Git.Pull.main(["\(false)","\(false)",project.directoryPath])
                 
-                JKTool.Git.Commit.main([message,"\(recursive ?? false)","\(false)",project.directoryPath])
+                JKTool.Git.Merge.main([from,"\(true)","\(false)","\(false)",project.directoryPath])
                 
-                JKTool.Git.Push.main(["\(recursive ?? false)","\(false)",project.directoryPath])
+                JKTool.Git.Commit.main([message,"\(false)","\(false)",project.directoryPath])
+                
+                JKTool.Git.Push.main([to,"\(false)","\(false)",project.directoryPath])
                 
                 if let _ = del {
                     
@@ -66,6 +67,12 @@ extension JKTool.Git {
                 return po(tip: "\(path ?? FileManager.default.currentDirectoryPath)目录没有检索到工程", type: .error)
             }
             
+            let status = try? shellOut(to: .gitStatus(), at: project.directoryPath)
+            
+            guard  status?.count ?? 0 <= 0 else {
+                return po(tip: "【\(project.name)】 存在需要提交的内容",type: .error)
+            }
+            
             guard project.rootProject == project else {
                 
                 squash(project: project)
@@ -74,20 +81,35 @@ extension JKTool.Git {
             
             if quiet != false {po(tip: "======Merge squash工程开始======", type: .tip)}
             
-            squash(project: project)
             if recursive != true {
+                
+                squash(project: project)
                 return
+            }
+            
+            for record in project.recordList {
+                guard let pro = Project.project(directoryPath: "\(project.checkoutsPath)/\(record)/") else {
+                    po(tip: "\(record) 工程不存在，请检查 Modulefile.recordList 是否为最新内容",type: .warning)
+                    continue
+                }
+                let status = try? shellOut(to: .gitStatus(), at: pro.directoryPath)
+                
+                guard  status?.count ?? 0 <= 0 else {
+                    return po(tip: "【\(pro.name)】 存在需要提交的内容",type: .error)
+                }
             }
             
             for record in project.recordList {
         
                 guard let pro = Project.project(directoryPath: "\(project.checkoutsPath)/\(record)/") else {
                     po(tip: "\(record) 工程不存在，请检查 Modulefile.recordList 是否为最新内容",type: .warning)
-                    break
+                    continue
                 }
                 
                 squash(project: pro)
             }
+            
+            squash(project: project)
             
             if quiet != false {po(tip: "======Merge squash工程结束======")}
         }

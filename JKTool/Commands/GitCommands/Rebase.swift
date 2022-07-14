@@ -27,10 +27,11 @@ extension JKTool.Git {
             }
             if quiet != false {po(tip: "======【\(project.name)】Rebase开始======")}
             do {
-                try shellOut(to: .gitRebase(branch: branch),at: project.directoryPath)
+                let result = try shellOut(to: .gitRebase(branch: branch),at: project.directoryPath)
+                po(tip: "【\(project.name)】Rebase[\(branch)]完成\n\(result)", type: .tip)
             } catch {
                 let error = error as! ShellOutError
-                po(tip:  error.message + error.output,type: .error)
+                po(tip: "【\(project.name)】Rebase[\(branch)]失败\n" + error.message + error.output,type: .error)
             }
             if quiet != false {po(tip: "======【\(project.name)】Rebase完成======")}
         }

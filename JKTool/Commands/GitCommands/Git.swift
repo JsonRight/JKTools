@@ -10,7 +10,7 @@ extension JKTool {
         static var configuration = CommandConfiguration(
             commandName: "git",
             _superCommandName: "JKTool",
-            abstract: "git",
+            abstract: "git部分命令对于固定工程格式封装",
             version: "1.0.0",
             subcommands: [Init.self,
                           Clone.self,
@@ -24,8 +24,7 @@ extension JKTool {
                           Branch.self,
                           Checkout.self,
                           Status.self,
-                          Reset.self,
                           Tag.self,
-                          subModule.self])
+                          SubModule.self])
     }
 }

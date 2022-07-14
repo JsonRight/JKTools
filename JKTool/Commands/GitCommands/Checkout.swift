@@ -33,7 +33,7 @@ extension JKTool.Git {
             func checkout(project: Project){
                 do {
                     try shellOut(to: .gitCheckout(branch: branch, force: force ?? false), at: project.directoryPath)
-                    if quiet != false {po(tip: "【\(project.name)】Checkout完成", type: .tip)}
+                    if quiet != false {po(tip: "【\(project.name)】Checkout[\(branch)]完成", type: .tip)}
                 } catch {
                     let error = error as! ShellOutError
                     po(tip: "【\(project.name)】 Checkout失败\n" + error.message + error.output,type: .error)
@@ -51,9 +51,10 @@ extension JKTool.Git {
             
             if quiet != false {po(tip: "======Checkout工程开始======", type: .tip)}
             
-            checkout(project: project)
-            
             if recursive != true {
+                
+                checkout(project: project)
+                
                 return
             }
             
@@ -61,10 +62,12 @@ extension JKTool.Git {
         
                 guard let pro = Project.project(directoryPath: "\(project.checkoutsPath)/\(record)/") else {
                     po(tip: "\(record) 工程不存在，请检查 Modulefile.recordList 是否为最新内容",type: .warning)
-                    break
+                    continue
                 }
                 checkout(project: pro)
             }
+            
+            checkout(project: project)
             
             if quiet != false {po(tip: "======Checkout工程结束======")}
         }

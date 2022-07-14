@@ -12,7 +12,7 @@ extension JKTool {
         static var configuration = CommandConfiguration(
             commandName: "archive",
             _superCommandName: "JKTool",
-            abstract: "archive",
+            abstract: "archive部分命令对于固定工程格式封装",
             version: "1.0.0",
             subcommands: [Config.self,Scheme.self],
             defaultSubcommand: Config.self

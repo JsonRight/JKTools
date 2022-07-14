@@ -13,6 +13,9 @@ extension JKTool.Git {
             _superCommandName: "git",
             abstract: "push")
         
+        @Argument(help: "push by branch")
+        var branch: String
+        
         @Argument(help: "递归子模块，default：false")
         var recursive: Bool?
         
@@ -26,11 +29,11 @@ extension JKTool.Git {
             
             func push(project: Project){
                 do {
-                    try shellOut(to: .gitPush(), at: project.directoryPath)
-                    if quiet != false {po(tip: "【\(project.name)】Push完成======", type: .tip)}
+                    try shellOut(to: .gitPush(branch: branch), at: project.directoryPath)
+                    if quiet != false {po(tip: "【\(project.name)】Push[\(branch)]完成", type: .tip)}
                 } catch {
                     let error = error as! ShellOutError
-                    po(tip: "【\(project.name)】 Push失败\n" + error.message + error.output,type: .error)
+                    po(tip: "【\(project.name)】 Push[\(branch)]失败\n" + error.message + error.output,type: .error)
                 }
             }
             
@@ -45,9 +48,9 @@ extension JKTool.Git {
             
             if quiet != false {po(tip: "======Push工程开始======", type: .tip)}
             
-            push(project: project)
-            
             if recursive != true {
+                push(project: project)
+                
                 return
             }
             
@@ -55,10 +58,12 @@ extension JKTool.Git {
         
                 guard let pro = Project.project(directoryPath: "\(project.checkoutsPath)/\(record)/") else {
                     po(tip: "\(record) 工程不存在，请检查 Modulefile.recordList 是否为最新内容",type: .warning)
-                    break
+                    continue
                 }
                 push(project: pro)
             }
+            
+            push(project: project)
             
             if quiet != false {po(tip: "======Push工程完成======")}
         }

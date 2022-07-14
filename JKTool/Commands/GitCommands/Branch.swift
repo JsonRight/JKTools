@@ -61,9 +61,10 @@ extension JKTool.Git.Branch {
             
             if quiet != false {po(tip: "======Create branch工程开始======", type: .tip)}
             
-            create(project: project)
-            
             if recursive != true {
+                
+                create(project: project)
+                
                 return
             }
             
@@ -71,10 +72,12 @@ extension JKTool.Git.Branch {
         
                 guard let pro = Project.project(directoryPath: "\(project.checkoutsPath)/\(record)/") else {
                     po(tip: "\(record) 工程不存在，请检查 Modulefile.recordList 是否为最新内容",type: .warning)
-                    break
+                    continue
                 }
                 create(project: pro)
             }
+            
+            create(project: project)
             
             if quiet != false {po(tip: "======Create branch工程结束======")}
         }

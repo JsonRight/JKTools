@@ -12,6 +12,7 @@
 		BF25A43D2615DE1D00CB2F1B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BF25A43C2615DE1D00CB2F1B /* Assets.xcassets */; };
 		BF25A47A26170AA300CB2F1B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BF25A47926170AA300CB2F1B /* Main.storyboard */; };
 		BF26C475287C31090071E3F9 /* Upload.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF26C474287C31090071E3F9 /* Upload.swift */; };
+		BF26C59D287FB7920071E3F9 /* SubModuleUpdate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF26C591287FB7910071E3F9 /* SubModuleUpdate.swift */; };
 		BF2BC8EE26202FDB005802E4 /* PreferencesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2BC8ED26202FDB005802E4 /* PreferencesViewController.swift */; };
 		BF2BC8F12620370D005802E4 /* PreferencesCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2BC8F02620370D005802E4 /* PreferencesCellView.swift */; };
 		BF2BC8F4262064D0005802E4 /* ProjectInfoBean.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2BC8F3262064D0005802E4 /* ProjectInfoBean.swift */; };
@@ -75,7 +76,7 @@
 		BF69D6A62862EA8D009CE7D1 /* Git.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF69D6A52862EA8D009CE7D1 /* Git.swift */; };
 		BF69D6AE28632E86009CE7D1 /* Pull.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF69D6AD28632E85009CE7D1 /* Pull.swift */; };
 		BF69D6B028632E90009CE7D1 /* Tag.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF69D6AF28632E90009CE7D1 /* Tag.swift */; };
-		BF69D6B428632EC1009CE7D1 /* subModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF69D6B328632EC1009CE7D1 /* subModule.swift */; };
+		BF69D6B428632EC1009CE7D1 /* SubModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF69D6B328632EC1009CE7D1 /* SubModule.swift */; };
 		BF69D6B928643944009CE7D1 /* Po.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF69D6B828643944009CE7D1 /* Po.swift */; };
 		BF69D6BB2864789B009CE7D1 /* Init.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF69D6BA2864789B009CE7D1 /* Init.swift */; };
 		BF69D6BD286478A7009CE7D1 /* Commit.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF69D6BC286478A7009CE7D1 /* Commit.swift */; };
@@ -84,7 +85,6 @@
 		BF69D6C3286478D2009CE7D1 /* Rebase.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF69D6C2286478D2009CE7D1 /* Rebase.swift */; };
 		BF69D6C5286478DE009CE7D1 /* Checkout.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF69D6C4286478DE009CE7D1 /* Checkout.swift */; };
 		BF69D6C7286478EC009CE7D1 /* Status.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF69D6C6286478EC009CE7D1 /* Status.swift */; };
-		BF69D6C9286478F8009CE7D1 /* Reset.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF69D6C8286478F8009CE7D1 /* Reset.swift */; };
 		BF7076FF28781FC500F71AEB /* Shell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7076FE28781FC500F71AEB /* Shell.swift */; };
 		BF70770228782F9500F71AEB /* Branch.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF70770128782F9500F71AEB /* Branch.swift */; };
 		BFA528EC26351606003427A8 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA528EB26351606003427A8 /* main.swift */; };
@@ -93,7 +93,7 @@
 		BFA528FC26351659003427A8 /* ANSIModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA528F826351659003427A8 /* ANSIModifiers.swift */; };
 		BFA528FD26351659003427A8 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA528F926351659003427A8 /* Colors.swift */; };
 		BFA528FE26351659003427A8 /* ANSIColorCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA528FA26351659003427A8 /* ANSIColorCode.swift */; };
-		BFA5290E2635169A003427A8 /* SubModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA529082635169A003427A8 /* SubModule.swift */; };
+		BFA5290E2635169A003427A8 /* SubProject.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA529082635169A003427A8 /* SubProject.swift */; };
 		BFA5290F2635169A003427A8 /* ConfigType.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA529092635169A003427A8 /* ConfigType.swift */; };
 		BFA529122635169A003427A8 /* Project.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA5290C2635169A003427A8 /* Project.swift */; };
 		BFA529132635169A003427A8 /* ShellOut.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA5290D2635169A003427A8 /* ShellOut.swift */; };
@@ -149,6 +149,7 @@
 		BF25A4422615DE1D00CB2F1B /* JKTools.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = JKTools.entitlements; sourceTree = "<group>"; };
 		BF25A47926170AA300CB2F1B /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		BF26C474287C31090071E3F9 /* Upload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Upload.swift; sourceTree = "<group>"; };
+		BF26C591287FB7910071E3F9 /* SubModuleUpdate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubModuleUpdate.swift; sourceTree = "<group>"; };
 		BF2BC8ED26202FDB005802E4 /* PreferencesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesViewController.swift; sourceTree = "<group>"; };
 		BF2BC8F02620370D005802E4 /* PreferencesCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesCellView.swift; sourceTree = "<group>"; };
 		BF2BC8F3262064D0005802E4 /* ProjectInfoBean.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectInfoBean.swift; sourceTree = "<group>"; };
@@ -209,7 +210,7 @@
 		BF69D6A52862EA8D009CE7D1 /* Git.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Git.swift; sourceTree = "<group>"; };
 		BF69D6AD28632E85009CE7D1 /* Pull.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pull.swift; sourceTree = "<group>"; };
 		BF69D6AF28632E90009CE7D1 /* Tag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tag.swift; sourceTree = "<group>"; };
-		BF69D6B328632EC1009CE7D1 /* subModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = subModule.swift; sourceTree = "<group>"; };
+		BF69D6B328632EC1009CE7D1 /* SubModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubModule.swift; sourceTree = "<group>"; };
 		BF69D6B828643944009CE7D1 /* Po.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Po.swift; sourceTree = "<group>"; };
 		BF69D6BA2864789B009CE7D1 /* Init.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Init.swift; sourceTree = "<group>"; };
 		BF69D6BC286478A7009CE7D1 /* Commit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Commit.swift; sourceTree = "<group>"; };
@@ -218,7 +219,6 @@
 		BF69D6C2286478D2009CE7D1 /* Rebase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Rebase.swift; sourceTree = "<group>"; };
 		BF69D6C4286478DE009CE7D1 /* Checkout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Checkout.swift; sourceTree = "<group>"; };
 		BF69D6C6286478EC009CE7D1 /* Status.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Status.swift; sourceTree = "<group>"; };
-		BF69D6C8286478F8009CE7D1 /* Reset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reset.swift; sourceTree = "<group>"; };
 		BF7076FE28781FC500F71AEB /* Shell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shell.swift; sourceTree = "<group>"; };
 		BF70770128782F9500F71AEB /* Branch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Branch.swift; sourceTree = "<group>"; };
 		BFA528E926351606003427A8 /* JKTool */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = JKTool; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -228,7 +228,7 @@
 		BFA528F826351659003427A8 /* ANSIModifiers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ANSIModifiers.swift; sourceTree = "<group>"; };
 		BFA528F926351659003427A8 /* Colors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
 		BFA528FA26351659003427A8 /* ANSIColorCode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ANSIColorCode.swift; sourceTree = "<group>"; };
-		BFA529082635169A003427A8 /* SubModule.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubModule.swift; sourceTree = "<group>"; };
+		BFA529082635169A003427A8 /* SubProject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubProject.swift; sourceTree = "<group>"; };
 		BFA529092635169A003427A8 /* ConfigType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfigType.swift; sourceTree = "<group>"; };
 		BFA5290C2635169A003427A8 /* Project.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Project.swift; sourceTree = "<group>"; };
 		BFA5290D2635169A003427A8 /* ShellOut.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShellOut.swift; sourceTree = "<group>"; };
@@ -456,9 +456,9 @@
 				BF70770128782F9500F71AEB /* Branch.swift */,
 				BF69D6C4286478DE009CE7D1 /* Checkout.swift */,
 				BF69D6C6286478EC009CE7D1 /* Status.swift */,
-				BF69D6C8286478F8009CE7D1 /* Reset.swift */,
 				BF69D6AF28632E90009CE7D1 /* Tag.swift */,
-				BF69D6B328632EC1009CE7D1 /* subModule.swift */,
+				BF69D6B328632EC1009CE7D1 /* SubModule.swift */,
+				BF26C591287FB7910071E3F9 /* SubModuleUpdate.swift */,
 				BF69D6A52862EA8D009CE7D1 /* Git.swift */,
 			);
 			path = GitCommands;
@@ -513,7 +513,7 @@
 			children = (
 				BFA5290D2635169A003427A8 /* ShellOut.swift */,
 				BFEBAE6728608295006928AD /* ExecutableBuild.swift */,
-				BFA529082635169A003427A8 /* SubModule.swift */,
+				BFA529082635169A003427A8 /* SubProject.swift */,
 				BFA529092635169A003427A8 /* ConfigType.swift */,
 				BFA5290C2635169A003427A8 /* Project.swift */,
 			);
@@ -706,7 +706,7 @@
 				BF69D67B2861BF01009CE7D1 /* UsageGenerator.swift in Sources */,
 				BF70770228782F9500F71AEB /* Branch.swift in Sources */,
 				BF69D6772861BF01009CE7D1 /* ZshCompletionsGenerator.swift in Sources */,
-				BF69D6B428632EC1009CE7D1 /* subModule.swift in Sources */,
+				BF69D6B428632EC1009CE7D1 /* SubModule.swift in Sources */,
 				BF69D6802861BF01009CE7D1 /* Tree.swift in Sources */,
 				BF69D68A2861BF01009CE7D1 /* Flag.swift in Sources */,
 				BFEB07D2286B0ECD00B5D197 /* Squash.swift in Sources */,
@@ -752,19 +752,19 @@
 				BF69D6722861BF01009CE7D1 /* ExpressibleByArgument.swift in Sources */,
 				BFA529122635169A003427A8 /* Project.swift in Sources */,
 				BF69D67C2861BF01009CE7D1 /* MessageInfo.swift in Sources */,
-				BFA5290E2635169A003427A8 /* SubModule.swift in Sources */,
+				BFA5290E2635169A003427A8 /* SubProject.swift in Sources */,
 				BF69D6BD286478A7009CE7D1 /* Commit.swift in Sources */,
 				BF69D67A2861BF01009CE7D1 /* HelpGenerator.swift in Sources */,
 				BF69D6A62862EA8D009CE7D1 /* Git.swift in Sources */,
 				BF69D6932861BF01009CE7D1 /* SplitArguments.swift in Sources */,
 				BF7076FF28781FC500F71AEB /* Shell.swift in Sources */,
-				BF69D6C9286478F8009CE7D1 /* Reset.swift in Sources */,
 				BF69D6A02862C776009CE7D1 /* Clone.swift in Sources */,
 				BF69D6C5286478DE009CE7D1 /* Checkout.swift in Sources */,
 				BF69D6922861BF01009CE7D1 /* Name.swift in Sources */,
 				BF69D6702861BF01009CE7D1 /* CommandConfiguration.swift in Sources */,
 				BF69D6742861BF01009CE7D1 /* BashCompletionsGenerator.swift in Sources */,
 				BFEB07B5286AA7DB00B5D197 /* Merge.swift in Sources */,
+				BF26C59D287FB7920071E3F9 /* SubModuleUpdate.swift in Sources */,
 				BF69D6BB2864789B009CE7D1 /* Init.swift in Sources */,
 				BF69D6BF286478B6009CE7D1 /* Push.swift in Sources */,
 				BF69D6792861BF01009CE7D1 /* HelpCommand.swift in Sources */,
