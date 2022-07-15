@@ -27,12 +27,12 @@ extension JKTool.Git.SubModule.Update {
             _superCommandName: "submodule",
             abstract: "Update SubModule",
             version: "1.0.0")
-
-        @Argument(help: "更新 submodule 为远程项目的最新版本，default：false")
-        var remote: Bool?
         
         @Argument(help: "移除不在SubModule中的SubProject，default：false")
         var prune: Bool?
+        
+        @Argument(help: "更新 submodule 为远程项目的最新版本，default：false")
+        var remote: Bool?
         
         @Argument(help: "是否输出执行日志，default：true")
         var quiet: Bool?
@@ -156,7 +156,7 @@ extension JKTool.Git.SubModule.Update {
                 let error = error as! ShellOutError
                 po(tip:  error.message + error.output,type: .error)
             }
-            JKTool.Git.SubModule.Update.Sub.main(["\(remote ?? false)","\(false)","\(quiet ?? true)",path])
+            JKTool.Git.SubModule.Update.Sub.main(["\(false)","\(remote ?? false)","\(quiet ?? true)",path])
             if quiet != false {po(tip: "======Clone Project and Update SubModule项目完成======")}
         }
     }
