@@ -51,6 +51,9 @@ extension JKTool.Build {
         mutating func run() {
             func build(project:Project) {
                 
+                // 删除主项目旧.a相关文件
+                _ = try? shellOut(to: .removeFolder(from: project.rootProject.buildsPath + "/" + project.name))
+                
                 let configuration = options.configuration ?? "Release"
                 let sdk = options.sdk ?? "iOS"
                 
@@ -76,63 +79,72 @@ extension JKTool.Build {
                     return scheme
                 }
                 
-                
-                // 创建Module/Builds link 依赖库
-                if project.recordList.count > 0 {
-                    _ = try? shellOut(to: .createFolder(path: project.buildsPath + "/"))
-                    
-                    for moduleName in project.recordList {
-                        guard let project = Project.project(directoryPath: project.rootProject.buildsPath + "/" + moduleName) else {
-                            return po(tip: "\(options.path ?? FileManager.default.currentDirectoryPath)目录没有检索到工程", type: .error)
-                        }
-                        
-                        if project.projectType.vaild() {
-                            _ = try? shellOut(to: .createSymlink(to: project.rootProject.buildsPath + "/" + moduleName, at: project.buildsPath))
-                        }
-                    }
-                }
-                
-                // 删除主项目旧.a相关文件
-                _ = try? shellOut(to: .removeFolder(from: project.rootProject.buildsPath + "/" + project.name))
-                
-                let oldVersion = try? shellOut(to: .readVerison(path: "\(project.buildPath)/Build/Products/Universal/"))
+                let oldVersion = try? shellOut(to: .readVerison(path: "\(project.buildPath)/Universal/"))
                 let status = try? shellOut(to: .gitStatus(),at: project.directoryPath)
                 let code = try? shellOut(to: .gitCodeVerison(),at: project.directoryPath)
                 
                 let currentVersion  = ShellOutCommand.MD5(string: "\(status ?? "")\(code ?? "")")
                 
-                
-                
-                if options.cache == false || oldVersion != currentVersion {
-                    if options.quiet != false {po(tip:"【\(project.name)】需重新编译")}
-                    // 删除历史build文件
-                    _ = try? shellOut(to: .removeFolder(from: project.buildPath))
-                    
+                func buildStatic(project:Project){
+                    // 创建Module/Builds link 依赖库
+                    if project.recordList.count > 0 {
+                        _ = try? shellOut(to: .removeFolder(from: project.buildsPath + "/"))
+                        
+                        _ = try? shellOut(to: .createFolder(path: project.buildsPath + "/"))
+                        
+                        for moduleName in project.recordList {
+                            guard let link = Project.project(directoryPath: project.rootProject.checkoutsPath + "/" + moduleName) else {
+                                return po(tip: "\(project.rootProject.buildsPath + "/" + moduleName)目录没有检索到工程", type: .error)
+                            }
+                            
+                            if link.projectType.vaild() {
+                                _ = try? shellOut(to: .createSymlink(to: project.rootProject.buildsPath + "/" + moduleName, at: project.buildsPath))
+                            }
+                        }
+                    }
                     let staticCommand = ShellOutCommand.staticBuild(scheme: scheme,isWorkspace: project.projectType.isWorkSpace(),projectName: project.projectType.name(), projectPath: project.directoryPath, derivedDataPath: project.buildPath, configuration: configuration, sdk: sdk,verison: currentVersion,toStaticPath: project.rootProject.buildsPath + "/" + project.name,toHeaderPath: project.rootProject.buildsPath + "/" + project.name)
                     do {
                         try shellOut(to: staticCommand, at: project.directoryPath)
+                        po(tip: "【\(project.name)】.a Build成功",type: .tip)
                     } catch  {
                         let error = error as! ShellOutError
                         po(tip: "【\(project.name)】.a Build失败\n" +  error.message + error.output,type: .error)
                     }
-                    
+                }
+                
+                func buildBundle(project:Project){
                     if !project.fileManager.fileExists(atPath: project.directoryPath + "/" + scheme + "Bundle") {
                        return
                     }
                     let buildCommand = ShellOutCommand.buildBundle(scheme: scheme,isWorkspace: project.projectType.isWorkSpace(),projectName: project.projectType.name(), projectPath: project.directoryPath, derivedDataPath: project.buildPath, sdk: sdk, verison: currentVersion, toBundlePath: project.rootProject.buildsPath + "/" + project.name)
                     do {
                         try shellOut(to: buildCommand, at: project.directoryPath)
+                        po(tip: "【\(project.name)】.bundle Build成功",type: .tip)
                     } catch  {
                         let error = error as! ShellOutError
                         po(tip: "【\(project.name)】.bundle Build失败\n" + error.message + error.output,type: .error)
                     }
+                }
+                
+                if options.cache == false || oldVersion != currentVersion {
+                    if options.quiet != false {po(tip:"【\(project.name)】需重新编译")}
+
+                    // 删除历史build文件
+                    _ = try? shellOut(to: .removeFolder(from: project.buildPath))
+                    
+                    buildStatic(project: project)
+                    
+                    buildBundle(project: project)
+                    
+                    
                 } else {
                     let staticCommand = ShellOutCommand.staticWithCache(scheme: scheme, derivedDataPath: project.buildPath, verison: currentVersion,toStaticPath: project.rootProject.buildsPath + "/" + project.name,toHeaderPath: project.rootProject.buildsPath + "/" + project.name)
                     do {
                         try shellOut(to: staticCommand, at: project.directoryPath)
                     } catch  {
                         let error = error as! ShellOutError
-                        po(tip: "【\(project.name)】.a copy失败\n" +  error.message + error.output,type: .error)
+                        po(tip: "【\(project.name)】.a copy失败\n" +  error.message + error.output,type: .warning)
+                        buildStatic(project: project)
                     }
                     
                     if !project.fileManager.fileExists(atPath: project.directoryPath + "/" + scheme + "Bundle") {
@@ -143,7 +155,8 @@ extension JKTool.Build {
                         try shellOut(to: buildCommand, at: project.directoryPath)
                     } catch  {
                         let error = error as! ShellOutError
-                        po(tip: "【\(project.name)】.bundle copy失败\n" + error.message + error.output,type: .error)
+                        po(tip: "【\(project.name)】.bundle copy失败\n" + error.message + error.output,type: .warning)
+                        buildBundle(project: project)
                     }
                 }
                 
@@ -153,7 +166,7 @@ extension JKTool.Build {
                 return po(tip: "\(options.path ?? FileManager.default.currentDirectoryPath)目录没有检索到工程", type: .error)
             }
             
-            guard project.rootProject != project else {
+            guard project.rootProject == project else {
                 if !project.projectType.vaild() {
                     return
                 }
@@ -165,7 +178,7 @@ extension JKTool.Build {
             }
             
             if options.quiet != false {po(tip: "======Static build项目开始======")}
-            
+            let date = Date.init().timeIntervalSince1970
             for record in project.recordList {
     
                 guard let subProject = Project.project(directoryPath: "\(project.checkoutsPath)/\(record)") else {
@@ -182,7 +195,7 @@ extension JKTool.Build {
                 
             }
             
-            if options.quiet != false {po(tip: "======Static build项目完成======")}
+            if options.quiet != false {po(tip: "======Static build项目完成[\(String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")]======")}
         }
     }
     
@@ -198,6 +211,8 @@ extension JKTool.Build {
         mutating func run() {
             
             func build(project:Project) {
+                // 删除主项目旧.framework相关文件
+                _ = try? shellOut(to: .removeFolder(from: project.rootProject.buildsPath + "/" + project.name))
                 
                 let configuration = options.configuration ?? "Release"
                 let sdk = options.sdk ?? "iOS"
@@ -223,36 +238,29 @@ extension JKTool.Build {
                     }
                     return scheme
                 }
-                // 创建Module/Builds link 依赖库
-                if project.recordList.count > 0 {
-                    _ = try? shellOut(to: .createFolder(path: project.buildsPath + "/"))
-                    
-                    for moduleName in project.recordList {
-                        guard let project = Project.project(directoryPath: project.rootProject.buildsPath + "/" + moduleName) else {
-                            return po(tip: "\(options.path ?? FileManager.default.currentDirectoryPath)目录没有检索到工程", type: .error)
-                        }
-                        
-                        if project.projectType.vaild() {
-                            _ = try? shellOut(to: .createSymlink(to: project.rootProject.buildsPath + "/" + moduleName, at: project.buildsPath))
-                        }
-                    }
-                }
-                
-                // 删除主项目旧.framework相关文件
-                _ = try? shellOut(to: .removeFolder(from: project.rootProject.buildsPath + "/" + project.name))
                 
                 let oldVersion = (try? shellOut(to: .readVerison(path: "\(project.buildPath)/Universal/")))
                 let status = try? shellOut(to: .gitStatus(),at: project.directoryPath)
                 let code = try? shellOut(to: .gitCodeVerison(),at: project.directoryPath)
                 
                 let currentVersion  = ShellOutCommand.MD5(string: "\(status ?? "")\(code ?? "")")
-                
-                if options.cache == false || !String(oldVersion ?? "").contains(currentVersion) {
-                    if options.quiet != false {po(tip:"【\(project.name)】需重新编译")}
-                    
-                    // 删除历史build文件
-                    _ = try? shellOut(to: .removeFolder(from: project.buildPath))
-                    
+                func buildFramework(project:Project){
+                    // 创建Module/Builds link 依赖库
+                    if project.recordList.count > 0 {
+                        
+                        _ = try? shellOut(to: .removeFolder(from: project.buildsPath + "/"))
+                        _ = try? shellOut(to: .createFolder(path: project.buildsPath + "/"))
+                        
+                        for moduleName in project.recordList {
+                            guard let link = Project.project(directoryPath: project.rootProject.checkoutsPath + "/" + moduleName) else {
+                                return po(tip: "\(options.path ?? FileManager.default.currentDirectoryPath)目录没有检索到工程", type: .error)
+                            }
+                            
+                            if link.projectType.vaild() {
+                                _ = try? shellOut(to: .createSymlink(to: project.rootProject.buildsPath + "/" + moduleName, at: project.buildsPath))
+                            }
+                        }
+                    }
                     let frameworkCommand = ShellOutCommand.frameworkBuild(scheme:scheme,isWorkspace: project.projectType.isWorkSpace(),projectName: project.projectType.name(), projectPath: project.directoryPath, derivedDataPath: project.buildPath, configuration: configuration, sdk: sdk, verison: currentVersion, toPath: project.rootProject.buildsPath + "/" + project.name)
                     
                     do {
@@ -261,6 +269,9 @@ extension JKTool.Build {
                         let error = error as! ShellOutError
                         po(tip: "【\(project.name)】.framework Build失败\n" + error.message + error.output,type: .error)
                     }
+                }
+                
+                func buildBundle(project:Project){
                     
                     if !project.fileManager.fileExists(atPath: project.directoryPath + "/" + scheme + "Bundle") {
                        return
@@ -272,13 +283,23 @@ extension JKTool.Build {
                         let error = error as! ShellOutError
                         po(tip: "【\(project.name)】.bundle Build失败\n" + error.message + error.output,type: .error)
                     }
+                }
+                
+                if options.cache == false || !String(oldVersion ?? "").contains(currentVersion) {
+                    if options.quiet != false {po(tip:"【\(project.name)】需重新编译")}
+                
+                    // 删除历史build文件
+                    _ = try? shellOut(to: .removeFolder(from: project.buildPath))
+                    
+                    buildFramework(project: project)
                 } else {
                     let frameworkCommand = ShellOutCommand.frameworkWithCache(scheme: scheme, derivedDataPath: project.buildPath, verison: currentVersion, toPath: project.rootProject.buildsPath + "/" + project.name)
                     do {
                         try shellOut(to: frameworkCommand, at: project.directoryPath)
                     } catch  {
                         let error = error as! ShellOutError
-                        po(tip: "【\(project.name)】.framework copy失败\n" + error.message + error.output,type: .error)
+                        po(tip: "【\(project.name)】.framework copy失败\n" + error.message + error.output,type: .warning)
+                        buildFramework(project: project)
                     }
                     
                     if !project.fileManager.fileExists(atPath: project.directoryPath + "/" + scheme + "Bundle") {
@@ -289,7 +310,8 @@ extension JKTool.Build {
                         try shellOut(to: buildCommand, at: project.directoryPath)
                     } catch  {
                         let error = error as! ShellOutError
-                        po(tip: "【\(project.name)】.bundle copy失败\n" + error.message + error.output,type: .error)
+                        po(tip: "【\(project.name)】.bundle copy失败\n" + error.message + error.output,type: .warning)
+                        buildBundle(project: project)
                     }
                 }
                 
@@ -344,6 +366,9 @@ extension JKTool.Build {
         mutating func run() {
             func build(project:Project) {
                 
+                // 删除主项目旧.xcframework相关文件
+                _ = try? shellOut(to: .removeFolder(from: project.rootProject.buildsPath + project.name))
+                
                 let configuration = options.configuration ?? "Release"
                 let sdk = options.sdk ?? "iOS"
                 
@@ -369,35 +394,28 @@ extension JKTool.Build {
                     return scheme
                 }
                 
-                // 创建Module/Builds link 依赖库
-                if project.recordList.count > 0 {
-                    _ = try? shellOut(to: .createFolder(path: project.buildsPath + "/"))
-                    
-                    for moduleName in project.recordList {
-                        guard let project = Project.project(directoryPath: project.rootProject.buildsPath + "/" + moduleName) else {
-                            return po(tip: "\(options.path ?? FileManager.default.currentDirectoryPath)目录没有检索到工程", type: .error)
-                        }
-                        
-                        if project.projectType.vaild() {
-                            _ = try? shellOut(to: .createSymlink(to: project.rootProject.buildsPath + "/" + moduleName, at: project.buildsPath))
-                        }
-                    }
-                }
-                
-                // 删除主项目旧.framework相关文件
-                _ = try? shellOut(to: .removeFolder(from: project.rootProject.buildsPath + project.name))
-                
-                let oldVersion = try? shellOut(to: .readVerison(path: "\(project.buildPath)/Build/Products/Universal/"))
+                let oldVersion = try? shellOut(to: .readVerison(path: "\(project.buildPath)/Universal/"))
                 let status = try? shellOut(to: .gitStatus(),at: project.directoryPath)
                 let code = try? shellOut(to: .gitCodeVerison(),at: project.directoryPath)
                 
                 let currentVersion  = ShellOutCommand.MD5(string: "\(status ?? "")\(code ?? "")")
-                
-                if options.cache == false || oldVersion != currentVersion {
-                    if options.quiet != false {po(tip:"【\(project.name)】需重新编译")}
-                    
-                    // 删除历史build文件
-                    _ = try? shellOut(to: .removeFolder(from: project.buildPath))
+                func buildXCFramework(project:Project){
+                    // 创建Module/Builds link 依赖库
+                    if project.recordList.count > 0 {
+                        
+                        _ = try? shellOut(to: .removeFolder(from: project.buildsPath + "/"))
+                        _ = try? shellOut(to: .createFolder(path: project.buildsPath + "/"))
+                        
+                        for moduleName in project.recordList {
+                            guard let link = Project.project(directoryPath: project.rootProject.checkoutsPath + "/" + moduleName) else {
+                                return po(tip: "\(options.path ?? FileManager.default.currentDirectoryPath)目录没有检索到工程", type: .error)
+                            }
+                            
+                            if link.projectType.vaild() {
+                                _ = try? shellOut(to: .createSymlink(to: project.rootProject.buildsPath + "/" + moduleName, at: project.buildsPath))
+                            }
+                        }
+                    }
                     
                     let xcframeworkCommand = ShellOutCommand.xcframeworkBuild(scheme:scheme,isWorkspace: project.projectType.isWorkSpace(),projectName: project.projectType.name(), projectPath: project.directoryPath, derivedDataPath: project.buildPath, configuration: configuration, sdk: sdk, verison: currentVersion, toPath: project.rootProject.buildsPath + "/" + project.name)
                     
@@ -407,6 +425,9 @@ extension JKTool.Build {
                         let error = error as! ShellOutError
                         po(tip: "【\(project.name)】.xcframework Build失败\n" + error.message + error.output,type: .error)
                     }
+                }
+                
+                func buildBundle(project:Project){
                     
                     if !project.fileManager.fileExists(atPath: project.directoryPath + "/" + scheme + "Bundle") {
                        return
@@ -415,10 +436,16 @@ extension JKTool.Build {
                     do {
                         try shellOut(to: buildCommand, at: project.directoryPath)
                     } catch  {
-                        print(Colors.red("【\(project.name)】.bundle Build失败"))
                         let error = error as! ShellOutError
                         po(tip: "【\(project.name)】.bundle Build失败\n" + error.message + error.output,type: .error)
                     }
+                }
+                if options.cache == false || oldVersion != currentVersion {
+                    if options.quiet != false {po(tip:"【\(project.name)】需重新编译")}
+                    
+                    // 删除历史build文件
+                    _ = try? shellOut(to: .removeFolder(from: project.buildPath))
+                    
                 }else{
                     let xcframeworkCommand = ShellOutCommand.xcframeworkWithCache(scheme:scheme, derivedDataPath: project.buildPath, verison: currentVersion, toPath: project.rootProject.buildsPath + "/" + project.name)
                     
@@ -426,7 +453,8 @@ extension JKTool.Build {
                         try shellOut(to: xcframeworkCommand, at: project.directoryPath)
                     } catch  {
                         let error = error as! ShellOutError
-                        po(tip: "【\(project.name)】.xcframework copy失败\n" + error.message + error.output,type: .error)
+                        po(tip: "【\(project.name)】.xcframework copy失败\n" + error.message + error.output,type: .warning)
+                        buildXCFramework(project: project)
                     }
                     
                     if !project.fileManager.fileExists(atPath: project.directoryPath + "/" + scheme + "Bundle") {
@@ -436,9 +464,9 @@ extension JKTool.Build {
                     do {
                         try shellOut(to: buildCommand, at: project.directoryPath)
                     } catch  {
-                        print(Colors.red("【\(project.name)】.bundle Build失败"))
                         let error = error as! ShellOutError
-                        po(tip: "【\(project.name)】.bundle copy失败\n" + error.message + error.output,type: .error)
+                        po(tip: "【\(project.name)】.bundle copy失败\n" + error.message + error.output,type: .warning)
+                        buildBundle(project: project)
                     }
                 }
                 

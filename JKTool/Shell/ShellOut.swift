@@ -686,6 +686,42 @@ public extension String {
     mutating func connected(orCommand: String?) {
         self = connecting(orCommand: orCommand)
     }
+    
+    func connecting(ifCommand: String? ,at path:String) -> String {
+        if let ifCommand = ifCommand {
+            return  """
+                    \(self)
+                      if [ -d "\(path)" ];then
+                             \(ifCommand)
+                        else
+                          echo "【\(path)】不存在，无需 cp"
+                        fi
+                    """
+        }
+        return self
+    }
+    
+    mutating func connected(ifCommand: String?, at path:String) {
+        self = connecting(ifCommand: ifCommand ,at: path)
+    }
+    
+    func connecting(ifCommand: String? ,file:String) -> String {
+        if let ifCommand = ifCommand {
+            return  """
+                    \(self) \
+                      if [ -f "\(file)" ];then
+                             \(ifCommand)
+                        else
+                          echo "【\(file)】不存在，无需 cp"
+                        fi
+                    """
+        }
+        return self
+    }
+    
+    mutating func connected(ifCommand: String?, file:String) {
+        self = connecting(ifCommand: ifCommand ,file: file)
+    }
    
 }
 

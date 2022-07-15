@@ -36,7 +36,7 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       launchStyle = "0"
       useCustomWorkingDirectory = "YES"
-      customWorkingDirectory = "/Users/jiangkui/Desktop/JKProject/Notebook"
+      customWorkingDirectory = "/Users/jiangkui/Desktop/&#x8fd8;&#x5457;App/HB_App/LBKShell"
       ignoresPersistentStateOnLaunch = "NO"
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
@@ -54,7 +54,7 @@
       <CommandLineArguments>
          <CommandLineArgument
             argument = "git"
-            isEnabled = "YES">
+            isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "submodule"
@@ -62,7 +62,7 @@
          </CommandLineArgument>
          <CommandLineArgument
             argument = "squash"
-            isEnabled = "YES">
+            isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "push"
@@ -82,19 +82,19 @@
          </CommandLineArgument>
          <CommandLineArgument
             argument = "feature/jiangkui/test1"
-            isEnabled = "YES">
+            isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "master"
-            isEnabled = "YES">
+            isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "hehe"
-            isEnabled = "YES">
+            isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "true"
-            isEnabled = "YES">
+            isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "false"
@@ -114,7 +114,11 @@
          </CommandLineArgument>
          <CommandLineArgument
             argument = "build"
-            isEnabled = "NO">
+            isEnabled = "YES">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "static"
+            isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "archive"
@@ -161,8 +165,12 @@
             isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
-            argument = "false"
+            argument = "true"
             isEnabled = "NO">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "false"
+            isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "Debug"
