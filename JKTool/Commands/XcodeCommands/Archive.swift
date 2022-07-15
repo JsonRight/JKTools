@@ -107,7 +107,7 @@ extension JKTool.Archive {
             }
             
             do {
-                try shellOut(to: .archive(scheme: configs.activeConfig.scheme, isWorkspace: project.projectType.isWorkSpace(),projectName: project.projectType.name(), projectPath: project.directoryPath, configuration: configs.activeConfig.configuration,validArchs: configs.activeConfig.validArchs, sdk: configs.activeConfig.sdk, export: configs.activeConfig.export.convertRelativePath(), nameSuffix: configs.activeConfig.saveConfig?.nameSuffix,toSavePath: configs.activeConfig.saveConfig?.path), at: project.directoryPath)
+                try shellOut(to: .archive(scheme: configs.activeConfig.scheme, isWorkspace: project.projectType.isWorkSpace(),projectName: project.projectType.name(), projectPath: project.directoryPath, configuration: configs.activeConfig.configuration, sdk: configs.activeConfig.sdk, export: configs.activeConfig.export.convertRelativePath(), nameSuffix: configs.activeConfig.saveConfig?.nameSuffix,toSavePath: configs.activeConfig.saveConfig?.path), at: project.directoryPath)
             } catch  {
                 let error = error as! ShellOutError
                 po(tip:  error.message + error.output,type: .error)
@@ -134,9 +134,6 @@ extension JKTool.Archive {
         @Argument(help: "代码环境，default：Release")
         var configuration: String?
         
-        @Argument(help: "编译架构，default read Xcode VALID_ARCHS：iOS(arm64,armv7)")
-        var validArchs: String?
-        
         @Argument(help: "设备类型，default：iOS")
         var sdk: String?
         
@@ -162,7 +159,7 @@ extension JKTool.Archive {
             if quiet != false {po(tip: "======Archive项目开始======")}
             let date = Date.init().timeIntervalSince1970
             do {
-                try shellOut(to: .archive(scheme: scheme, isWorkspace: project.projectType.isWorkSpace(),projectName: project.projectType.name(), projectPath: project.directoryPath, configuration: configuration ?? "Release", validArchs: (validArchs ?? "").split(separator: ",").map({ $0.base }), sdk: sdk ?? "iOS", export: export, nameSuffix: nameSuffix,toSavePath: toPath),at: project.directoryPath)
+                try shellOut(to: .archive(scheme: scheme, isWorkspace: project.projectType.isWorkSpace(),projectName: project.projectType.name(), projectPath: project.directoryPath, configuration: configuration ?? "Release", sdk: sdk ?? "iOS", export: export, nameSuffix: nameSuffix,toSavePath: toPath),at: project.directoryPath)
             } catch  {
                 let error = error as! ShellOutError
                 po(tip:  error.message + error.output,type: .error)

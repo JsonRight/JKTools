@@ -202,8 +202,6 @@ struct ProjectConfigModel: Decodable {
         
         var scheme: String
         
-        var validArchs: [String]?
-        
         var sdk: String
         
         var export: String

@@ -14,10 +14,10 @@ public extension ShellOutCommand {
     /// IOS build Framework Release arm64 iphoneos
     static func frameworkBuild(scheme:String, isWorkspace:Bool,projectName: String, projectPath:String, derivedDataPath: String, configuration: String, sdk: String, verison: String, toPath: String?) -> ShellOutCommand {
         let buildPath = URL(fileURLWithPath: (derivedDataPath as NSString).expandingTildeInPath).standardizedFileURL.path
-        var shell = "xcodebuild \(isWorkspace ? "-workspace" : "-project") \(projectName) -scheme \(scheme) -configuration \(configuration) VALID_ARCHS='\(ConfigOptions(configuration).archs())' -destination 'generic/platform=\(Platform(sdk).platform(ConfigOptions(configuration)))' ONLY_ACTIVE_ARCH=NO ODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY= CARTHAGE=YES BUILD_LIBRARY_FOR_DISTRIBUTION=YES -UseModernBuildSystem=YES -derivedDataPath \(buildPath)"
+        var shell = "xcodebuild \(isWorkspace ? "-workspace" : "-project") \(projectName) -scheme \(scheme) -configuration \(configuration) -destination 'generic/platform=\(Platform(sdk).platform(ConfigOptions(configuration)))' ONLY_ACTIVE_ARCH=NO ODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY= CARTHAGE=YES BUILD_LIBRARY_FOR_DISTRIBUTION=YES -UseModernBuildSystem=YES -derivedDataPath \(buildPath)"
 
         if ConfigOptions(configuration) == .Debug  {
-            shell.connected(andCommand: "xcodebuild \(isWorkspace ? "-workspace" : "-project") \(projectName) -scheme \(scheme) -configuration \(ConfigOptions.Release) VALID_ARCHS='\(ConfigOptions.Release.archs())' -destination 'generic/platform=\(Platform(sdk).platform(.Release))' ONLY_ACTIVE_ARCH=NO ODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY= CARTHAGE=YES BUILD_LIBRARY_FOR_DISTRIBUTION=YES -UseModernBuildSystem=YES -derivedDataPath \(buildPath)")
+            shell.connected(andCommand: "xcodebuild \(isWorkspace ? "-workspace" : "-project") \(projectName) -scheme \(scheme) -configuration \(ConfigOptions.Release) -destination 'generic/platform=\(Platform(sdk).platform(.Release))' ONLY_ACTIVE_ARCH=NO ODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY= CARTHAGE=YES BUILD_LIBRARY_FOR_DISTRIBUTION=YES -UseModernBuildSystem=YES -derivedDataPath \(buildPath)")
         }
         
         // cp Release shell
@@ -55,9 +55,9 @@ public extension ShellOutCommand {
     /// IOS build Framework Release arm64 iphoneos
     static func xcframeworkBuild(scheme:String, isWorkspace:Bool,projectName: String, projectPath:String, derivedDataPath: String, configuration: String, sdk: String, verison: String, toPath: String?) -> ShellOutCommand {
         let buildPath = URL(fileURLWithPath: (derivedDataPath as NSString).expandingTildeInPath).standardizedFileURL.path
-        var shell = "xcodebuild \(isWorkspace ? "-workspace" : "-project") \(projectName) -scheme \(scheme) -configuration \(configuration) VALID_ARCHS='\(ConfigOptions(configuration).archs())' -destination 'generic/platform=\(Platform(sdk).platform(ConfigOptions(configuration)))' ONLY_ACTIVE_ARCH=NO ODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY= CARTHAGE=YES BUILD_LIBRARY_FOR_DISTRIBUTION=YES -UseModernBuildSystem=YES -derivedDataPath \(buildPath)"
+        var shell = "xcodebuild \(isWorkspace ? "-workspace" : "-project") \(projectName) -scheme \(scheme) -configuration \(configuration) -destination 'generic/platform=\(Platform(sdk).platform(ConfigOptions(configuration)))' ONLY_ACTIVE_ARCH=NO ODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY= CARTHAGE=YES BUILD_LIBRARY_FOR_DISTRIBUTION=YES -UseModernBuildSystem=YES -derivedDataPath \(buildPath)"
         if ConfigOptions(configuration) == .Debug  {
-            shell.connected(andCommand: "xcodebuild \(isWorkspace ? "-workspace" : "-project") \(projectName) -scheme \(scheme) -configuration \(ConfigOptions.Release) VALID_ARCHS='\(ConfigOptions.Release.archs())' -destination 'generic/platform=\(Platform(sdk).platform(.Release))' ONLY_ACTIVE_ARCH=NO ODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY= CARTHAGE=YES BUILD_LIBRARY_FOR_DISTRIBUTION=YES -UseModernBuildSystem=YES -derivedDataPath \(buildPath)")
+            shell.connected(andCommand: "xcodebuild \(isWorkspace ? "-workspace" : "-project") \(projectName) -scheme \(scheme) -configuration \(ConfigOptions.Release) -destination 'generic/platform=\(Platform(sdk).platform(.Release))' ONLY_ACTIVE_ARCH=NO ODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY= CARTHAGE=YES BUILD_LIBRARY_FOR_DISTRIBUTION=YES -UseModernBuildSystem=YES -derivedDataPath \(buildPath)")
         }
         // build shell
         shell.connected(andCommand: "mkdir -p \(buildPath)/Universal/\(verison)/")
@@ -91,9 +91,9 @@ public extension ShellOutCommand {
     /// IOS build Static.a
     static func staticBuild(scheme:String, isWorkspace:Bool,projectName: String, projectPath:String, derivedDataPath: String, configuration: String, sdk: String, verison: String, toStaticPath: String?, toHeaderPath: String?) -> ShellOutCommand {
         let buildPath = URL(fileURLWithPath: (derivedDataPath as NSString).expandingTildeInPath).standardizedFileURL.path
-        var shell = "xcodebuild \(isWorkspace ? "-workspace" : "-project") \(projectName) -scheme \(scheme) -configuration \(configuration) VALID_ARCHS='\(ConfigOptions(configuration).archs())' -destination 'generic/platform=\(Platform(sdk).platform(ConfigOptions(configuration)))' ONLY_ACTIVE_ARCH=NO ODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY= CARTHAGE=YES BUILD_LIBRARY_FOR_DISTRIBUTION=YES -UseModernBuildSystem=YES -derivedDataPath \(buildPath)"
+        var shell = "xcodebuild \(isWorkspace ? "-workspace" : "-project") \(projectName) -scheme \(scheme) -configuration \(configuration) -destination 'generic/platform=\(Platform(sdk).platform(ConfigOptions(configuration)))' ONLY_ACTIVE_ARCH=NO ODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY= CARTHAGE=YES BUILD_LIBRARY_FOR_DISTRIBUTION=YES -UseModernBuildSystem=YES -derivedDataPath \(buildPath)"
         if ConfigOptions(configuration) == .Debug  {
-            shell.connected(andCommand: "xcodebuild \(isWorkspace ? "-workspace" : "-project") \(projectName) -scheme \(scheme) -configuration \(ConfigOptions.Release) VALID_ARCHS='\(ConfigOptions.Release.archs())' -destination 'generic/platform=\(Platform(sdk).platform(.Release))' ONLY_ACTIVE_ARCH=NO ODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY= CARTHAGE=YES BUILD_LIBRARY_FOR_DISTRIBUTION=YES -UseModernBuildSystem=YES -derivedDataPath \(buildPath)")
+            shell.connected(andCommand: "xcodebuild \(isWorkspace ? "-workspace" : "-project") \(projectName) -scheme \(scheme) -configuration \(ConfigOptions.Release) -destination 'generic/platform=\(Platform(sdk).platform(.Release))' ONLY_ACTIVE_ARCH=NO ODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY= CARTHAGE=YES BUILD_LIBRARY_FOR_DISTRIBUTION=YES -UseModernBuildSystem=YES -derivedDataPath \(buildPath)")
         }
         shell.connected(andCommand: "mkdir -p \(buildPath)/Universal/\(verison)/")
         shell.connected(andCommand: "lipo -create")
@@ -157,13 +157,10 @@ public extension ShellOutCommand {
 public extension ShellOutCommand {
     
     /// IOS archive VALID_ARCHS=\("arm64")
-    static func archive(scheme:String, isWorkspace:Bool,projectName: String, projectPath:String,configuration:String, validArchs:[String]?, sdk: String, export:String, nameSuffix:String?,toSavePath:String?) -> ShellOutCommand {
+    static func archive(scheme:String, isWorkspace:Bool,projectName: String, projectPath:String,configuration:String, sdk: String, export:String, nameSuffix:String?,toSavePath:String?) -> ShellOutCommand {
         
         var shell = "xcodebuild clean \(isWorkspace ? "-workspace" : "-project") \(projectName) -scheme \(scheme) -configuration \(configuration)"
         shell.connected(andCommand: "xcodebuild archive \(isWorkspace ? "-workspace" : "-project") \(projectName) -scheme \(scheme) -configuration \(configuration)")
-        if let validArchs = validArchs, validArchs.isEmpty == false {
-            shell.connected(spaceCommand: "VALID_ARCHS=\(validArchs.joined(separator: " "))")
-        }
         shell.connected(spaceCommand: "-archivePath \(projectPath)/Build/\(configuration)/\(scheme).xcarchive")
         shell.connected(andCommand: "xcodebuild -exportArchive -archivePath \(projectPath)/Build/\(configuration)/\(scheme).xcarchive -exportPath \(projectPath)/Build/\(configuration) -exportOptionsPlist \(export)")
         if let toSavePath = toSavePath ,toSavePath != "" {
