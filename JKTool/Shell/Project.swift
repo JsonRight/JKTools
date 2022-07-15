@@ -128,15 +128,8 @@ public class Project {
             if arr.count <= 2 {
                 return
             }
-            if arr.contains("==") {
-                
-            } else if arr.contains(">=") {
-                
-            } else if arr.contains("~>") {
-                
-            }
             
-            let module = SubProject(source: arr[0], url: arr[1], branch: (arr.count >= 3) ? (arr[2]) : "master" )
+            let module = SubProject(name: arr[0], url: arr[1], branch: (arr.count >= 3) ? (arr[2]) : "master" )
             list.append(module)
         }
         return list

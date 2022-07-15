@@ -10,25 +10,19 @@ import Foundation
 
 public class SubProject {
     
-    var source:String
+    var name:String
     var url:String
     var branch:String
     
-    public init(source: String, url: String, branch: String) {
-        self.source = source
+    public init(name: String, url: String, branch: String) {
+        self.name = name
         self.url = url
         self.branch = branch
     }
-    
-    lazy var name: String = {
-        if let url = URL(string: self.url) {
-           return url.lastPathComponent.components(separatedBy: ".").first!
-        }
-        return ""
-    }()
+
     lazy var desp: String = {
         return """
-        \(self.source)
+        \(self.name)
         \(self.url)
         \(self.branch)
         """
