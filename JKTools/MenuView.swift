@@ -109,29 +109,6 @@ public enum MenuItem: String {
         case .script:return nil
         }
     }
-//    func run1(consoleOptions:ConsoleOptions, block:(AppleScriptCommand?) -> Void) {
-//
-//
-//        switch self {
-//        case .help: block(run(consoleOptions: consoleOptions))
-//        case .clone: block(run(consoleOptions: consoleOptions))
-//        case .clone_project:block(run(consoleOptions: consoleOptions))
-//        case .pull: block(run(consoleOptions: consoleOptions))
-//        case .pull_all: block(run(consoleOptions: consoleOptions))
-//        case .prune: block(run(consoleOptions: consoleOptions))
-//        case .prune_all: block(run(consoleOptions: consoleOptions))
-//        case .add_tag: block(run(consoleOptions: consoleOptions))
-//        case .del_tag: block(run(consoleOptions: consoleOptions))
-//        case .build: block(run(consoleOptions: consoleOptions))
-//        case .archive: block(run(consoleOptions: consoleOptions))
-//        case .upload: block(run(consoleOptions: consoleOptions))
-//        case .one_key_upload: block(run(consoleOptions: consoleOptions))
-//        case .Xcode: block(run(consoleOptions: consoleOptions))
-//        case .Terminal: block(run(consoleOptions: consoleOptions))
-//        case .Finder: block(run(consoleOptions: consoleOptions))
-//        case .script:block(run(consoleOptions: consoleOptions))
-//        }
-//    }
     
     func toInt() -> IntMenuItem {
         switch self {
