@@ -195,16 +195,10 @@ struct ProjectConfigModel: Decodable {
         var path: String
         
     }
-    
-    struct ActiveConfigModel:Decodable {
+
+    struct ExportConfigModel:Decodable {
         
-        var configuration: String
-        
-        var scheme: String
-        
-        var sdk: String
-        
-        var export: String
+        var exportOptionsPath: String
         
         var saveConfig: SaveConfigModel?
         
@@ -222,19 +216,39 @@ struct ProjectConfigModel: Decodable {
         
     }
     
-    struct UploadConfigModel:Decodable {
+    struct UploadAccountAuthConfigModel:Decodable {
         
         var username: String
         
         var password: String
         
-        var path: String
+    }
+    
+    struct UploadApiAuthConfigModel:Decodable {
+        
+        var apiKey: String
+        
+        var apiIssuerID: String
+        
+        var authKeyPath: String
         
     }
     
-    var activeConfig: ActiveConfigModel
+    struct UploadConfigModel:Decodable {
+        
+        var accountAuthConfig: UploadAccountAuthConfigModel?
+        
+        var apiAuthConfig: UploadApiAuthConfigModel?
+        
+        var ipaPath: String
+        
+    }
+    
+    var sdk: String
     
     var certificateConfig: CertificateConfigModel
+    
+    var exportConfig: ExportConfigModel
     
     var uploadConfig: UploadConfigModel
     

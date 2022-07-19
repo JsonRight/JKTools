@@ -13,6 +13,5 @@ struct JKTool: ParsableCommand {
         commandName: "JKTool",
         abstract: "JKTool",
         version: "1.0.0",
-        subcommands: [Build.self,Git.self,Archive.self,Shell.self],
-        defaultSubcommand: Build.self)
+        subcommands: [Build.self,Git.self,Archive.self,Export.self,Upload.self,Shell.self,Config.self])
 }

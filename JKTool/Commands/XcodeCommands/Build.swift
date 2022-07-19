@@ -32,7 +32,13 @@ private struct Options: ParsableArguments {
     
     @Argument(help: "设备类型，default：iOS")
     var sdk: String?
-
+    
+    /*
+     xcodebuild -workspace {...}.xcworkspace -scheme {...} -showBuildSettings  -destination "generic/platform=iOS"
+     @Argument(help: ".xcconfig路径")
+     var xcconfigPath: String?
+     */
+    
     @Argument(help: "执行路径")
     var path: String?
 }
@@ -99,6 +105,8 @@ extension JKTool.Build {
                             
                             if link.projectType.vaild() {
                                 _ = try? shellOut(to: .createSymlink(to: project.rootProject.buildsPath + "/" + moduleName, at: project.buildsPath))
+                            } else {
+                                _ = try? shellOut(to: .createSymlink(to: project.rootProject.checkoutsPath + "/" + moduleName, at: project.buildsPath))
                             }
                         }
                     }
@@ -130,7 +138,7 @@ extension JKTool.Build {
                     if options.quiet != false {po(tip:"【\(project.name)】需重新编译")}
 
                     // 删除历史build文件
-                    _ = try? shellOut(to: .removeFolder(from: project.buildPath))
+                    _ = try? shellOut(to: .removeFolder(from: project.buildPath + "/Universal"))
                     
                     buildStatic(project: project)
                     
@@ -258,6 +266,8 @@ extension JKTool.Build {
                             
                             if link.projectType.vaild() {
                                 _ = try? shellOut(to: .createSymlink(to: project.rootProject.buildsPath + "/" + moduleName, at: project.buildsPath))
+                            } else {
+                                _ = try? shellOut(to: .createSymlink(to: project.rootProject.checkoutsPath + "/" + moduleName, at: project.buildsPath))
                             }
                         }
                     }
@@ -413,6 +423,8 @@ extension JKTool.Build {
                             
                             if link.projectType.vaild() {
                                 _ = try? shellOut(to: .createSymlink(to: project.rootProject.buildsPath + "/" + moduleName, at: project.buildsPath))
+                            } else {
+                                _ = try? shellOut(to: .createSymlink(to: project.rootProject.checkoutsPath + "/" + moduleName, at: project.buildsPath))
                             }
                         }
                     }

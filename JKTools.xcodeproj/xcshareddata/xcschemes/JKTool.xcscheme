@@ -166,11 +166,11 @@
          </CommandLineArgument>
          <CommandLineArgument
             argument = "true"
-            isEnabled = "YES">
+            isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "false"
-            isEnabled = "NO">
+            isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "Debug"

@@ -80,6 +80,7 @@
 		BF69D6C7286478EC009CE7D1 /* Status.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF69D6C6286478EC009CE7D1 /* Status.swift */; };
 		BF7076FF28781FC500F71AEB /* Shell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7076FE28781FC500F71AEB /* Shell.swift */; };
 		BF70770228782F9500F71AEB /* Branch.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF70770128782F9500F71AEB /* Branch.swift */; };
+		BF85BADF2886BB5F00E916AD /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF85BADE2886BB5F00E916AD /* Config.swift */; };
 		BFA528EC26351606003427A8 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA528EB26351606003427A8 /* main.swift */; };
 		BFA528F326351634003427A8 /* JKTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA528F226351634003427A8 /* JKTool.swift */; };
 		BFA528FB26351659003427A8 /* ANSIProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA528F726351659003427A8 /* ANSIProperties.swift */; };
@@ -90,6 +91,7 @@
 		BFA5290F2635169A003427A8 /* ConfigType.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA529092635169A003427A8 /* ConfigType.swift */; };
 		BFA529122635169A003427A8 /* Project.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA5290C2635169A003427A8 /* Project.swift */; };
 		BFA529132635169A003427A8 /* ShellOut.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA5290D2635169A003427A8 /* ShellOut.swift */; };
+		BFA9F76528865EE300EE989B /* Export.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA9F76428865EE300EE989B /* Export.swift */; };
 		BFB4B1E326394758002E7072 /* JKTool in Resources */ = {isa = PBXBuildFile; fileRef = BFB4B1E226394758002E7072 /* JKTool */; };
 		BFB7CA822700893F0099B634 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFB7CA812700893F0099B634 /* Constants.swift */; };
 		BFB7CA85270092080099B634 /* Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFB7CA84270092080099B634 /* Alert.swift */; };
@@ -197,6 +199,7 @@
 		BF69D6C6286478EC009CE7D1 /* Status.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Status.swift; sourceTree = "<group>"; };
 		BF7076FE28781FC500F71AEB /* Shell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shell.swift; sourceTree = "<group>"; };
 		BF70770128782F9500F71AEB /* Branch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Branch.swift; sourceTree = "<group>"; };
+		BF85BADE2886BB5F00E916AD /* Config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
 		BFA528E926351606003427A8 /* JKTool */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = JKTool; sourceTree = BUILT_PRODUCTS_DIR; };
 		BFA528EB26351606003427A8 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		BFA528F226351634003427A8 /* JKTool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JKTool.swift; sourceTree = "<group>"; };
@@ -208,6 +211,7 @@
 		BFA529092635169A003427A8 /* ConfigType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfigType.swift; sourceTree = "<group>"; };
 		BFA5290C2635169A003427A8 /* Project.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Project.swift; sourceTree = "<group>"; };
 		BFA5290D2635169A003427A8 /* ShellOut.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShellOut.swift; sourceTree = "<group>"; };
+		BFA9F76428865EE300EE989B /* Export.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Export.swift; sourceTree = "<group>"; };
 		BFB4B1E226394758002E7072 /* JKTool */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = JKTool; path = build/JKTool; sourceTree = SOURCE_ROOT; };
 		BFB7CA812700893F0099B634 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		BFB7CA84270092080099B634 /* Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alert.swift; sourceTree = "<group>"; };
@@ -393,6 +397,7 @@
 			children = (
 				BF69D6A12862EA55009CE7D1 /* Build.swift */,
 				BF69D6A32862EA6A009CE7D1 /* Archive.swift */,
+				BFA9F76428865EE300EE989B /* Export.swift */,
 				BF26C474287C31090071E3F9 /* Upload.swift */,
 			);
 			path = XcodeCommands;
@@ -427,6 +432,7 @@
 				BF69D6A82862F662009CE7D1 /* GitCommands */,
 				BF69D6A72862F64D009CE7D1 /* XcodeCommands */,
 				BF70770028781FCC00F71AEB /* ShellCommands */,
+				BF85BAE02886BB6500E916AD /* HelpCommand */,
 			);
 			path = Commands;
 			sourceTree = "<group>";
@@ -437,6 +443,14 @@
 				BF7076FE28781FC500F71AEB /* Shell.swift */,
 			);
 			path = ShellCommands;
+			sourceTree = "<group>";
+		};
+		BF85BAE02886BB6500E916AD /* HelpCommand */ = {
+			isa = PBXGroup;
+			children = (
+				BF85BADE2886BB5F00E916AD /* Config.swift */,
+			);
+			path = HelpCommand;
 			sourceTree = "<group>";
 		};
 		BFA528EA26351606003427A8 /* JKTool */ = {
@@ -623,6 +637,7 @@
 				BF69D6802861BF01009CE7D1 /* Tree.swift in Sources */,
 				BF69D68A2861BF01009CE7D1 /* Flag.swift in Sources */,
 				BFEB07D2286B0ECD00B5D197 /* Squash.swift in Sources */,
+				BFA9F76528865EE300EE989B /* Export.swift in Sources */,
 				BF69D6782861BF01009CE7D1 /* DumpHelpGenerator.swift in Sources */,
 				BF69D6A42862EA6A009CE7D1 /* Archive.swift in Sources */,
 				BF69D6A22862EA55009CE7D1 /* Build.swift in Sources */,
@@ -671,6 +686,7 @@
 				BF69D6A62862EA8D009CE7D1 /* Git.swift in Sources */,
 				BF69D6932861BF01009CE7D1 /* SplitArguments.swift in Sources */,
 				BF7076FF28781FC500F71AEB /* Shell.swift in Sources */,
+				BF85BADF2886BB5F00E916AD /* Config.swift in Sources */,
 				BF69D6A02862C776009CE7D1 /* Clone.swift in Sources */,
 				BF69D6C5286478DE009CE7D1 /* Checkout.swift in Sources */,
 				BF69D6922861BF01009CE7D1 /* Name.swift in Sources */,
