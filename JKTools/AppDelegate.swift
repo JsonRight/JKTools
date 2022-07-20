@@ -9,22 +9,14 @@ import Cocoa
 @main
 class AppDelegate: NSObject, NSApplicationDelegate {
     
+    @IBOutlet weak var menus: NSMenu!
+    
     let statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
     
     func applicationDidFinishLaunching(_ aNotification: Notification) {
-        if !Constants.hasShellScptPath(name: "JKTool") {
-            Constants.resetShellScpt(name: "JKTool")
-        }
         
-        if !Constants.Id.LauncherApp.hasFileScriptPath() {
-            Constants.resetScpt(id: .LauncherApp)
-        }
-        if !Constants.Id.FinderExtension.hasFileScriptPath() {
-            Constants.resetScpt(id: .FinderExtension)
-        }
-        setStatusItemIcon()
-        setStatusItemVisible()
-        setStatusToggle()
+        loadStatusItem()
+        uploadScript()
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {
@@ -46,6 +38,14 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         resetScpt()
     }
     
+    @IBAction func installScript(_ sender: Any) {
+        Constants.resetShellScpt(name: "JKTool")
+    }
+    
+    @IBAction func exit(_ sender: Any) {
+        NSApplication.shared.terminate(self)
+    }
+    
     func resetScpt() {
         Constants.resetShellScpt(name: "JKTool")
         Constants.resetScpt(id: .LauncherApp)
@@ -56,27 +56,43 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
 extension AppDelegate {
     
-    // MARK: - Status Bar Item
-    
-    func setStatusItemIcon() {
+    func loadStatusItem() {
+        
+        guard let button = statusItem.button else {
+            return
+        }
         let icon = NSImage(named: "Image")
         icon?.isTemplate = true // Support Dark Mode
-        DispatchQueue.main.async {
-            self.statusItem.button?.image = icon
-        }
+        button.image = icon
+        button.action = #selector(self.action(_:))
+        self.statusItem.menu = self.menus
+        self.statusItem.isVisible = true
     }
     
-    func setStatusItemVisible() {
-        statusItem.isVisible = true
-    }
-    
-    func setStatusToggle() {
-        statusItem.button?.action = #selector(action(_:))
-    }
     @IBAction func action(_ item: NSMenuItem) {
         NSApplication.shared.activate(ignoringOtherApps: true)
         for window in NSApplication.shared.windows {
             window.makeKeyAndOrderFront(self)
         }
-   }
+    }
+    
 }
+
+extension AppDelegate {
+    
+    func uploadScript() {
+        
+        if !Constants.hasShellScptPath(name: "JKTool") {
+            Constants.resetShellScpt(name: "JKTool")
+        }
+
+//        if !Constants.Id.LauncherApp.hasFileScriptPath() {
+//            Constants.resetScpt(id: .LauncherApp)
+//        }
+//        if !Constants.Id.FinderExtension.hasFileScriptPath() {
+//            Constants.resetScpt(id: .FinderExtension)
+//        }
+    }
+}
+
+

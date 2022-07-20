@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="19162" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="21179.7" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="19162"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="21179.7"/>
         <capability name="System colors introduced in macOS 10.14" minToolsVersion="10.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -151,9 +151,29 @@
                         <outlet property="delegate" destination="Voe-Tx-rLC" id="PrD-fu-P6m"/>
                     </connections>
                 </application>
-                <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModule="JKTools" customModuleProvider="target"/>
+                <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModule="JKTools" customModuleProvider="target">
+                    <connections>
+                        <outlet property="menus" destination="J4p-0h-8pn" id="Oy4-jX-Nxu"/>
+                    </connections>
+                </customObject>
                 <customObject id="YLy-65-1bz" customClass="NSFontManager"/>
                 <customObject id="Ady-hI-5gd" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+                <menu id="J4p-0h-8pn">
+                    <items>
+                        <menuItem title="安装脚本" id="3aF-IR-gSx">
+                            <modifierMask key="keyEquivalentModifierMask"/>
+                            <connections>
+                                <action selector="installScript:" target="Voe-Tx-rLC" id="Xvl-kI-7bI"/>
+                            </connections>
+                        </menuItem>
+                        <menuItem title="退出" id="Pws-ed-zkd">
+                            <modifierMask key="keyEquivalentModifierMask"/>
+                            <connections>
+                                <action selector="exit:" target="Voe-Tx-rLC" id="qZc-WQ-Gxw"/>
+                            </connections>
+                        </menuItem>
+                    </items>
+                </menu>
                 <userDefaultsController representsSharedInstance="YES" id="7DU-v0-NKj"/>
             </objects>
             <point key="canvasLocation" x="293" y="-382"/>
@@ -188,22 +208,22 @@
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <box title="Projects" translatesAutoresizingMaskIntoConstraints="NO" id="Jwi-qo-Wvr">
-                                <rect key="frame" x="2" y="27" width="1069" height="411"/>
+                                <rect key="frame" x="2" y="27" width="1069" height="417"/>
                                 <view key="contentView" id="1SU-vw-I24">
-                                    <rect key="frame" x="3" y="3" width="1063" height="393"/>
+                                    <rect key="frame" x="3" y="3" width="1063" height="399"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <customView translatesAutoresizingMaskIntoConstraints="NO" id="5SW-vO-5Nu">
-                                            <rect key="frame" x="0.0" y="0.0" width="529" height="393"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="529" height="399"/>
                                             <subviews>
                                                 <scrollView autohidesScrollers="YES" horizontalLineScroll="72" horizontalPageScroll="10" verticalLineScroll="72" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QP6-3b-uxX">
-                                                    <rect key="frame" x="0.0" y="0.0" width="529" height="393"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="529" height="399"/>
                                                     <clipView key="contentView" id="iR4-Cb-3g0">
-                                                        <rect key="frame" x="1" y="1" width="527" height="391"/>
+                                                        <rect key="frame" x="1" y="1" width="527" height="397"/>
                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                         <subviews>
                                                             <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" rowHeight="70" rowSizeStyle="automatic" viewBased="YES" id="U1F-Zi-BJx">
-                                                                <rect key="frame" x="0.0" y="0.0" width="527" height="391"/>
+                                                                <rect key="frame" x="0.0" y="0.0" width="527" height="397"/>
                                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                 <size key="intercellSpacing" width="3" height="2"/>
                                                                 <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -317,26 +337,26 @@
                                             </constraints>
                                         </customView>
                                         <customView translatesAutoresizingMaskIntoConstraints="NO" id="IMR-Qo-0z1">
-                                            <rect key="frame" x="534" y="0.0" width="529" height="393"/>
+                                            <rect key="frame" x="534" y="0.0" width="529" height="399"/>
                                             <subviews>
                                                 <scrollView horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gEt-aq-UTB">
-                                                    <rect key="frame" x="0.0" y="0.0" width="529" height="393"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="529" height="399"/>
                                                     <clipView key="contentView" id="2pb-3b-x66">
-                                                        <rect key="frame" x="1" y="1" width="527" height="391"/>
+                                                        <rect key="frame" x="1" y="1" width="512" height="382"/>
                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                         <subviews>
                                                             <view id="vO1-eG-isc">
-                                                                <rect key="frame" x="0.0" y="0.0" width="512" height="376"/>
+                                                                <rect key="frame" x="0.0" y="0.0" width="497" height="367"/>
                                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             </view>
                                                         </subviews>
                                                     </clipView>
                                                     <scroller key="horizontalScroller" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="yOO-4C-ytV">
-                                                        <rect key="frame" x="1" y="376" width="527" height="16"/>
+                                                        <rect key="frame" x="1" y="383" width="512" height="15"/>
                                                         <autoresizingMask key="autoresizingMask"/>
                                                     </scroller>
                                                     <scroller key="verticalScroller" wantsLayer="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="Wx2-h4-1Qr">
-                                                        <rect key="frame" x="512" y="1" width="16" height="391"/>
+                                                        <rect key="frame" x="513" y="1" width="15" height="382"/>
                                                         <autoresizingMask key="autoresizingMask"/>
                                                     </scroller>
                                                 </scrollView>
