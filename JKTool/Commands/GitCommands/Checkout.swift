@@ -36,7 +36,7 @@ extension JKTool.Git {
                     if quiet != false {po(tip: "【\(project.name)】Checkout[\(branch)]完成", type: .tip)}
                 } catch {
                     let error = error as! ShellOutError
-                    po(tip: "【\(project.name)】 Checkout失败\n" + error.message + error.output,type: .error)
+                    po(tip: "【\(project.name)】 Checkout失败\n" + error.message + error.output,type: .warning)
                 }
             }
             

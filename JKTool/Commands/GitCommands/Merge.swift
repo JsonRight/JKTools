@@ -38,7 +38,7 @@ extension JKTool.Git {
                     if quiet != false {po(tip: "【\(project.name)】Merge完成\n\(result)", type: .tip)}
                 } catch {
                     let error = error as! ShellOutError
-                    po(tip: "【\(project.name)】 Merge失败\n" + error.message + error.output,type: .error)
+                    po(tip: "【\(project.name)】 Merge失败\n" + error.message + error.output,type: .warning)
                 }
             }
             

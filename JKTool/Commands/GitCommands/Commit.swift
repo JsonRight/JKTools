@@ -41,7 +41,7 @@ extension JKTool.Git {
                     if quiet != false {po(tip: "【\(project.name)】Commit完成", type: .tip)}
                 } catch {
                     let error = error as! ShellOutError
-                    po(tip: "【\(project.name)】 Commit失败\n" + error.message + error.output,type: .error)
+                    po(tip: "【\(project.name)】 Commit失败\n" + error.message + error.output,type: .warning)
                 }
             }
             guard let project = Project.project(directoryPath: path ?? FileManager.default.currentDirectoryPath) else {

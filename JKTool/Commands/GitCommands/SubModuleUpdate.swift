@@ -57,7 +57,7 @@ extension JKTool.Git.SubModule.Update {
 
                             } catch {
                                 let error = error as! ShellOutError
-                                po(tip:"【\(module.name)】已存在， update 异常" + error.message + error.output,type: .error)
+                                po(tip:"【\(module.name)】已存在， update 异常" + error.message + error.output,type: .warning)
                             }
                         }else {
                             
@@ -66,7 +66,7 @@ extension JKTool.Git.SubModule.Update {
                                 if quiet != false {po(tip: "【\(module.name)】:Add 成功")}
                             } catch {
                                 let error = error as! ShellOutError
-                                po(tip: "【\(module.name)】:Add 异常" + error.message + error.output,type: .error)
+                                po(tip: "【\(module.name)】:Add 异常" + error.message + error.output,type: .warning)
                             }
                         }
                     }

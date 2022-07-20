@@ -46,7 +46,7 @@ extension JKTool.Git.Branch {
                     if quiet != false {po(tip: "【\(project.name)】Create branch完成", type: .tip)}
                 } catch {
                     let error = error as! ShellOutError
-                    po(tip: "【\(project.name)】 Create branch失败\n" + error.message + error.output,type: .error)
+                    po(tip: "【\(project.name)】 Create branch失败\n" + error.message + error.output,type: .warning)
                 }
             }
             
