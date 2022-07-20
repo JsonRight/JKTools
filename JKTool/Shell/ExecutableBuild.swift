@@ -14,10 +14,11 @@ public extension ShellOutCommand {
     /// IOS build Framework Release arm64 iphoneos
     static func frameworkBuild(scheme:String, isWorkspace:Bool,projectName: String, projectPath:String, derivedDataPath: String, configuration: String, sdk: String, verison: String, toPath: String?) -> ShellOutCommand {
         let buildPath = URL(fileURLWithPath: (derivedDataPath as NSString).expandingTildeInPath).standardizedFileURL.path
-        var shell = "xcodebuild build \(isWorkspace ? "-workspace" : "-project") \(projectName) -scheme \(scheme) -configuration \(configuration) -destination 'generic/platform=\(Platform(sdk).platform(ConfigOptions(configuration)))' -UseModernBuildSystem=YES -derivedDataPath \(buildPath)"
+//        VALID_ARCHS='\(ConfigOptions(configuration).archs())'
+        var shell = "xcodebuild build \(isWorkspace ? "-workspace" : "-project") \(projectName) -scheme \(scheme) -configuration \(configuration) VALID_ARCHS='\(ConfigOptions(configuration).archs())' -destination 'generic/platform=\(Platform(sdk).platform(ConfigOptions(configuration)))' -UseModernBuildSystem=YES -derivedDataPath \(buildPath)"
 
-        if ConfigOptions(configuration) == .Debug  {
-            shell.connected(andCommand: "xcodebuild build \(isWorkspace ? "-workspace" : "-project") \(projectName) -scheme \(scheme) -configuration \(ConfigOptions.Release) -destination 'generic/platform=\(Platform(sdk).platform(.Release))' -UseModernBuildSystem=YES -derivedDataPath \(buildPath)")
+        if ConfigOptions(configuration) == .Debug  {// VALID_ARCHS='\(ConfigOptions.Release.archs())'
+            shell.connected(andCommand: "xcodebuild build \(isWorkspace ? "-workspace" : "-project") \(projectName) -scheme \(scheme) -configuration \(ConfigOptions.Release) VALID_ARCHS='\(ConfigOptions.Release.archs())' -destination 'generic/platform=\(Platform(sdk).platform(.Release))' -UseModernBuildSystem=YES -derivedDataPath \(buildPath)")
         }
         
         // cp Release shell
@@ -55,9 +56,10 @@ public extension ShellOutCommand {
     /// IOS build Framework Release arm64 iphoneos
     static func xcframeworkBuild(scheme:String, isWorkspace:Bool,projectName: String, projectPath:String, derivedDataPath: String, configuration: String, sdk: String, verison: String, toPath: String?) -> ShellOutCommand {
         let buildPath = URL(fileURLWithPath: (derivedDataPath as NSString).expandingTildeInPath).standardizedFileURL.path
-        var shell = "xcodebuild build \(isWorkspace ? "-workspace" : "-project") \(projectName) -scheme \(scheme) -configuration \(configuration) -destination 'generic/platform=\(Platform(sdk).platform(ConfigOptions(configuration)))' -UseModernBuildSystem=YES -derivedDataPath \(buildPath)"
-        if ConfigOptions(configuration) == .Debug  {
-            shell.connected(andCommand: "xcodebuild build \(isWorkspace ? "-workspace" : "-project") \(projectName) -scheme \(scheme) -configuration \(ConfigOptions.Release) -destination 'generic/platform=\(Platform(sdk).platform(.Release))' -UseModernBuildSystem=YES -derivedDataPath \(buildPath)")
+//        VALID_ARCHS='\(ConfigOptions(configuration).archs())'
+        var shell = "xcodebuild build \(isWorkspace ? "-workspace" : "-project") \(projectName) -scheme \(scheme) -configuration \(configuration) VALID_ARCHS='\(ConfigOptions(configuration).archs())' -destination 'generic/platform=\(Platform(sdk).platform(ConfigOptions(configuration)))' -UseModernBuildSystem=YES -derivedDataPath \(buildPath)"
+        if ConfigOptions(configuration) == .Debug  {// VALID_ARCHS='\(ConfigOptions.Release.archs())'
+            shell.connected(andCommand: "xcodebuild build \(isWorkspace ? "-workspace" : "-project") \(projectName) -scheme \(scheme) -configuration \(ConfigOptions.Release) VALID_ARCHS='\(ConfigOptions.Release.archs())' -destination 'generic/platform=\(Platform(sdk).platform(.Release))' -UseModernBuildSystem=YES -derivedDataPath \(buildPath)")
         }
         // build shell
         shell.connected(andCommand: "mkdir -p \(buildPath)/Universal/\(verison)/")
@@ -91,9 +93,10 @@ public extension ShellOutCommand {
     /// IOS build Static.a
     static func staticBuild(scheme:String, isWorkspace:Bool,projectName: String, projectPath:String, derivedDataPath: String, configuration: String, sdk: String, verison: String, toStaticPath: String?, toHeaderPath: String?) -> ShellOutCommand {
         let buildPath = URL(fileURLWithPath: (derivedDataPath as NSString).expandingTildeInPath).standardizedFileURL.path
-        var shell = "xcodebuild build \(isWorkspace ? "-workspace" : "-project") \(projectName) -scheme \(scheme) -configuration \(configuration) -destination 'generic/platform=\(Platform(sdk).platform(ConfigOptions(configuration)))' -UseModernBuildSystem=YES -derivedDataPath \(buildPath)"
-        if ConfigOptions(configuration) == .Debug  {
-            shell.connected(andCommand: "xcodebuild build \(isWorkspace ? "-workspace" : "-project") \(projectName) -scheme \(scheme) -configuration \(ConfigOptions.Release) -destination 'generic/platform=\(Platform(sdk).platform(.Release))' -UseModernBuildSystem=YES -derivedDataPath \(buildPath)")
+        // VALID_ARCHS='\(ConfigOptions(configuration).archs())'
+        var shell = "xcodebuild build \(isWorkspace ? "-workspace" : "-project") \(projectName) -scheme \(scheme) -configuration \(configuration) VALID_ARCHS='\(ConfigOptions(configuration).archs())' -destination 'generic/platform=\(Platform(sdk).platform(ConfigOptions(configuration)))' -UseModernBuildSystem=YES -derivedDataPath \(buildPath)"
+        if ConfigOptions(configuration) == .Debug  {// VALID_ARCHS='\(ConfigOptions.Release.archs())'
+            shell.connected(andCommand: "xcodebuild build \(isWorkspace ? "-workspace" : "-project") \(projectName) -scheme \(scheme) -configuration \(ConfigOptions.Release) VALID_ARCHS='\(ConfigOptions.Release.archs())' -destination 'generic/platform=\(Platform(sdk).platform(.Release))' -UseModernBuildSystem=YES -derivedDataPath \(buildPath)")
         }
         shell.connected(andCommand: "mkdir -p \(buildPath)/Universal/\(verison)/")
         shell.connected(andCommand: "lipo -create")
