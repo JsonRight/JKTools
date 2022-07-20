@@ -13,8 +13,8 @@ extension JKTool.Git {
             _superCommandName: "git",
             abstract: "push")
         
-        @Argument(help: "push by branch")
-        var branch: String
+        @Argument(help: "push branch name")
+        var branch: String?
         
         @Argument(help: "递归子模块，default：false")
         var recursive: Bool?
@@ -28,6 +28,15 @@ extension JKTool.Git {
         mutating func run() {
             
             func push(project: Project){
+                
+                if branch == nil {
+                    branch = try? shellOut(to: .gitCurrentBranch(), at: project.directoryPath)
+                }
+                
+                guard let branch = branch else {
+                    return po(tip: "【\(project.name)】 Push失败\n" + "无法检索出当前分支名",type: .error)
+                }
+                
                 do {
                     try shellOut(to: .gitPush(branch: branch), at: project.directoryPath)
                     if quiet != false {po(tip: "【\(project.name)】Push[\(branch)]完成", type: .tip)}

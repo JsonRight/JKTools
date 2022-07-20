@@ -35,7 +35,7 @@ extension JKTool.Upload {
 
         mutating func run() {
             
-            guard let data = try? Data(contentsOf: URL(fileURLWithPath: configPath.convertRelativePath())) else {
+            guard let data = try? Data(contentsOf: URL(fileURLWithPath: configPath.convertRelativePath(absolutPath: path ?? FileManager.default.currentDirectoryPath))) else {
                 return po(tip: "请检查配置文件是否存在，或者格式是否正确！",type: .error)
             }
             
@@ -48,7 +48,7 @@ extension JKTool.Upload {
             
             
             do {
-                try shellOut(to: .upload(path: configs.uploadConfig.ipaPath.convertRelativePath(), username: configs.uploadConfig.accountAuthConfig!.username, password: configs.uploadConfig.accountAuthConfig!.password))
+                try shellOut(to: .upload(path: configs.uploadConfig.ipaPath.convertRelativePath(absolutPath: path ?? FileManager.default.currentDirectoryPath), username: configs.uploadConfig.accountAuthConfig!.username, password: configs.uploadConfig.accountAuthConfig!.password))
             } catch  {
                 let error = error as! ShellOutError
                 po(tip:  error.message + error.output,type: .error)
@@ -70,7 +70,7 @@ extension JKTool.Upload {
         var path: String?
         
         mutating func run() {
-            guard let data = try? Data(contentsOf: URL(fileURLWithPath: configPath.convertRelativePath())) else {
+            guard let data = try? Data(contentsOf: URL(fileURLWithPath: configPath.convertRelativePath(absolutPath: path ?? FileManager.default.currentDirectoryPath))) else {
                 return po(tip: "请检查配置文件是否存在，或者格式是否正确！",type: .error)
             }
             
@@ -88,7 +88,7 @@ extension JKTool.Upload {
                 po(tip:  error.message + error.output,type: .error)
             }
             do {
-                try shellOut(to: .upload(path: configs.uploadConfig.ipaPath.convertRelativePath(), apiKey: configs.uploadConfig.apiAuthConfig!.apiKey, apiIssuerID: configs.uploadConfig.apiAuthConfig!.apiIssuerID))
+                try shellOut(to: .upload(path: configs.uploadConfig.ipaPath.convertRelativePath(absolutPath: path ?? FileManager.default.currentDirectoryPath), apiKey: configs.uploadConfig.apiAuthConfig!.apiKey, apiIssuerID: configs.uploadConfig.apiAuthConfig!.apiIssuerID))
             } catch  {
                 let error = error as! ShellOutError
                 po(tip:  error.message + error.output,type: .error)
@@ -126,7 +126,7 @@ extension JKTool.Upload {
             }
             
             
-            guard let data = try? Data(contentsOf: URL(fileURLWithPath: configPath.convertRelativePath())) else {
+            guard let data = try? Data(contentsOf: URL(fileURLWithPath: configPath.convertRelativePath(absolutPath: project.directoryPath))) else {
                 return po(tip: "请检查配置文件是否存在，或者格式是否正确！",type: .error)
             }
             

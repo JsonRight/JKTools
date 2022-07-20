@@ -26,7 +26,7 @@ extension JKTool.Git.Branch {
             abstract: "create a branch",
             version: "1.0.0")
         
-        @Argument(help: "del by branch")
+        @Argument(help: "create branch name")
         var branch: String
         
         @Argument(help: "递归子模块，default：false")
@@ -123,6 +123,7 @@ extension JKTool.Git.Branch.Del {
         mutating func run() {
             
             func del(project: Project){
+                
                 do {
                     try shellOut(to: .gitDelLocalBranch(branch: branch), at: project.directoryPath)
                     if quiet != false {po(tip: "【\(project.name)】Del local完成", type: .tip)}

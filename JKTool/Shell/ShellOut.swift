@@ -190,6 +190,12 @@ public extension ShellOutCommand {
         return ShellOutCommand(string: command)
     }
     
+    /// Perform a git get current branch name
+    static func gitCurrentBranch() -> ShellOutCommand {
+        let command = "git branch --show-current"
+        return ShellOutCommand(string: command)
+    }
+    
     /// Perform a git create branch
     static func gitCreateBranch(branch: String) -> ShellOutCommand {
         let command = "git checkout -b \(branch)"

@@ -38,7 +38,7 @@ extension JKTool {
                 return po(tip: "请在项目根目录执行脚本", type: .error)
             }
             
-            guard let data = try? Data(contentsOf: URL(fileURLWithPath: configPath.convertRelativePath())) else {
+            guard let data = try? Data(contentsOf: URL(fileURLWithPath: configPath.convertRelativePath(absolutPath:project.directoryPath))) else {
                 return po(tip: "请检查配置文件是否存在，或者格式是否正确！",type: .error)
             }
             
@@ -56,21 +56,21 @@ extension JKTool {
             }
             
             do {
-                try shellOut(to: .importP12(p12sPath: configs.certificateConfig.p12sPath.convertRelativePath(), password: configs.certificateConfig.p12Pwd), at: project.directoryPath)
+                try shellOut(to: .importP12(p12sPath: configs.certificateConfig.p12sPath.convertRelativePath(absolutPath:project.directoryPath), password: configs.certificateConfig.p12Pwd), at: project.directoryPath)
             } catch  {
                 let error = error as! ShellOutError
                 po(tip:  "importP12" + error.message + error.output,type: .error)
             }
             
             do {
-                try shellOut(to: .installProfiles(profilesPath: configs.certificateConfig.profilesPath.convertRelativePath()), at: project.directoryPath)
+                try shellOut(to: .installProfiles(profilesPath: configs.certificateConfig.profilesPath.convertRelativePath(absolutPath:project.directoryPath)), at: project.directoryPath)
             } catch  {
                 let error = error as! ShellOutError
                 po(tip:  "installProfiles:" + error.message + error.output,type: .error)
             }
             
             do {
-                try shellOut(to: .export(scheme: scheme, projectPath: project.directoryPath, configuration: configuration, export: configs.exportConfig.exportOptionsPath.convertRelativePath(), nameSuffix: configs.exportConfig.saveConfig?.nameSuffix,toSavePath: configs.exportConfig.saveConfig?.path), at: project.directoryPath)
+                try shellOut(to: .export(scheme: scheme, projectPath: project.directoryPath, configuration: configuration, export: configs.exportConfig.exportOptionsPath.convertRelativePath(absolutPath:project.directoryPath), nameSuffix: configs.exportConfig.saveConfig?.nameSuffix,toSavePath: configs.exportConfig.saveConfig?.path), at: project.directoryPath)
             } catch  {
                 let error = error as! ShellOutError
                 po(tip:  error.message + error.output,type: .error)
