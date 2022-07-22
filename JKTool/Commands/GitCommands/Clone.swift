@@ -66,7 +66,7 @@ extension JKTool.Git.Clone {
                     if let subModule = Project.project(directoryPath: modulePath) {
                         // 递归Clone subModule
                         let list = clone(project: subModule)
-                        subModule.writeRecordList(recordList: list, quiet: quiet)
+                        _ = subModule.writeRecordList(recordList: list, quiet: quiet)
                         
                         subRecordList += list
                         // 将module加入即将需要subModule中
