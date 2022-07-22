@@ -49,7 +49,7 @@ extension JKTool.Build {
         static var configuration = CommandConfiguration(
             commandName: "static",
             _superCommandName: "build",
-            abstract: "build static",
+            abstract: "编译成.a文件",
             version: "1.0.0")
 
         @OptionGroup private var options: Options
@@ -210,7 +210,7 @@ extension JKTool.Build {
         static var configuration = CommandConfiguration(
             commandName: "framework",
             _superCommandName: "build",
-            abstract: "build framework",
+            abstract: "编译成.framework文件",
             version: "1.0.0")
 
         @OptionGroup private var options: Options
@@ -367,7 +367,7 @@ extension JKTool.Build {
         static var configuration = CommandConfiguration(
             commandName: "xcframework",
             _superCommandName: "build",
-            abstract: "build xcframework",
+            abstract: "编译成.xcframework文件",
             version: "1.0.0")
 
         @OptionGroup private var options: Options
@@ -524,7 +524,7 @@ extension JKTool.Build {
         static var configuration = CommandConfiguration(
             commandName: "unknown",
             _superCommandName: "build",
-            abstract: "build unknown",
+            abstract: "动态解析项目编译成.a/.framework/.xcframework文件",
             version: "1.0.0")
 
         @OptionGroup private var options: Options
