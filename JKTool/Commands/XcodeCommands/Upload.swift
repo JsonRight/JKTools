@@ -53,7 +53,7 @@ extension JKTool.Upload {
                 let error = error as! ShellOutError
                 po(tip:  error.message + error.output,type: .error)
             }
-            if configs.quiet != false {po(tip: "======Upload项目完成:用时：" + String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s======")}
+            if configs.quiet != false {po(tip: "======Upload项目完成 用时：" + String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s======")}
         }
     }
     struct ApiAuth: ParsableCommand {
@@ -93,7 +93,7 @@ extension JKTool.Upload {
                 let error = error as! ShellOutError
                 po(tip:  error.message + error.output,type: .error)
             }
-            if configs.quiet != false {po(tip: "======Upload项目完成:用时：" + String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s======")}
+            if configs.quiet != false {po(tip: "======Upload项目完成 用时：" + String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s======")}
         }
     }
     struct Export: ParsableCommand {
@@ -141,7 +141,7 @@ extension JKTool.Upload {
                 let error = error as! ShellOutError
                 po(tip:  error.message + error.output,type: .error)
             }
-            if configs.quiet != false {po(tip: "======Upload项目完成:用时：" + String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s======")}
+            if configs.quiet != false {po(tip: "======Upload项目完成 用时：" + String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s======")}
         }
     }
 }

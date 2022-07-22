@@ -88,6 +88,59 @@ public class Project {
         return projectType
     }()
     
+    public enum ProjectBuildType {
+        case Static
+        case Framework
+        case Other
+    }
+                                          
+    lazy var buildType: ProjectBuildType = {
+        
+        var buildType = ProjectBuildType.Other
+        
+        guard let fileData = try? Data(contentsOf: URL(fileURLWithPath: self.directoryPath + "/\(self.projectType.name())/project.pbxproj")) else {
+            return buildType
+        }
+        guard let plist = try? PropertyListSerialization.propertyList(from: fileData, options: .mutableContainersAndLeaves, format: nil) as? [String:Any] else {
+            return buildType
+        }
+        
+        guard let rootObjectValue = plist["rootObject"] as? String else {
+            return buildType
+        }
+        
+        guard let objects = plist["objects"] as? [String:Any] else {
+            return buildType
+        }
+        
+        guard let projectObject = objects[rootObjectValue] as? [String:Any] else {
+            return buildType
+        }
+        
+        guard let targetsValue = projectObject["targets"] as? [String] else {
+            return buildType
+        }
+        
+        for target in targetsValue {
+            guard let targetObject = objects[target] as? [String:Any] else {
+                continue
+            }
+            guard let productType = targetObject["productType"] as? String else {
+                continue
+            }
+            if productType == "com.apple.product-type.framework" {
+                buildType = .Framework
+                break
+            }
+            if productType == "com.apple.product-type.library.static" {
+                buildType = .Static
+                break
+            }
+        }
+        
+        return buildType
+    }()
+    
     lazy var name: String = {
         return nameForPath(path: self.directoryPath)
     }()
