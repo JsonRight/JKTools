@@ -52,13 +52,13 @@ extension NSTextField {
     open override func performKeyEquivalent(with event: NSEvent) -> Bool {
         
         switch event.charactersIgnoringModifiers {
-            case "a":
+            case "a","A":
                 return NSApp.sendAction(#selector(NSText.selectAll(_:)), to: self.window?.firstResponder, from: self)
-            case "c":
+            case "c","C":
                 return NSApp.sendAction(#selector(NSText.copy(_:)), to: self.window?.firstResponder, from: self)
-            case "v":
+            case "v","V":
                 return NSApp.sendAction(#selector(NSText.paste(_:)), to: self.window?.firstResponder, from: self)
-            case "x":
+            case "x","X":
                 return NSApp.sendAction(#selector(NSText.cut(_:)), to: self.window?.firstResponder, from: self)
             default:
                 return super.performKeyEquivalent(with: event)

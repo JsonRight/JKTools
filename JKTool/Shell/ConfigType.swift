@@ -109,7 +109,7 @@ public enum ValidArchs {
     }
 }
 
-enum Platform: String {
+public enum Platform: String {
     case iOS,iPadOS,macOS,tvOS,watchOS,carPlayOS
     
     init(_ string: String) {
@@ -186,7 +186,7 @@ enum Platform: String {
     }
 }
 
-struct ProjectConfigModel: Decodable {
+public struct ProjectConfigModel: Decodable {
     
     struct SaveConfigModel:Decodable {
         
@@ -256,7 +256,7 @@ struct ProjectConfigModel: Decodable {
     
 }
 
-struct ProjectListsModel: Decodable {
+public struct ProjectListsModel: Decodable {
     struct ProjectModel: Decodable {
         var configurations:[String]
         var name: String
@@ -264,4 +264,24 @@ struct ProjectListsModel: Decodable {
         var targets: [String]
     }
     var project: ProjectModel
+}
+
+public class JKToolConfig {
+    
+    struct Config: Decodable {
+        var checkouts: String = "Module/checkouts"
+        var builds: String = "Module/Builds"
+        var build: String = "Build"
+    }
+    
+    var config: Config
+    
+    static let sharedInstance = JKToolConfig()
+    private init() {
+        if let data = try? Data(contentsOf: URL(fileURLWithPath: "\(NSHomeDirectory())/Library/Containers/com.jk.JKTools/Data/Documents/config.json")),let config = try? JSONDecoder().decode(Config.self, from: data) {
+            self.config = config
+        } else {
+            self.config = Config()
+        }
+    }
 }

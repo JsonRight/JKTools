@@ -52,7 +52,7 @@ extension JKTool.Git.SubModule.Update {
                         if let submodules = submodules, submodules.contains(module.name) {
                             
                             do {
-                                try shellOut(to: .gitSubmoduleUpdate(remote: remote ?? false,path: "Module/checkouts/\(module.name)"),at: project.rootProject.directoryPath)
+                                try shellOut(to: .gitSubmoduleUpdate(remote: remote ?? false,path: "\(JKToolConfig.sharedInstance.config.checkouts)/\(module.name)"),at: project.rootProject.directoryPath)
                                 if quiet != false {po(tip: "【\(module.name)】已存在， update 成功")}
 
                             } catch {
@@ -62,7 +62,7 @@ extension JKTool.Git.SubModule.Update {
                         }else {
                             
                             do {
-                                try shellOut(to: .gitSubmoduleAdd(name: module.name,url: module.url, path: "Module/checkouts/\(module.name)"),at: project.rootProject.directoryPath)
+                                try shellOut(to: .gitSubmoduleAdd(name: module.name,url: module.url, path: "\(JKToolConfig.sharedInstance.config.checkouts)/\(module.name)"),at: project.rootProject.directoryPath)
                                 if quiet != false {po(tip: "【\(module.name)】:Add 成功")}
                             } catch {
                                 let error = error as! ShellOutError
@@ -108,7 +108,7 @@ extension JKTool.Git.SubModule.Update {
             if prune == true {
                 for record in pruneRecordList {
                     do {
-                        try shellOut(to: .gitSubmoduleRemove(path: "Module/checkouts/\(record)"),at: project.rootProject.directoryPath)
+                        try shellOut(to: .gitSubmoduleRemove(path: "\(JKToolConfig.sharedInstance.config.checkouts)/\(record)"),at: project.rootProject.directoryPath)
                         if quiet != false {po(tip: "【\(record)】:Remove 成功")}
                     } catch {
                         let error = error as! ShellOutError

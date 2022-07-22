@@ -150,34 +150,28 @@ public class Project {
     }()
     
     lazy var checkoutsPath: String = {
-        let modulePath = self.modulePath.appending("/checkouts")
-        return modulePath
+        let checkoutsPath = self.directoryPath.appending("/\(JKToolConfig.sharedInstance.config.checkouts)")
+        return checkoutsPath
     }()
     
     lazy var buildsPath: String = {
-        let buildPath = self.modulePath.appending("/Builds")
+        let buildPath = self.directoryPath.appending("/\(JKToolConfig.sharedInstance.config.builds)")
         return buildPath
     }()
     
     lazy var buildPath: String = {
-        let buildPath = self.directoryPath.appending("/Build")
+        let buildPath = self.directoryPath.appending("/\(JKToolConfig.sharedInstance.config.build)")
         return buildPath
     }()
-    
-    lazy var modulePath: String = {
-        let buildPath = self.directoryPath.appending("/Module")
-        return buildPath
-    }()
-    
-    
+
     lazy var rootProject: Project = {
-        guard self.directoryPath.contains("/Module/checkouts") else {
+        guard let range = self.directoryPath.range(of: "/\(JKToolConfig.sharedInstance.config.checkouts)") else {
             return self
         }
-        let rootPath = self.directoryPath.replacingOccurrences(of: "/Module/checkouts/"+self.name, with: "")
+        
+        let rootPath = String(self.directoryPath[..<range.lowerBound])
         return Project.project(directoryPath: rootPath)!
     }()
-    
     
     init(directoryPath: String) {
         self.directoryPath = directoryPath

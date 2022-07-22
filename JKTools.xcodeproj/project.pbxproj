@@ -13,6 +13,7 @@
 		BF25A47A26170AA300CB2F1B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BF25A47926170AA300CB2F1B /* Main.storyboard */; };
 		BF26C475287C31090071E3F9 /* Upload.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF26C474287C31090071E3F9 /* Upload.swift */; };
 		BF26C59D287FB7920071E3F9 /* SubModuleUpdate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF26C591287FB7910071E3F9 /* SubModuleUpdate.swift */; };
+		BF284044288A7CBB002CC6A2 /* JKToolConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF284042288A7CA4002CC6A2 /* JKToolConfig.swift */; };
 		BF2BC8EE26202FDB005802E4 /* PreferencesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2BC8ED26202FDB005802E4 /* PreferencesViewController.swift */; };
 		BF2BC8F12620370D005802E4 /* PreferencesCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2BC8F02620370D005802E4 /* PreferencesCellView.swift */; };
 		BF2BC8F4262064D0005802E4 /* ProjectInfoBean.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2BC8F3262064D0005802E4 /* ProjectInfoBean.swift */; };
@@ -98,6 +99,7 @@
 		BFEB07B5286AA7DB00B5D197 /* Merge.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFEB07B4286AA7DB00B5D197 /* Merge.swift */; };
 		BFEB07D2286B0ECD00B5D197 /* Squash.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFEB07D1286B0ECD00B5D197 /* Squash.swift */; };
 		BFEBAE6828608295006928AD /* ExecutableBuild.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFEBAE6728608295006928AD /* ExecutableBuild.swift */; };
+		BFF30917288A3F11002D9A47 /* PreferencesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFF30916288A3F11002D9A47 /* PreferencesController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -132,6 +134,7 @@
 		BF25A47926170AA300CB2F1B /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		BF26C474287C31090071E3F9 /* Upload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Upload.swift; sourceTree = "<group>"; };
 		BF26C591287FB7910071E3F9 /* SubModuleUpdate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubModuleUpdate.swift; sourceTree = "<group>"; };
+		BF284042288A7CA4002CC6A2 /* JKToolConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JKToolConfig.swift; sourceTree = "<group>"; };
 		BF2BC8ED26202FDB005802E4 /* PreferencesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesViewController.swift; sourceTree = "<group>"; };
 		BF2BC8F02620370D005802E4 /* PreferencesCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesCellView.swift; sourceTree = "<group>"; };
 		BF2BC8F3262064D0005802E4 /* ProjectInfoBean.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectInfoBean.swift; sourceTree = "<group>"; };
@@ -218,6 +221,7 @@
 		BFEB07B4286AA7DB00B5D197 /* Merge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Merge.swift; sourceTree = "<group>"; };
 		BFEB07D1286B0ECD00B5D197 /* Squash.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Squash.swift; sourceTree = "<group>"; };
 		BFEBAE6728608295006928AD /* ExecutableBuild.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExecutableBuild.swift; sourceTree = "<group>"; };
+		BFF30916288A3F11002D9A47 /* PreferencesController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -267,11 +271,13 @@
 				BF2BC8F02620370D005802E4 /* PreferencesCellView.swift */,
 				BF2BC8F3262064D0005802E4 /* ProjectInfoBean.swift */,
 				BF3B8053263171390085E75A /* Projects.swift */,
+				BF284042288A7CA4002CC6A2 /* JKToolConfig.swift */,
 				BF2BC8F62620681B005802E4 /* InsertProjectViewController.swift */,
 				BF25A43C2615DE1D00CB2F1B /* Assets.xcassets */,
 				BF25A47926170AA300CB2F1B /* Main.storyboard */,
 				BF25A4412615DE1D00CB2F1B /* Info.plist */,
 				BF25A4422615DE1D00CB2F1B /* JKTools.entitlements */,
+				BFF30916288A3F11002D9A47 /* PreferencesController.swift */,
 			);
 			path = JKTools;
 			sourceTree = "<group>";
@@ -620,7 +626,9 @@
 				BF2BC8EE26202FDB005802E4 /* PreferencesViewController.swift in Sources */,
 				BF3B8063263194A10085E75A /* ConfigType.swift in Sources */,
 				BF3B8054263171390085E75A /* Projects.swift in Sources */,
+				BFF30917288A3F11002D9A47 /* PreferencesController.swift in Sources */,
 				BFB7CA822700893F0099B634 /* Constants.swift in Sources */,
+				BF284044288A7CBB002CC6A2 /* JKToolConfig.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

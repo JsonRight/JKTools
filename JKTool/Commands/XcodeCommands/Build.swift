@@ -21,17 +21,17 @@ extension JKTool {
 
 private struct Options: ParsableArguments {
     
-    @Argument(help: "执行日志")
-    var quiet: Bool?
-    
     @Argument(help: "是否使用缓存，default：true")
     var cache: Bool?
-
+    
     @Argument(help: "代码环境，default：Release")
     var configuration: String?
     
     @Argument(help: "设备类型，default：iOS")
     var sdk: String?
+    
+    @Argument(help: "执行日志")
+    var quiet: Bool?
     
     /*
      xcodebuild -workspace {...}.xcworkspace -scheme {...} -showBuildSettings  -destination "generic/platform=iOS"
