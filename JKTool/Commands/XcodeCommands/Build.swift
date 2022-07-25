@@ -53,6 +53,8 @@ extension JKTool.Build {
 
         mutating func run() {
             func build(project:Project) {
+                po(tip:"【\(project.name)】build开始")
+                let date = Date.init().timeIntervalSince1970
                 // 删除主项目旧.a相关文件
                 _ = try? shellOut(to: .removeFolder(from: project.rootProject.buildsPath + "/" + project.name))
                 
@@ -151,19 +153,20 @@ extension JKTool.Build {
                         buildStatic(project: project)
                     }
                     
-                    if !project.fileManager.fileExists(atPath: project.directoryPath + "/" + scheme + "Bundle") {
-                       return
+                    if project.fileManager.fileExists(atPath: project.directoryPath + "/" + scheme + "Bundle") {
+                        let buildCommand = ShellOutCommand.bundleWithCache(scheme: scheme, derivedDataPath: project.buildPath, verison: currentVersion, toBundlePath: project.rootProject.buildsPath + "/" + project.name)
+                        do {
+                            try shellOut(to: buildCommand, at: project.directoryPath)
+                        } catch  {
+                            let error = error as! ShellOutError
+                            po(tip: "【\(project.name)】.bundle copy失败\n" + error.message + error.output,type: .warning)
+                            buildBundle(project: project)
+                        }
                     }
-                    let buildCommand = ShellOutCommand.bundleWithCache(scheme: scheme, derivedDataPath: project.buildPath, verison: currentVersion, toBundlePath: project.rootProject.buildsPath + "/" + project.name)
-                    do {
-                        try shellOut(to: buildCommand, at: project.directoryPath)
-                    } catch  {
-                        let error = error as! ShellOutError
-                        po(tip: "【\(project.name)】.bundle copy失败\n" + error.message + error.output,type: .warning)
-                        buildBundle(project: project)
-                    }
+                    
                 }
                 
+                po(tip:"【\(project.name)】build完成[\(String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")]")
             }
             
             guard let project = Project.project(directoryPath: options.path ?? FileManager.default.currentDirectoryPath) else {
@@ -174,10 +177,9 @@ extension JKTool.Build {
                 if !project.projectType.vaild() {
                     return
                 }
-                po(tip:"【\(project.name)】build开始")
-                let date = Date.init().timeIntervalSince1970
+                
                 build(project: project)
-                po(tip:"【\(project.name)】build完成 用时：" + String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")
+                
                return
             }
             
@@ -192,10 +194,7 @@ extension JKTool.Build {
                 if !subProject.projectType.vaild() {
                     continue
                 }
-                po(tip:"【\(subProject.name)】build开始")
-                let date = Date.init().timeIntervalSince1970
                 build(project: subProject)
-                po(tip:"【\(subProject.name)】build完成 用时：" + String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")
                 
             }
             
@@ -215,6 +214,8 @@ extension JKTool.Build {
         mutating func run() {
             
             func build(project:Project) {
+                po(tip:"【\(project.name)】build开始")
+                let date = Date.init().timeIntervalSince1970
                 // 删除主项目旧.framework相关文件
                 _ = try? shellOut(to: .removeFolder(from: project.rootProject.buildsPath + "/" + project.name))
                 
@@ -308,19 +309,20 @@ extension JKTool.Build {
                         buildFramework(project: project)
                     }
                     
-                    if !project.fileManager.fileExists(atPath: project.directoryPath + "/" + scheme + "Bundle") {
-                       return
+                    if project.fileManager.fileExists(atPath: project.directoryPath + "/" + scheme + "Bundle") {
+                        let buildCommand = ShellOutCommand.bundleWithCache(scheme:scheme, derivedDataPath: project.buildPath, verison: currentVersion, toBundlePath: project.rootProject.buildsPath + "/" + project.name)
+                        do {
+                            try shellOut(to: buildCommand, at: project.directoryPath)
+                        } catch  {
+                            let error = error as! ShellOutError
+                            po(tip: "【\(project.name)】.bundle copy失败\n" + error.message + error.output,type: .warning)
+                            buildBundle(project: project)
+                        }
                     }
-                    let buildCommand = ShellOutCommand.bundleWithCache(scheme:scheme, derivedDataPath: project.buildPath, verison: currentVersion, toBundlePath: project.rootProject.buildsPath + "/" + project.name)
-                    do {
-                        try shellOut(to: buildCommand, at: project.directoryPath)
-                    } catch  {
-                        let error = error as! ShellOutError
-                        po(tip: "【\(project.name)】.bundle copy失败\n" + error.message + error.output,type: .warning)
-                        buildBundle(project: project)
-                    }
+                    
                 }
                 
+                po(tip:"【\(project.name)】build完成[\(String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")]")
             }
             
             guard let project = Project.project(directoryPath: options.path ?? FileManager.default.currentDirectoryPath) else {
@@ -331,15 +333,14 @@ extension JKTool.Build {
                 if !project.projectType.vaild() {
                     return
                 }
-                po(tip:"【\(project.name)】build开始")
-                let date = Date.init().timeIntervalSince1970
+                
                 build(project: project)
-                po(tip:"【\(project.name)】build完成 用时：" + String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")
+
                return
             }
             
             po(tip: "======Framework build项目开始======")
-            
+            let date = Date.init().timeIntervalSince1970
             for record in project.recordList {
     
                 guard let subProject = Project.project(directoryPath: "\(project.checkoutsPath)/\(record)") else {
@@ -349,14 +350,11 @@ extension JKTool.Build {
                 if !subProject.projectType.vaild() {
                     continue
                 }
-                po(tip:"【\(subProject.name)】build开始")
-                let date = Date.init().timeIntervalSince1970
                 build(project: subProject)
-                po(tip:"【\(subProject.name)】build完成 用时：" + String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")
                 
             }
             
-            po(tip: "======Framework build项目完成======")
+            po(tip: "======Framework build项目完成[\(String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")]======")
         }
     }
     
@@ -371,7 +369,8 @@ extension JKTool.Build {
 
         mutating func run() {
             func build(project:Project) {
-                
+                po(tip:"【\(project.name)】build开始")
+                let date = Date.init().timeIntervalSince1970
                 // 删除主项目旧.xcframework相关文件
                 _ = try? shellOut(to: .removeFolder(from: project.rootProject.buildsPath + project.name))
                 
@@ -465,19 +464,19 @@ extension JKTool.Build {
                         buildXCFramework(project: project)
                     }
                     
-                    if !project.fileManager.fileExists(atPath: project.directoryPath + "/" + scheme + "Bundle") {
-                       return
+                    if project.fileManager.fileExists(atPath: project.directoryPath + "/" + scheme + "Bundle") {
+                        let buildCommand = ShellOutCommand.bundleWithCache(scheme:scheme, derivedDataPath: project.buildPath, verison: currentVersion, toBundlePath: project.rootProject.buildsPath + "/" + project.name)
+                        do {
+                            try shellOut(to: buildCommand, at: project.directoryPath)
+                        } catch  {
+                            let error = error as! ShellOutError
+                            po(tip: "【\(project.name)】.bundle copy失败\n" + error.message + error.output,type: .warning)
+                            buildBundle(project: project)
+                        }
                     }
-                    let buildCommand = ShellOutCommand.bundleWithCache(scheme:scheme, derivedDataPath: project.buildPath, verison: currentVersion, toBundlePath: project.rootProject.buildsPath + "/" + project.name)
-                    do {
-                        try shellOut(to: buildCommand, at: project.directoryPath)
-                    } catch  {
-                        let error = error as! ShellOutError
-                        po(tip: "【\(project.name)】.bundle copy失败\n" + error.message + error.output,type: .warning)
-                        buildBundle(project: project)
-                    }
+                    
                 }
-                
+                po(tip:"【\(project.name)】build完成[\(String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")]")
             }
             
             guard let project = Project.project(directoryPath: options.path ?? FileManager.default.currentDirectoryPath) else {
@@ -488,15 +487,13 @@ extension JKTool.Build {
                 if !project.projectType.vaild() {
                     return
                 }
-                po(tip:"【\(project.name)】build开始")
-                let date = Date.init().timeIntervalSince1970
                 build(project: project)
-                po(tip:"【\(project.name)】build完成 用时：" + String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")
+                
                return
             }
             
             po(tip: "======XCFramework build项目开始======")
-            
+            let date = Date.init().timeIntervalSince1970
             for record in project.recordList {
     
                 guard let subProject = Project.project(directoryPath: "\(project.checkoutsPath)/\(record)") else {
@@ -506,14 +503,11 @@ extension JKTool.Build {
                 if !subProject.projectType.vaild() {
                     return
                 }
-                po(tip:"【\(subProject.name)】build开始")
-                let date = Date.init().timeIntervalSince1970
                 build(project: subProject)
-                po(tip:"【\(subProject.name)】build完成 用时：" + String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")
                 
             }
             
-            po(tip: "======XCFramework build项目完成======")
+            po(tip: "======XCFramework build项目完成[\(String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")]======")
         }
     }
     
@@ -521,7 +515,7 @@ extension JKTool.Build {
         static var configuration = CommandConfiguration(
             commandName: "unknown",
             _superCommandName: "build",
-            abstract: "动态解析项目编译成.a/.framework/.xcframework文件",
+            abstract: "动态解析项目编译成.a｜.framework文件",
             version: "1.0.0")
 
         @OptionGroup private var options: Options
@@ -530,9 +524,9 @@ extension JKTool.Build {
             func build(project:Project) {
                 switch project.buildType {
                 case .Framework:
-                    JKTool.Build.Framework.main(["\(options.cache ?? true)",options.configuration ?? "Release",options.sdk ?? "iOS","\(false)",project.directoryPath])
+                    JKTool.Build.Framework.main(["\(options.cache ?? true)",options.configuration ?? "Release",options.sdk ?? "iOS",project.directoryPath])
                 case .Static:
-                    JKTool.Build.Static.main(["\(options.cache ?? true)",options.configuration ?? "Release",options.sdk ?? "iOS","\(false)",project.directoryPath])
+                    JKTool.Build.Static.main(["\(options.cache ?? true)",options.configuration ?? "Release",options.sdk ?? "iOS",project.directoryPath])
                 case .Other:
                     po(tip:"【\(project.name)】无法检测出是Static或者Framework", type: .error)
                 }
@@ -546,15 +540,14 @@ extension JKTool.Build {
                 if !project.projectType.vaild() {
                     return
                 }
-                po(tip:"【\(project.name)】build开始")
-                let date = Date.init().timeIntervalSince1970
+                
                 build(project: project)
-                po(tip:"【\(project.name)】build完成 用时：" + String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")
+                
                return
             }
             
             po(tip: "======Unknown build项目开始======")
-            
+            let date = Date.init().timeIntervalSince1970
             for record in project.recordList {
     
                 guard let subProject = Project.project(directoryPath: "\(project.checkoutsPath)/\(record)") else {
@@ -564,13 +557,10 @@ extension JKTool.Build {
                 if !subProject.projectType.vaild() {
                     continue
                 }
-                po(tip:"【\(subProject.name)】build开始")
-                let date = Date.init().timeIntervalSince1970
                 build(project: subProject)
-                po(tip:"【\(subProject.name)】build完成 用时：" + String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")
             }
             
-            po(tip: "======Unknown build项目完成======")
+            po(tip: "======Unknown build项目完成[\(String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")]======")
         }
     }
 }

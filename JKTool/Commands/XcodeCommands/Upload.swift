@@ -124,7 +124,6 @@ extension JKTool.Upload {
                 return po(tip: "请在项目根目录执行脚本", type: .error)
             }
             
-            
             guard let data = try? Data(contentsOf: URL(fileURLWithPath: configPath.convertRelativePath(absolutPath: project.directoryPath))) else {
                 return po(tip: "请检查配置文件是否存在，或者格式是否正确！",type: .error)
             }
@@ -140,7 +139,7 @@ extension JKTool.Upload {
                 let error = error as! ShellOutError
                 po(tip:  error.message + error.output,type: .error)
             }
-            po(tip: "======Upload项目完成 用时：" + String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s======")
+            po(tip: "======Upload项目完成[\(String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")]======")
         }
     }
 }

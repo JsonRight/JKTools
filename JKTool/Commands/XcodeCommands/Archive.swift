@@ -63,7 +63,7 @@ extension JKTool {
                 JKTool.Export.main([configuration,scheme,configPath,project.directoryPath])
             }
             
-            po(tip: "======Archive项目完成 用时：" + String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s======")
+            po(tip: "======Archive项目完成[\(String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")]======")
             
         }
     }
