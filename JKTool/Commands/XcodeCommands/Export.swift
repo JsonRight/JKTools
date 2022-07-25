@@ -46,7 +46,7 @@ extension JKTool {
                 return po(tip: "请检查配置文件是否存在，或者格式是否正确！",type: .error)
             }
             
-            if configs.quiet != false {po(tip: "======Export IPA 开始======")}
+            po(tip: "======Export IPA 开始======")
             let date = Date.init().timeIntervalSince1970
             do {
                 try shellOut(to: .unlockSecurity(password: configs.certificateConfig.macPwd))
@@ -75,7 +75,7 @@ extension JKTool {
                 let error = error as! ShellOutError
                 po(tip:  error.message + error.output,type: .error)
             }
-            if configs.quiet != false {po(tip: "======Export IPA 完成 用时：" + String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s======")}
+            po(tip: "======Export IPA 完成 用时：" + String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s======")
         }
     }
 }

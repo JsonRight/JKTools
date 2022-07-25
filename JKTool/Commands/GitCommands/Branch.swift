@@ -114,9 +114,6 @@ extension JKTool.Git.Branch.Del {
         @Argument(help: "递归子模块，default：false")
         var recursive: Bool?
         
-        @Argument(help: "执行日志，default：true")
-        var quiet: Bool?
-        
         @Argument(help: "执行路径")
         var path: String?
         
@@ -126,7 +123,7 @@ extension JKTool.Git.Branch.Del {
                 
                 do {
                     try shellOut(to: .gitDelLocalBranch(branch: branch), at: project.directoryPath)
-                    if quiet != false {po(tip: "【\(project.name)】Del local完成", type: .tip)}
+                    po(tip: "【\(project.name)】Del local完成", type: .tip)
                 } catch {
                     let error = error as! ShellOutError
                     po(tip: "【\(project.name)】 Del local失败\n" + error.message + error.output,type: .error)
@@ -142,13 +139,14 @@ extension JKTool.Git.Branch.Del {
                return
             }
             
-            if quiet != false {po(tip: "======Del local工程开始======", type: .tip)}
-            
-            del(project: project)
-            
             if recursive != true {
+                
+                del(project: project)
+                
                 return
             }
+            
+            po(tip: "======Del local工程开始======", type: .tip)
             
             for record in project.recordList {
         
@@ -159,7 +157,7 @@ extension JKTool.Git.Branch.Del {
                 del(project: pro)
             }
             
-            if quiet != false {po(tip: "======Del local工程结束======")}
+            po(tip: "======Del local工程结束======")
         }
         
     }
@@ -178,9 +176,6 @@ extension JKTool.Git.Branch.Del {
         @Argument(help: "是否递归，default：false")
         var recursive: Bool?
         
-        @Argument(help: "是否输出详细信息，default：true")
-        var quiet: Bool?
-        
         @Argument(help: "工程存放路径！")
         var path: String?
         
@@ -189,7 +184,7 @@ extension JKTool.Git.Branch.Del {
             func del(project: Project){
                 do {
                     try shellOut(to: .gitDelOriginBranch(branch: branch), at: project.directoryPath)
-                    if quiet != false {po(tip: "【\(project.name)】Del origin完成", type: .tip)}
+                    po(tip: "【\(project.name)】Del origin完成", type: .tip)
                 } catch {
                     let error = error as! ShellOutError
                     po(tip: "【\(project.name)】 Del origin失败\n" + error.message + error.output,type: .error)
@@ -205,13 +200,12 @@ extension JKTool.Git.Branch.Del {
                return
             }
             
-            if quiet != false {po(tip: "======Del origin工程开始======", type: .tip)}
-            
-            del(project: project)
-            
             if recursive != true {
+                del(project: project)
                 return
             }
+            
+            po(tip: "======Del origin工程开始======", type: .tip)
             
             for record in project.recordList {
         
@@ -222,7 +216,7 @@ extension JKTool.Git.Branch.Del {
                 del(project: pro)
             }
             
-            if quiet != false {po(tip: "======Del origin工程结束======")}
+            po(tip: "======Del origin工程结束======")
         }
     }
 }

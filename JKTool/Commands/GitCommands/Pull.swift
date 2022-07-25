@@ -18,9 +18,6 @@ extension JKTool.Git {
         @Argument(help: "递归子模块，default：false")
         var recursive: Bool?
         
-        @Argument(help: "执行日志，default：true")
-        var quiet: Bool?
-        
         @Argument(help: "执行目录")
         var path: String?
         
@@ -29,7 +26,7 @@ extension JKTool.Git {
             func pull(project: Project){
                 do {
                     let result = try shellOut(to: .gitPull(), at: project.directoryPath)
-                    if quiet != false {po(tip: "【\(project.name)】Pull完成\n\(result)", type: .tip)}
+                    po(tip: "【\(project.name)】Pull完成\n\(result)", type: .tip)
                 } catch {
                     let error = error as! ShellOutError
                     po(tip: "【\(project.name)】 Pull失败\n" + error.message + error.output,type: .warning)
@@ -44,13 +41,12 @@ extension JKTool.Git {
                 pull(project: project)
                return
             }
-            if quiet != false {po(tip: "======Pull工程开始======", type: .tip)}
             
             if recursive != true {
                 pull(project: project)
                 return
             }
-            
+            po(tip: "======Pull工程开始======", type: .tip)
             for record in project.recordList {
         
                 guard let pro = Project.project(directoryPath: "\(project.checkoutsPath)/\(record)/") else {
@@ -60,7 +56,7 @@ extension JKTool.Git {
                 pull(project: pro)
             }
             pull(project: project)
-            if quiet != false {po(tip: "======Pull工程结束======")}
+            po(tip: "======Pull工程结束======")
         }
     }
 }

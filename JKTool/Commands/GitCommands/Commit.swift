@@ -20,9 +20,6 @@ extension JKTool.Git {
         @Argument(help: "递归子模块，default：false")
         var recursive: Bool?
         
-        @Argument(help: "执行日志，default：true")
-        var quiet: Bool?
-
         @Argument(help: "执行目录")
         var path: String?
         
@@ -38,7 +35,7 @@ extension JKTool.Git {
                 
                 do {
                     try shellOut(to: .gitCommit(message: message), at: project.directoryPath)
-                    if quiet != false {po(tip: "【\(project.name)】Commit完成", type: .tip)}
+                    po(tip: "【\(project.name)】Commit完成", type: .tip)
                 } catch {
                     let error = error as! ShellOutError
                     po(tip: "【\(project.name)】 Commit失败\n" + error.message + error.output,type: .warning)
@@ -60,12 +57,12 @@ extension JKTool.Git {
                return
             }
             
-            if quiet != false {po(tip: "======Commit工程开始======", type: .tip)}
             
             if recursive != true {
                 commit(project: project)
                 return
             }
+            po(tip: "======Commit工程开始======", type: .tip)
             
             for record in project.recordList {
         
@@ -78,7 +75,7 @@ extension JKTool.Git {
             
             commit(project: project)
             
-            if quiet != false {po(tip: "======Commit工程完成======")}
+            po(tip: "======Commit工程完成======")
         }
     }
 }

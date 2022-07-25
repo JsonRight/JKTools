@@ -49,7 +49,7 @@ extension JKTool {
                 return po(tip: "请检查配置文件是否存在，或者格式是否正确！",type: .error)
             }
             
-            if configs.quiet != false {po(tip: "======Archive项目开始======")}
+            po(tip: "======Archive项目开始======")
             let date = Date.init().timeIntervalSince1970
             
             do {
@@ -59,11 +59,11 @@ extension JKTool {
                 po(tip:  error.message + error.output,type: .error)
             }
             
-            if configs.quiet != false {po(tip: "======Archive项目完成 用时：" + String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s======")}
-            
             if export != false {
                 JKTool.Export.main([configuration,scheme,configPath,project.directoryPath])
             }
+            
+            po(tip: "======Archive项目完成 用时：" + String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s======")
             
         }
     }

@@ -17,9 +17,6 @@ extension JKTool.Git {
         @Argument(help: "递归子模块，default：false")
         var recursive: Bool?
         
-        @Argument(help: "执行日志，default：true")
-        var quiet: Bool?
-        
         @Argument(help: "执行路径")
         var path: String?
         
@@ -28,7 +25,7 @@ extension JKTool.Git {
             func prune(project: Project){
                 do {
                     let result = try shellOut(to: .gitPrune(), at: project.directoryPath)
-                    if quiet != false {po(tip: "【\(project.name)】Prune完成\n\(result)", type: .tip)}
+                    po(tip: "【\(project.name)】Prune完成\n\(result)", type: .tip)
                 } catch {
                     let error = error as! ShellOutError
                     po(tip: "【\(project.name)】 Prune失败\n" + error.message + error.output,type: .warning)
@@ -44,8 +41,6 @@ extension JKTool.Git {
                return
             }
             
-            if quiet != false {po(tip: "======Prune工程开始======", type: .tip)}
-           
             if recursive != true {
                 
                 prune(project: project)
@@ -53,6 +48,8 @@ extension JKTool.Git {
                 return
             }
             
+            po(tip: "======Prune工程开始======", type: .tip)
+           
             for record in project.recordList {
         
                 guard let pro = Project.project(directoryPath: "\(project.checkoutsPath)/\(record)/") else {
@@ -64,7 +61,7 @@ extension JKTool.Git {
             
             prune(project: project)
             
-            if quiet != false {po(tip: "======Prune工程结束======")}
+            po(tip: "======Prune工程结束======")
         }
     }
 }

@@ -118,11 +118,7 @@ public struct Constants {
           return false
         }
         
-        do {
-          try FileManager.default.removeItem(at: destinationPath)
-        } catch {
-          
-        }
+        try? FileManager.default.removeItem(at: destinationPath)
 
         do {
           try FileManager.default.copyItem(at: scriptUrl, to: destinationPath)
@@ -170,11 +166,8 @@ public struct Constants {
             return false
         }
         let manager = FileManager.default
-        do {
-            try manager.removeItem(at: URL(fileURLWithPath: "/usr/local/bin/\(name)"))
-        } catch {
-            return false
-        }
+        
+        try? manager.removeItem(at: URL(fileURLWithPath: "/usr/local/bin/\(name)"))
         
         do {
             

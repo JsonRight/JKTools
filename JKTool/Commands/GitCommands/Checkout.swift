@@ -22,9 +22,6 @@ extension JKTool.Git {
         @Argument(help: "强制 checkout，default：false")
         var force: Bool?
         
-        @Argument(help: "执行日志，default：true")
-        var quiet: Bool?
-        
         @Argument(help: "执行路径")
         var path: String?
         
@@ -33,7 +30,7 @@ extension JKTool.Git {
             func checkout(project: Project){
                 do {
                     try shellOut(to: .gitCheckout(branch: branch, force: force ?? false), at: project.directoryPath)
-                    if quiet != false {po(tip: "【\(project.name)】Checkout[\(branch)]完成", type: .tip)}
+                    po(tip: "【\(project.name)】Checkout[\(branch)]完成", type: .tip)
                 } catch {
                     let error = error as! ShellOutError
                     po(tip: "【\(project.name)】 Checkout失败\n" + error.message + error.output,type: .warning)
@@ -49,14 +46,14 @@ extension JKTool.Git {
                return
             }
             
-            if quiet != false {po(tip: "======Checkout工程开始======", type: .tip)}
-            
             if recursive != true {
                 
                 checkout(project: project)
                 
                 return
             }
+            
+            po(tip: "======Checkout工程开始======", type: .tip)
             
             for record in project.recordList {
         
@@ -69,7 +66,7 @@ extension JKTool.Git {
             
             checkout(project: project)
             
-            if quiet != false {po(tip: "======Checkout工程结束======")}
+            po(tip: "======Checkout工程结束======")
         }
     }
 }

@@ -33,9 +33,6 @@ extension JKTool.Git.Tag {
         @Argument(help: "递归子模块，default：false")
         var recursive: Bool?
         
-        @Argument(help: "执行日志，default：true")
-        var quiet: Bool?
-        
         @Argument(help: "执行路径")
         var path: String?
         
@@ -44,7 +41,7 @@ extension JKTool.Git.Tag {
             func addTag(project: Project){
                 do {
                     try shellOut(to: .gitAddTag(tag: tag), at: project.directoryPath)
-                    if quiet != false {po(tip: "【\(project.name)】Add Tag完成", type: .tip)}
+                    po(tip: "【\(project.name)】Add Tag完成", type: .tip)
                 } catch {
                     let error = error as! ShellOutError
                     po(tip: "【\(project.name)】 Add Tag失败\n" + error.message + error.output,type: .error)
@@ -60,14 +57,14 @@ extension JKTool.Git.Tag {
                return
             }
             
-            if quiet != false {po(tip: "======Add Tag开始======", type: .tip)}
-            
             if recursive != true {
                 
                 addTag(project: project)
                 
                 return
             }
+            
+            po(tip: "======Add Tag开始======", type: .tip)
             
             for record in project.recordList {
         
@@ -80,7 +77,7 @@ extension JKTool.Git.Tag {
             
             addTag(project: project)
             
-            if quiet != false {po(tip: "======Add Tag结束======")}
+            po(tip: "======Add Tag结束======")
         }
     }
     
@@ -97,9 +94,6 @@ extension JKTool.Git.Tag {
         @Argument(help: "递归子模块，default：false")
         var recursive: Bool?
         
-        @Argument(help: "执行日志，default：true")
-        var quiet: Bool?
-        
         @Argument(help: "执行路径")
         var path: String?
         
@@ -108,7 +102,7 @@ extension JKTool.Git.Tag {
             func delTag(project: Project){
                 do {
                     try shellOut(to: .gitDelTag(tag: tag), at: project.directoryPath)
-                    if quiet != false {po(tip: "【\(project.name)】Del Tag完成", type: .tip)}
+                    po(tip: "【\(project.name)】Del Tag完成", type: .tip)
                 } catch {
                     let error = error as! ShellOutError
                     po(tip: "【\(project.name)】 Del Tag失败\n" + error.message + error.output,type: .warning)
@@ -124,14 +118,14 @@ extension JKTool.Git.Tag {
                return
             }
             
-            if quiet != false {po(tip: "======Del Tag开始======", type: .tip)}
-            
             if recursive != true {
                 
                 delTag(project: project)
                 
                 return
             }
+            
+            po(tip: "======Del Tag开始======", type: .tip)
             
             for record in project.recordList {
         
@@ -144,7 +138,7 @@ extension JKTool.Git.Tag {
             
             delTag(project: project)
             
-            if quiet != false {po(tip: "======Del Tag结束======")}
+            po(tip: "======Del Tag结束======")
         }
     }
 }

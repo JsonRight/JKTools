@@ -30,9 +30,6 @@ private struct Options: ParsableArguments {
     @Argument(help: "设备类型，default：iOS")
     var sdk: String?
     
-    @Argument(help: "执行日志")
-    var quiet: Bool?
-    
     /*
      xcodebuild -workspace {...}.xcworkspace -scheme {...} -showBuildSettings  -destination "generic/platform=iOS"
      @Argument(help: ".xcconfig路径")
@@ -134,7 +131,7 @@ extension JKTool.Build {
                 }
                 
                 if options.cache == false || oldVersion != currentVersion {
-                    if options.quiet != false {po(tip:"【\(project.name)】需重新编译")}
+                    po(tip:"【\(project.name)】需重新编译")
 
                     // 删除历史build文件
                     _ = try? shellOut(to: .removeFolder(from: project.buildPath + "/Universal"))
@@ -177,14 +174,14 @@ extension JKTool.Build {
                 if !project.projectType.vaild() {
                     return
                 }
-                if options.quiet != false {po(tip:"【\(project.name)】build开始")}
+                po(tip:"【\(project.name)】build开始")
                 let date = Date.init().timeIntervalSince1970
                 build(project: project)
-                if options.quiet != false {po(tip:"【\(project.name)】build完成 用时：" + String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")}
+                po(tip:"【\(project.name)】build完成 用时：" + String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")
                return
             }
             
-            if options.quiet != false {po(tip: "======Static build项目开始======")}
+            po(tip: "======Static build项目开始======")
             let date = Date.init().timeIntervalSince1970
             for record in project.recordList {
     
@@ -195,14 +192,14 @@ extension JKTool.Build {
                 if !subProject.projectType.vaild() {
                     continue
                 }
-                if options.quiet != false {po(tip:"【\(subProject.name)】build开始")}
+                po(tip:"【\(subProject.name)】build开始")
                 let date = Date.init().timeIntervalSince1970
                 build(project: subProject)
-                if options.quiet != false {po(tip:"【\(subProject.name)】build完成 用时：" + String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")}
+                po(tip:"【\(subProject.name)】build完成 用时：" + String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")
                 
             }
             
-            if options.quiet != false {po(tip: "======Static build项目完成[\(String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")]======")}
+            po(tip: "======Static build项目完成[\(String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")]======")
         }
     }
     
@@ -295,7 +292,7 @@ extension JKTool.Build {
                 }
                 
                 if options.cache == false || !String(oldVersion ?? "").contains(currentVersion) {
-                    if options.quiet != false {po(tip:"【\(project.name)】需重新编译")}
+                    po(tip:"【\(project.name)】需重新编译")
                 
                     // 删除历史build文件
                     _ = try? shellOut(to: .removeFolder(from: project.buildPath))
@@ -334,14 +331,14 @@ extension JKTool.Build {
                 if !project.projectType.vaild() {
                     return
                 }
-                if options.quiet != false {po(tip:"【\(project.name)】build开始")}
+                po(tip:"【\(project.name)】build开始")
                 let date = Date.init().timeIntervalSince1970
                 build(project: project)
-                if options.quiet != false {po(tip:"【\(project.name)】build完成 用时：" + String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")}
+                po(tip:"【\(project.name)】build完成 用时：" + String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")
                return
             }
             
-            if options.quiet != false {po(tip: "======Framework build项目开始======")}
+            po(tip: "======Framework build项目开始======")
             
             for record in project.recordList {
     
@@ -352,14 +349,14 @@ extension JKTool.Build {
                 if !subProject.projectType.vaild() {
                     continue
                 }
-                if options.quiet != false {po(tip:"【\(subProject.name)】build开始")}
+                po(tip:"【\(subProject.name)】build开始")
                 let date = Date.init().timeIntervalSince1970
                 build(project: subProject)
-                if options.quiet != false {po(tip:"【\(subProject.name)】build完成 用时：" + String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")}
+                po(tip:"【\(subProject.name)】build完成 用时：" + String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")
                 
             }
             
-            if options.quiet != false {po(tip: "======Framework build项目完成======")}
+            po(tip: "======Framework build项目完成======")
         }
     }
     
@@ -452,7 +449,7 @@ extension JKTool.Build {
                     }
                 }
                 if options.cache == false || oldVersion != currentVersion {
-                    if options.quiet != false {po(tip:"【\(project.name)】需重新编译")}
+                    po(tip:"【\(project.name)】需重新编译")
                     
                     // 删除历史build文件
                     _ = try? shellOut(to: .removeFolder(from: project.buildPath))
@@ -491,14 +488,14 @@ extension JKTool.Build {
                 if !project.projectType.vaild() {
                     return
                 }
-                if options.quiet != false {po(tip:"【\(project.name)】build开始")}
+                po(tip:"【\(project.name)】build开始")
                 let date = Date.init().timeIntervalSince1970
                 build(project: project)
-                if options.quiet != false {po(tip:"【\(project.name)】build完成 用时：" + String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")}
+                po(tip:"【\(project.name)】build完成 用时：" + String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")
                return
             }
             
-            if options.quiet != false { po(tip: "======XCFramework build项目开始======")}
+            po(tip: "======XCFramework build项目开始======")
             
             for record in project.recordList {
     
@@ -509,14 +506,14 @@ extension JKTool.Build {
                 if !subProject.projectType.vaild() {
                     return
                 }
-                if options.quiet != false { po(tip:"【\(subProject.name)】build开始")}
+                po(tip:"【\(subProject.name)】build开始")
                 let date = Date.init().timeIntervalSince1970
                 build(project: subProject)
-                if options.quiet != false {po(tip:"【\(subProject.name)】build完成 用时：" + String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")}
+                po(tip:"【\(subProject.name)】build完成 用时：" + String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")
                 
             }
             
-            if options.quiet != false {po(tip: "======XCFramework build项目完成======")}
+            po(tip: "======XCFramework build项目完成======")
         }
     }
     
@@ -537,7 +534,7 @@ extension JKTool.Build {
                 case .Static:
                     JKTool.Build.Static.main(["\(options.cache ?? true)",options.configuration ?? "Release",options.sdk ?? "iOS","\(false)",project.directoryPath])
                 case .Other:
-                    if options.quiet != false {po(tip:"【\(project.name)】无法检测出是Static或者Framework", type: .error)}
+                    po(tip:"【\(project.name)】无法检测出是Static或者Framework", type: .error)
                 }
             }
             
@@ -549,14 +546,14 @@ extension JKTool.Build {
                 if !project.projectType.vaild() {
                     return
                 }
-                if options.quiet != false {po(tip:"【\(project.name)】build开始")}
+                po(tip:"【\(project.name)】build开始")
                 let date = Date.init().timeIntervalSince1970
                 build(project: project)
-                if options.quiet != false {po(tip:"【\(project.name)】build完成 用时：" + String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")}
+                po(tip:"【\(project.name)】build完成 用时：" + String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")
                return
             }
             
-            if options.quiet != false {po(tip: "======Unknown build项目开始======")}
+            po(tip: "======Unknown build项目开始======")
             
             for record in project.recordList {
     
@@ -567,13 +564,13 @@ extension JKTool.Build {
                 if !subProject.projectType.vaild() {
                     continue
                 }
-                if options.quiet != false {po(tip:"【\(subProject.name)】build开始")}
+                po(tip:"【\(subProject.name)】build开始")
                 let date = Date.init().timeIntervalSince1970
                 build(project: subProject)
-                if options.quiet != false {po(tip:"【\(subProject.name)】build完成 用时：" + String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")}
+                po(tip:"【\(subProject.name)】build完成 用时：" + String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")
             }
             
-            if options.quiet != false {po(tip: "======Unknown build项目完成======")}
+            po(tip: "======Unknown build项目完成======")
         }
     }
 }

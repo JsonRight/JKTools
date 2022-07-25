@@ -43,9 +43,8 @@ extension JKTool.Upload {
                 return po(tip: "请检查配置文件是否存在，或者格式是否正确！",type: .error)
             }
             
-            if configs.quiet != false {po(tip: "======Upload项目开始======")}
+            po(tip: "======Upload项目开始======")
             let date = Date.init().timeIntervalSince1970
-            
             
             do {
                 try shellOut(to: .upload(path: configs.uploadConfig.ipaPath.convertRelativePath(absolutPath: path ?? FileManager.default.currentDirectoryPath), username: configs.uploadConfig.accountAuthConfig!.username, password: configs.uploadConfig.accountAuthConfig!.password))
@@ -53,7 +52,7 @@ extension JKTool.Upload {
                 let error = error as! ShellOutError
                 po(tip:  error.message + error.output,type: .error)
             }
-            if configs.quiet != false {po(tip: "======Upload项目完成 用时：" + String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s======")}
+            po(tip: "======Upload项目完成 用时：" + String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s======")
         }
     }
     struct ApiAuth: ParsableCommand {
@@ -78,7 +77,7 @@ extension JKTool.Upload {
                 return po(tip: "请检查配置文件是否存在，或者格式是否正确！",type: .error)
             }
             
-            if configs.quiet != false {po(tip: "======Upload项目开始======")}
+            po(tip: "======Upload项目开始======")
             let date = Date.init().timeIntervalSince1970
             
             do {
@@ -93,7 +92,7 @@ extension JKTool.Upload {
                 let error = error as! ShellOutError
                 po(tip:  error.message + error.output,type: .error)
             }
-            if configs.quiet != false {po(tip: "======Upload项目完成 用时：" + String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s======")}
+            po(tip: "======Upload项目完成 用时：" + String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s======")
         }
     }
     struct Export: ParsableCommand {
@@ -133,7 +132,7 @@ extension JKTool.Upload {
             guard let configs = try? JSONDecoder().decode(ProjectConfigModel.self, from: data) else {
                 return po(tip: "请检查配置文件是否存在，或者格式是否正确！",type: .error)
             }
-            if configs.quiet != false {po(tip: "======Upload项目开始======")}
+            po(tip: "======Upload项目开始======")
             let date = Date.init().timeIntervalSince1970
             do {
                 try shellOut(to: .upload(scheme: scheme, projectPath: project.directoryPath, configuration: configuration, export: configs.exportConfig.exportOptionsPath))
@@ -141,7 +140,7 @@ extension JKTool.Upload {
                 let error = error as! ShellOutError
                 po(tip:  error.message + error.output,type: .error)
             }
-            if configs.quiet != false {po(tip: "======Upload项目完成 用时：" + String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s======")}
+            po(tip: "======Upload项目完成 用时：" + String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s======")
         }
     }
 }

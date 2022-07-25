@@ -235,7 +235,7 @@ public class Project {
 
 extension Project {
     
-    func writeRecordList(recordList: Array<String>, quiet: Bool?) -> [String] {
+    func writeRecordList(recordList: Array<String>) -> [String] {
         // 检查是否还有SubProject。没有则直接return
         if recordList.isEmpty {
             return []
@@ -254,7 +254,7 @@ extension Project {
             do {
                 let data = try JSONSerialization.data(withJSONObject: list, options: .fragmentsAllowed)
                 try data.write(to: URL(fileURLWithPath: self.recordListPath), options: .atomicWrite)
-                if quiet != false {po(tip: "【\(self.name)】Modulefile.recordList 写入成功")}
+                po(tip: "【\(self.name)】Modulefile.recordList 写入成功")
             } catch {
                 po(tip: "【\(self.name)】Modulefile.recordList 写入失败",type: .error)
             }

@@ -34,9 +34,6 @@ extension JKTool.Git.SubModule.Update {
         @Argument(help: "更新 submodule 为远程项目的最新版本，default：false")
         var remote: Bool?
         
-        @Argument(help: "是否输出执行日志，default：true")
-        var quiet: Bool?
-        
         @Argument(help: "执行目录")
         var path: String?
         
@@ -53,7 +50,7 @@ extension JKTool.Git.SubModule.Update {
                             
                             do {
                                 try shellOut(to: .gitSubmoduleUpdate(remote: remote ?? false,path: "\(JKToolConfig.sharedInstance.config.checkouts)/\(module.name)"),at: project.rootProject.directoryPath)
-                                if quiet != false {po(tip: "【\(module.name)】已存在， update 成功")}
+                                po(tip: "【\(module.name)】已存在， update 成功")
 
                             } catch {
                                 let error = error as! ShellOutError
@@ -63,7 +60,7 @@ extension JKTool.Git.SubModule.Update {
                             
                             do {
                                 try shellOut(to: .gitSubmoduleAdd(name: module.name,url: module.url, path: "\(JKToolConfig.sharedInstance.config.checkouts)/\(module.name)"),at: project.rootProject.directoryPath)
-                                if quiet != false {po(tip: "【\(module.name)】:Add 成功")}
+                                po(tip: "【\(module.name)】:Add 成功")
                             } catch {
                                 let error = error as! ShellOutError
                                 po(tip: "【\(module.name)】:Add 异常" + error.message + error.output,type: .warning)
@@ -79,7 +76,7 @@ extension JKTool.Git.SubModule.Update {
                     if let subModule = Project.project(directoryPath: modulePath) {
                         // 递归Clone subModule
                         let list = clone(project: subModule)
-                        _ = subModule.writeRecordList(recordList: list, quiet: quiet)
+                        _ = subModule.writeRecordList(recordList: list)
                         
                         subRecordList += list
                         // 将module加入即将需要subModule中
@@ -100,23 +97,23 @@ extension JKTool.Git.SubModule.Update {
                return po(tip: "请在项目根目录执行脚本", type: .error)
             }
             
-            if quiet != false {po(tip: "======Update SubModule or Add SubModule开始======", type: .tip)}
+            po(tip: "======Update SubModule or Add SubModule开始======", type: .tip)
             
             let subRecordList = clone(project: project)
             
-            let pruneRecordList = project.writeRecordList(recordList: subRecordList, quiet: quiet)
+            let pruneRecordList = project.writeRecordList(recordList: subRecordList)
             if prune == true {
                 for record in pruneRecordList {
                     do {
                         try shellOut(to: .gitSubmoduleRemove(path: "\(JKToolConfig.sharedInstance.config.checkouts)/\(record)"),at: project.rootProject.directoryPath)
-                        if quiet != false {po(tip: "【\(record)】:Remove 成功")}
+                        po(tip: "【\(record)】:Remove 成功")
                     } catch {
                         let error = error as! ShellOutError
                         po(tip: "【\(record)】:Remove 异常" + error.message + error.output,type: .error)
                     }
                 }
             }
-            if quiet != false {po(tip: "======Update SubModule or Add SubModule完成======")}
+            po(tip: "======Update SubModule or Add SubModule完成======")
         }
     }
     
@@ -136,15 +133,12 @@ extension JKTool.Git.SubModule.Update {
         @Argument(help: "更新 submodule 为远程项目的最新版本，default：false")
         var remote: Bool?
         
-        @Argument(help: "执行日志")
-        var quiet: Bool?
-        
         @Argument(help: "分支名")
         var branch: String?
         
         mutating func run() {
             
-            if quiet != false {po(tip: "======开始准备Clone Project and Update SubModule项目======")}
+            po(tip: "======开始准备Clone Project and Update SubModule项目======")
             do {
                 try shellOut(to: .removeFolder(from: path))
             } catch {
@@ -156,8 +150,8 @@ extension JKTool.Git.SubModule.Update {
                 let error = error as! ShellOutError
                 po(tip:  error.message + error.output,type: .error)
             }
-            JKTool.Git.SubModule.Update.Sub.main(["\(false)","\(remote ?? false)","\(quiet ?? true)",path])
-            if quiet != false {po(tip: "======Clone Project and Update SubModule项目完成======")}
+            JKTool.Git.SubModule.Update.Sub.main(["\(false)","\(remote ?? false)",path])
+            po(tip: "======Clone Project and Update SubModule项目完成======")
         }
     }
 }
