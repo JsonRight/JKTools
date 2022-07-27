@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="21179.7" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+    <dependencies>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="21179.7"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner"/>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <tableCellView identifier="PreferencesCell" id="CkO-6d-6JK" customClass="PreferencesCellView" customModule="JKTools" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="457" height="70"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qH0-ZC-y70">
+                    <rect key="frame" x="0.0" y="0.0" width="457" height="73"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                </customView>
+                <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="N7Z-g5-GO5">
+                    <rect key="frame" x="427" y="-2" width="30" height="75"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="30" id="wt1-Vw-kkS"/>
+                    </constraints>
+                    <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageAlignment="right" imageScaling="proportionallyDown" image="NSGoRightTemplate" id="DT7-Xk-ZlC"/>
+                </imageView>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="753" verticalCompressionResistancePriority="747" translatesAutoresizingMaskIntoConstraints="NO" id="bzi-dT-CbK">
+                    <rect key="frame" x="3" y="44" width="48" height="21"/>
+                    <textFieldCell key="cell" lineBreakMode="clipping" alignment="left" title="Label" id="fbR-r0-r85">
+                        <font key="font" metaFont="system" size="18"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                    <connections>
+                        <outlet property="delegate" destination="CkO-6d-6JK" id="xpZ-6h-bAp"/>
+                    </connections>
+                </textField>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="753" verticalCompressionResistancePriority="747" translatesAutoresizingMaskIntoConstraints="NO" id="q9n-PL-zfi">
+                    <rect key="frame" x="3" y="23" width="37" height="16"/>
+                    <textFieldCell key="cell" lineBreakMode="clipping" alignment="left" title="Label" id="duS-T1-WF8">
+                        <font key="font" metaFont="system"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="9VE-0l-HhK">
+                    <rect key="frame" x="3" y="5" width="37" height="16"/>
+                    <textFieldCell key="cell" lineBreakMode="clipping" alignment="left" title="Label" id="aOu-3C-z5Q">
+                        <font key="font" metaFont="system"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+            </subviews>
+            <constraints>
+                <constraint firstItem="bzi-dT-CbK" firstAttribute="top" secondItem="CkO-6d-6JK" secondAttribute="top" constant="5" id="4Y2-TX-b4L"/>
+                <constraint firstItem="9VE-0l-HhK" firstAttribute="leading" secondItem="CkO-6d-6JK" secondAttribute="leading" constant="5" id="7IR-uz-ke6"/>
+                <constraint firstItem="N7Z-g5-GO5" firstAttribute="top" secondItem="CkO-6d-6JK" secondAttribute="top" id="MDa-aP-E3l"/>
+                <constraint firstAttribute="trailing" secondItem="N7Z-g5-GO5" secondAttribute="trailing" id="MKk-d5-r4j"/>
+                <constraint firstItem="bzi-dT-CbK" firstAttribute="leading" secondItem="CkO-6d-6JK" secondAttribute="leading" constant="5" id="Pva-B0-X9X"/>
+                <constraint firstItem="q9n-PL-zfi" firstAttribute="leading" secondItem="CkO-6d-6JK" secondAttribute="leading" constant="5" id="Qyh-Zh-bL5"/>
+                <constraint firstAttribute="bottom" secondItem="9VE-0l-HhK" secondAttribute="bottom" constant="5" id="SRG-Sl-Dw7"/>
+                <constraint firstItem="q9n-PL-zfi" firstAttribute="top" secondItem="bzi-dT-CbK" secondAttribute="bottom" constant="5" id="X8t-6K-yaC"/>
+                <constraint firstAttribute="bottom" secondItem="N7Z-g5-GO5" secondAttribute="bottom" id="abb-fH-Duw"/>
+                <constraint firstItem="9VE-0l-HhK" firstAttribute="top" secondItem="q9n-PL-zfi" secondAttribute="bottom" constant="2" id="zFx-gY-QC1"/>
+            </constraints>
+            <connections>
+                <outlet property="projectNameLab" destination="bzi-dT-CbK" id="8U3-uk-GcG"/>
+                <outlet property="projectPathLab" destination="q9n-PL-zfi" id="Hfm-w8-oQe"/>
+                <outlet property="sourcePathLab" destination="9VE-0l-HhK" id="vU1-9q-GVp"/>
+            </connections>
+            <point key="canvasLocation" x="208" y="-117"/>
+        </tableCellView>
+    </objects>
+    <resources>
+        <image name="NSGoRightTemplate" width="10" height="14"/>
+    </resources>
+</document>

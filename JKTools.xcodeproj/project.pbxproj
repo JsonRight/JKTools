@@ -18,6 +18,7 @@
 		BF2BC8F12620370D005802E4 /* PreferencesCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2BC8F02620370D005802E4 /* PreferencesCellView.swift */; };
 		BF2BC8F4262064D0005802E4 /* ProjectInfoBean.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2BC8F3262064D0005802E4 /* ProjectInfoBean.swift */; };
 		BF2BC8F72620681B005802E4 /* InsertProjectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2BC8F62620681B005802E4 /* InsertProjectViewController.swift */; };
+		BF3A973328900120006134AE /* PreferencesCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF3A973228900120006134AE /* PreferencesCellView.xib */; };
 		BF3B8054263171390085E75A /* Projects.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3B8053263171390085E75A /* Projects.swift */; };
 		BF3B805F26318A7A0085E75A /* AppleScriptCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3B805E26318A7A0085E75A /* AppleScriptCommand.swift */; };
 		BF3B8063263194A10085E75A /* ConfigType.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3B8062263194A00085E75A /* ConfigType.swift */; };
@@ -139,6 +140,7 @@
 		BF2BC8F02620370D005802E4 /* PreferencesCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesCellView.swift; sourceTree = "<group>"; };
 		BF2BC8F3262064D0005802E4 /* ProjectInfoBean.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectInfoBean.swift; sourceTree = "<group>"; };
 		BF2BC8F62620681B005802E4 /* InsertProjectViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsertProjectViewController.swift; sourceTree = "<group>"; };
+		BF3A973228900120006134AE /* PreferencesCellView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PreferencesCellView.xib; sourceTree = "<group>"; };
 		BF3B8053263171390085E75A /* Projects.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Projects.swift; sourceTree = "<group>"; };
 		BF3B805E26318A7A0085E75A /* AppleScriptCommand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleScriptCommand.swift; sourceTree = "<group>"; };
 		BF3B8062263194A00085E75A /* ConfigType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfigType.swift; sourceTree = "<group>"; };
@@ -269,6 +271,7 @@
 				BF2BC8ED26202FDB005802E4 /* PreferencesViewController.swift */,
 				BF3B80682632686C0085E75A /* MenuView.swift */,
 				BF2BC8F02620370D005802E4 /* PreferencesCellView.swift */,
+				BF3A973228900120006134AE /* PreferencesCellView.xib */,
 				BF2BC8F3262064D0005802E4 /* ProjectInfoBean.swift */,
 				BF3B8053263171390085E75A /* Projects.swift */,
 				BF284042288A7CA4002CC6A2 /* JKToolConfig.swift */,
@@ -579,6 +582,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BF3A973328900120006134AE /* PreferencesCellView.xib in Resources */,
 				BF3CBE3B2636D58D0082E869 /* JKToolScript.scpt in Resources */,
 				BFB4B1E326394758002E7072 /* JKTool in Resources */,
 				BF25A47A26170AA300CB2F1B /* Main.storyboard in Resources */,
