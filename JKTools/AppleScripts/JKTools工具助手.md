@@ -5,7 +5,7 @@
 首先先介绍一下个人对于一个工程的简单的模块化拆分方案：
 
 1. 将整个App纵向拆分为：`壳工程` `开源的常用基础库` `第三方私有库` `自家私有基础库` `基础组件库` `业务库`；
-2. `自家私有基础库`横向拆分：`Foundation` `UIKit` `Common`;
+2. `自家私有基础库`横向拆分：`Foundation` `UIKit` `Common` `...`;
 3. `基础组件库`横向拆分：各种业务基础组件库;
 4. `业务库`横向拆分：各种业务库。
 
@@ -60,42 +60,42 @@ JKTool是一个很简单的命令行工具，提供的命令也很简单：
 ```
 JKTool
 ├─git
-│	├─init //JKTool git init [<path>] 初始化一个git仓库
-│	├─clone
-│	│	├─sub //JKTool git clone sub [<force>] [<path>] clone全部submodule
-│	│	└─all //JKTool git clone all <url> <path> [<branch>] clone壳工程以及全部
-│	├─commit //JKTool git commit <message> [<recursive>] [<path>] 写入提交信息，自动执行git add -A
-│	├─pull //JKTool git pull [<recursive>] [<path>] pull当前分支
-│	├─push //JKTool git push [<branch>] [<recursive>] [<path>] push git仓库
-│	├─prune //JKTool git prune [<recursive>] [<path>]
-│	├─rebase //JKTool git rebase <branch>
-│	├─merge //JKTool git merge <branch> [<squash>] [<recursive>] [<path>] 将当前分支merge到branch
-│	├─squash //JKTool git squash <from> <to> <message> [<del>] [<recursive>] [<path>] squash分支
-│	├─branch
-│	│	├─create //JKTool git branch create <branch> [<recursive>] [<quiet>] [<path>] 创建分支
-│	│	└─del
-│	│		├─local //JKTool git branch del local <branch> [<recursive>] [<path>] 删除本地分支
-│	│		└─origin //JKTool git branch del origin <branch> [<recursive>] [<path>] 删除远程分支
-│	├─checkout //JKTool git checkout <branch> [<recursive>] [<force>] [<path>]
-│	├─status //JKTool git status [<recursive>] [<path>]
-│	├─tag
-│	│	├─add //JKTool git tag add <tag> [<recursive>] [<path>] 添加tag
-│	│	└─del //JKTool git tag del <tag> [<recursive>] [<path>] 移除tag
-│	└─submodule
-│	│	└─update
-│	│		├─sub //JKTool git submodule update sub [<prune>] [<remote>] [<path>] 构建git submodule
-│	│		└─all //JKTool git submodule update all <url> <path> [<remote>] [<branch>]  clone壳工程并构建git submodule
+│    ├─init //JKTool git init [<path>] 初始化一个git仓库
+│    ├─clone
+│    │    ├─sub //JKTool git clone sub [<force>] [<path>] clone全部submodule
+│    │    └─all //JKTool git clone all <url> <path> [<branch>] clone壳工程以及全部
+│    ├─commit //JKTool git commit <message> [<recursive>] [<path>] 写入提交信息，自动执行git add -A
+│    ├─pull //JKTool git pull [<recursive>] [<path>] pull当前分支
+│    ├─push //JKTool git push [<branch>] [<recursive>] [<path>] push git仓库
+│    ├─prune //JKTool git prune [<recursive>] [<path>]
+│    ├─rebase //JKTool git rebase <branch>
+│    ├─merge //JKTool git merge <branch> [<squash>] [<recursive>] [<path>] 将当前分支merge到branch
+│    ├─squash //JKTool git squash <from> <to> <message> [<del>] [<recursive>] [<path>] squash分支
+│    ├─branch
+│    │    ├─create //JKTool git branch create <branch> [<recursive>] [<quiet>] [<path>] 创建分支
+│    │    └─del
+│    │        ├─local //JKTool git branch del local <branch> [<recursive>] [<path>] 删除本地分支
+│    │        └─origin //JKTool git branch del origin <branch> [<recursive>] [<path>] 删除远程分支
+│    ├─checkout //JKTool git checkout <branch> [<recursive>] [<force>] [<path>]
+│    ├─status //JKTool git status [<recursive>] [<path>]
+│    ├─tag
+│    │    ├─add //JKTool git tag add <tag> [<recursive>] [<path>] 添加tag
+│    │    └─del //JKTool git tag del <tag> [<recursive>] [<path>] 移除tag
+│    └─submodule
+│    │    └─update
+│    │        ├─sub //JKTool git submodule update sub [<prune>] [<remote>] [<path>] 构建git submodule
+│    │        └─all //JKTool git submodule update all <url> <path> [<remote>] [<branch>]  clone壳工程并构建git submodule
 ├─build
-│	├─static //JKTool build static [<cache>] [<configuration>] [<sdk>] [<path>] 编译成.a
-│	├─framework //JKTool build framework [<cache>] [<configuration>] [<sdk>] [<path>] 编译成.framework
-│	├─xcframework //JKTool build xcframework [<cache>] [<configuration>] [<sdk>] [<path>] 编译成.xcframework
-│	└─unknown //JKTool build unknown [<cache>] [<configuration>] [<sdk>] [<path>] 智能编译成.a或者.framework
+│    ├─static //JKTool build static [<cache>] [<configuration>] [<sdk>] [<path>] 编译成.a
+│    ├─framework //JKTool build framework [<cache>] [<configuration>] [<sdk>] [<path>] 编译成.framework
+│    ├─xcframework //JKTool build xcframework [<cache>] [<configuration>] [<sdk>] [<path>] 编译成.xcframework
+│    └─unknown //JKTool build unknown [<cache>] [<configuration>] [<sdk>] [<path>] 智能编译成.a或者.framework
 ├─archive //JKTool archive <configuration> <scheme> <config-path> [<export>] [<path>]
 ├─export //JKTool export <configuration> <scheme> <config-path> [<path>]
 ├─upload
-│	├─account //JKTool upload account <config-path> [<path>]
-│	├─api //JKTool upload api <config-path> [<path>]
-│	└─export //JKTool upload export <config-path> [<path>]
+│    ├─account //JKTool upload account <config-path> [<path>]
+│    ├─api //JKTool upload api <config-path> [<path>]
+│    └─export //JKTool upload export <config-path> [<path>]
 ├─shell //JKTool shell <shell> [<path>] //执行自定义脚本
 └─config //JKTool config //获取archive/export/upload的config.json示例
 ```
@@ -109,10 +109,118 @@ JKTool
 3. *recursive*：Bool 是否递归子模块，使子模块执行同样的功能命令
 4. *config-path*：String config.json的路径，可以是相对路径
 5. *<...>* 代表必填字段、*[<...>]* 代表可选字段
+6. JKTool clone ... 根据`Modulefile`用于生成普通模块依赖树，不使用git submodule的模式
+7. JKTool submodule update ... 根据`Modulefile`用于生成git submodule的模式模块依赖树，动态将子模块添加为submodule
 
+# 模块化的应用<Modulefile>
 
+下面通过JKTool目录环境默认的工程结构作为示例：
 
+```
+Notebook（壳工程）
+├─.git
+├─.gitgnore
+├─.gitmodules
+├─Notebook
+├─Notebook.xcodeproj
+├─Notebook.xcworkspace
+├─Pods
+├─podfile
+├─Podfile.lock
+├─Modulefile
+├─Modulefile.recordList
+└─Module
+    ├─Builds
+    │    ├─JKFoundation
+    │    │    └─JKFoundation.framework
+    │    ├─JKUIKit
+    │    │    ├─JKUIKit.a
+    │    │    ├─JKUIKit.bundle
+    │    │    └─JKUIKit
+    │    │        └─...*.h
+    │    ├─JKCommon
+    │    │    └─JKFoundation.framework
+    │    ├─...
+    │    └─JKSwift
+    │        └─JKFoundation.framework
+    └─checkouts
+        ├─JKFoundation
+        │        ├─.git
+        │        ├─.gitgnore
+        │        ├─JKFoundation
+        │        └─JKFoundation.xcodeproj
+        ├─JKUIKit
+        │        ├─.git
+        │        ├─.gitgnore
+        │        ├─.gitmodules
+        │        ├─JKUIKit
+        │        ├─JKUIKit.xcodeproj
+        │        ├─Modulefile
+        │        ├─Modulefile.recordList
+        │        └─Module
+        │            └─Builds
+        │                └─JKFoundation (壳工程Module/Builds/JKFoundation 的links)
+        ├─JKCommon
+        │        ├─.git
+        │        ├─.gitgnore
+        │        ├─.gitmodules
+        │        ├─JKUIKit
+        │        ├─JKUIKit.xcodeproj
+        │        ├─Modulefile
+        │        ├─Modulefile.recordList
+        │        └─Module
+        │            └─Builds
+        │                ├─JKFoundation (壳工程Module/Builds/JKFoundation 的links)
+        │                └─JKUIKit (壳工程Module/Builds/JKUIKit 的links)
+        ├─...
+        └─JKSwift
+```
 
+以上依赖关系可以简化为：
 
+```
+Notebook <-- [JKSwift](JKSwift 对JKCommon,JKFoundation,JKUIKit存在隐性依赖)==>Notebook对JKSwift显性依赖
+JKSwift <-- [JKCommon,JKUIKit](JKCommon 对 JKFoundation存在隐性依赖)==>JKSwift对JKCommon,JKUIKit显性依赖
+JKUIKit <-- [JKFoundation]==>JKUIKit对JKFoundation显性依赖
+JKCommon <-- [JKFoundation]==>JKCommon对JKFoundation显性依赖
+依赖关系通过 Modulefile 文件描述
+```
 
+Notebook 的 Modulefile示例：
 
+```
+JKSwift git@*/JKSwift.git master
+```
+
+JKSwift 的 Modulefile示例：
+
+```
+JKCommon git@*/JKCommon.git master
+JKUIKit git@*/JKUIKit.git master
+```
+
+JKUIKit 的 Modulefile示例：
+
+```
+JKFoundation git@*/JKFoundation.git master
+```
+
+JKCommon 的 Modulefile示例：
+
+```
+JKFoundation git@*/JKFoundation.git master
+```
+
+Modulefile 单行分3个部分：
+
+1. scheme 模块名称，建议工程名、scheme使用同一个，scheme将作为文件名称以及build命令的scheme使用
+2. 子模块git仓库地址
+3. 默认依赖分支 
+
+*JKTool clone ... 根据`Modulefile`用于生成普通模块依赖树，不使用git submodule的模式。*
+
+*JKTool submodule update ... 根据`Modulefile`用于生成git submodule的模式模块依赖树，动态将子模块添加为submodule。*
+
+*`Modulefile.recordList`为构建子模块依赖树的中间文件，可忽略，不可删除。*
+
+*`Modulefile.recordList`决定了子模块build的执行顺序。*
