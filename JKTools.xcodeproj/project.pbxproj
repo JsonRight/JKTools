@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BF1A881328912EC1005C0316 /* JKTools工具助手.md in Resources */ = {isa = PBXBuildFile; fileRef = BF1A881228912EC1005C0316 /* JKTools工具助手.md */; };
 		BF25A4392615DE1B00CB2F1B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF25A4382615DE1B00CB2F1B /* AppDelegate.swift */; };
 		BF25A43B2615DE1B00CB2F1B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF25A43A2615DE1B00CB2F1B /* ViewController.swift */; };
 		BF25A43D2615DE1D00CB2F1B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BF25A43C2615DE1D00CB2F1B /* Assets.xcassets */; };
@@ -126,6 +127,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		BF1A881228912EC1005C0316 /* JKTools工具助手.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = "JKTools工具助手.md"; sourceTree = "<group>"; };
 		BF25A4352615DE1B00CB2F1B /* JKTools.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JKTools.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BF25A4382615DE1B00CB2F1B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BF25A43A2615DE1B00CB2F1B /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -289,6 +291,7 @@
 			isa = PBXGroup;
 			children = (
 				BFB4B1E226394758002E7072 /* JKTool */,
+				BF1A881228912EC1005C0316 /* JKTools工具助手.md */,
 				BF3B8062263194A00085E75A /* ConfigType.swift */,
 				BF3B8065263199A30085E75A /* ConsoleOptions.swift */,
 				BF3CBE3A2636D58C0082E869 /* JKToolScript.scpt */,
@@ -587,6 +590,7 @@
 				BFB4B1E326394758002E7072 /* JKTool in Resources */,
 				BF25A47A26170AA300CB2F1B /* Main.storyboard in Resources */,
 				BF25A43D2615DE1D00CB2F1B /* Assets.xcassets in Resources */,
+				BF1A881328912EC1005C0316 /* JKTools工具助手.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -755,6 +759,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -816,6 +821,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -842,9 +848,12 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = JKTools/JKTools.entitlements;
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = 6R64B64M76;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=macosx*]" = 8Z5RW7YX9K;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = JKTools/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -852,8 +861,10 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
-				PRODUCT_BUNDLE_IDENTIFIER = com.jk.JKTools;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jk.JKTool;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = JKTool_dev;
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = JKTool_dev;
 				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
@@ -865,9 +876,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = JKTools/JKTools.entitlements;
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "Developer ID Application";
+				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = 6R64B64M76;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=macosx*]" = 8Z5RW7YX9K;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = JKTools/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -875,8 +888,10 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
-				PRODUCT_BUNDLE_IDENTIFIER = com.jk.JKTools;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jk.JKTool;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "JKTool_Developer ID";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "JKTool_Developer ID";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
@@ -886,11 +901,13 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = JKTool/JKTool.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 6R64B64M76;
-				ENABLE_HARDENED_RUNTIME = NO;
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=macosx*]" = 8Z5RW7YX9K;
+				ENABLE_HARDENED_RUNTIME = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
-				PRODUCT_BUNDLE_IDENTIFIER = com.jk.JKTools.JKTool;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jk.JKTool.JKTool;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
@@ -902,11 +919,13 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = JKTool/JKTool.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 6R64B64M76;
-				ENABLE_HARDENED_RUNTIME = NO;
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=macosx*]" = 8Z5RW7YX9K;
+				ENABLE_HARDENED_RUNTIME = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
-				PRODUCT_BUNDLE_IDENTIFIER = com.jk.JKTools.JKTool;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jk.JKTool.JKTool;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;

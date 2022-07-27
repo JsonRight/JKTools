@@ -15,7 +15,7 @@ extension JKTool.Git {
             version: "1.0.0")
         
         @Argument(help: "Merge branch name")
-        var branch: String?
+        var branch: String
         
         @Argument(help: "squash，default：false")
         var squash: Bool?
@@ -30,14 +30,6 @@ extension JKTool.Git {
         mutating func run() {
             
             func merge(project: Project){
-                
-                if branch == nil {
-                    branch = try? shellOut(to: .gitCurrentBranch(), at: project.directoryPath)
-                }
-                
-                guard let branch = branch else {
-                    return po(tip: "【\(project.name)】 Merge失败\n" + "无法检索出当前分支名",type: .error)
-                }
                 
                 do {
                     let result = try shellOut(to: .gitMerge(branch: branch, squash: squash), at: project.directoryPath)

@@ -126,7 +126,7 @@ class ProjectsAdapter: NSObject,NSTableViewDelegate,NSTableViewDataSource {
     
     func tableView(_ tableView: NSTableView, objectValueFor tableColumn: NSTableColumn?, row: Int) -> Any? {
         
-        let cell = tableView.makeView(withIdentifier: NSUserInterfaceItemIdentifier("PreferencesCell"), owner: nil) as! PreferencesCellView
+        let cell = tableView.makeView(withIdentifier: NSUserInterfaceItemIdentifier("PreferencesCell"), owner: self) as! PreferencesCellView
         cell.projectInfo = self.projectArr[row]
         return cell
 
@@ -182,7 +182,7 @@ class SubModuleAdapter: NSObject,NSTableViewDelegate,NSTableViewDataSource {
     }
     
     func tableView(_ tableView: NSTableView, objectValueFor tableColumn: NSTableColumn?, row: Int) -> Any? {
-        let cell = tableView.makeView(withIdentifier: NSUserInterfaceItemIdentifier("PreferencesCell"), owner: nil) as! PreferencesCellView
+        let cell = tableView.makeView(withIdentifier: NSUserInterfaceItemIdentifier("PreferencesCell"), owner: self) as! PreferencesCellView
         cell.projectInfo = self.projectArr[row]
         return cell
     }
