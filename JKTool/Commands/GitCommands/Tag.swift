@@ -52,16 +52,9 @@ extension JKTool.Git.Tag {
                 return po(tip: "\(path ?? FileManager.default.currentDirectoryPath)目录没有检索到工程", type: .error)
             }
             
-            guard project.rootProject == project else {
+            guard project.rootProject == project || recursive == true else {
                 addTag(project: project)
                return
-            }
-            
-            if recursive != true {
-                
-                addTag(project: project)
-                
-                return
             }
             
             po(tip: "======Add Tag开始======", type: .tip)
@@ -113,16 +106,9 @@ extension JKTool.Git.Tag {
                 return po(tip: "\(path ?? FileManager.default.currentDirectoryPath)目录没有检索到工程", type: .error)
             }
             
-            guard project.rootProject == project else {
+            guard project.rootProject == project || recursive == true else {
                 delTag(project: project)
                return
-            }
-            
-            if recursive != true {
-                
-                delTag(project: project)
-                
-                return
             }
             
             po(tip: "======Del Tag开始======", type: .tip)

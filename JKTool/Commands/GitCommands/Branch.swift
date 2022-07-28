@@ -134,16 +134,9 @@ extension JKTool.Git.Branch.Del {
                 return po(tip: "\(path ?? FileManager.default.currentDirectoryPath)目录没有检索到工程", type: .error)
             }
             
-            guard project.rootProject == project else {
+            guard project.rootProject == project || recursive == true else {
                 del(project: project)
                return
-            }
-            
-            if recursive != true {
-                
-                del(project: project)
-                
-                return
             }
             
             po(tip: "======Del local工程开始======", type: .tip)
@@ -195,14 +188,9 @@ extension JKTool.Git.Branch.Del {
                 return po(tip: "\(path ?? FileManager.default.currentDirectoryPath)目录没有检索到工程", type: .error)
             }
             
-            guard project.rootProject == project else {
+            guard project.rootProject == project || recursive == true else {
                 del(project: project)
                return
-            }
-            
-            if recursive != true {
-                del(project: project)
-                return
             }
             
             po(tip: "======Del origin工程开始======", type: .tip)

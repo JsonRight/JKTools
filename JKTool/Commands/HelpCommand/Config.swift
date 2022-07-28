@@ -42,8 +42,7 @@ extension JKTool {
                      "apiIssuerID": "String",
                      "ipaPath": "ipa路径"
                    }
-                 },
-                 "quiet": false
+                 }
                }
                ’‘’
                """)

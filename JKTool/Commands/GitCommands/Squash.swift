@@ -64,22 +64,14 @@ extension JKTool.Git {
                 return po(tip: "\(path ?? FileManager.default.currentDirectoryPath)目录没有检索到工程", type: .error)
             }
             
-            let status = try? shellOut(to: .gitStatus(), at: project.directoryPath)
-            
-            guard  status?.count ?? 0 <= 0 else {
-                return po(tip: "【\(project.name)】 存在需要提交的内容",type: .error)
-            }
-            
-            guard project.rootProject == project else {
+            guard project.rootProject == project || recursive == true else {
+                let status = try? shellOut(to: .gitStatus(), at: project.directoryPath)
                 
+                guard  status?.count ?? 0 <= 0 else {
+                    return po(tip: "【\(project.name)】 存在需要提交的内容",type: .error)
+                }
                 squash(project: project)
                return
-            }
-            
-            if recursive != true {
-                
-                squash(project: project)
-                return
             }
             
             po(tip: "======Merge squash工程开始======", type: .tip)
@@ -94,18 +86,14 @@ extension JKTool.Git {
                 guard  status?.count ?? 0 <= 0 else {
                     return po(tip: "【\(pro.name)】 存在需要提交的内容",type: .error)
                 }
-            }
-            
-            for record in project.recordList {
-        
-                guard let pro = Project.project(directoryPath: "\(project.checkoutsPath)/\(record)/") else {
-                    po(tip: "\(record) 工程不存在，请检查 Modulefile.recordList 是否为最新内容",type: .warning)
-                    continue
-                }
-                
                 squash(project: pro)
             }
             
+            let status = try? shellOut(to: .gitStatus(), at: project.directoryPath)
+            
+            guard  status?.count ?? 0 <= 0 else {
+                return po(tip: "【\(project.name)】 存在需要提交的内容",type: .error)
+            }
             squash(project: project)
             
             po(tip: "======Merge squash工程结束======")

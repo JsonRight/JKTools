@@ -36,16 +36,9 @@ extension JKTool.Git {
                 return po(tip: "\(path ?? FileManager.default.currentDirectoryPath)目录没有检索到工程", type: .error)
             }
             
-            guard project.rootProject == project else {
+            guard project.rootProject == project || recursive == true else {
                 prune(project: project)
                return
-            }
-            
-            if recursive != true {
-                
-                prune(project: project)
-                
-                return
             }
             
             po(tip: "======Prune工程开始======", type: .tip)

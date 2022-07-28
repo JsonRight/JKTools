@@ -504,7 +504,7 @@ Modulefile.recordList
                 </viewController>
                 <customObject id="evD-u0-DuQ" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="562" y="647"/>
+            <point key="canvasLocation" x="541" y="644"/>
         </scene>
         <!--InsertProject-->
         <scene sceneID="hXv-Ra-Dbt">
@@ -674,7 +674,7 @@ Modulefile.recordList
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <textView editable="NO" importsGraphics="NO" richText="NO" verticallyResizable="YES" baseWritingDirection="leftToRight" spellingCorrection="YES" smartInsertDelete="YES" id="wF6-2w-Awd">
-                                            <rect key="frame" x="0.0" y="-21" width="885" height="3166"/>
+                                            <rect key="frame" x="0.0" y="-42" width="885" height="3166"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                             <size key="minSize" width="885" height="300"/>

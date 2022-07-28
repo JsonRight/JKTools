@@ -45,23 +45,18 @@ extension JKTool.Git {
                 return po(tip: "\(path ?? FileManager.default.currentDirectoryPath)目录没有检索到工程", type: .error)
             }
             
-            let status = try? shellOut(to: .gitStatus(), at: project.directoryPath)
-            
-            guard  status?.count ?? 0 > 0 else {
-                po(tip: "【\(project.name)】 没有需要提交的内容\n",type: .tip)
-                return
-            }
-            
-            guard project.rootProject == project else {
+            guard project.rootProject == project || recursive == true  else {
+                
+                let status = try? shellOut(to: .gitStatus(), at: project.directoryPath)
+                
+                guard  status?.count ?? 0 > 0 else {
+                    po(tip: "【\(project.name)】 没有需要提交的内容\n",type: .tip)
+                    return
+                }
                 commit(project: project)
                return
             }
             
-            
-            if recursive != true {
-                commit(project: project)
-                return
-            }
             po(tip: "======Commit工程开始======", type: .tip)
             
             for record in project.recordList {
@@ -70,7 +65,20 @@ extension JKTool.Git {
                     po(tip: "\(record) 工程不存在，请检查 Modulefile.recordList 是否为最新内容",type: .warning)
                     continue
                 }
+                let status = try? shellOut(to: .gitStatus(), at: pro.directoryPath)
+                
+                guard  status?.count ?? 0 > 0 else {
+                    po(tip: "【\(pro.name)】 没有需要提交的内容\n",type: .tip)
+                    continue
+                }
                 commit(project: pro)
+            }
+            
+            let status = try? shellOut(to: .gitStatus(), at: project.directoryPath)
+            
+            guard  status?.count ?? 0 > 0 else {
+                po(tip: "【\(project.name)】 没有需要提交的内容\n",type: .tip)
+                return
             }
             
             commit(project: project)
