@@ -674,7 +674,7 @@ Modulefile.recordList
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <textView editable="NO" importsGraphics="NO" richText="NO" verticallyResizable="YES" baseWritingDirection="leftToRight" spellingCorrection="YES" smartInsertDelete="YES" id="wF6-2w-Awd">
-                                            <rect key="frame" x="0.0" y="0.0" width="885" height="3167"/>
+                                            <rect key="frame" x="0.0" y="-21" width="885" height="3166"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                             <size key="minSize" width="885" height="300"/>

@@ -136,7 +136,7 @@ extension JKTool.Build {
                     po(tip:"【\(project.name)】需重新编译")
 
                     // 删除历史build文件
-                    _ = try? shellOut(to: .removeFolder(from: project.buildPath + "/Universal"))
+                    _ = try? shellOut(to: .removeFolder(from: project.buildPath + "/Universal/\(currentVersion)"))
                     
                     buildStatic(project: project)
                     
@@ -296,7 +296,7 @@ extension JKTool.Build {
                     po(tip:"【\(project.name)】需重新编译")
                 
                     // 删除历史build文件
-                    _ = try? shellOut(to: .removeFolder(from: project.buildPath))
+                    _ = try? shellOut(to: .removeFolder(from: project.buildPath + "/Universal/\(currentVersion)"))
                     
                     buildFramework(project: project)
                 } else {
@@ -451,7 +451,9 @@ extension JKTool.Build {
                     po(tip:"【\(project.name)】需重新编译")
                     
                     // 删除历史build文件
-                    _ = try? shellOut(to: .removeFolder(from: project.buildPath))
+                    _ = try? shellOut(to: .removeFolder(from: project.buildPath + "/Universal/\(currentVersion)"))
+                    buildXCFramework(project: project)
+                    buildBundle(project: project)
                     
                 }else{
                     let xcframeworkCommand = ShellOutCommand.xcframeworkWithCache(scheme:scheme, derivedDataPath: project.buildPath, verison: currentVersion, toPath: project.rootProject.buildsPath + "/" + project.name)
