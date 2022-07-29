@@ -299,6 +299,8 @@ extension JKTool.Build {
                     _ = try? shellOut(to: .removeFolder(from: project.buildPath + "/Universal/\(currentVersion)"))
                     
                     buildFramework(project: project)
+                    
+                    buildBundle(project: project)
                 } else {
                     let frameworkCommand = ShellOutCommand.frameworkWithCache(scheme: scheme, derivedDataPath: project.buildPath, verison: currentVersion, toPath: project.rootProject.buildsPath + "/" + project.name)
                     do {
