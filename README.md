@@ -1,39 +1,226 @@
-# JKTools
+# JKTools的起源@_@
 
-#### 介绍
-{**以下是 Gitee 平台说明，您可以替换此简介**
-Gitee 是 OSCHINA 推出的基于 Git 的代码托管平台（同时支持 SVN）。专为开发者提供稳定、高效、安全的云端软件开发协作平台
-无论是个人、团队、或是企业，都能够用 Gitee 实现代码托管、项目管理、协作开发。企业项目请看 
+#### 简单介绍工程模块化
 
-#### 软件架构
-软件架构说明
+首先先介绍一下个人对于一个工程的简单的模块化拆分方案：
+
+1. 将整个App纵向拆分为：`壳工程` `开源的常用基础库` `第三方私有库` `自家私有基础库` `基础组件库` `业务库`；
+2. `自家私有基础库`横向拆分：`Foundation` `UIKit` `Common` `...`;
+3. `基础组件库`横向拆分：各种业务基础组件库;
+4. `业务库`横向拆分：各种业务库。
+
+通过`路由框架`作为桥梁，实现业务功能插件化。漂亮！！！
+
+#### 工程模块化管理工具的挑选
+
+我觉得大家应该都对Cocoapods、Carthage有充足的认知！这里就不过多介绍！
+
+不管你用什么做管理工具，不知道你是否经历过：
+
+1. 全工程`build`50minutes+
+
+2. `.a`嵌套`.framework`嵌套`第三方sdk`
+
+3. gitHub全天443
+
+4. 切一下分支，又要`build`
+
+5. what？只能拉锁定的tag，不能拉最新代码？
+
+   ……我艹【一种🦙爱吃吃的草】
+
+不想写space，不想443，不想重复build，于是我们走上自构建模块化管理工具的路——JKTools诞生了。
+
+# JKTools组成
+
+#### JKTools管理程序（Beta版）
+
+JKTools并不需要持续运行，它仅提供`git忽略文件示例` `配置中心` `安装脚本` `帮助` `退出`以上5个基础功能。
+
+1. `git忽略文件示例`内附带简单的Xcode工程几条个人认为务必要忽略的内容，仅供参考；
+2. `配置中心` 内提供 JKTools格式的模块化管理工具需要配置的几个路径：SubModule相对于壳工程的统一路径、Build产物（.a、.framework、.bundle）相对于壳工程的统一路径、Build中间产物（缓存）相对于壳工程的统一路径；
+3. `安装脚本`提供了在首次启动JKTools时安装JKTool命令行工具失败或者失误删除JKTool命令行工具时，手动安装JKTool的入口。
+4. `帮助`这里很大概率看到的就是本文档了。
+5. `退出`退出功能是有必要的，JKTools没有任何必要长期存在于进程中，它只是提供以上4个功能，在学会并安装使用本工具后，它只是一个没用的图标。
+
+#### JKTools的安装
+
+1. 将`JKTools.app`拖进Mac的应用程序，双击`JKTools[🐢]`，你会看到出现安装JKTool命令行工具的文件夹选择窗口。
+2. 点击`Selecte Script Folder`他会将JKTool安装到对的目录，接下来会出现一个Alert，`Done`代表安装成功，`Fail`代表安装失败。
+3. 你不需要过多操作，请相信我，JKTools是无害的，JKTool也很小。如果你没看到窗口，大概率这个窗口在其他Mac App的窗口后面，你会看到他的！
+
+*我并不准备将这个工具完全开源，也不准备提交AppStore，毕竟它很简单，它能提供的能力很简单！*并且当前并不提供命令行动态更新服务。
+
+#### JKTool命令行工具（Beta版）
+
+JKTool是一个很简单的命令行工具，提供的命令也很简单：
+
+*你可以通过`JKTool help <subcommand>` 查看他提供了哪些子命令*
+
+```
+JKTool
+├─git
+│	├─init //JKTool git init [<path>] 初始化一个git仓库
+│	├─clone
+│	│	├─sub //JKTool git clone sub [<force>] [<path>] clone全部submodule
+│	│	└─all //JKTool git clone all <url> <path> [<branch>] clone壳工程以及全部
+│	├─commit //JKTool git commit <message> [<recursive>] [<path>] 写入提交信息，自动执行git add -A
+│	├─pull //JKTool git pull [<recursive>] [<path>] pull当前分支
+│	├─push //JKTool git push [<branch>] [<recursive>] [<path>] push git仓库
+│	├─prune //JKTool git prune [<recursive>] [<path>]
+│	├─rebase //JKTool git rebase <branch>
+│	├─merge //JKTool git merge <branch> [<squash>] [<recursive>] [<path>] 将当前分支merge到branch
+│	├─squash //JKTool git squash <from> <to> <message> [<del>] [<recursive>] [<path>] squash分支
+│	├─branch
+│	│	├─create //JKTool git branch create <branch> [<recursive>] [<quiet>] [<path>] 创建分支
+│	│	└─del
+│	│		├─local //JKTool git branch del local <branch> [<recursive>] [<path>] 删除本地分支
+│	│		└─origin //JKTool git branch del origin <branch> [<recursive>] [<path>] 删除远程分支
+│	├─checkout //JKTool git checkout <branch> [<recursive>] [<force>] [<path>]
+│	├─status //JKTool git status [<recursive>] [<path>]
+│	├─tag
+│	│	├─add //JKTool git tag add <tag> [<recursive>] [<path>] 添加tag
+│	│	└─del //JKTool git tag del <tag> [<recursive>] [<path>] 移除tag
+│	└─submodule
+│	│	└─update
+│	│		├─sub //JKTool git submodule update sub [<prune>] [<remote>] [<path>] 构建git submodule
+│	│		└─all //JKTool git submodule update all <url> <path> [<remote>] [<branch>]  clone壳工程并构建git submodule
+├─build
+│	├─static //JKTool build static [<cache>] [<configuration>] [<sdk>] [<path>] 编译成.a
+│	├─framework //JKTool build framework [<cache>] [<configuration>] [<sdk>] [<path>] 编译成.framework
+│	├─xcframework //JKTool build xcframework [<cache>] [<configuration>] [<sdk>] [<path>] 编译成.xcframework
+│	└─unknown //JKTool build unknown [<cache>] [<configuration>] [<sdk>] [<path>] 智能编译成.a或者.framework
+├─archive //JKTool archive <configuration> <scheme> <config-path> [<export>] [<path>]
+├─export //JKTool export <configuration> <scheme> <config-path> [<path>]
+├─upload
+│	├─account //JKTool upload account <config-path> [<path>]
+│	├─api //JKTool upload api <config-path> [<path>]
+│	└─export //JKTool upload export <config-path> [<path>]
+├─shell //JKTool shell <shell> [<path>] //执行自定义脚本
+└─config //JKTool config //获取archive/export/upload的config.json示例
+```
 
 
-#### 安装教程
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+*部分命令并没有解释，相信没有也能看得懂，以下是部分命令key的含义*:
 
-#### 使用说明
+1. *path*：String 命令执行路径，必须是绝对路径，非必填字段时为空则为当前路径
+2. *force*：Bool 是否强制执行
+3. *recursive*：Bool 是否递归子模块，使子模块执行同样的功能命令
+4. *config-path*：String config.json的路径，可以是相对路径
+5. *<...>* 代表必填字段、*[<...>]* 代表可选字段
+6. JKTool clone ... 根据`Modulefile`用于生成普通模块依赖树，不使用git submodule的模式
+7. JKTool submodule update ... 根据`Modulefile`用于生成git submodule的模式模块依赖树，动态将子模块添加为submodule
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+# 模块化的应用<Modulefile>
 
-#### 参与贡献
+下面通过JKTool目录环境默认的工程结构作为示例：
 
-1.  Fork 本仓库
-2.  新建 Feat_xxx 分支
-3.  提交代码
-4.  新建 Pull Request
+```
+Notebook（壳工程）
+├─.git
+├─.gitgnore
+├─.gitmodules
+├─Notebook
+├─Notebook.xcodeproj
+├─Notebook.xcworkspace
+├─Pods
+├─podfile
+├─Podfile.lock
+├─Modulefile
+├─Modulefile.recordList
+└─Module
+	├─Builds
+	│	├─JKFoundation
+	│	│	└─JKFoundation.framework
+	│	├─JKUIKit
+	│	│	├─JKUIKit.a
+	│	│	├─JKUIKit.bundle
+	│	│	└─JKUIKit
+	│	│		└─...*.h
+	│	├─JKCommon
+	│	│	└─JKFoundation.framework
+	│	├─...
+	│	└─JKSwift
+	│		└─JKFoundation.framework
+	└─checkouts
+		├─JKFoundation
+		│		├─.git
+		│		├─.gitgnore
+		│		├─JKFoundation
+		│		└─JKFoundation.xcodeproj
+		├─JKUIKit
+		│		├─.git
+		│		├─.gitgnore
+		│		├─.gitmodules
+		│		├─JKUIKit
+		│		├─JKUIKit.xcodeproj
+		│		├─Modulefile
+		│		├─Modulefile.recordList
+		│		└─Module
+		│			└─Builds
+		│				└─JKFoundation (壳工程Module/Builds/JKFoundation 的links)
+		├─JKCommon
+		│		├─.git
+		│		├─.gitgnore
+		│		├─.gitmodules
+		│		├─JKUIKit
+		│		├─JKUIKit.xcodeproj
+		│		├─Modulefile
+		│		├─Modulefile.recordList
+		│		└─Module
+		│			└─Builds
+		│				├─JKFoundation (壳工程Module/Builds/JKFoundation 的links)
+		│				└─JKUIKit (壳工程Module/Builds/JKUIKit 的links)
+		├─...
+		└─JKSwift
+```
 
+以上依赖关系可以简化为：
 
-#### 特技
+```
+Notebook <-- [JKSwift](JKSwift 对JKCommon,JKFoundation,JKUIKit存在隐性依赖)==>Notebook对JKSwift显性依赖
+JKSwift <-- [JKCommon,JKUIKit](JKCommon 对 JKFoundation存在隐性依赖)==>JKSwift对JKCommon,JKUIKit显性依赖
+JKUIKit <-- [JKFoundation]==>JKUIKit对JKFoundation显性依赖
+JKCommon <-- [JKFoundation]==>JKCommon对JKFoundation显性依赖
+依赖关系通过 Modulefile 文件描述
+```
 
-1.  使用 Readme\_XXX.md 来支持不同的语言，例如 Readme\_en.md, Readme\_zh.md
-2.  Gitee 官方博客 [blog.gitee.com](https://blog.gitee.com)
-3.  你可以 [https://gitee.com/explore](https://gitee.com/explore) 这个地址来了解 Gitee 上的优秀开源项目
-4.  [GVP](https://gitee.com/gvp) 全称是 Gitee 最有价值开源项目，是综合评定出的优秀开源项目
-5.  Gitee 官方提供的使用手册 [https://gitee.com/help](https://gitee.com/help)
-6.  Gitee 封面人物是一档用来展示 Gitee 会员风采的栏目 [https://gitee.com/gitee-stars/](https://gitee.com/gitee-stars/)
+Notebook 的 Modulefile示例：
+
+```
+JKSwift git@*/JKSwift.git master
+```
+
+JKSwift 的 Modulefile示例：
+
+```
+JKCommon git@*/JKCommon.git master
+JKUIKit git@*/JKUIKit.git master
+```
+
+JKUIKit 的 Modulefile示例：
+
+```
+JKFoundation git@*/JKFoundation.git master
+```
+
+JKCommon 的 Modulefile示例：
+
+```
+JKFoundation git@*/JKFoundation.git master
+```
+
+Modulefile 单行分3个部分：
+
+1. scheme 模块名称，建议工程名、scheme使用同一个，scheme将作为文件名称以及build命令的scheme使用
+2. 子模块git仓库地址
+3. 默认依赖分支 
+
+*JKTool clone ... 根据`Modulefile`用于生成普通模块依赖树，不使用git submodule的模式。*
+
+*JKTool submodule update ... 根据`Modulefile`用于生成git submodule的模式模块依赖树，动态将子模块添加为submodule。*
+
+*`Modulefile.recordList`为构建子模块依赖树的中间文件，可忽略，不可删除。*
+
+*`Modulefile.recordList`决定了子模块build的执行顺序。*
