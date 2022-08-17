@@ -59,12 +59,11 @@ extension JKTool {
                 po(tip:  error.message + error.output,type: .error)
             }
             
+            po(tip: "======Archive项目完成[\(String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")]======")
+            
             if export != false {
                 JKTool.Export.main([configuration,scheme,configPath,project.directoryPath])
             }
-            
-            po(tip: "======Archive项目完成[\(String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")]======")
-            
         }
     }
 }
