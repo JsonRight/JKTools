@@ -40,8 +40,9 @@ extension JKTool {
                    "apiAuthConfig": {
                      "apiKey": "String",
                      "apiIssuerID": "String",
-                     "ipaPath": "ipa路径"
-                   }
+                     "authKeyPath": "ipa路径"
+                   },
+                    "ipaPath": "ipa路径"
                  }
                }
                ’‘’

@@ -39,11 +39,11 @@ extension JKTool {
             }
             
             guard let data = try? Data(contentsOf: URL(fileURLWithPath: configPath.convertRelativePath(absolutPath:project.directoryPath))) else {
-                return po(tip: "请检查配置文件是否存在，或者格式是否正确！",type: .error)
+                return po(tip: "请检查配置文件是否存在！",type: .error)
             }
             
             guard let configs = try? JSONDecoder().decode(ProjectConfigModel.self, from: data) else {
-                return po(tip: "请检查配置文件是否存在，或者格式是否正确！",type: .error)
+                return po(tip: "请检查配置文件格式是否正确！",type: .error)
             }
             
             po(tip: "======Export IPA 开始======")

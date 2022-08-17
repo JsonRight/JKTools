@@ -190,7 +190,7 @@ public struct ProjectConfigModel: Decodable {
     
     struct SaveConfigModel:Decodable {
         
-        var nameSuffix: String
+        var nameSuffix: String?
         
         var path: String
         
@@ -251,8 +251,6 @@ public struct ProjectConfigModel: Decodable {
     var exportConfig: ExportConfigModel
     
     var uploadConfig: UploadConfigModel
-    
-    var quiet: Bool?
     
 }
 
