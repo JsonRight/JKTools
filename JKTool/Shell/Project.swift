@@ -141,6 +141,52 @@ public class Project {
         return buildType
     }()
     
+    lazy var bundleName: String = {
+        
+        var bundleName = ""
+        
+        guard let fileData = try? Data(contentsOf: URL(fileURLWithPath: self.directoryPath + "/\(self.projectType.name())/project.pbxproj")) else {
+            return bundleName
+        }
+        guard let plist = try? PropertyListSerialization.propertyList(from: fileData, options: .mutableContainersAndLeaves, format: nil) as? [String:Any] else {
+            return bundleName
+        }
+        
+        guard let rootObjectValue = plist["rootObject"] as? String else {
+            return bundleName
+        }
+        
+        guard let objects = plist["objects"] as? [String:Any] else {
+            return bundleName
+        }
+        
+        guard let projectObject = objects[rootObjectValue] as? [String:Any] else {
+            return bundleName
+        }
+        
+        guard let targetsValue = projectObject["targets"] as? [String] else {
+            return bundleName
+        }
+        
+        for target in targetsValue {
+            guard let targetObject = objects[target] as? [String:Any] else {
+                continue
+            }
+            guard let productType = targetObject["productType"] as? String else {
+                continue
+            }
+            guard let name = targetObject["name"] as? String else {
+                continue
+            }
+            if productType == "com.apple.product-type.bundle" {
+                bundleName = name
+                break
+            }
+        }
+        
+        return bundleName
+    }()
+    
     lazy var name: String = {
         return nameForPath(path: self.directoryPath)
     }()

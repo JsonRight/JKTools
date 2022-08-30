@@ -134,24 +134,24 @@ public extension ShellOutCommand {
 /// build Bundle commands
 public extension ShellOutCommand {
     /// IOS build Bundle
-    static func buildBundle(scheme:String, isWorkspace:Bool,projectName: String, projectPath:String, derivedDataPath: String, sdk: String, verison: String, toBundlePath: String?) -> ShellOutCommand {
+    static func buildBundle(bundleName:String, isWorkspace:Bool,projectName: String, projectPath:String, derivedDataPath: String, sdk: String, verison: String, toBundlePath: String?) -> ShellOutCommand {
         
         let buildPath = URL(fileURLWithPath: (derivedDataPath as NSString).expandingTildeInPath).standardizedFileURL.path
         
-        var shell = "xcodebuild build \(isWorkspace ? "-workspace" : "-project") \(projectName) -scheme \(scheme)Bundle -configuration \(ConfigOptions.Release) -destination 'generic/platform=\(Platform(sdk).platform(.Release))' -derivedDataPath \(buildPath)"
+        var shell = "xcodebuild build \(isWorkspace ? "-workspace" : "-project") \(projectName) -scheme \(bundleName) -configuration \(ConfigOptions.Release) -destination 'generic/platform=\(Platform(sdk).platform(.Release))' -derivedDataPath \(buildPath)"
         shell.connected(andCommand: "mkdir -p \(buildPath)/Universal/\(verison)/")
-        shell.connected(andCommand: "cp -R \(buildPath)/Build/Products/Release-\(Platform(sdk).sdk(.Release))/\(scheme)Bundle.bundle \(buildPath)/Universal/\(verison)/")
+        shell.connected(andCommand: "cp -R \(buildPath)/Build/Products/Release-\(Platform(sdk).sdk(.Release))/\(bundleName).bundle \(buildPath)/Universal/\(verison)/")
         if let toBundlePath = toBundlePath {
             shell.connected(andCommand: "mkdir -p \(toBundlePath)")
-            shell.connected(andCommand: "cp -R \(buildPath)/Universal/\(verison)/\(scheme)Bundle.bundle \(toBundlePath)")
+            shell.connected(andCommand: "cp -R \(buildPath)/Universal/\(verison)/\(bundleName).bundle \(toBundlePath)")
         }
 
         return ShellOutCommand(string: shell)
     }
-    static func bundleWithCache(scheme:String, derivedDataPath: String, verison: String, toBundlePath: String) -> ShellOutCommand {
+    static func bundleWithCache(bundleName:String, derivedDataPath: String, verison: String, toBundlePath: String) -> ShellOutCommand {
         let buildPath = URL(fileURLWithPath: (derivedDataPath as NSString).expandingTildeInPath).standardizedFileURL.path
         var shell = "mkdir -p \(toBundlePath)"
-        shell.connected(andCommand: "cp -R \(buildPath)/Universal/\(verison)/\(scheme)Bundle.bundle \(toBundlePath)")
+        shell.connected(andCommand: "cp -R \(buildPath)/Universal/\(verison)/\(bundleName).bundle \(toBundlePath)")
         return ShellOutCommand(string:shell)
     }
 }
