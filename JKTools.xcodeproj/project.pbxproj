@@ -84,6 +84,7 @@
 		BF7076FF28781FC500F71AEB /* Shell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7076FE28781FC500F71AEB /* Shell.swift */; };
 		BF70770228782F9500F71AEB /* Branch.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF70770128782F9500F71AEB /* Branch.swift */; };
 		BF85BADF2886BB5F00E916AD /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF85BADE2886BB5F00E916AD /* Config.swift */; };
+		BF8A3DAF2918FF6900E77E3D /* ShellOut.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA5290D2635169A003427A8 /* ShellOut.swift */; };
 		BFA528EC26351606003427A8 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA528EB26351606003427A8 /* main.swift */; };
 		BFA528F326351634003427A8 /* JKTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA528F226351634003427A8 /* JKTool.swift */; };
 		BFA528FB26351659003427A8 /* ANSIProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA528F726351659003427A8 /* ANSIProperties.swift */; };
@@ -613,7 +614,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "mkdir -p ${SRCROOT}/build\ncp -R ${BUILD_DIR}/Debug/${TARGET_NAME} ${SRCROOT}/build\nrm -rf /usr/local/bin/JKTool\ncp -R ${BUILD_DIR}/Debug/${TARGET_NAME} /usr/local/bin\n";
+			shellScript = "mkdir -p ${SRCROOT}/build\ncp -R ${BUILD_DIR}/Debug/${TARGET_NAME} ${SRCROOT}/build\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -631,6 +632,7 @@
 				BF2BC8F72620681B005802E4 /* InsertProjectViewController.swift in Sources */,
 				BF25A4392615DE1B00CB2F1B /* AppDelegate.swift in Sources */,
 				BF3B80692632686C0085E75A /* MenuView.swift in Sources */,
+				BF8A3DAF2918FF6900E77E3D /* ShellOut.swift in Sources */,
 				BF2BC8EE26202FDB005802E4 /* PreferencesViewController.swift in Sources */,
 				BF3B8063263194A10085E75A /* ConfigType.swift in Sources */,
 				BF3B8054263171390085E75A /* Projects.swift in Sources */,

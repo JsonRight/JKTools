@@ -137,7 +137,24 @@ public struct Constants {
         return URL(fileURLWithPath: "/usr/local/bin")
     }
     
-    static func resetShellScpt(name: String) {
+    static func resetShellScptByBookmarkData(name: String) -> Bool{
+        guard let bookmarkData = UserDefaults.standard.data(forKey: "binDirectoryBookmarkData") else {
+            return false
+        }
+        var isStale = false
+        guard let binDirectory = try? URL(resolvingBookmarkData: bookmarkData, options: URL.BookmarkResolutionOptions.withSecurityScope, relativeTo: nil, bookmarkDataIsStale: &isStale) else {
+            return false
+        }
+        
+        binDirectory.startAccessingSecurityScopedResource()
+        copyShellScript(name: name, url: binDirectory)
+        binDirectory.stopAccessingSecurityScopedResource()
+        
+        return true
+    }
+    
+    static func resetShellScptByPanel(name: String){
+
         let panel = NSOpenPanel()
 
         panel.directoryURL = self.ShellScptPath()
@@ -152,23 +169,44 @@ public struct Constants {
                       Alert.alert(message: "Shell folder was not selected")
                 return
             }
-            let result = copyShellScript(name: name)
-            if result {
-                Alert.alert(message: "Done")
-            } else {
-                Alert.alert(message: "Fail")
+            
+            guard let binDirectory = panel.url else {
+                return
             }
+            
+            guard let bookmarkData = try? binDirectory.bookmarkData(options: URL.BookmarkCreationOptions.withSecurityScope, includingResourceValuesForKeys: nil, relativeTo: nil) else {
+                return
+            }
+            UserDefaults.standard.set(binDirectory, forKey: "binDirectory")
+            UserDefaults.standard.setValue(bookmarkData, forKey: "binDirectoryBookmarkData")
+            copyShellScript(name: name, url: binDirectory)
+
         }
     }
-    static func copyShellScript(name: String) -> Bool {
+
+    static func resetShellScpt(name: String) {
+        
+        guard resetShellScptByBookmarkData(name: name) == false else {
+            if !Constants.hasShellScptPath(name: "JKTool") {
+                resetShellScptByPanel(name: name)
+            }
+            return
+        }
+        resetShellScptByPanel(name: name)
+    }
+
+    static func copyShellScript(name: String, url: URL) {
+
       
         guard let path = Bundle.main.path(forResource: name, ofType: "") else {
-            return false
+            Alert.alert(message: "Fail")
+            return
         }
         let manager = FileManager.default
         
-        try? manager.removeItem(at: URL(fileURLWithPath: "/usr/local/bin/\(name)"))
-        
+        let filePath = url.appendingPathComponent(name, isDirectory: false)
+        try? manager.removeItem(at: filePath)
+
         do {
             
             /// 绝对路径注意： 不能带file://，否则会调用失败；
@@ -176,11 +214,12 @@ public struct Constants {
     //            manager.createFile(atPath: "/usr/local/bin/JKTool", contents: tool, attributes: [FileAttributeKey.posixPermissions: 0o777])
             /// 构建快捷方式，权限将和原文件权限一致
             
-            try manager.createSymbolicLink(atPath: "/usr/local/bin/JKTool", withDestinationPath: path)
+            try manager.createSymbolicLink(at: filePath, withDestinationURL: URL(fileURLWithPath: path))
+            Alert.alert(message: "Done")
+
         } catch {
-            return false
+            Alert.alert(message: "Fail")
         }
-        return true
     }
 }
 

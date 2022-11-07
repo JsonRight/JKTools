@@ -16,6 +16,29 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         loadStatusItem()
         uploadScript()
+        
+        
+//        if let bookmarkData = UserDefaults.standard.data(forKey: "DesktopBookmarkData"){
+//
+//            var isStale = false
+//
+//            if let desktopDirectory = try? URL(resolvingBookmarkData: bookmarkData, options: URL.BookmarkResolutionOptions.withSecurityScope, relativeTo: nil, bookmarkDataIsStale: &isStale) {
+//                desktopDirectory.startAccessingSecurityScopedResource()
+//                do {
+//                    let json = try shellOut(to: "xcodebuild -list -project /Users/jiangkui/Desktop/JKProject/Notebook/Module/checkouts/JKFoundation/JKFoundation.xcodeproj -json")
+//                    print(json)
+//                } catch {
+//                    let error = error as! ShellOutError
+//                    print("message:" + error.message + "---------")
+//                    print("output:" + error.output)
+//                }
+//                desktopDirectory.stopAccessingSecurityScopedResource()
+//                Alert.alert(message: "Done")
+//                return
+//            }
+//        }
+        
+
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {

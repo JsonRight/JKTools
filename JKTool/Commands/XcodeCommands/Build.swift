@@ -52,6 +52,9 @@ extension JKTool.Build {
         @OptionGroup private var options: Options
 
         mutating func run() {
+            
+            var free = false
+            
             func build(project:Project) {
                 po(tip:"【\(project.name)】build开始")
                 let date = Date.init().timeIntervalSince1970
@@ -108,7 +111,9 @@ extension JKTool.Build {
                             }
                         }
                     }
-                    let staticCommand = ShellOutCommand.staticBuild(scheme: scheme,isWorkspace: project.projectType.isWorkSpace(),projectName: project.projectType.name(), projectPath: project.directoryPath, derivedDataPath: project.buildPath, configuration: configuration, sdk: sdk,verison: currentVersion,toStaticPath: project.rootProject.buildsPath + "/" + project.name,toHeaderPath: project.rootProject.buildsPath + "/" + project.name)
+                    let toPath =  free ? nil : (project.rootProject.buildsPath + "/" + project.name)
+                    
+                    let staticCommand = ShellOutCommand.staticBuild(scheme: scheme,isWorkspace: project.projectType.isWorkSpace(),projectName: project.projectType.name(), projectPath: project.directoryPath, derivedDataPath: project.buildPath, configuration: configuration, sdk: sdk,verison: currentVersion,toStaticPath: project.rootProject.buildsPath + "/" + project.name,toHeaderPath: toPath)
                     do {
                         try shellOut(to: staticCommand, at: project.directoryPath)
                         po(tip: "【\(project.name)】.a Build成功",type: .tip)
@@ -122,7 +127,9 @@ extension JKTool.Build {
                     if project.bundleName == "" {
                        return
                     }
-                    let buildCommand = ShellOutCommand.buildBundle(bundleName:project.bundleName,isWorkspace: project.projectType.isWorkSpace(),projectName: project.projectType.name(), projectPath: project.directoryPath, derivedDataPath: project.buildPath, sdk: sdk, verison: currentVersion, toBundlePath: project.rootProject.buildsPath + "/" + project.name)
+                    let toPath =  free ? nil : (project.rootProject.buildsPath + "/" + project.name)
+                    
+                    let buildCommand = ShellOutCommand.buildBundle(bundleName:project.bundleName,isWorkspace: project.projectType.isWorkSpace(),projectName: project.projectType.name(), projectPath: project.directoryPath, derivedDataPath: project.buildPath, sdk: sdk, verison: currentVersion, toBundlePath: toPath)
                     do {
                         try shellOut(to: buildCommand, at: project.directoryPath)
                         po(tip: "【\(project.name)】.bundle Build成功",type: .tip)
@@ -132,7 +139,7 @@ extension JKTool.Build {
                     }
                 }
                 
-                if options.cache == false || oldVersion != currentVersion {
+                if free || options.cache == false || oldVersion != currentVersion {
                     po(tip:"【\(project.name)】需重新编译")
 
                     // 删除历史build文件
@@ -183,6 +190,18 @@ extension JKTool.Build {
                return
             }
             
+            guard project.recordList.count > 0 else {
+                
+                if !project.projectType.vaild() {
+                    return
+                }
+                
+                free = true
+                build(project: project)
+
+               return
+            }
+            
             po(tip: "======Static build项目开始======")
             let date = Date.init().timeIntervalSince1970
             for record in project.recordList {
@@ -212,7 +231,7 @@ extension JKTool.Build {
         @OptionGroup private var options: Options
 
         mutating func run() {
-            
+            var free = false
             func build(project:Project) {
                 po(tip:"【\(project.name)】build开始")
                 let date = Date.init().timeIntervalSince1970
@@ -268,7 +287,8 @@ extension JKTool.Build {
                             }
                         }
                     }
-                    let frameworkCommand = ShellOutCommand.frameworkBuild(scheme:scheme,isWorkspace: project.projectType.isWorkSpace(),projectName: project.projectType.name(), projectPath: project.directoryPath, derivedDataPath: project.buildPath, configuration: configuration, sdk: sdk, verison: currentVersion, toPath: project.rootProject.buildsPath + "/" + project.name)
+                    let toPath =  free ? nil : (project.rootProject.buildsPath + "/" + project.name)
+                    let frameworkCommand = ShellOutCommand.frameworkBuild(scheme:scheme,isWorkspace: project.projectType.isWorkSpace(),projectName: project.projectType.name(), projectPath: project.directoryPath, derivedDataPath: project.buildPath, configuration: configuration, sdk: sdk, verison: currentVersion, toPath: toPath)
                     
                     do {
                         try shellOut(to: frameworkCommand, at: project.directoryPath)
@@ -283,7 +303,8 @@ extension JKTool.Build {
                     if project.bundleName == "" {
                        return
                     }
-                    let buildCommand = ShellOutCommand.buildBundle(bundleName:project.bundleName,isWorkspace: project.projectType.isWorkSpace(),projectName: project.projectType.name(), projectPath: project.directoryPath, derivedDataPath: project.buildPath, sdk: sdk, verison: currentVersion, toBundlePath: project.rootProject.buildsPath + "/" + project.name)
+                    let toPath =  free ? nil : (project.rootProject.buildsPath + "/" + project.name)
+                    let buildCommand = ShellOutCommand.buildBundle(bundleName:project.bundleName,isWorkspace: project.projectType.isWorkSpace(),projectName: project.projectType.name(), projectPath: project.directoryPath, derivedDataPath: project.buildPath, sdk: sdk, verison: currentVersion, toBundlePath: toPath)
                     do {
                         try shellOut(to: buildCommand, at: project.directoryPath)
                     } catch  {
@@ -292,7 +313,7 @@ extension JKTool.Build {
                     }
                 }
                 
-                if options.cache == false || !String(oldVersion ?? "").contains(currentVersion) {
+                if free || options.cache == false || !String(oldVersion ?? "").contains(currentVersion) {
                     po(tip:"【\(project.name)】需重新编译")
                 
                     // 删除历史build文件
@@ -341,6 +362,18 @@ extension JKTool.Build {
                return
             }
             
+            guard project.recordList.count > 0 else {
+                
+                if !project.projectType.vaild() {
+                    return
+                }
+                
+                free = true
+                build(project: project)
+
+               return
+            }
+            
             po(tip: "======Framework build项目开始======")
             let date = Date.init().timeIntervalSince1970
             for record in project.recordList {
@@ -370,6 +403,9 @@ extension JKTool.Build {
         @OptionGroup private var options: Options
 
         mutating func run() {
+            
+            var free = false
+            
             func build(project:Project) {
                 po(tip:"【\(project.name)】build开始")
                 let date = Date.init().timeIntervalSince1970
@@ -426,7 +462,9 @@ extension JKTool.Build {
                         }
                     }
                     
-                    let xcframeworkCommand = ShellOutCommand.xcframeworkBuild(scheme:scheme,isWorkspace: project.projectType.isWorkSpace(),projectName: project.projectType.name(), projectPath: project.directoryPath, derivedDataPath: project.buildPath, configuration: configuration, sdk: sdk, verison: currentVersion, toPath: project.rootProject.buildsPath + "/" + project.name)
+                    let toPath =  free ? nil : (project.rootProject.buildsPath + "/" + project.name)
+                    
+                    let xcframeworkCommand = ShellOutCommand.xcframeworkBuild(scheme:scheme,isWorkspace: project.projectType.isWorkSpace(),projectName: project.projectType.name(), projectPath: project.directoryPath, derivedDataPath: project.buildPath, configuration: configuration, sdk: sdk, verison: currentVersion, toPath: toPath)
                     
                     do {
                         try shellOut(to: xcframeworkCommand, at: project.directoryPath)
@@ -441,7 +479,9 @@ extension JKTool.Build {
                     if project.bundleName == "" {
                        return
                     }
-                    let buildCommand = ShellOutCommand.buildBundle(bundleName:project.bundleName,isWorkspace: project.projectType.isWorkSpace(),projectName: project.projectType.name(), projectPath: project.directoryPath, derivedDataPath: project.buildPath, sdk: sdk, verison: currentVersion, toBundlePath: project.rootProject.buildsPath + "/" + project.name)
+                    
+                    let toPath =  free ? nil : (project.rootProject.buildsPath + "/" + project.name)
+                    let buildCommand = ShellOutCommand.buildBundle(bundleName:project.bundleName,isWorkspace: project.projectType.isWorkSpace(),projectName: project.projectType.name(), projectPath: project.directoryPath, derivedDataPath: project.buildPath, sdk: sdk, verison: currentVersion, toBundlePath: toPath)
                     do {
                         try shellOut(to: buildCommand, at: project.directoryPath)
                     } catch  {
@@ -449,7 +489,7 @@ extension JKTool.Build {
                         po(tip: "【\(project.name)】.bundle Build失败\n" + error.message + error.output,type: .error)
                     }
                 }
-                if options.cache == false || oldVersion != currentVersion {
+                if free || options.cache == false || oldVersion != currentVersion {
                     po(tip:"【\(project.name)】需重新编译")
                     
                     // 删除历史build文件
@@ -493,6 +533,17 @@ extension JKTool.Build {
                 }
                 build(project: project)
                 
+               return
+            }
+            guard project.recordList.count > 0 else {
+                
+                if !project.projectType.vaild() {
+                    return
+                }
+                
+                free = true
+                build(project: project)
+
                return
             }
             
@@ -547,6 +598,18 @@ extension JKTool.Build {
                 
                 build(project: project)
                 
+               return
+            }
+            
+            
+            guard project.recordList.count > 0 else {
+                
+                if !project.projectType.vaild() {
+                    return
+                }
+                
+                build(project: project)
+
                return
             }
             
