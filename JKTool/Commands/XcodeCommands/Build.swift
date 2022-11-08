@@ -111,9 +111,10 @@ extension JKTool.Build {
                             }
                         }
                     }
-                    let toPath =  free ? nil : (project.rootProject.buildsPath + "/" + project.name)
+                    let toStaticPath =  free ? nil : (project.rootProject.buildsPath + "/" + project.name)
+                    let toHeaderPath =  free ? nil : (project.rootProject.buildsPath + "/" + project.name)
                     
-                    let staticCommand = ShellOutCommand.staticBuild(scheme: scheme,isWorkspace: project.projectType.isWorkSpace(),projectName: project.projectType.name(), projectPath: project.directoryPath, derivedDataPath: project.buildPath, configuration: configuration, sdk: sdk,verison: currentVersion,toStaticPath: toPath,toHeaderPath: toPath)
+                    let staticCommand = ShellOutCommand.staticBuild(scheme: scheme,isWorkspace: project.projectType.isWorkSpace(),projectName: project.projectType.name(), projectPath: project.directoryPath, derivedDataPath: project.buildPath, configuration: configuration, sdk: sdk,verison: currentVersion,toStaticPath: toStaticPath,toHeaderPath: toHeaderPath)
                     do {
                         try shellOut(to: staticCommand, at: project.directoryPath)
                         po(tip: "【\(project.name)】.a Build成功",type: .tip)
@@ -127,9 +128,9 @@ extension JKTool.Build {
                     if project.bundleName == "" {
                        return
                     }
-                    let toPath =  free ? nil : (project.rootProject.buildsPath + "/" + project.name)
+                    let toBundlePath =  free ? nil : (project.rootProject.buildsPath + "/" + project.name)
                     
-                    let buildCommand = ShellOutCommand.buildBundle(bundleName:project.bundleName,isWorkspace: project.projectType.isWorkSpace(),projectName: project.projectType.name(), projectPath: project.directoryPath, derivedDataPath: project.buildPath, sdk: sdk, verison: currentVersion, toBundlePath: toPath)
+                    let buildCommand = ShellOutCommand.buildBundle(bundleName:project.bundleName,isWorkspace: project.projectType.isWorkSpace(),projectName: project.projectType.name(), projectPath: project.directoryPath, derivedDataPath: project.buildPath, sdk: sdk, verison: currentVersion, toBundlePath: toBundlePath)
                     do {
                         try shellOut(to: buildCommand, at: project.directoryPath)
                         po(tip: "【\(project.name)】.bundle Build成功",type: .tip)
@@ -152,7 +153,9 @@ extension JKTool.Build {
                     
                     
                 } else {
-                    let staticCommand = ShellOutCommand.staticWithCache(scheme: scheme, derivedDataPath: project.buildPath, verison: currentVersion,toStaticPath: project.rootProject.buildsPath + "/" + project.name,toHeaderPath: project.rootProject.buildsPath + "/" + project.name)
+                    let toStaticPath =  project.rootProject.buildsPath + "/" + project.name
+                    let toHeaderPath =  project.rootProject.buildsPath + "/" + project.name
+                    let staticCommand = ShellOutCommand.staticWithCache(scheme: scheme, derivedDataPath: project.buildPath, verison: currentVersion,toStaticPath: toStaticPath,toHeaderPath: toHeaderPath)
                     do {
                         try shellOut(to: staticCommand, at: project.directoryPath)
                     } catch  {
@@ -162,7 +165,8 @@ extension JKTool.Build {
                     }
                     
                     if project.bundleName != "" {
-                        let buildCommand = ShellOutCommand.bundleWithCache(bundleName:project.bundleName, derivedDataPath: project.buildPath, verison: currentVersion, toBundlePath: project.rootProject.buildsPath + "/" + project.name)
+                        let toBundlePath =  project.rootProject.buildsPath + "/" + project.name
+                        let buildCommand = ShellOutCommand.bundleWithCache(bundleName:project.bundleName, derivedDataPath: project.buildPath, verison: currentVersion, toBundlePath: toBundlePath)
                         do {
                             try shellOut(to: buildCommand, at: project.directoryPath)
                         } catch  {
@@ -304,8 +308,8 @@ extension JKTool.Build {
                     if project.bundleName == "" {
                        return
                     }
-                    let toPath =  free ? nil : (project.rootProject.buildsPath + "/" + project.name)
-                    let buildCommand = ShellOutCommand.buildBundle(bundleName:project.bundleName,isWorkspace: project.projectType.isWorkSpace(),projectName: project.projectType.name(), projectPath: project.directoryPath, derivedDataPath: project.buildPath, sdk: sdk, verison: currentVersion, toBundlePath: toPath)
+                    let toBundlePath =  free ? nil : (project.rootProject.buildsPath + "/" + project.name)
+                    let buildCommand = ShellOutCommand.buildBundle(bundleName:project.bundleName,isWorkspace: project.projectType.isWorkSpace(),projectName: project.projectType.name(), projectPath: project.directoryPath, derivedDataPath: project.buildPath, sdk: sdk, verison: currentVersion, toBundlePath: toBundlePath)
                     do {
                         try shellOut(to: buildCommand, at: project.directoryPath)
                     } catch  {
@@ -325,7 +329,8 @@ extension JKTool.Build {
                     
                     buildBundle(project: project)
                 } else {
-                    let frameworkCommand = ShellOutCommand.frameworkWithCache(scheme: scheme, derivedDataPath: project.buildPath, verison: currentVersion, toPath: project.rootProject.buildsPath + "/" + project.name)
+                    let toPath =  project.rootProject.buildsPath + "/" + project.name
+                    let frameworkCommand = ShellOutCommand.frameworkWithCache(scheme: scheme, derivedDataPath: project.buildPath, verison: currentVersion, toPath: toPath)
                     do {
                         try shellOut(to: frameworkCommand, at: project.directoryPath)
                     } catch  {
@@ -335,7 +340,8 @@ extension JKTool.Build {
                     }
                     
                     if project.bundleName != "" {
-                        let buildCommand = ShellOutCommand.bundleWithCache(bundleName:project.bundleName, derivedDataPath: project.buildPath, verison: currentVersion, toBundlePath: project.rootProject.buildsPath + "/" + project.name)
+                        let toBundlePath =  project.rootProject.buildsPath + "/" + project.name
+                        let buildCommand = ShellOutCommand.bundleWithCache(bundleName:project.bundleName, derivedDataPath: project.buildPath, verison: currentVersion, toBundlePath: toBundlePath)
                         do {
                             try shellOut(to: buildCommand, at: project.directoryPath)
                         } catch  {
@@ -482,8 +488,8 @@ extension JKTool.Build {
                        return
                     }
                     
-                    let toPath =  free ? nil : (project.rootProject.buildsPath + "/" + project.name)
-                    let buildCommand = ShellOutCommand.buildBundle(bundleName:project.bundleName,isWorkspace: project.projectType.isWorkSpace(),projectName: project.projectType.name(), projectPath: project.directoryPath, derivedDataPath: project.buildPath, sdk: sdk, verison: currentVersion, toBundlePath: toPath)
+                    let toBundlePath =  free ? nil : (project.rootProject.buildsPath + "/" + project.name)
+                    let buildCommand = ShellOutCommand.buildBundle(bundleName:project.bundleName,isWorkspace: project.projectType.isWorkSpace(),projectName: project.projectType.name(), projectPath: project.directoryPath, derivedDataPath: project.buildPath, sdk: sdk, verison: currentVersion, toBundlePath: toBundlePath)
                     do {
                         try shellOut(to: buildCommand, at: project.directoryPath)
                     } catch  {
@@ -502,7 +508,8 @@ extension JKTool.Build {
                     buildBundle(project: project)
                     
                 }else{
-                    let xcframeworkCommand = ShellOutCommand.xcframeworkWithCache(scheme:scheme, derivedDataPath: project.buildPath, verison: currentVersion, toPath: project.rootProject.buildsPath + "/" + project.name)
+                    let toPath =  project.rootProject.buildsPath + "/" + project.name
+                    let xcframeworkCommand = ShellOutCommand.xcframeworkWithCache(scheme:scheme, derivedDataPath: project.buildPath, verison: currentVersion, toPath: toPath)
                     
                     do {
                         try shellOut(to: xcframeworkCommand, at: project.directoryPath)
@@ -513,7 +520,8 @@ extension JKTool.Build {
                     }
                     
                     if project.bundleName != "" {
-                        let buildCommand = ShellOutCommand.bundleWithCache(bundleName:project.bundleName, derivedDataPath: project.buildPath, verison: currentVersion, toBundlePath: project.rootProject.buildsPath + "/" + project.name)
+                        let toBundlePath =  project.rootProject.buildsPath + "/" + project.name
+                        let buildCommand = ShellOutCommand.bundleWithCache(bundleName:project.bundleName, derivedDataPath: project.buildPath, verison: currentVersion, toBundlePath: toBundlePath)
                         do {
                             try shellOut(to: buildCommand, at: project.directoryPath)
                         } catch  {

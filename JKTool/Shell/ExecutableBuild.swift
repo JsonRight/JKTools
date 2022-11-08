@@ -104,16 +104,17 @@ public extension ShellOutCommand {
         if ConfigOptions(configuration) == .Debug  {
             shell.connected(spaceCommand: "\(buildPath)/Build/Products/Debug-\(Platform(sdk).sdk(.Debug))/lib\(scheme).a")
         }
-        shell.connected(spaceCommand: "-output \(buildPath)/Universal/\(verison)/\(scheme).a")
-        shell.connected(andCommand: "cp -R \(buildPath)/Build/Products/Release-\(Platform(sdk).sdk(.Release))/include/\(scheme) \(buildPath)/Universal/\(verison)/")
+        shell.connected(spaceCommand: "-output \(buildPath)/Universal/\(verison)/lib\(scheme).a")
+        
+        shell.connected(ifCommand: "cp -R \(buildPath)/Build/Products/Release-\(Platform(sdk).sdk(.Release))/include/\(scheme) \(buildPath)/Universal/\(verison)/", at: "\(buildPath)/Build/Products/Release-\(Platform(sdk).sdk(.Release))/include/\(scheme)")
+        
         if let toStaticPath = toStaticPath {
             shell.connected(andCommand: "mkdir -p \(toStaticPath)")
-            shell.connected(andCommand: "cp -R \(buildPath)/Universal/\(verison)/\(scheme).a \(toStaticPath)")
+            shell.connected(andCommand: "cp -R \(buildPath)/Universal/\(verison)/lib\(scheme).a \(toStaticPath)")
         }
         if let toHeaderPath = toHeaderPath {
-            copyHeaders.connected(andCommand: "mkdir -p \(toHeaderPath)")
-            copyHeaders.connected(andCommand: "cp -R \(buildPath)/Universal/\(verison)/\(scheme) \(toHeaderPath)")
-            shell.connected(ifCommand: copyHeaders, at: "\(buildPath)/Build/Products/Release-\(Platform(sdk).sdk(.Release))/include/\(scheme)")
+            shell.connected(ifCommand: "mkdir -p \(toHeaderPath)", at: "\(buildPath)/Universal/\(verison)/\(scheme)")
+            shell.connected(ifCommand: "cp -R \(buildPath)/Universal/\(verison)/\(scheme) \(toHeaderPath)", at: "\(buildPath)/Universal/\(verison)/\(scheme)")
         }
         return ShellOutCommand(string:shell)
     }
@@ -121,9 +122,9 @@ public extension ShellOutCommand {
     static func staticWithCache(scheme:String, derivedDataPath: String, verison: String, toStaticPath: String, toHeaderPath: String) -> ShellOutCommand {
         let buildPath = URL(fileURLWithPath: (derivedDataPath as NSString).expandingTildeInPath).standardizedFileURL.path
         var shell = "mkdir -p \(toStaticPath)"
-        shell.connected(andCommand: "cp -R \(buildPath)/Universal/\(verison)/\(scheme).a \(toStaticPath)")
-        let copyHeaders = "cp -R \(buildPath)/Universal/\(verison)/\(scheme) \(toHeaderPath)"
-        shell.connected(ifCommand: copyHeaders, at: "\(buildPath)/Universal/\(verison)/\(scheme)")
+        shell.connected(andCommand: "cp -R \(buildPath)/Universal/\(verison)/lib\(scheme).a \(toStaticPath)")
+        shell.connected(ifCommand: "mkdir -p \(toHeaderPath)", at: "\(buildPath)/Universal/\(verison)/\(scheme)")
+        shell.connected(ifCommand: "cp -R \(buildPath)/Universal/\(verison)/\(scheme) \(toHeaderPath)", at: "\(buildPath)/Universal/\(verison)/\(scheme)")
         return ShellOutCommand(string:shell)
     }
 }
