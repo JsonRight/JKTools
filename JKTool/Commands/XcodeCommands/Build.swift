@@ -113,7 +113,7 @@ extension JKTool.Build {
                     }
                     let toPath =  free ? nil : (project.rootProject.buildsPath + "/" + project.name)
                     
-                    let staticCommand = ShellOutCommand.staticBuild(scheme: scheme,isWorkspace: project.projectType.isWorkSpace(),projectName: project.projectType.name(), projectPath: project.directoryPath, derivedDataPath: project.buildPath, configuration: configuration, sdk: sdk,verison: currentVersion,toStaticPath: project.rootProject.buildsPath + "/" + project.name,toHeaderPath: toPath)
+                    let staticCommand = ShellOutCommand.staticBuild(scheme: scheme,isWorkspace: project.projectType.isWorkSpace(),projectName: project.projectType.name(), projectPath: project.directoryPath, derivedDataPath: project.buildPath, configuration: configuration, sdk: sdk,verison: currentVersion,toStaticPath: toPath,toHeaderPath: toPath)
                     do {
                         try shellOut(to: staticCommand, at: project.directoryPath)
                         po(tip: "【\(project.name)】.a Build成功",type: .tip)
@@ -143,7 +143,8 @@ extension JKTool.Build {
                     po(tip:"【\(project.name)】需重新编译")
 
                     // 删除历史build文件
-                    _ = try? shellOut(to: .removeFolder(from: project.buildPath + "/Universal/\(currentVersion)"))
+                    let cachePath = free ? (project.buildPath + "/Universal"): (project.buildPath + "/Universal/\(currentVersion)")
+                    _ = try? shellOut(to: .removeFolder(from: cachePath))
                     
                     buildStatic(project: project)
                     
@@ -316,8 +317,9 @@ extension JKTool.Build {
                 if free || options.cache == false || !String(oldVersion ?? "").contains(currentVersion) {
                     po(tip:"【\(project.name)】需重新编译")
                 
-                    // 删除历史build文件
-                    _ = try? shellOut(to: .removeFolder(from: project.buildPath + "/Universal/\(currentVersion)"))
+                    /// 删除历史build文件
+                    let cachePath = free ? (project.buildPath + "/Universal"): (project.buildPath + "/Universal/\(currentVersion)")
+                    _ = try? shellOut(to: .removeFolder(from: cachePath))
                     
                     buildFramework(project: project)
                     
@@ -493,7 +495,9 @@ extension JKTool.Build {
                     po(tip:"【\(project.name)】需重新编译")
                     
                     // 删除历史build文件
-                    _ = try? shellOut(to: .removeFolder(from: project.buildPath + "/Universal/\(currentVersion)"))
+                    let cachePath = free ? (project.buildPath + "/Universal"): (project.buildPath + "/Universal/\(currentVersion)")
+                    _ = try? shellOut(to: .removeFolder(from: cachePath))
+                    
                     buildXCFramework(project: project)
                     buildBundle(project: project)
                     

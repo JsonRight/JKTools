@@ -105,17 +105,14 @@ public extension ShellOutCommand {
             shell.connected(spaceCommand: "\(buildPath)/Build/Products/Debug-\(Platform(sdk).sdk(.Debug))/lib\(scheme).a")
         }
         shell.connected(spaceCommand: "-output \(buildPath)/Universal/\(verison)/\(scheme).a")
-        
+        shell.connected(andCommand: "cp -R \(buildPath)/Build/Products/Release-\(Platform(sdk).sdk(.Release))/include/\(scheme) \(buildPath)/Universal/\(verison)/")
         if let toStaticPath = toStaticPath {
             shell.connected(andCommand: "mkdir -p \(toStaticPath)")
             shell.connected(andCommand: "cp -R \(buildPath)/Universal/\(verison)/\(scheme).a \(toStaticPath)")
         }
         if let toHeaderPath = toHeaderPath {
-        
-            var copyHeaders = "cp -R \(buildPath)/Build/Products/Release-\(Platform(sdk).sdk(.Release))/include/\(scheme) \(buildPath)/Universal/\(verison)/"
             copyHeaders.connected(andCommand: "mkdir -p \(toHeaderPath)")
             copyHeaders.connected(andCommand: "cp -R \(buildPath)/Universal/\(verison)/\(scheme) \(toHeaderPath)")
-            
             shell.connected(ifCommand: copyHeaders, at: "\(buildPath)/Build/Products/Release-\(Platform(sdk).sdk(.Release))/include/\(scheme)")
         }
         return ShellOutCommand(string:shell)
