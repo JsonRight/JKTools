@@ -8,13 +8,14 @@
 import Cocoa
 @main
 class AppDelegate: NSObject, NSApplicationDelegate {
+    var download = false
     
     @IBOutlet weak var menus: NSMenu!
     
     let statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
     
     func applicationDidFinishLaunching(_ aNotification: Notification) {
-        loadStatusItem()
+        loadStatusItem(download: false)
         uploadScript()
         
         
@@ -61,11 +62,17 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
     
     @IBAction func install(_ sender: NSMenuItem) {
-        sender.isEnabled = false
+        if self.download {
+            return
+        }
+        self.download = true
+        loadStatusItem(download: true)
         let session = URLSession(configuration: URLSessionConfiguration.default)
-        let request = URLRequest(url: URL(fileURLWithPath: ""), cachePolicy: .reloadIgnoringCacheData, timeoutInterval: 10)
+        let request = URLRequest(url: URL(string: "https://gitee.com/jk14138/JKTools/blob/master/JKTools/AppleScripts/JKTool")!, cachePolicy: .reloadIgnoringCacheData, timeoutInterval: 10)
         let downloadTask = session.downloadTask(with: request) { location, response, error in
             guard let locationPath = location?.path else {
+                
+                self.download = false
                 return
             }
             print("location:\(location?.description)[\(locationPath)]")
@@ -73,10 +80,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             
             try? FileManager.default.moveItem(atPath: locationPath, toPath: document)
             Constants.resetShellScpt(name: "JKTool")
-            sender.isEnabled = true
+            self.loadStatusItem(download: false)
+    
+            self.download = false
         }
         downloadTask.resume()
-        
     }
     
     
@@ -94,17 +102,28 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
 extension AppDelegate {
     
-    func loadStatusItem() {
+    func loadStatusItem(download: Bool) {
         
         guard let button = statusItem.button else {
             return
         }
-        let icon = NSImage(named: "Image")
-        icon?.isTemplate = true // Support Dark Mode
-        button.image = icon
-        button.action = #selector(self.action(_:))
-        self.statusItem.menu = self.menus
-        self.statusItem.isVisible = true
+        DispatchQueue.main.async{
+            if !download {
+                let icon = NSImage(named: "Image")
+                
+                button.image = icon
+                button.action = #selector(self.action(_:))
+                self.statusItem.menu = self.menus
+                self.statusItem.isVisible = true
+            } else{//square.and.arrow.down
+                let icon = NSImage(systemSymbolName: "square.and.arrow.down", accessibilityDescription: nil )
+                icon?.isTemplate = true // Support Dark Mode
+                button.image = icon
+                button.action = #selector(self.action(_:))
+                self.statusItem.menu = self.menus
+                self.statusItem.isVisible = true
+            }
+        }
     }
     
     @IBAction func action(_ item: NSMenuItem) {

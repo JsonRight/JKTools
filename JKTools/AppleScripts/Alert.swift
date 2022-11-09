@@ -11,12 +11,14 @@ import Cocoa
 struct Alert {
     
     static func alert(message: String) {
-      let alert = NSAlert()
-      alert.messageText = "🐢 JKTool"
-      alert.informativeText = message
-      alert.addButton(withTitle: "OK")
-
-      alert.runModal()
+        DispatchQueue.main.async{
+            let alert = NSAlert()
+            alert.messageText = "🐢 JKTool"
+            alert.informativeText = message
+            alert.addButton(withTitle: "OK")
+            alert.runModal()
+        }
+      
     }
 
 }

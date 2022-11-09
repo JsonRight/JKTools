@@ -174,7 +174,7 @@
                             </connections>
                         </menuItem>
                         <menuItem isSeparatorItem="YES" id="z7S-EM-dN0"/>
-                        <menuItem title="安装脚本" image="NSNetwork" id="gU6-GG-mk4">
+                        <menuItem title="安装脚本" image="square.and.arrow.down" catalog="system" id="gU6-GG-mk4">
                             <modifierMask key="keyEquivalentModifierMask"/>
                             <connections>
                                 <action selector="install:" target="Voe-Tx-rLC" id="NSE-CF-Whj"/>
@@ -12450,6 +12450,6 @@ Cg
         <segue reference="dk5-fX-oqz"/>
     </inferredMetricsTieBreakers>
     <resources>
-        <image name="NSNetwork" width="32" height="32"/>
+        <image name="square.and.arrow.down" catalog="system" width="15" height="16"/>
     </resources>
 </document>
