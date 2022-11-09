@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="21179.7" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="20037" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="21179.7"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="20037"/>
         <capability name="System colors introduced in macOS 10.14" minToolsVersion="10.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -174,10 +174,10 @@
                             </connections>
                         </menuItem>
                         <menuItem isSeparatorItem="YES" id="z7S-EM-dN0"/>
-                        <menuItem title="安装脚本" id="gU6-GG-mk4">
+                        <menuItem title="安装脚本" image="NSNetwork" id="gU6-GG-mk4">
                             <modifierMask key="keyEquivalentModifierMask"/>
                             <connections>
-                                <action selector="installScript:" target="Voe-Tx-rLC" id="mLg-yo-bZB"/>
+                                <action selector="install:" target="Voe-Tx-rLC" id="NSE-CF-Whj"/>
                             </connections>
                         </menuItem>
                         <menuItem isSeparatorItem="YES" id="Th8-mp-CaH"/>
@@ -674,7 +674,7 @@ Modulefile.recordList
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <textView editable="NO" importsGraphics="NO" richText="NO" verticallyResizable="YES" baseWritingDirection="leftToRight" spellingCorrection="YES" smartInsertDelete="YES" id="wF6-2w-Awd">
-                                            <rect key="frame" x="0.0" y="-42" width="885" height="3166"/>
+                                            <rect key="frame" x="0.0" y="-63" width="885" height="3167"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                             <size key="minSize" width="885" height="300"/>
@@ -12449,4 +12449,7 @@ Cg
     <inferredMetricsTieBreakers>
         <segue reference="dk5-fX-oqz"/>
     </inferredMetricsTieBreakers>
+    <resources>
+        <image name="NSNetwork" width="32" height="32"/>
+    </resources>
 </document>

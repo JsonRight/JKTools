@@ -146,7 +146,7 @@ public struct Constants {
             return false
         }
         
-        binDirectory.startAccessingSecurityScopedResource()
+        _ = binDirectory.startAccessingSecurityScopedResource()
         copyShellScript(name: name, url: binDirectory)
         binDirectory.stopAccessingSecurityScopedResource()
         
@@ -196,30 +196,44 @@ public struct Constants {
     }
 
     static func copyShellScript(name: String, url: URL) {
+        let manager = FileManager.default
+        
+        let filePath: String
+        
+        let document = FileManager.DocumnetsDirectory() + "/JKTool"
+        
+        if manager.fileExists(atPath: document) {
+            filePath = document
+        } else {
+            guard let path = Bundle.main.path(forResource: name, ofType: "") else {
+                Alert.alert(message: "Fail")
+                return
+            }
+            filePath = path
+        }
 
-      
-        guard let path = Bundle.main.path(forResource: name, ofType: "") else {
+        guard let JKTool = try? Data(contentsOf:URL(fileURLWithPath: filePath)) else {
             Alert.alert(message: "Fail")
             return
         }
-        let manager = FileManager.default
         
-        let filePath = url.appendingPathComponent(name, isDirectory: false)
-        try? manager.removeItem(at: filePath)
+        let binPathURL = url.appendingPathComponent(name, isDirectory: false)
+        try? manager.removeItem(at: binPathURL)
+        
+        /// 绝对路径注意： 不能带file://，否则会调用失败；
+        /// 设置文件权限： [FileAttributeKey.posixPermissions: 0o777]
+        manager.createFile(atPath: binPathURL.path, contents: JKTool, attributes: [FileAttributeKey.posixPermissions: 0o777])
 
-        do {
-            
-            /// 绝对路径注意： 不能带file://，否则会调用失败；
-            /// 设置文件权限： [FileAttributeKey.posixPermissions: 0o777]
-    //            manager.createFile(atPath: "/usr/local/bin/JKTool", contents: tool, attributes: [FileAttributeKey.posixPermissions: 0o777])
-            /// 构建快捷方式，权限将和原文件权限一致
-            
-            try manager.createSymbolicLink(at: filePath, withDestinationURL: URL(fileURLWithPath: path))
-            Alert.alert(message: "Done")
-
-        } catch {
-            Alert.alert(message: "Fail")
-        }
+        Alert.alert(message: "Done")
+        
+        
+//        do {
+//            /// 构建快捷方式，权限将和原文件权限一致
+//            try manager.createSymbolicLink(at: filePath, withDestinationURL: URL(fileURLWithPath: path))
+//            Alert.alert(message: "Done")
+//        } catch {
+//            Alert.alert(message: "Fail")
+//        }
     }
 }
 

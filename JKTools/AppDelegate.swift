@@ -60,9 +60,25 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         resetScpt()
     }
     
-    @IBAction func installScript(_ sender: Any) {
-        Constants.resetShellScpt(name: "JKTool")
+    @IBAction func install(_ sender: NSMenuItem) {
+        sender.isEnabled = false
+        let session = URLSession(configuration: URLSessionConfiguration.default)
+        let request = URLRequest(url: URL(fileURLWithPath: ""), cachePolicy: .reloadIgnoringCacheData, timeoutInterval: 10)
+        let downloadTask = session.downloadTask(with: request) { location, response, error in
+            guard let locationPath = location?.path else {
+                return
+            }
+            print("location:\(location?.description)[\(locationPath)]")
+            let document = FileManager.DocumnetsDirectory() + "/JKTool"
+            
+            try? FileManager.default.moveItem(atPath: locationPath, toPath: document)
+            Constants.resetShellScpt(name: "JKTool")
+            sender.isEnabled = true
+        }
+        downloadTask.resume()
+        
     }
+    
     
     @IBAction func exit(_ sender: Any) {
         NSApplication.shared.terminate(self)
