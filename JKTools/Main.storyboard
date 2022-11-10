@@ -160,28 +160,28 @@
                 <customObject id="Ady-hI-5gd" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
                 <menu id="J4p-0h-8pn">
                     <items>
-                        <menuItem title="git忽略文件示例" id="zaz-rI-xCj">
+                        <menuItem title="git忽略文件示例" image="tag.circle" catalog="system" id="zaz-rI-xCj">
                             <modifierMask key="keyEquivalentModifierMask"/>
                             <connections>
                                 <segue destination="zLn-Ji-4ny" kind="show" id="8h4-Ai-FnS"/>
                             </connections>
                         </menuItem>
                         <menuItem isSeparatorItem="YES" id="xSA-qC-cpP"/>
-                        <menuItem title="配置中心" id="3aF-IR-gSx">
+                        <menuItem title="配置中心" image="square.and.pencil" catalog="system" id="3aF-IR-gSx">
                             <modifierMask key="keyEquivalentModifierMask"/>
                             <connections>
                                 <segue destination="9Bt-IX-SIf" kind="show" id="7aR-lF-4kb"/>
                             </connections>
                         </menuItem>
                         <menuItem isSeparatorItem="YES" id="z7S-EM-dN0"/>
-                        <menuItem title="安装脚本" image="square.and.arrow.down" catalog="system" id="gU6-GG-mk4">
+                        <menuItem title="安装脚本" image="square.and.arrow.down.on.square" catalog="system" id="gU6-GG-mk4">
                             <modifierMask key="keyEquivalentModifierMask"/>
                             <connections>
                                 <action selector="install:" target="Voe-Tx-rLC" id="NSE-CF-Whj"/>
                             </connections>
                         </menuItem>
                         <menuItem isSeparatorItem="YES" id="Th8-mp-CaH"/>
-                        <menuItem title="帮助" id="Yp8-H3-h9b">
+                        <menuItem title="帮助" image="magnifyingglass.circle" catalog="system" id="Yp8-H3-h9b">
                             <modifierMask key="keyEquivalentModifierMask"/>
                             <connections>
                                 <segue destination="LdN-K4-sTp" kind="show" id="MRH-GJ-ose"/>
@@ -189,7 +189,7 @@
                         </menuItem>
                         <menuItem isSeparatorItem="YES" id="3W5-PU-xyR"/>
                         <menuItem isSeparatorItem="YES" id="xZb-qq-Gzu"/>
-                        <menuItem title="退出" id="Pws-ed-zkd">
+                        <menuItem title="退出" image="rectangle.portrait.and.arrow.right" catalog="system" id="Pws-ed-zkd">
                             <modifierMask key="keyEquivalentModifierMask"/>
                             <connections>
                                 <action selector="exit:" target="Voe-Tx-rLC" id="qZc-WQ-Gxw"/>
@@ -12450,6 +12450,10 @@ Cg
         <segue reference="dk5-fX-oqz"/>
     </inferredMetricsTieBreakers>
     <resources>
-        <image name="square.and.arrow.down" catalog="system" width="15" height="16"/>
+        <image name="magnifyingglass.circle" catalog="system" width="15" height="15"/>
+        <image name="rectangle.portrait.and.arrow.right" catalog="system" width="18" height="16"/>
+        <image name="square.and.arrow.down.on.square" catalog="system" width="18" height="19"/>
+        <image name="square.and.pencil" catalog="system" width="17" height="15"/>
+        <image name="tag.circle" catalog="system" width="15" height="15"/>
     </resources>
 </document>

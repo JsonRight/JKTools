@@ -75,7 +75,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 self.download = false
                 return
             }
-            print("location:\(location?.description)[\(locationPath)]")
             let document = FileManager.DocumnetsDirectory() + "/JKTool"
             
             try? FileManager.default.moveItem(atPath: locationPath, toPath: document)
@@ -110,20 +109,16 @@ extension AppDelegate {
         DispatchQueue.main.async{
             if !download {
                 let icon = NSImage(named: "Image")
-                
                 button.image = icon
-                button.action = #selector(self.action(_:))
-                self.statusItem.menu = self.menus
-                self.statusItem.isVisible = true
             } else{//square.and.arrow.down
-                let icon = NSImage(systemSymbolName: "square.and.arrow.down", accessibilityDescription: nil )
-                icon?.isTemplate = true // Support Dark Mode
+                let icon = NSImage(systemSymbolName: "square.and.arrow.down.on.square", accessibilityDescription: nil)
                 button.image = icon
-                button.action = #selector(self.action(_:))
-                self.statusItem.menu = self.menus
-                self.statusItem.isVisible = true
             }
+            button.action = #selector(self.action(_:))
+            self.statusItem.menu = self.menus
+            self.statusItem.isVisible = true
         }
+       
     }
     
     @IBAction func action(_ item: NSMenuItem) {
