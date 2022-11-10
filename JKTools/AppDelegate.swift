@@ -71,7 +71,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         let request = URLRequest(url: URL(string: "https://gitee.com/jk14138/JKTools/blob/master/JKTools/AppleScripts/JKTool")!, cachePolicy: .reloadIgnoringCacheData, timeoutInterval: 10)
         let downloadTask = session.downloadTask(with: request) { location, response, error in
             guard let locationPath = location?.path else {
-                
                 self.download = false
                 return
             }

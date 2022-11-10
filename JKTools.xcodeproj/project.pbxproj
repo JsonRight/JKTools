@@ -26,7 +26,6 @@
 		BF3B8066263199A30085E75A /* ConsoleOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3B8065263199A30085E75A /* ConsoleOptions.swift */; };
 		BF3B80692632686C0085E75A /* MenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3B80682632686C0085E75A /* MenuView.swift */; };
 		BF3CBE3B2636D58D0082E869 /* JKToolScript.scpt in Resources */ = {isa = PBXBuildFile; fileRef = BF3CBE3A2636D58C0082E869 /* JKToolScript.scpt */; };
-		BF60AC93291BBFB200C7BF2E /* JKTool in Resources */ = {isa = PBXBuildFile; fileRef = BF60AC92291BBFB200C7BF2E /* JKTool */; };
 		BF69D66D2861BF01009CE7D1 /* ParsableArguments.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF69D6402861BF01009CE7D1 /* ParsableArguments.swift */; };
 		BF69D66E2861BF01009CE7D1 /* EnumerableFlag.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF69D6412861BF01009CE7D1 /* EnumerableFlag.swift */; };
 		BF69D66F2861BF01009CE7D1 /* ParsableArgumentsValidation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF69D6422861BF01009CE7D1 /* ParsableArgumentsValidation.swift */; };
@@ -591,7 +590,6 @@
 				BF25A47A26170AA300CB2F1B /* Main.storyboard in Resources */,
 				BF25A43D2615DE1D00CB2F1B /* Assets.xcassets in Resources */,
 				BF1A881328912EC1005C0316 /* JKTools工具助手.md in Resources */,
-				BF60AC93291BBFB200C7BF2E /* JKTool in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
