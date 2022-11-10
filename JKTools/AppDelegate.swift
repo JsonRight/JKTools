@@ -68,15 +68,22 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         self.download = true
         loadStatusItem(download: true)
         let session = URLSession(configuration: URLSessionConfiguration.default)
-        let request = URLRequest(url: URL(string: "https://gitee.com/jk14138/JKTools/blob/master/JKTools/AppleScripts/JKTool")!, cachePolicy: .reloadIgnoringCacheData, timeoutInterval: 10)
+        //https://gitee.com/jk14138/JKTools/raw/master/JKTools/AppleScripts/JKTool
+        let request = URLRequest(
+            url: URL(string: "https://gitee.com/jk14138/JKTools/releases/download/JKTool/JKTool".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)!,
+            cachePolicy: .reloadIgnoringCacheData,
+            timeoutInterval: 10)
         let downloadTask = session.downloadTask(with: request) { location, response, error in
             guard let locationPath = location?.path else {
                 self.download = false
                 return
             }
+            print("locationPath:\(locationPath)")
             let document = FileManager.DocumnetsDirectory() + "/JKTool"
-            
+            print("document:\(document)")
+            try? FileManager.default.removeItem(atPath: document)
             try? FileManager.default.moveItem(atPath: locationPath, toPath: document)
+            
             Constants.resetShellScpt(name: "JKTool")
             self.loadStatusItem(download: false)
     
