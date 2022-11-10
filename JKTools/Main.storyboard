@@ -206,20 +206,21 @@
             <objects>
                 <viewController title="git忽略文件示例" id="zLn-Ji-4ny" sceneMemberID="viewController">
                     <view key="view" id="g3E-GC-oEM">
-                        <rect key="frame" x="0.0" y="0.0" width="466" height="316"/>
+                        <rect key="frame" x="0.0" y="0.0" width="466" height="412"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <box title="`git submodule`管理" translatesAutoresizingMaskIntoConstraints="NO" id="LPs-R3-tcr">
-                                <rect key="frame" x="2" y="235" width="462" height="76"/>
+                                <rect key="frame" x="2" y="283" width="462" height="124"/>
                                 <view key="contentView" id="T0z-MC-7PL">
-                                    <rect key="frame" x="3" y="3" width="456" height="58"/>
+                                    <rect key="frame" x="3" y="3" width="456" height="106"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="KZp-HT-TD9">
-                                            <rect key="frame" x="3" y="5" width="450" height="48"/>
+                                            <rect key="frame" x="3" y="5" width="450" height="96"/>
                                             <textFieldCell key="cell" lineBreakMode="clipping" selectable="YES" id="mb0-Pm-uin">
                                                 <font key="font" metaFont="system"/>
-                                                <string key="title">/Module/Builds/
+                                                <string key="title">.DS_Store /build/
+/Build/ /Module/Builds/
 Modulefile.recordList
 *.recordList</string>
                                                 <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -237,16 +238,17 @@ Modulefile.recordList
                                 </view>
                             </box>
                             <box title="非`git submodule`管理" translatesAutoresizingMaskIntoConstraints="NO" id="t9j-6V-NUy">
-                                <rect key="frame" x="2" y="126" width="462" height="108"/>
+                                <rect key="frame" x="2" y="142" width="462" height="140"/>
                                 <view key="contentView" id="aAA-ED-JeD">
-                                    <rect key="frame" x="3" y="3" width="456" height="90"/>
+                                    <rect key="frame" x="3" y="3" width="456" height="122"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="vpG-Py-3da">
-                                            <rect key="frame" x="3" y="5" width="450" height="80"/>
+                                            <rect key="frame" x="3" y="5" width="450" height="112"/>
                                             <textFieldCell key="cell" lineBreakMode="clipping" selectable="YES" id="khi-lh-vSI">
                                                 <font key="font" metaFont="system"/>
-                                                <string key="title">/Module/
+                                                <string key="title">.DS_Store /build/
+/Build//Module/
 /Module/checkouts/
 /Module/Builds/
 Modulefile.recordList
@@ -266,16 +268,16 @@ Modulefile.recordList
                                 </view>
                             </box>
                             <box title="Xcode工程`git submodule` 示例" translatesAutoresizingMaskIntoConstraints="NO" id="cnh-N0-tpC">
-                                <rect key="frame" x="2" y="1" width="462" height="124"/>
+                                <rect key="frame" x="2" y="1" width="462" height="140"/>
                                 <view key="contentView" id="S7Q-EX-mCh">
-                                    <rect key="frame" x="3" y="3" width="456" height="106"/>
+                                    <rect key="frame" x="3" y="3" width="456" height="122"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="gvG-wT-Prz">
-                                            <rect key="frame" x="3" y="5" width="450" height="96"/>
+                                            <rect key="frame" x="3" y="5" width="450" height="112"/>
                                             <textFieldCell key="cell" lineBreakMode="clipping" selectable="YES" id="QLg-Ti-Pvm">
                                                 <font key="font" metaFont="system"/>
-                                                <string key="title">/build/
+                                                <string key="title">.DS_Store /build/
 /Build/
 xcuserdata/
 /Module/Builds/
@@ -364,7 +366,7 @@ Modulefile.recordList
                                     </constraints>
                                 </view>
                             </box>
-                            <box title=".a .framework .xcframework等 存放路径" translatesAutoresizingMaskIntoConstraints="NO" id="cwS-wu-zte">
+                            <box title=".a、.framework、.xcframework等 存放路径" translatesAutoresizingMaskIntoConstraints="NO" id="cwS-wu-zte">
                                 <rect key="frame" x="2" y="51" width="446" height="49"/>
                                 <view key="contentView" id="FyD-xP-VE2">
                                     <rect key="frame" x="3" y="3" width="440" height="31"/>
