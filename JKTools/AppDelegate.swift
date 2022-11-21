@@ -18,8 +18,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         loadStatusItem(download: false)
         uploadScript()
         
-        
-        
 //        if let bookmarkData = UserDefaults.standard.data(forKey: "DesktopBookmarkData"){
 //
 //            var isStale = false

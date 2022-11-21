@@ -10,6 +10,14 @@ import Cocoa
 
 public struct Constants {
     
+    static func panelDirectoryKey() -> String {
+        return "panelDirectory"
+    }
+    
+    static func panelDirectoryBookmarkDataKey() -> String {
+        return "panelDirectoryBookmarkData"
+    }
+    
     static func bundle() -> String {
         return Bundle.main.bundleIdentifier!
     }
@@ -138,7 +146,7 @@ public struct Constants {
     }
     
     static func resetShellScptByBookmarkData(name: String) -> Bool{
-        guard let bookmarkData = UserDefaults.standard.data(forKey: "binDirectoryBookmarkData") else {
+        guard let bookmarkData = UserDefaults.standard.data(forKey:panelDirectoryBookmarkDataKey() ) else {
             return false
         }
         var isStale = false
@@ -154,33 +162,34 @@ public struct Constants {
     }
     
     static func resetShellScptByPanel(name: String){
+        DispatchQueue.main.async{
+            let panel = NSOpenPanel()
 
-        let panel = NSOpenPanel()
+            panel.directoryURL = self.ShellScptPath()
+            panel.canChooseDirectories = true
+            panel.canChooseFiles = false
+            panel.prompt = "Select Script Folder"
+            panel.message = "Please select the usr > local > bin folder"
 
-        panel.directoryURL = self.ShellScptPath()
-        panel.canChooseDirectories = true
-        panel.canChooseFiles = false
-        panel.prompt = "Select Script Folder"
-        panel.message = "Please select the usr > local > bin folder"
+            panel.begin { result in
+                guard result.rawValue == NSApplication.ModalResponse.OK.rawValue,
+                      self.ShellScptPath().path == panel.url?.path else {
+                          Alert.alert(message: "Shell folder was not selected")
+                    return
+                }
+                
+                guard let binDirectory = panel.url else {
+                    return
+                }
+                
+                guard let bookmarkData = try? binDirectory.bookmarkData(options: URL.BookmarkCreationOptions.withSecurityScope, includingResourceValuesForKeys: nil, relativeTo: nil) else {
+                    return
+                }
+                UserDefaults.standard.set(binDirectory, forKey: panelDirectoryKey())
+                UserDefaults.standard.setValue(bookmarkData, forKey: panelDirectoryBookmarkDataKey())
+                copyShellScript(name: name, url: binDirectory)
 
-        panel.begin { result in
-            guard result.rawValue == NSApplication.ModalResponse.OK.rawValue,
-                  self.ShellScptPath().path == panel.url?.path else {
-                      Alert.alert(message: "Shell folder was not selected")
-                return
             }
-            
-            guard let binDirectory = panel.url else {
-                return
-            }
-            
-            guard let bookmarkData = try? binDirectory.bookmarkData(options: URL.BookmarkCreationOptions.withSecurityScope, includingResourceValuesForKeys: nil, relativeTo: nil) else {
-                return
-            }
-            UserDefaults.standard.set(binDirectory, forKey: "binDirectory")
-            UserDefaults.standard.setValue(bookmarkData, forKey: "binDirectoryBookmarkData")
-            copyShellScript(name: name, url: binDirectory)
-
         }
     }
 
@@ -216,6 +225,9 @@ public struct Constants {
             Alert.alert(message: "Fail")
             return
         }
+        
+        
+        try? manager.createDirectory(at: url, withIntermediateDirectories: true)
         
         let binPathURL = url.appendingPathComponent(name, isDirectory: false)
         try? manager.removeItem(at: binPathURL)
