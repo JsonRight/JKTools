@@ -13,7 +13,7 @@ struct Alert {
     static func alert(message: String) {
         DispatchQueue.main.async{
             let alert = NSAlert()
-            alert.messageText = "🐢 JKTool"
+            alert.messageText = "🐢 JKTools"
             alert.informativeText = message
             alert.addButton(withTitle: "OK")
             alert.runModal()

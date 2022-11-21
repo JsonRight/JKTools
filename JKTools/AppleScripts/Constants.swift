@@ -167,9 +167,10 @@ public struct Constants {
 
             panel.directoryURL = self.ShellScptPath()
             panel.canChooseDirectories = true
+            panel.canCreateDirectories = true
             panel.canChooseFiles = false
-            panel.prompt = "Select Script Folder"
-            panel.message = "Please select the usr > local > bin folder"
+            panel.prompt = "脚本安装目录"
+            panel.message = "请选择 usr > local > bin folder, 不存在时请手动创建"
 
             panel.begin { result in
                 guard result.rawValue == NSApplication.ModalResponse.OK.rawValue,
@@ -196,7 +197,7 @@ public struct Constants {
     static func resetShellScpt(name: String) {
         
         guard resetShellScptByBookmarkData(name: name) == false else {
-            if !Constants.hasShellScptPath(name: "JKTool") {
+            if !Constants.hasShellScptPath(name: name) {
                 resetShellScptByPanel(name: name)
             }
             return
@@ -209,7 +210,7 @@ public struct Constants {
         
         let filePath: String
         
-        let document = FileManager.DocumnetsDirectory() + "/JKTool"
+        let document = FileManager.DocumnetsDirectory() + "/\(name)"
         
         if manager.fileExists(atPath: document) {
             filePath = document
