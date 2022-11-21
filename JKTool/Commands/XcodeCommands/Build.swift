@@ -14,7 +14,7 @@ extension JKTool {
             _superCommandName: "JKTool",
             abstract: "build部分命令对于固定工程格式封装",
             version: "1.0.0",
-            subcommands: [Static.self,Framework.self,XCFramework.self,Unknown.self],
+            subcommands: [Clean.self,Static.self,Framework.self,XCFramework.self,Unknown.self],
             defaultSubcommand: Unknown.self, helpNames: nil)
     }
 }
@@ -41,6 +41,63 @@ private struct Options: ParsableArguments {
 }
 
 extension JKTool.Build {
+    
+    struct Clean: ParsableCommand {
+        static var configuration = CommandConfiguration(
+            commandName: "clean",
+            _superCommandName: "build",
+            abstract: "清除所有Universal中的编译产物",
+            version: "1.0.0")
+
+        mutating func run() {
+            
+            func clean(project:Project) {
+                po(tip:"【\(project.name)】clean开始")
+                let date = Date.init().timeIntervalSince1970
+                // 删除主项目旧相关文件
+                _ = try? shellOut(to: .removeFolder(from: project.rootProject.buildsPath + "/" + project.name))
+                
+                _ = try? shellOut(to: .removeFolder(from: project.buildsPath + "/"))
+                
+                _ = try? shellOut(to: .removeFolder(from: project.buildPath + "/Universal/"))
+                
+                
+                po(tip:"【\(project.name)】clean完成[\(String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")]")
+            }
+            
+            guard let project = Project.project(directoryPath: FileManager.default.currentDirectoryPath) else {
+                return po(tip: "\(FileManager.default.currentDirectoryPath)目录没有检索到工程", type: .error)
+            }
+            
+            guard project.rootProject == project else {
+                if !project.projectType.vaild() {
+                    return
+                }
+                
+                clean(project: project)
+                
+               return
+            }
+            
+            
+            po(tip: "======Clean 项目开始======")
+            let date = Date.init().timeIntervalSince1970
+            for record in project.recordList {
+    
+                guard let subProject = Project.project(directoryPath: "\(project.checkoutsPath)/\(record)") else {
+                    po(tip:"\(record) 工程不存在，请检查 Modulefile.recordList 是否为最新内容",type: .warning)
+                    continue
+                }
+                if !subProject.projectType.vaild() {
+                    continue
+                }
+                clean(project: subProject)
+                
+            }
+            
+            po(tip: "======Clean 项目完成[\(String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")]======")
+        }
+    }
 
     struct Static: ParsableCommand {
         static var configuration = CommandConfiguration(
@@ -81,7 +138,9 @@ extension JKTool.Build {
                                 break
                             }
                         }
-                        scheme = schemes.first
+                        if scheme == nil {
+                            scheme = schemes.first
+                        }
                     }
                     return scheme
                 }
@@ -263,7 +322,9 @@ extension JKTool.Build {
                                 break
                             }
                         }
-                        scheme = schemes.first
+                        if scheme == nil {
+                            scheme = schemes.first
+                        }
                     }
                     return scheme
                 }
@@ -440,7 +501,9 @@ extension JKTool.Build {
                                 break
                             }
                         }
-                        scheme = schemes.first
+                        if scheme == nil {
+                            scheme = schemes.first
+                        }
                     }
                     return scheme
                 }

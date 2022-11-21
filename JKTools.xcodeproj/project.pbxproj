@@ -854,8 +854,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = JKTools/JKTools.entitlements;
-				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				CODE_SIGN_IDENTITY = "Developer ID Application: YaLei Hao (8Z5RW7YX9K)";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Developer ID Application: YaLei Hao (8Z5RW7YX9K)";
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = "";
@@ -870,8 +870,8 @@
 				MARKETING_VERSION = 2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.jk.JKTool;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = JKTool_dev;
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = JKTool_dev;
+				PROVISIONING_PROFILE_SPECIFIER = "JKTool_Developer ID";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "JKTool_Developer ID";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
@@ -883,7 +883,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = JKTools/JKTools.entitlements;
-				CODE_SIGN_IDENTITY = "Developer ID Application";
+				CODE_SIGN_IDENTITY = "Developer ID Application: YaLei Hao (8Z5RW7YX9K)";
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = "";
