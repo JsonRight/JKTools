@@ -33,14 +33,13 @@ extension JKTool.Git {
             
             func zip(project: Project){
                 
-                
                 let status = try? shellOut(to: .gitStatus(),at: project.directoryPath)
                 
                 if status != "" {
-                    po(tip: "【\(project.name)】zip失败\ngit仓库存在未提交内容", type: .error)
+                    po(tip: "【\(project.name)】zip失败：git仓库存在未提交内容", type: .error)
                 }
                 guard let code = try? shellOut(to: .gitCodeVerison(),at: project.directoryPath) else {
-                    po(tip: "【\(project.name)】zip失败\n未能检索到commit id，请检查git仓库", type: .error)
+                    po(tip: "【\(project.name)】zip失败：未能检索到commit id，请检查git仓库", type: .error)
                     return
                 }
                 let currentVersion  = ShellOutCommand.MD5(string:code)
@@ -48,15 +47,29 @@ extension JKTool.Git {
                 let oldVersion = try? shellOut(to: .readVerison(path: "\(project.buildPath)/Universal/"))
                 
                 if !String(oldVersion ?? "").contains(currentVersion) {
-                    po(tip: "【\(project.name)】zip失败\n未能找到可被压缩的build产物，请先使用`JKTool build ... `构建 build产物", type: .error)
+                    po(tip: "【\(project.name)】zip失败：未能找到可被压缩的build产物，请先使用`JKTool build ... `构建 build产物", type: .error)
                 }
+                
+                let fileManager = FileManager.default
+                let zipDirURL = URL(fileURLWithPath: "\(project.buildPath)/zip")
+                try? fileManager.createDirectory(at: zipDirURL, withIntermediateDirectories: true)
+                
+                let zipURL = zipDirURL.appendingPathComponent("\(project.name).zip", isDirectory: false)
+                try? fileManager.removeItem(at: zipURL)
+                
                 
                 let cachePathURL = URL(fileURLWithPath: "\(project.buildPath)/Universal/\(currentVersion)")
                 
-                let zipURL = URL(fileURLWithPath: "\(project.directoryPath)/\(project.name).zip")
-                try? FileManager.default.removeItem(at: zipURL)
-                
                 try? Zip.zipFiles(paths: [cachePathURL], zipFilePath: zipURL, password: nil, progress: nil)
+                
+//                Zip.quickZipFiles(<#T##paths: [URL]##[URL]#>, fileName: <#T##String#>)
+                
+//
+//                JKTool.Git.Commit.main(["[zip]\(tag)"])
+//
+//                JKTool.Git.Push.main([])
+//
+//                JKTool.Git.Tag.Add.main([tag])
                 
             }
             

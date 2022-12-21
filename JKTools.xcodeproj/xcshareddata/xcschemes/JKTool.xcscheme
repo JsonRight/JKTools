@@ -54,10 +54,10 @@
       <CommandLineArguments>
          <CommandLineArgument
             argument = "help"
-            isEnabled = "YES">
+            isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
-            argument = "git"
+            argument = "git zip -t 1.0"
             isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
@@ -118,7 +118,7 @@
          </CommandLineArgument>
          <CommandLineArgument
             argument = "zip"
-            isEnabled = "YES">
+            isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "build"
@@ -162,7 +162,7 @@
          </CommandLineArgument>
          <CommandLineArgument
             argument = "xcframework"
-            isEnabled = "YES">
+            isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "cache"

@@ -272,12 +272,12 @@ public extension ShellOutCommand {
     }
     
     static func gitStatus() -> ShellOutCommand {
-         let command = "git diff HEAD"
+         let command = "git add -A && git diff HEAD"
         return ShellOutCommand(string: command)
     }
     
     static func gitCodeVerison() -> ShellOutCommand {
-        let command = "git rev-parse HEAD"
+        let command = "git add -A && git rev-parse HEAD"
        return ShellOutCommand(string: command)
     }
     
