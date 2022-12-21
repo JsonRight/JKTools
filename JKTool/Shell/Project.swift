@@ -228,7 +228,7 @@ public class Project {
                 return
             }
             
-            let module = SubProject(name: arr[0], url: arr[1], branch: (arr.count >= 3) ? (arr[2]) : "master" )
+            let module = SubProject(name: arr[0], url: arr[1], branch: (arr.count >= 3) ? (arr[2]) : nil )
             list.append(module)
         }
         return list

@@ -25,6 +25,7 @@ extension JKTool {
                           Checkout.self,
                           Status.self,
                           Tag.self,
-                          SubModule.self])
+                          SubModule.self,
+                          Zipper.self])
     }
 }

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BF17DC222952B8D000E56FBE /* Zipper.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF17DC212952B8D000E56FBE /* Zipper.swift */; };
 		BF1A881328912EC1005C0316 /* JKTools工具助手.md in Resources */ = {isa = PBXBuildFile; fileRef = BF1A881228912EC1005C0316 /* JKTools工具助手.md */; };
 		BF25A4392615DE1B00CB2F1B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF25A4382615DE1B00CB2F1B /* AppDelegate.swift */; };
 		BF25A43B2615DE1B00CB2F1B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF25A43A2615DE1B00CB2F1B /* ViewController.swift */; };
@@ -104,6 +105,13 @@
 		BFEB07D2286B0ECD00B5D197 /* Squash.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFEB07D1286B0ECD00B5D197 /* Squash.swift */; };
 		BFEBAE6828608295006928AD /* ExecutableBuild.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFEBAE6728608295006928AD /* ExecutableBuild.swift */; };
 		BFF30917288A3F11002D9A47 /* PreferencesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFF30916288A3F11002D9A47 /* PreferencesController.swift */; };
+		BFF72C03295306770050122C /* ZipUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFF72BEF295306770050122C /* ZipUtilities.swift */; };
+		BFF72C04295306770050122C /* unzip.c in Sources */ = {isa = PBXBuildFile; fileRef = BFF72BF1295306770050122C /* unzip.c */; };
+		BFF72C05295306770050122C /* zip.c in Sources */ = {isa = PBXBuildFile; fileRef = BFF72BF2295306770050122C /* zip.c */; };
+		BFF72C06295306770050122C /* ioapi.c in Sources */ = {isa = PBXBuildFile; fileRef = BFF72BF3295306770050122C /* ioapi.c */; };
+		BFF72C07295306770050122C /* QuickZip.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFF72BFE295306770050122C /* QuickZip.swift */; };
+		BFF72C08295306780050122C /* Zip.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFF72C01295306770050122C /* Zip.swift */; };
+		BFF72C0B295307650050122C /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = BFF72C0A295307650050122C /* libz.tbd */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -129,6 +137,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		BF17DC212952B8D000E56FBE /* Zipper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Zipper.swift; sourceTree = "<group>"; };
 		BF1A881228912EC1005C0316 /* JKTools工具助手.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = "JKTools工具助手.md"; sourceTree = "<group>"; };
 		BF25A4352615DE1B00CB2F1B /* JKTools.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JKTools.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BF25A4382615DE1B00CB2F1B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -229,6 +238,19 @@
 		BFEB07D1286B0ECD00B5D197 /* Squash.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Squash.swift; sourceTree = "<group>"; };
 		BFEBAE6728608295006928AD /* ExecutableBuild.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExecutableBuild.swift; sourceTree = "<group>"; };
 		BFF30916288A3F11002D9A47 /* PreferencesController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesController.swift; sourceTree = "<group>"; };
+		BFF72BEF295306770050122C /* ZipUtilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZipUtilities.swift; sourceTree = "<group>"; };
+		BFF72BF1295306770050122C /* unzip.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = unzip.c; sourceTree = "<group>"; };
+		BFF72BF2295306770050122C /* zip.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zip.c; sourceTree = "<group>"; };
+		BFF72BF3295306770050122C /* ioapi.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ioapi.c; sourceTree = "<group>"; };
+		BFF72BF7295306770050122C /* Minizip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Minizip.h; sourceTree = "<group>"; };
+		BFF72BF8295306770050122C /* crypt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = crypt.h; sourceTree = "<group>"; };
+		BFF72BF9295306770050122C /* zip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zip.h; sourceTree = "<group>"; };
+		BFF72BFA295306770050122C /* unzip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = unzip.h; sourceTree = "<group>"; };
+		BFF72BFB295306770050122C /* ioapi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ioapi.h; sourceTree = "<group>"; };
+		BFF72BFE295306770050122C /* QuickZip.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuickZip.swift; sourceTree = "<group>"; };
+		BFF72C01295306770050122C /* Zip.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Zip.swift; sourceTree = "<group>"; };
+		BFF72C02295306770050122C /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BFF72C0A295307650050122C /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -243,6 +265,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BFF72C0B295307650050122C /* libz.tbd in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -255,6 +278,7 @@
 				BF25A4372615DE1B00CB2F1B /* JKTools */,
 				BFA528EA26351606003427A8 /* JKTool */,
 				BF25A4362615DE1B00CB2F1B /* Products */,
+				BFF72C09295307650050122C /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -437,6 +461,7 @@
 				BF69D6AF28632E90009CE7D1 /* Tag.swift */,
 				BF69D6B328632EC1009CE7D1 /* SubModule.swift */,
 				BF26C591287FB7910071E3F9 /* SubModuleUpdate.swift */,
+				BF17DC212952B8D000E56FBE /* Zipper.swift */,
 				BF69D6A52862EA8D009CE7D1 /* Git.swift */,
 			);
 			path = GitCommands;
@@ -478,6 +503,7 @@
 				BF69D6992861C6B5009CE7D1 /* ArgumentParserToolInfo */,
 				BF69D63D2861BF01009CE7D1 /* ArgumentParser */,
 				BFA528F626351659003427A8 /* Colors */,
+				BFF72BEE295306770050122C /* Zip */,
 				BFA529072635169A003427A8 /* Shell */,
 			);
 			path = JKTool;
@@ -505,6 +531,49 @@
 				BFA5290C2635169A003427A8 /* Project.swift */,
 			);
 			path = Shell;
+			sourceTree = "<group>";
+		};
+		BFF72BEE295306770050122C /* Zip */ = {
+			isa = PBXGroup;
+			children = (
+				BFF72BEF295306770050122C /* ZipUtilities.swift */,
+				BFF72BF0295306770050122C /* minizip */,
+				BFF72BFE295306770050122C /* QuickZip.swift */,
+				BFF72C01295306770050122C /* Zip.swift */,
+				BFF72C02295306770050122C /* Info.plist */,
+			);
+			path = Zip;
+			sourceTree = "<group>";
+		};
+		BFF72BF0295306770050122C /* minizip */ = {
+			isa = PBXGroup;
+			children = (
+				BFF72BF1295306770050122C /* unzip.c */,
+				BFF72BF2295306770050122C /* zip.c */,
+				BFF72BF3295306770050122C /* ioapi.c */,
+				BFF72BF6295306770050122C /* include */,
+			);
+			path = minizip;
+			sourceTree = "<group>";
+		};
+		BFF72BF6295306770050122C /* include */ = {
+			isa = PBXGroup;
+			children = (
+				BFF72BF7295306770050122C /* Minizip.h */,
+				BFF72BF8295306770050122C /* crypt.h */,
+				BFF72BF9295306770050122C /* zip.h */,
+				BFF72BFA295306770050122C /* unzip.h */,
+				BFF72BFB295306770050122C /* ioapi.h */,
+			);
+			path = include;
+			sourceTree = "<group>";
+		};
+		BFF72C09295307650050122C /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				BFF72C0A295307650050122C /* libz.tbd */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -651,6 +720,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BF69D6822861BF01009CE7D1 /* Argument.swift in Sources */,
+				BFF72C04295306770050122C /* unzip.c in Sources */,
 				BF69D68D2861BF01009CE7D1 /* CommandParser.swift in Sources */,
 				BF69D67B2861BF01009CE7D1 /* UsageGenerator.swift in Sources */,
 				BF70770228782F9500F71AEB /* Branch.swift in Sources */,
@@ -663,10 +733,12 @@
 				BF69D6782861BF01009CE7D1 /* DumpHelpGenerator.swift in Sources */,
 				BF69D6A42862EA6A009CE7D1 /* Archive.swift in Sources */,
 				BF69D6A22862EA55009CE7D1 /* Build.swift in Sources */,
+				BFF72C08295306780050122C /* Zip.swift in Sources */,
 				BF69D6882861BF01009CE7D1 /* ArgumentVisibility.swift in Sources */,
 				BF69D6B028632E90009CE7D1 /* Tag.swift in Sources */,
 				BFA529132635169A003427A8 /* ShellOut.swift in Sources */,
 				BFA528F326351634003427A8 /* JKTool.swift in Sources */,
+				BFF72C06295306770050122C /* ioapi.c in Sources */,
 				BF69D6902861BF01009CE7D1 /* ArgumentDefinition.swift in Sources */,
 				BF69D66E2861BF01009CE7D1 /* EnumerableFlag.swift in Sources */,
 				BF69D6AE28632E86009CE7D1 /* Pull.swift in Sources */,
@@ -688,6 +760,7 @@
 				BF69D68E2861BF01009CE7D1 /* InputOrigin.swift in Sources */,
 				BF69D6C1286478C5009CE7D1 /* Prune.swift in Sources */,
 				BF26C475287C31090071E3F9 /* Upload.swift in Sources */,
+				BF17DC222952B8D000E56FBE /* Zipper.swift in Sources */,
 				BF69D6C3286478D2009CE7D1 /* Rebase.swift in Sources */,
 				BF69D69E2861C6B5009CE7D1 /* ToolInfo.swift in Sources */,
 				BFA528FC26351659003427A8 /* ANSIModifiers.swift in Sources */,
@@ -704,6 +777,7 @@
 				BF69D67C2861BF01009CE7D1 /* MessageInfo.swift in Sources */,
 				BFA5290E2635169A003427A8 /* SubProject.swift in Sources */,
 				BF69D6BD286478A7009CE7D1 /* Commit.swift in Sources */,
+				BFF72C07295306770050122C /* QuickZip.swift in Sources */,
 				BF69D67A2861BF01009CE7D1 /* HelpGenerator.swift in Sources */,
 				BF69D6A62862EA8D009CE7D1 /* Git.swift in Sources */,
 				BF69D6932861BF01009CE7D1 /* SplitArguments.swift in Sources */,
@@ -713,6 +787,7 @@
 				BF69D6C5286478DE009CE7D1 /* Checkout.swift in Sources */,
 				BF69D6922861BF01009CE7D1 /* Name.swift in Sources */,
 				BF69D6702861BF01009CE7D1 /* CommandConfiguration.swift in Sources */,
+				BFF72C03295306770050122C /* ZipUtilities.swift in Sources */,
 				BF69D6742861BF01009CE7D1 /* BashCompletionsGenerator.swift in Sources */,
 				BFEB07B5286AA7DB00B5D197 /* Merge.swift in Sources */,
 				BF26C59D287FB7920071E3F9 /* SubModuleUpdate.swift in Sources */,
@@ -722,6 +797,7 @@
 				BF69D67F2861BF01009CE7D1 /* StringExtensions.swift in Sources */,
 				BF69D66D2861BF01009CE7D1 /* ParsableArguments.swift in Sources */,
 				BF69D6732861BF01009CE7D1 /* AsyncParsableCommand.swift in Sources */,
+				BFF72C05295306770050122C /* zip.c in Sources */,
 				BF69D6892861BF01009CE7D1 /* NameSpecification.swift in Sources */,
 				BFA528FE26351659003427A8 /* ANSIColorCode.swift in Sources */,
 			);
@@ -914,10 +990,15 @@
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=macosx*]" = 8Z5RW7YX9K;
 				ENABLE_HARDENED_RUNTIME = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/JKTool",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 12.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.jk.JKTool.JKTool;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/JKTool/Zip/minizip/include/Minizip.h";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
@@ -932,10 +1013,15 @@
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=macosx*]" = 8Z5RW7YX9K;
 				ENABLE_HARDENED_RUNTIME = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/JKTool",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 12.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.jk.JKTool.JKTool;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/JKTool/Zip/minizip/include/Minizip.h";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
