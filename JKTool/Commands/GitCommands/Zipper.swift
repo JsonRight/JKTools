@@ -77,9 +77,9 @@ extension JKTool.Git {
                 return po(tip: "\(path ?? FileManager.default.currentDirectoryPath)目录没有检索到工程", type: .error)
             }
 
-            po(tip: "======Zip开始======", type: .tip)
+            po(tip: "======【\(project.name)】:Zip开始======", type: .tip)
             zip(project: project)
-            po(tip: "======Zip结束======")
+            po(tip: "======【\(project.name)】:Zip结束======")
         }
     }
 }
