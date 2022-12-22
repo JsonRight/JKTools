@@ -21,22 +21,25 @@ extension JKTool {
 
 private struct Options: ParsableArguments {
     
-    @Argument(help: "是否使用缓存，default：true")
+    @Option(name: .long, help: "简单处理build产物（仅编译，不使用缓存策略，不做后续处理），default：false")
+    var simpleBuild: Bool = false
+    
+    @Option(name: .long, help: "是否使用缓存，default：true")
     var cache: Bool?
     
-    @Argument(help: "代码环境，default：Release")
+    @Option(name: .shortAndLong, help: "代码环境，default：Release")
     var configuration: String?
     
-    @Argument(help: "设备类型，default：iOS")
+    @Option(name: .shortAndLong, help: "设备类型，default：iOS")
     var sdk: String?
     
     /*
      xcodebuild -workspace {...}.xcworkspace -scheme {...} -showBuildSettings  -destination "generic/platform=iOS"
-     @Argument(help: ".xcconfig路径")
+     @Option(name: .shortAndLong, help: ".xcconfig路径")
      var xcconfigPath: String?
      */
     
-    @Argument(help: "执行路径")
+    @Option(name: .shortAndLong, help: "执行路径")
     var path: String?
 }
 
@@ -110,8 +113,6 @@ extension JKTool.Build {
 
         mutating func run() {
             
-            var free = false
-            
             func build(project:Project) {
                 po(tip:"【\(project.name)】build开始")
                 let date = Date.init().timeIntervalSince1970
@@ -170,10 +171,10 @@ extension JKTool.Build {
                             }
                         }
                     }
-                    let toStaticPath =  free ? nil : (project.rootProject.buildsPath + "/" + project.name)
-                    let toHeaderPath =  free ? nil : (project.rootProject.buildsPath + "/" + project.name)
+                    let toStaticPath =  options.simpleBuild ? nil : (project.rootProject.buildsPath + "/" + project.name)
+                    let toHeaderPath =  options.simpleBuild ? nil : (project.rootProject.buildsPath + "/" + project.name)
                     
-                    let staticCommand = ShellOutCommand.staticBuild(scheme: scheme,isWorkspace: project.projectType.isWorkSpace(),projectName: project.projectType.name(), projectPath: project.directoryPath, derivedDataPath: project.buildPath, configuration: configuration, sdk: sdk,verison: free ? "Products" : currentVersion,toStaticPath: toStaticPath,toHeaderPath: toHeaderPath)
+                    let staticCommand = ShellOutCommand.staticBuild(scheme: scheme,isWorkspace: project.projectType.isWorkSpace(),projectName: project.projectType.name(), projectPath: project.directoryPath, derivedDataPath: project.buildPath, configuration: configuration, sdk: sdk,verison: options.simpleBuild ? "Products" : currentVersion,toStaticPath: toStaticPath,toHeaderPath: toHeaderPath)
                     do {
                         try shellOut(to: staticCommand, at: project.directoryPath)
                         po(tip: "【\(project.name)】.a Build成功",type: .tip)
@@ -187,9 +188,9 @@ extension JKTool.Build {
                     if project.bundleName == "" {
                        return
                     }
-                    let toBundlePath =  free ? nil : (project.rootProject.buildsPath + "/" + project.name)
+                    let toBundlePath =  options.simpleBuild ? nil : (project.rootProject.buildsPath + "/" + project.name)
                     
-                    let buildCommand = ShellOutCommand.buildBundle(bundleName:project.bundleName,isWorkspace: project.projectType.isWorkSpace(),projectName: project.projectType.name(), projectPath: project.directoryPath, derivedDataPath: project.buildPath, sdk: sdk, verison: free ? "Products" : currentVersion, toBundlePath: toBundlePath)
+                    let buildCommand = ShellOutCommand.buildBundle(bundleName:project.bundleName,isWorkspace: project.projectType.isWorkSpace(),projectName: project.projectType.name(), projectPath: project.directoryPath, derivedDataPath: project.buildPath, sdk: sdk, verison: options.simpleBuild ? "Products" : currentVersion, toBundlePath: toBundlePath)
                     do {
                         try shellOut(to: buildCommand, at: project.directoryPath)
                         po(tip: "【\(project.name)】.bundle Build成功",type: .tip)
@@ -199,11 +200,11 @@ extension JKTool.Build {
                     }
                 }
                 
-                if free || options.cache == false || oldVersion != currentVersion {
+                if options.simpleBuild || options.cache == false || oldVersion != currentVersion {
                     po(tip:"【\(project.name)】需重新编译")
 
                     // 删除历史build文件
-                    let cachePath = free ? (project.buildPath + "/Universal"): (project.buildPath + "/Universal/\(currentVersion)")
+                    let cachePath = options.simpleBuild ? (project.buildPath + "/Universal"): (project.buildPath + "/Universal/\(currentVersion)")
                     _ = try? shellOut(to: .removeFolder(from: cachePath))
                     
                     buildStatic(project: project)
@@ -260,7 +261,6 @@ extension JKTool.Build {
                     return
                 }
                 
-                free = true
                 build(project: project)
 
                return
@@ -295,7 +295,7 @@ extension JKTool.Build {
         @OptionGroup private var options: Options
 
         mutating func run() {
-            var free = false
+            
             func build(project:Project) {
                 po(tip:"【\(project.name)】build开始")
                 let date = Date.init().timeIntervalSince1970
@@ -353,8 +353,8 @@ extension JKTool.Build {
                             }
                         }
                     }
-                    let toPath =  free ? nil : (project.rootProject.buildsPath + "/" + project.name)
-                    let frameworkCommand = ShellOutCommand.frameworkBuild(scheme:scheme,isWorkspace: project.projectType.isWorkSpace(),projectName: project.projectType.name(), projectPath: project.directoryPath, derivedDataPath: project.buildPath, configuration: configuration, sdk: sdk, verison: free ? "Products" : currentVersion, toPath: toPath)
+                    let toPath =  options.simpleBuild ? nil : (project.rootProject.buildsPath + "/" + project.name)
+                    let frameworkCommand = ShellOutCommand.frameworkBuild(scheme:scheme,isWorkspace: project.projectType.isWorkSpace(),projectName: project.projectType.name(), projectPath: project.directoryPath, derivedDataPath: project.buildPath, configuration: configuration, sdk: sdk, verison: options.simpleBuild ? "Products" : currentVersion, toPath: toPath)
                     
                     do {
                         try shellOut(to: frameworkCommand, at: project.directoryPath)
@@ -369,8 +369,8 @@ extension JKTool.Build {
                     if project.bundleName == "" {
                        return
                     }
-                    let toBundlePath =  free ? nil : (project.rootProject.buildsPath + "/" + project.name)
-                    let buildCommand = ShellOutCommand.buildBundle(bundleName:project.bundleName,isWorkspace: project.projectType.isWorkSpace(),projectName: project.projectType.name(), projectPath: project.directoryPath, derivedDataPath: project.buildPath, sdk: sdk, verison: free ? "Products" : currentVersion, toBundlePath: toBundlePath)
+                    let toBundlePath =  options.simpleBuild ? nil : (project.rootProject.buildsPath + "/" + project.name)
+                    let buildCommand = ShellOutCommand.buildBundle(bundleName:project.bundleName,isWorkspace: project.projectType.isWorkSpace(),projectName: project.projectType.name(), projectPath: project.directoryPath, derivedDataPath: project.buildPath, sdk: sdk, verison: options.simpleBuild ? "Products" : currentVersion, toBundlePath: toBundlePath)
                     do {
                         try shellOut(to: buildCommand, at: project.directoryPath)
                     } catch  {
@@ -379,11 +379,11 @@ extension JKTool.Build {
                     }
                 }
                 
-                if free || options.cache == false || !String(oldVersion ?? "").contains(currentVersion) {
+                if options.simpleBuild || options.cache == false || !String(oldVersion ?? "").contains(currentVersion) {
                     po(tip:"【\(project.name)】需重新编译")
                 
                     /// 删除历史build文件
-                    let cachePath = free ? (project.buildPath + "/Universal"): (project.buildPath + "/Universal/\(currentVersion)")
+                    let cachePath = options.simpleBuild ? (project.buildPath + "/Universal"): (project.buildPath + "/Universal/\(currentVersion)")
                     _ = try? shellOut(to: .removeFolder(from: cachePath))
                     
                     buildFramework(project: project)
@@ -436,8 +436,6 @@ extension JKTool.Build {
                 if !project.projectType.vaild() {
                     return
                 }
-                
-                free = true
                 build(project: project)
 
                return
@@ -472,8 +470,6 @@ extension JKTool.Build {
         @OptionGroup private var options: Options
 
         mutating func run() {
-            
-            var free = false
             
             func build(project:Project) {
                 po(tip:"【\(project.name)】build开始")
@@ -533,9 +529,9 @@ extension JKTool.Build {
                         }
                     }
                     
-                    let toPath =  free ? nil : (project.rootProject.buildsPath + "/" + project.name)
+                    let toPath =  options.simpleBuild ? nil : (project.rootProject.buildsPath + "/" + project.name)
                     
-                    let xcframeworkCommand = ShellOutCommand.xcframeworkBuild(scheme:scheme,isWorkspace: project.projectType.isWorkSpace(),projectName: project.projectType.name(), projectPath: project.directoryPath, derivedDataPath: project.buildPath, configuration: configuration, sdk: sdk, verison: free ? "Products" : currentVersion, toPath: toPath)
+                    let xcframeworkCommand = ShellOutCommand.xcframeworkBuild(scheme:scheme,isWorkspace: project.projectType.isWorkSpace(),projectName: project.projectType.name(), projectPath: project.directoryPath, derivedDataPath: project.buildPath, configuration: configuration, sdk: sdk, verison: options.simpleBuild ? "Products" : currentVersion, toPath: toPath)
                     
                     do {
                         try shellOut(to: xcframeworkCommand, at: project.directoryPath)
@@ -551,8 +547,8 @@ extension JKTool.Build {
                        return
                     }
                     
-                    let toBundlePath =  free ? nil : (project.rootProject.buildsPath + "/" + project.name)
-                    let buildCommand = ShellOutCommand.buildBundle(bundleName:project.bundleName,isWorkspace: project.projectType.isWorkSpace(),projectName: project.projectType.name(), projectPath: project.directoryPath, derivedDataPath: project.buildPath, sdk: sdk, verison: free ? "Products" : currentVersion, toBundlePath: toBundlePath)
+                    let toBundlePath =  options.simpleBuild ? nil : (project.rootProject.buildsPath + "/" + project.name)
+                    let buildCommand = ShellOutCommand.buildBundle(bundleName:project.bundleName,isWorkspace: project.projectType.isWorkSpace(),projectName: project.projectType.name(), projectPath: project.directoryPath, derivedDataPath: project.buildPath, sdk: sdk, verison: options.simpleBuild ? "Products" : currentVersion, toBundlePath: toBundlePath)
                     do {
                         try shellOut(to: buildCommand, at: project.directoryPath)
                     } catch  {
@@ -560,11 +556,11 @@ extension JKTool.Build {
                         po(tip: "【\(project.name)】.bundle Build失败\n" + error.message + error.output,type: .error)
                     }
                 }
-                if free || options.cache == false || oldVersion != currentVersion {
+                if options.simpleBuild || options.cache == false || oldVersion != currentVersion {
                     po(tip:"【\(project.name)】需重新编译")
                     
                     // 删除历史build文件
-                    let cachePath = free ? (project.buildPath + "/Universal"): (project.buildPath + "/Universal/\(currentVersion)")
+                    let cachePath = options.simpleBuild ? (project.buildPath + "/Universal"): (project.buildPath + "/Universal/\(currentVersion)")
                     _ = try? shellOut(to: .removeFolder(from: cachePath))
                     
                     buildXCFramework(project: project)
@@ -616,7 +612,6 @@ extension JKTool.Build {
                     return
                 }
                 
-                free = true
                 build(project: project)
 
                return
@@ -654,9 +649,9 @@ extension JKTool.Build {
             func build(project:Project) {
                 switch project.buildType {
                 case .Framework:
-                    JKTool.Build.Framework.main(["\(options.cache ?? true)",options.configuration ?? "Release",options.sdk ?? "iOS",project.directoryPath])
+                    JKTool.Build.Framework.main()
                 case .Static:
-                    JKTool.Build.Static.main(["\(options.cache ?? true)",options.configuration ?? "Release",options.sdk ?? "iOS",project.directoryPath])
+                    JKTool.Build.Static.main()
                 case .Other:
                     po(tip:"【\(project.name)】无法检测出是Static或者Framework", type: .error)
                 }

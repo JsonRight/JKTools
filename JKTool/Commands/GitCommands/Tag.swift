@@ -27,13 +27,13 @@ extension JKTool.Git.Tag {
             abstract: "tag add",
             version: "1.0.0")
         
-        @Argument(help: "tag")
+        @Option(name: .shortAndLong, help: "tag")
         var tag: String
         
-        @Argument(help: "递归子模块，default：false")
+        @Option(name: .shortAndLong, help: "递归子模块，default：false")
         var recursive: Bool?
         
-        @Argument(help: "执行路径")
+        @Option(name: .shortAndLong, help: "执行路径")
         var path: String?
         
         mutating func run() {
@@ -81,13 +81,13 @@ extension JKTool.Git.Tag {
             abstract: "tag del",
             version: "1.0.0")
         
-        @Argument(help: "tag")
+        @Option(name: .shortAndLong, help: "tag")
         var tag: String
         
-        @Argument(help: "递归子模块，default：false")
+        @Option(name: .shortAndLong, help: "递归子模块，default：false")
         var recursive: Bool?
         
-        @Argument(help: "执行路径")
+        @Option(name: .shortAndLong, help: "执行路径")
         var path: String?
         
         mutating func run() {

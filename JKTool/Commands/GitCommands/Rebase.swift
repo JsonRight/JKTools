@@ -14,7 +14,7 @@ extension JKTool.Git {
             abstract: "rebase",
             version: "1.0.0")
         
-        @Argument(help: "Rebase by branch")
+        @Option(name: .shortAndLong, help: "Rebase by branch")
         var branch: String
         
         mutating func run() {

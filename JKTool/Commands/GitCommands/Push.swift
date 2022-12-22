@@ -13,13 +13,13 @@ extension JKTool.Git {
             _superCommandName: "git",
             abstract: "push")
         
-        @Argument(help: "push branch name")
+        @Option(name: .shortAndLong, help: "push branch name")
         var branch: String?
         
-        @Argument(help: "递归子模块，default：false")
+        @Option(name: .shortAndLong, help: "递归子模块，default：false")
         var recursive: Bool?
         
-        @Argument(help: "执行路径")
+        @Option(name: .shortAndLong, help: "执行路径")
         var path: String?
         
         mutating func run() {

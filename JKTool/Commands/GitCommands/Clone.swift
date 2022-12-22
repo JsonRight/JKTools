@@ -28,10 +28,10 @@ extension JKTool.Git.Clone {
             version: "1.0.0")
 
         
-        @Argument(help: "强制 clone，default：false")
+        @Option(name: .shortAndLong, help: "强制 clone，default：false")
         var force: Bool?
         
-        @Argument(help: "执行目录")
+        @Option(name: .shortAndLong, help: "执行目录")
         var path: String?
         
         mutating func run() {
@@ -103,13 +103,13 @@ extension JKTool.Git.Clone {
             abstract: "clone all",
             version: "1.0.0")
 
-        @Argument(help: "项目git地址")
+        @Option(name: .shortAndLong, help: "项目git地址")
         var url: String
         
-        @Argument(help: "保存目录【绝对路径】")
+        @Option(name: .shortAndLong, help: "保存目录【绝对路径】")
         var path: String
         
-        @Argument(help: "分支名")
+        @Option(name: .shortAndLong, help: "分支名")
         var branch: String?
         
         mutating func run() {
@@ -151,7 +151,7 @@ extension JKTool.Git.Clone {
                 let error = error as! ShellOutError
                 po(tip:  error.message + error.output,type: .error)
             }
-            Sub.main(["\(true)",path])
+            Sub.main(["--force \(true)","--path \(path)"])
             po(tip: "======clone项目完成======")
         }
     }

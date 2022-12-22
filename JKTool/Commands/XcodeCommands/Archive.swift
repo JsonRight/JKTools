@@ -16,19 +16,19 @@ extension JKTool {
             version: "1.0.0"
         )
         
-        @Argument(help: "Debug/Release...")
+        @Option(name: .shortAndLong, help: "Debug/Release...")
         var configuration: String
         
-        @Argument(help: "Scheme")
+        @Option(name: .shortAndLong, help: "Scheme")
         var scheme: String
         
-        @Argument(help: "内容格式请参照：JKTool config")
+        @Option(name: .long, help: "内容格式请参照：JKTool config")
         var configPath: String
         
-        @Argument(help: "是否导出IPA，default：true")
+        @Option(name: .shortAndLong, help: "是否导出IPA，default：true")
         var export: Bool?
         
-        @Argument(help: "执行路径")
+        @Option(name: .shortAndLong, help: "执行路径")
         var path: String?
 
         mutating func run() {
@@ -62,7 +62,7 @@ extension JKTool {
             po(tip: "======Archive项目完成[\(String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")]======")
             
             if export != false {
-                JKTool.Export.main([configuration,scheme,configPath,project.directoryPath])
+                JKTool.Export.main(["--configuration \(configuration)","--scheme \(scheme)","--config-path \(configPath)","--path \(project.directoryPath)"])
             }
         }
     }

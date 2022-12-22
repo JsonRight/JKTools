@@ -14,10 +14,10 @@ extension JKTool.Git {
             abstract: "prune")
         
         
-        @Argument(help: "递归子模块，default：false")
+        @Option(name: .shortAndLong, help: "递归子模块，default：false")
         var recursive: Bool?
         
-        @Argument(help: "执行路径")
+        @Option(name: .shortAndLong, help: "执行路径")
         var path: String?
         
         mutating func run() {

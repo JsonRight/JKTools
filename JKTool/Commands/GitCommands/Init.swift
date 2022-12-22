@@ -15,7 +15,7 @@ extension JKTool.Git {
             abstract: "init",
             version: "1.0.0")
         
-        @Argument(help: "执行目录")
+        @Option(name: .shortAndLong, help: "执行目录")
         var path: String?
         
         mutating func run() {

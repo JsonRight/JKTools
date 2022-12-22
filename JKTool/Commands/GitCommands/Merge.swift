@@ -14,16 +14,16 @@ extension JKTool.Git {
             abstract: "merge",
             version: "1.0.0")
         
-        @Argument(help: "Merge branch name")
+        @Option(name: .shortAndLong, help: "Merge branch name")
         var branch: String
         
-        @Argument(help: "squash，default：false")
+        @Option(name: .shortAndLong, help: "squash，default：false")
         var squash: Bool?
         
-        @Argument(help: "递归子模块，default：false")
+        @Option(name: .shortAndLong, help: "递归子模块，default：false")
         var recursive: Bool?
         
-        @Argument(help: "执行路径")
+        @Option(name: .shortAndLong, help: "执行路径")
         var path: String?
 
         

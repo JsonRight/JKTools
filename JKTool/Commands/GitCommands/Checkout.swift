@@ -13,16 +13,16 @@ extension JKTool.Git {
             _superCommandName: "git",
             abstract: "checkout")
         
-        @Argument(help: "Checkout branch")
+        @Option(name: .shortAndLong, help: "Checkout branch")
         var branch: String
         
-        @Argument(help: "递归子模块，default：false")
+        @Option(name: .shortAndLong, help: "递归子模块，default：false")
         var recursive: Bool?
         
-        @Argument(help: "强制 checkout，default：false")
+        @Option(name: .shortAndLong, help: "强制 checkout，default：false")
         var force: Bool?
         
-        @Argument(help: "执行路径")
+        @Option(name: .shortAndLong, help: "执行路径")
         var path: String?
         
         mutating func run() {

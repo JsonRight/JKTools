@@ -11,14 +11,14 @@ extension JKTool {
         static var configuration = CommandConfiguration(
             commandName: "shell",
             _superCommandName: "JKTool",
-            abstract: "shell",
+            abstract: "对于固定工程格式封装(对当前目录下及其子模块执行shell命令)",
             version: "1.0.0"
         )
         
-        @Argument(help: "命令内容")
+        @Option(name: .shortAndLong, help: "命令内容")
         var shell: String
         
-        @Argument(help: "执行路径")
+        @Option(name: .shortAndLong, help: "执行路径")
         var path: String?
 
         mutating func run() {

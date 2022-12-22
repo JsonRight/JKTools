@@ -26,16 +26,16 @@ extension JKTool.Git.Branch {
             abstract: "create a branch",
             version: "1.0.0")
         
-        @Argument(help: "create branch name")
+        @Option(name: .shortAndLong, help: "create branch name")
         var branch: String
         
-        @Argument(help: "递归子模块，default：false")
+        @Option(name: .shortAndLong, help: "递归子模块，default：false")
         var recursive: Bool?
         
-        @Argument(help: "执行日志，default：true")
+        @Option(name: .shortAndLong, help: "执行日志，default：true")
         var quiet: Bool?
         
-        @Argument(help: "执行路径")
+        @Option(name: .shortAndLong, help: "执行路径")
         var path: String?
         
         mutating func run() {
@@ -108,13 +108,13 @@ extension JKTool.Git.Branch.Del {
             version: "1.0.0")
 
         
-        @Argument(help: "del by branch")
+        @Option(name: .shortAndLong, help: "del by branch")
         var branch: String
         
-        @Argument(help: "递归子模块，default：false")
+        @Option(name: .shortAndLong, help: "递归子模块，default：false")
         var recursive: Bool?
         
-        @Argument(help: "执行路径")
+        @Option(name: .shortAndLong, help: "执行路径")
         var path: String?
         
         mutating func run() {
@@ -163,13 +163,13 @@ extension JKTool.Git.Branch.Del {
             version: "1.0.0")
 
         
-        @Argument(help: "del by branch")
+        @Option(name: .shortAndLong, help: "del by branch")
         var branch: String
         
-        @Argument(help: "是否递归，default：false")
+        @Option(name: .shortAndLong, help: "是否递归，default：false")
         var recursive: Bool?
         
-        @Argument(help: "工程存放路径！")
+        @Option(name: .shortAndLong, help: "工程存放路径！")
         var path: String?
         
         mutating func run() {

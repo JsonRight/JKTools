@@ -14,13 +14,13 @@ extension JKTool.Git {
             abstract: "commit",
             version: "1.0.0")
         
-        @Argument(help: "commit的信息")
+        @Option(name: .shortAndLong, help: "commit的信息")
         var message: String
         
-        @Argument(help: "递归子模块，default：false")
+        @Option(name: .shortAndLong, help: "递归子模块，default：false")
         var recursive: Bool?
         
-        @Argument(help: "执行目录")
+        @Option(name: .shortAndLong, help: "执行目录")
         var path: String?
         
         mutating func run() {
