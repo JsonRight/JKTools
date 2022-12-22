@@ -16,8 +16,8 @@ extension JKTool {
             version: "1.0.0"
         )
         
-        @Option(name: .shortAndLong, help: "Debug/Release...")
-        var configuration: String
+        @Option(name: .shortAndLong, help: "归档环境，default：Release")
+        var configuration: String = "Release"
         
         @Option(name: .shortAndLong, help: "Scheme")
         var scheme: String
@@ -26,7 +26,7 @@ extension JKTool {
         var configPath: String
         
         @Option(name: .shortAndLong, help: "是否导出IPA，default：true")
-        var export: Bool?
+        var export: Bool = true
         
         @Option(name: .shortAndLong, help: "执行路径")
         var path: String?
@@ -61,8 +61,8 @@ extension JKTool {
             
             po(tip: "======Archive项目完成[\(String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")]======")
             
-            if export != false {
-                JKTool.Export.main(["--configuration \(configuration)","--scheme \(scheme)","--config-path \(configPath)","--path \(project.directoryPath)"])
+            if export {
+                JKTool.Export.main(["--configuration","\(configuration)","--scheme","\(scheme)","--config-path","\(configPath)","--path","\(project.directoryPath)"])
             }
         }
     }

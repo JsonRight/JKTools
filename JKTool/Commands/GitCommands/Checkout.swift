@@ -17,10 +17,10 @@ extension JKTool.Git {
         var branch: String
         
         @Option(name: .shortAndLong, help: "递归子模块，default：false")
-        var recursive: Bool?
+        var recursive: Bool = false
         
         @Option(name: .shortAndLong, help: "强制 checkout，default：false")
-        var force: Bool?
+        var force: Bool = false
         
         @Option(name: .shortAndLong, help: "执行路径")
         var path: String?
@@ -29,7 +29,7 @@ extension JKTool.Git {
             
             func checkout(project: Project){
                 do {
-                    try shellOut(to: .gitCheckout(branch: branch, force: force ?? false), at: project.directoryPath)
+                    try shellOut(to: .gitCheckout(branch: branch, force: force), at: project.directoryPath)
                     po(tip: "【\(project.name)】Checkout[\(branch)]完成", type: .tip)
                 } catch {
                     let error = error as! ShellOutError
@@ -41,7 +41,7 @@ extension JKTool.Git {
                 return po(tip: "\(path ?? FileManager.default.currentDirectoryPath)目录没有检索到工程", type: .error)
             }
             
-            guard project.rootProject == project || recursive == true else {
+            guard project.rootProject == project || recursive else {
                 checkout(project: project)
                return
             }

@@ -29,7 +29,7 @@ extension JKTool.Git.Clone {
 
         
         @Option(name: .shortAndLong, help: "强制 clone，default：false")
-        var force: Bool?
+        var force: Bool = false
         
         @Option(name: .shortAndLong, help: "执行目录")
         var path: String?
@@ -84,7 +84,7 @@ extension JKTool.Git.Clone {
                return po(tip: "请在项目根目录执行脚本", type: .error)
             }
             
-            if force ?? false {
+            if force {
                 _ = try? shellOut(to: .removeFolder(from: project.checkoutsPath))
             }
             
@@ -151,7 +151,7 @@ extension JKTool.Git.Clone {
                 let error = error as! ShellOutError
                 po(tip:  error.message + error.output,type: .error)
             }
-            Sub.main(["--force \(true)","--path \(path)"])
+            Sub.main(["--force","\(true)","--path","\(path)"])
             po(tip: "======clone项目完成======")
         }
     }

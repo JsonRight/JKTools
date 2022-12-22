@@ -8,12 +8,6 @@
 import Foundation
 import Zip
 
-//struct Options: ParsableArguments {
-//    @Flag var tag: Bool
-//
-//    @Argument(parsing: .remaining, help: "zip文件保存对应的tag", completion: nil) var tagName: String
-//}
-
 extension JKTool.Git {
     
     struct Zipper: ParsableCommand {

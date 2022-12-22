@@ -18,10 +18,10 @@ extension JKTool.Git {
         var branch: String
         
         @Option(name: .shortAndLong, help: "squash，default：false")
-        var squash: Bool?
+        var squash: Bool = false
         
         @Option(name: .shortAndLong, help: "递归子模块，default：false")
-        var recursive: Bool?
+        var recursive: Bool = false
         
         @Option(name: .shortAndLong, help: "执行路径")
         var path: String?
@@ -44,7 +44,7 @@ extension JKTool.Git {
                 return po(tip: "\(path ?? FileManager.default.currentDirectoryPath)目录没有检索到工程", type: .error)
             }
             
-            guard project.rootProject == project || recursive == true else {
+            guard project.rootProject == project || recursive else {
                 merge(project: project)
                return
             }

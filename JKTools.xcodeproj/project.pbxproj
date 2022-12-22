@@ -14,7 +14,6 @@
 		BF25A43D2615DE1D00CB2F1B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BF25A43C2615DE1D00CB2F1B /* Assets.xcassets */; };
 		BF25A47A26170AA300CB2F1B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BF25A47926170AA300CB2F1B /* Main.storyboard */; };
 		BF26C475287C31090071E3F9 /* Upload.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF26C474287C31090071E3F9 /* Upload.swift */; };
-		BF26C59D287FB7920071E3F9 /* SubModuleUpdate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF26C591287FB7910071E3F9 /* SubModuleUpdate.swift */; };
 		BF284044288A7CBB002CC6A2 /* JKToolConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF284042288A7CA4002CC6A2 /* JKToolConfig.swift */; };
 		BF2BC8EE26202FDB005802E4 /* PreferencesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2BC8ED26202FDB005802E4 /* PreferencesViewController.swift */; };
 		BF2BC8F12620370D005802E4 /* PreferencesCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2BC8F02620370D005802E4 /* PreferencesCellView.swift */; };
@@ -147,7 +146,6 @@
 		BF25A4422615DE1D00CB2F1B /* JKTools.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = JKTools.entitlements; sourceTree = "<group>"; };
 		BF25A47926170AA300CB2F1B /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		BF26C474287C31090071E3F9 /* Upload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Upload.swift; sourceTree = "<group>"; };
-		BF26C591287FB7910071E3F9 /* SubModuleUpdate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubModuleUpdate.swift; sourceTree = "<group>"; };
 		BF284042288A7CA4002CC6A2 /* JKToolConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JKToolConfig.swift; sourceTree = "<group>"; };
 		BF2BC8ED26202FDB005802E4 /* PreferencesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesViewController.swift; sourceTree = "<group>"; };
 		BF2BC8F02620370D005802E4 /* PreferencesCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesCellView.swift; sourceTree = "<group>"; };
@@ -460,7 +458,6 @@
 				BF69D6C6286478EC009CE7D1 /* Status.swift */,
 				BF69D6AF28632E90009CE7D1 /* Tag.swift */,
 				BF69D6B328632EC1009CE7D1 /* SubModule.swift */,
-				BF26C591287FB7910071E3F9 /* SubModuleUpdate.swift */,
 				BF17DC212952B8D000E56FBE /* Zipper.swift */,
 				BF69D6A52862EA8D009CE7D1 /* Git.swift */,
 			);
@@ -790,7 +787,6 @@
 				BFF72C03295306770050122C /* ZipUtilities.swift in Sources */,
 				BF69D6742861BF01009CE7D1 /* BashCompletionsGenerator.swift in Sources */,
 				BFEB07B5286AA7DB00B5D197 /* Merge.swift in Sources */,
-				BF26C59D287FB7920071E3F9 /* SubModuleUpdate.swift in Sources */,
 				BF69D6BB2864789B009CE7D1 /* Init.swift in Sources */,
 				BF69D6BF286478B6009CE7D1 /* Push.swift in Sources */,
 				BF69D6792861BF01009CE7D1 /* HelpCommand.swift in Sources */,

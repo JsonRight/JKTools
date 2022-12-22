@@ -16,8 +16,8 @@ extension JKTool {
             version: "1.0.0"
         )
         
-        @Option(name: .shortAndLong, help: "Debug/Release...")
-        var configuration: String
+        @Option(name: .shortAndLong, help: "导出环境，default：Release")
+        var configuration: String = "Release"
         
         @Option(name: .shortAndLong, help: "Scheme")
         var scheme: String

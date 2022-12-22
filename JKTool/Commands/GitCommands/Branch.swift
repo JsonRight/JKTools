@@ -30,10 +30,10 @@ extension JKTool.Git.Branch {
         var branch: String
         
         @Option(name: .shortAndLong, help: "递归子模块，default：false")
-        var recursive: Bool?
+        var recursive: Bool = false
         
         @Option(name: .shortAndLong, help: "执行日志，default：true")
-        var quiet: Bool?
+        var quiet: Bool = true
         
         @Option(name: .shortAndLong, help: "执行路径")
         var path: String?
@@ -43,7 +43,7 @@ extension JKTool.Git.Branch {
             func create(project: Project){
                 do {
                     try shellOut(to: .gitCreateBranch(branch: branch), at: project.directoryPath)
-                    if quiet != false {po(tip: "【\(project.name)】Create branch完成", type: .tip)}
+                    if quiet {po(tip: "【\(project.name)】Create branch完成", type: .tip)}
                 } catch {
                     let error = error as! ShellOutError
                     po(tip: "【\(project.name)】 Create branch失败\n" + error.message + error.output,type: .warning)
@@ -59,10 +59,9 @@ extension JKTool.Git.Branch {
                return
             }
             
-            if quiet != false {po(tip: "======Create branch工程开始======", type: .tip)}
+            if quiet {po(tip: "======Create branch工程开始======", type: .tip)}
             
-            if recursive != true {
-                
+            guard recursive else {
                 create(project: project)
                 
                 return
@@ -79,7 +78,7 @@ extension JKTool.Git.Branch {
             
             create(project: project)
             
-            if quiet != false {po(tip: "======Create branch工程结束======")}
+            if quiet {po(tip: "======Create branch工程结束======")}
         }
         
     }
@@ -112,7 +111,7 @@ extension JKTool.Git.Branch.Del {
         var branch: String
         
         @Option(name: .shortAndLong, help: "递归子模块，default：false")
-        var recursive: Bool?
+        var recursive: Bool = false
         
         @Option(name: .shortAndLong, help: "执行路径")
         var path: String?
@@ -134,7 +133,7 @@ extension JKTool.Git.Branch.Del {
                 return po(tip: "\(path ?? FileManager.default.currentDirectoryPath)目录没有检索到工程", type: .error)
             }
             
-            guard project.rootProject == project || recursive == true else {
+            guard project.rootProject == project || recursive else {
                 del(project: project)
                return
             }
@@ -167,7 +166,7 @@ extension JKTool.Git.Branch.Del {
         var branch: String
         
         @Option(name: .shortAndLong, help: "是否递归，default：false")
-        var recursive: Bool?
+        var recursive: Bool = false
         
         @Option(name: .shortAndLong, help: "工程存放路径！")
         var path: String?
@@ -188,7 +187,7 @@ extension JKTool.Git.Branch.Del {
                 return po(tip: "\(path ?? FileManager.default.currentDirectoryPath)目录没有检索到工程", type: .error)
             }
             
-            guard project.rootProject == project || recursive == true else {
+            guard project.rootProject == project || recursive else {
                 del(project: project)
                return
             }

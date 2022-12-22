@@ -25,13 +25,13 @@ private struct Options: ParsableArguments {
     var simpleBuild: Bool = false
     
     @Option(name: .long, help: "是否使用缓存，default：true")
-    var cache: Bool?
+    var cache: Bool = true
     
     @Option(name: .shortAndLong, help: "代码环境，default：Release")
-    var configuration: String?
+    var configuration: String = "Release"
     
     @Option(name: .shortAndLong, help: "设备类型，default：iOS")
-    var sdk: String?
+    var sdk: String = "iOS"
     
     /*
      xcodebuild -workspace {...}.xcworkspace -scheme {...} -showBuildSettings  -destination "generic/platform=iOS"
@@ -119,8 +119,8 @@ extension JKTool.Build {
                 // 删除主项目旧.a相关文件
                 _ = try? shellOut(to: .removeFolder(from: project.rootProject.buildsPath + "/" + project.name))
                 
-                let configuration = options.configuration ?? "Release"
-                let sdk = options.sdk ?? "iOS"
+                let configuration = options.configuration
+                let sdk = options.sdk
                 
                 let json = try? shellOut(to: .list(isWorkspace: project.projectType.isWorkSpace(),projectName: project.projectType.name(), projectPath: project.directoryPath), at: project.directoryPath)
                 
@@ -302,8 +302,8 @@ extension JKTool.Build {
                 // 删除主项目旧.framework相关文件
                 _ = try? shellOut(to: .removeFolder(from: project.rootProject.buildsPath + "/" + project.name))
                 
-                let configuration = options.configuration ?? "Release"
-                let sdk = options.sdk ?? "iOS"
+                let configuration = options.configuration
+                let sdk = options.sdk
                 
                 let jsonStr = try? shellOut(to: .list(isWorkspace: project.projectType.isWorkSpace(),projectName: project.projectType.name(), projectPath: project.directoryPath), at: project.directoryPath)
                 
@@ -477,8 +477,8 @@ extension JKTool.Build {
                 // 删除主项目旧.xcframework相关文件
                 _ = try? shellOut(to: .removeFolder(from: project.rootProject.buildsPath + project.name))
                 
-                let configuration = options.configuration ?? "Release"
-                let sdk = options.sdk ?? "iOS"
+                let configuration = options.configuration
+                let sdk = options.sdk
                 
                 let json = try? shellOut(to: .list(isWorkspace: project.projectType.isWorkSpace(),projectName: project.projectType.name(), projectPath: project.directoryPath), at: project.directoryPath)
                 
@@ -649,9 +649,9 @@ extension JKTool.Build {
             func build(project:Project) {
                 switch project.buildType {
                 case .Framework:
-                    JKTool.Build.Framework.main()
+                    JKTool.Build.Framework.main(["--simple-build","\(options.simpleBuild)","--cache","\(options.cache)","--configuration","\(options.configuration)","--sdk","\(options.sdk)","--path","\(project.directoryPath)"])
                 case .Static:
-                    JKTool.Build.Static.main()
+                    JKTool.Build.Static.main(["--simple-build","\(options.simpleBuild)","--cache","\(options.cache)","--configuration","\(options.configuration)","--sdk","\(options.sdk)","--path","\(project.directoryPath)"])
                 case .Other:
                     po(tip:"【\(project.name)】无法检测出是Static或者Framework", type: .error)
                 }
