@@ -62,7 +62,7 @@ extension JKTool.Upload {
             abstract: "upload api",
             version: "1.0.0")
 
-        @Option(name: .shortAndLong, help: "内容格式请参照：JKTool config")
+        @Option(name: .long, help: "内容格式请参照：JKTool config")
         var configPath: String
         
         @Option(name: .shortAndLong, help: "执行路径")
@@ -108,7 +108,7 @@ extension JKTool.Upload {
         @Option(name: .shortAndLong, help: "Scheme")
         var scheme: String
         
-        @Option(name: .shortAndLong, help: "内容格式请参照：JKTool config")
+        @Option(name: .long, help: "内容格式请参照：JKTool config")
         var configPath: String
         
         @Option(name: .shortAndLong, help: "执行路径")

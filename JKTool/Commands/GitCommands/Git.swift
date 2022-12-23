@@ -18,7 +18,6 @@ extension JKTool {
                           Pull.self,
                           Push.self,
                           Prune.self,
-                          Rebase.self,
                           Merge.self,
                           Squash.self,
                           Branch.self,
