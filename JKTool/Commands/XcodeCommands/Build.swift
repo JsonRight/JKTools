@@ -21,7 +21,7 @@ extension JKTool {
 
 private struct Options: ParsableArguments {
     
-    @Option(name: .long, help: "简单处理build产物（仅编译，不使用缓存策略，不做后续处理），default：false")
+    @Option(name: .long, help: "仅编译，不使用缓存策略，不做后续处理，default：false")
     var simpleBuild: Bool = false
     
     @Option(name: .long, help: "是否使用缓存，default：true")
@@ -122,28 +122,8 @@ extension JKTool.Build {
                 let configuration = options.configuration
                 let sdk = options.sdk
                 
-                let json = try? shellOut(to: .list(isWorkspace: project.projectType.isWorkSpace(),projectName: project.projectType.entrance(), projectPath: project.directoryPath), at: project.directoryPath)
-                
-                guard let data = json?.data(using: .utf8), let configs = try? JSONDecoder().decode(ProjectListsModel.self, from:data), let scheme = findScheme(schemes: configs.project.schemes, projectName: project.destination) else {
+                guard let scheme = ProjectListsModel.projectList(project: project)?.defaultScheme(sdk) else {
                     return po(tip: "\(project.directoryPath)无法解析出正确的项目",type: .error)
-                }
-                
-                func findScheme(schemes:[String], projectName: String) ->String?{
-                    var scheme: String?
-                    if schemes.contains(projectName) {
-                        scheme = projectName
-                    } else {
-                        for sch in schemes {
-                            if sch.contains(projectName) && sch.contains(sdk) {
-                                scheme = sch
-                                break
-                            }
-                        }
-                        if scheme == nil {
-                            scheme = schemes.first
-                        }
-                    }
-                    return scheme
                 }
                 
                 let oldVersion = try? shellOut(to: .readVerison(path: "\(project.buildPath)/Universal/"))
@@ -305,28 +285,8 @@ extension JKTool.Build {
                 let configuration = options.configuration
                 let sdk = options.sdk
                 
-                let jsonStr = try? shellOut(to: .list(isWorkspace: project.projectType.isWorkSpace(),projectName: project.projectType.entrance(), projectPath: project.directoryPath), at: project.directoryPath)
-                
-                guard let data = jsonStr?.data(using: .utf8), let configs = try? JSONDecoder().decode(ProjectListsModel.self, from:data), let scheme = findScheme(schemes: configs.project.schemes, projectName: project.destination) else {
+                guard let scheme = ProjectListsModel.projectList(project: project)?.defaultScheme(sdk) else {
                     return po(tip: "\(project.directoryPath)无法解析出正确的项目",type: .error)
-                }
-                
-                func findScheme(schemes:[String],projectName: String) ->String?{
-                    var scheme: String?
-                    if schemes.contains(projectName) {
-                        scheme = projectName
-                    } else {
-                        for sch in schemes {
-                            if sch.contains(projectName) && sch.contains(sdk) {
-                                scheme = sch
-                                break
-                            }
-                        }
-                        if scheme == nil {
-                            scheme = schemes.first
-                        }
-                    }
-                    return scheme
                 }
                 
                 let oldVersion = (try? shellOut(to: .readVerison(path: "\(project.buildPath)/Universal/")))
@@ -480,28 +440,8 @@ extension JKTool.Build {
                 let configuration = options.configuration
                 let sdk = options.sdk
                 
-                let json = try? shellOut(to: .list(isWorkspace: project.projectType.isWorkSpace(),projectName: project.projectType.entrance(), projectPath: project.directoryPath), at: project.directoryPath)
-                
-                guard let data = json?.data(using: .utf8), let configs = try? JSONDecoder().decode(ProjectListsModel.self, from:data), let scheme = findScheme(schemes: configs.project.schemes, projectName: project.destination) else {
+                guard let scheme = ProjectListsModel.projectList(project: project)?.defaultScheme(sdk) else {
                     return po(tip: "\(project.directoryPath)无法解析出正确的项目",type: .error)
-                }
-                
-                func findScheme(schemes:[String],projectName: String) ->String?{
-                    var scheme: String?
-                    if schemes.contains(projectName) {
-                        scheme = projectName
-                    } else {
-                        for sch in schemes {
-                            if sch.contains(projectName) && sch.contains(sdk) {
-                                scheme = sch
-                                break
-                            }
-                        }
-                        if scheme == nil {
-                            scheme = schemes.first
-                        }
-                    }
-                    return scheme
                 }
                 
                 let oldVersion = try? shellOut(to: .readVerison(path: "\(project.buildPath)/Universal/"))

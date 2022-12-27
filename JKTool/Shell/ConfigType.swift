@@ -262,6 +262,33 @@ public struct ProjectListsModel: Decodable {
         var targets: [String]
     }
     var project: ProjectModel
+    
+    func defaultScheme(_ sdk: String) -> String? {
+        var scheme: String?
+        if self.project.schemes.contains(self.project.name) {
+            scheme = self.project.name
+        } else {
+            for sch in self.project.schemes {
+                if sch.contains(self.project.name) && sch.contains(sdk) {
+                    scheme = sch
+                    break
+                }
+            }
+            if scheme == nil {
+                scheme = self.project.schemes.first
+            }
+        }
+        return scheme
+    }
+    
+    static func projectList(project: Project) -> ProjectListsModel? {
+        guard let json = try? shellOut(to: .list(isWorkspace: project.projectType.isWorkSpace(),projectName: project.projectType.entrance(), projectPath: project.directoryPath), at: project.directoryPath),
+              let data = json.data(using: .utf8),
+              let projectList = try? JSONDecoder().decode(ProjectListsModel.self, from:data) else {
+            return nil
+        }
+        return projectList
+    }
 }
 
 public class JKToolConfig {
