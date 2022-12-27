@@ -29,16 +29,16 @@ extension JKTool.Git {
                 let status = try? shellOut(to: .gitStatus(), at: project.directoryPath)
                 
                 guard  status?.count ?? 0 > 0 else {
-                    po(tip: "【\(project.name)】 没有需要提交的内容\n",type: .tip)
+                    po(tip: "【\(project.destination)】 没有需要提交的内容\n",type: .tip)
                     return
                 }
                 
                 do {
                     try shellOut(to: .gitCommit(message: message), at: project.directoryPath)
-                    po(tip: "【\(project.name)】Commit完成", type: .tip)
+                    po(tip: "【\(project.destination)】Commit完成", type: .tip)
                 } catch {
                     let error = error as! ShellOutError
-                    po(tip: "【\(project.name)】 Commit失败\n" + error.message + error.output,type: .warning)
+                    po(tip: "【\(project.destination)】 Commit失败\n" + error.message + error.output,type: .warning)
                 }
             }
             guard let project = Project.project(directoryPath: path ?? FileManager.default.currentDirectoryPath) else {
@@ -50,7 +50,7 @@ extension JKTool.Git {
                 let status = try? shellOut(to: .gitStatus(), at: project.directoryPath)
                 
                 guard  status?.count ?? 0 > 0 else {
-                    po(tip: "【\(project.name)】 没有需要提交的内容\n",type: .tip)
+                    po(tip: "【\(project.destination)】 没有需要提交的内容\n",type: .tip)
                     return
                 }
                 commit(project: project)
@@ -68,7 +68,7 @@ extension JKTool.Git {
                 let status = try? shellOut(to: .gitStatus(), at: pro.directoryPath)
                 
                 guard  status?.count ?? 0 > 0 else {
-                    po(tip: "【\(pro.name)】 没有需要提交的内容\n",type: .tip)
+                    po(tip: "【\(pro.destination)】 没有需要提交的内容\n",type: .tip)
                     continue
                 }
                 commit(project: pro)
@@ -77,7 +77,7 @@ extension JKTool.Git {
             let status = try? shellOut(to: .gitStatus(), at: project.directoryPath)
             
             guard  status?.count ?? 0 > 0 else {
-                po(tip: "【\(project.name)】 没有需要提交的内容\n",type: .tip)
+                po(tip: "【\(project.destination)】 没有需要提交的内容\n",type: .tip)
                 return
             }
             

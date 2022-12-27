@@ -8,11 +8,7 @@
 
 import Foundation
 
-public func nameForPath(path: String) ->String {
-    return URL(fileURLWithPath: path).lastPathComponent
-}
-
-public func schemeForPath(path: String) ->String {
+public func destinationForPath(path: String) ->String {
     return URL(fileURLWithPath: path).lastPathComponent
 }
 
@@ -44,7 +40,9 @@ public class Project {
                 return false
             }
         }
-        func name() -> String {
+        
+        // 工程开启入口名称
+        func entrance() -> String {
             switch self {
             case .xcodeproj(let string):
                 return string
@@ -98,7 +96,7 @@ public class Project {
         
         var buildType = ProjectBuildType.Other
         
-        guard let fileData = try? Data(contentsOf: URL(fileURLWithPath: self.directoryPath + "/\(self.projectType.name())/project.pbxproj")) else {
+        guard let fileData = try? Data(contentsOf: URL(fileURLWithPath: self.directoryPath + "/\(self.projectType.entrance())/project.pbxproj")) else {
             return buildType
         }
         guard let plist = try? PropertyListSerialization.propertyList(from: fileData, options: .mutableContainersAndLeaves, format: nil) as? [String:Any] else {
@@ -145,7 +143,7 @@ public class Project {
         
         var bundleName = ""
         
-        guard let fileData = try? Data(contentsOf: URL(fileURLWithPath: self.directoryPath + "/\(self.projectType.name())/project.pbxproj")) else {
+        guard let fileData = try? Data(contentsOf: URL(fileURLWithPath: self.directoryPath + "/\(self.projectType.entrance())/project.pbxproj")) else {
             return bundleName
         }
         guard let plist = try? PropertyListSerialization.propertyList(from: fileData, options: .mutableContainersAndLeaves, format: nil) as? [String:Any] else {
@@ -186,9 +184,9 @@ public class Project {
         
         return bundleName
     }()
-    
-    lazy var name: String = {
-        return nameForPath(path: self.directoryPath)
+    // 工程所在目录名称
+    lazy var destination: String = {
+        return destinationForPath(path: self.directoryPath)
     }()
     
     lazy var modulefilePath: String = {
@@ -300,9 +298,9 @@ extension Project {
             do {
                 let data = try JSONSerialization.data(withJSONObject: list, options: .fragmentsAllowed)
                 try data.write(to: URL(fileURLWithPath: self.recordListPath), options: .atomicWrite)
-                po(tip: "【\(self.name)】Modulefile.recordList 写入成功")
+                po(tip: "【\(self.destination)】Modulefile.recordList 写入成功")
             } catch {
-                po(tip: "【\(self.name)】Modulefile.recordList 写入失败",type: .error)
+                po(tip: "【\(self.destination)】Modulefile.recordList 写入失败",type: .error)
             }
             return oldRecordList.compactMap { record in
                 if !list.contains(record) {

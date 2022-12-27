@@ -57,7 +57,7 @@ extension JKTool.Git {
                     JKTool.Git.Branch.Del.Origin.main(["--branch","\(from)","--recursive","\(false)","--path","\(project.directoryPath)"])
                 }
                 
-                po(tip: "【\(project.name)】Merge squash完成", type: .tip)
+                po(tip: "【\(project.destination)】Merge squash完成", type: .tip)
             }
             
             guard let project = Project.project(directoryPath: path ?? FileManager.default.currentDirectoryPath) else {
@@ -68,7 +68,7 @@ extension JKTool.Git {
                 let status = try? shellOut(to: .gitStatus(), at: project.directoryPath)
                 
                 guard  status?.count ?? 0 <= 0 else {
-                    return po(tip: "【\(project.name)】 存在需要提交的内容",type: .error)
+                    return po(tip: "【\(project.destination)】 存在需要提交的内容",type: .error)
                 }
                 squash(project: project)
                return
@@ -84,7 +84,7 @@ extension JKTool.Git {
                 let status = try? shellOut(to: .gitStatus(), at: pro.directoryPath)
                 
                 guard  status?.count ?? 0 <= 0 else {
-                    return po(tip: "【\(pro.name)】 存在需要提交的内容",type: .error)
+                    return po(tip: "【\(pro.destination)】 存在需要提交的内容",type: .error)
                 }
                 squash(project: pro)
             }
@@ -92,7 +92,7 @@ extension JKTool.Git {
             let status = try? shellOut(to: .gitStatus(), at: project.directoryPath)
             
             guard  status?.count ?? 0 <= 0 else {
-                return po(tip: "【\(project.name)】 存在需要提交的内容",type: .error)
+                return po(tip: "【\(project.destination)】 存在需要提交的内容",type: .error)
             }
             squash(project: project)
             

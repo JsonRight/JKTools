@@ -43,10 +43,10 @@ extension JKTool.Git.Branch {
             func create(project: Project){
                 do {
                     try shellOut(to: .gitCreateBranch(branch: branch), at: project.directoryPath)
-                    if quiet {po(tip: "【\(project.name)】Create branch完成", type: .tip)}
+                    if quiet {po(tip: "【\(project.destination)】Create branch完成", type: .tip)}
                 } catch {
                     let error = error as! ShellOutError
-                    po(tip: "【\(project.name)】 Create branch失败\n" + error.message + error.output,type: .warning)
+                    po(tip: "【\(project.destination)】 Create branch失败\n" + error.message + error.output,type: .warning)
                 }
             }
             
@@ -122,10 +122,10 @@ extension JKTool.Git.Branch.Del {
                 
                 do {
                     try shellOut(to: .gitDelLocalBranch(branch: branch), at: project.directoryPath)
-                    po(tip: "【\(project.name)】Del local完成", type: .tip)
+                    po(tip: "【\(project.destination)】Del local完成", type: .tip)
                 } catch {
                     let error = error as! ShellOutError
-                    po(tip: "【\(project.name)】 Del local失败\n" + error.message + error.output,type: .error)
+                    po(tip: "【\(project.destination)】 Del local失败\n" + error.message + error.output,type: .error)
                 }
             }
             
@@ -176,10 +176,10 @@ extension JKTool.Git.Branch.Del {
             func del(project: Project){
                 do {
                     try shellOut(to: .gitDelOriginBranch(branch: branch), at: project.directoryPath)
-                    po(tip: "【\(project.name)】Del origin完成", type: .tip)
+                    po(tip: "【\(project.destination)】Del origin完成", type: .tip)
                 } catch {
                     let error = error as! ShellOutError
-                    po(tip: "【\(project.name)】 Del origin失败\n" + error.message + error.output,type: .error)
+                    po(tip: "【\(project.destination)】 Del origin失败\n" + error.message + error.output,type: .error)
                 }
             }
             

@@ -31,15 +31,15 @@ extension JKTool.Git {
                 }
                 
                 guard let branch = branch else {
-                    return po(tip: "【\(project.name)】 Push失败\n" + "无法检索出当前分支名",type: .error)
+                    return po(tip: "【\(project.destination)】 Push失败\n" + "无法检索出当前分支名",type: .error)
                 }
                 
                 do {
                     try shellOut(to: .gitPush(branch: branch), at: project.directoryPath)
-                    po(tip: "【\(project.name)】Push[\(branch)]完成", type: .tip)
+                    po(tip: "【\(project.destination)】Push[\(branch)]完成", type: .tip)
                 } catch {
                     let error = error as! ShellOutError
-                    po(tip: "【\(project.name)】 Push[\(branch)]失败\n" + error.message + error.output,type: .warning)
+                    po(tip: "【\(project.destination)】 Push[\(branch)]失败\n" + error.message + error.output,type: .warning)
                 }
             }
             

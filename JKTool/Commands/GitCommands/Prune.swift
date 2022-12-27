@@ -25,10 +25,10 @@ extension JKTool.Git {
             func prune(project: Project){
                 do {
                     let result = try shellOut(to: .gitPrune(), at: project.directoryPath)
-                    po(tip: "【\(project.name)】Prune完成\n\(result)", type: .tip)
+                    po(tip: "【\(project.destination)】Prune完成\n\(result)", type: .tip)
                 } catch {
                     let error = error as! ShellOutError
-                    po(tip: "【\(project.name)】 Prune失败\n" + error.message + error.output,type: .warning)
+                    po(tip: "【\(project.destination)】 Prune失败\n" + error.message + error.output,type: .warning)
                 }
             }
             
