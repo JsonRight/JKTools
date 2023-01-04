@@ -35,7 +35,7 @@ private struct Options: ParsableArguments {
     
     
     func encode(appedingCopyPath:Bool, projectPath: String?) -> Array<String> {
-        var args: [String] = []
+        var args = [String]()
         if let cache = cache {
             args.append(contentsOf: ["--cache",String(cache)])
         }

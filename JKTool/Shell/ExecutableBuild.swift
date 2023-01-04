@@ -174,7 +174,7 @@ public extension ShellOutCommand {
     static func export(scheme:String, projectPath:String,configuration:String, export:String, nameSuffix:String?,toSavePath:String?) -> ShellOutCommand {
         
         var shell = "xcodebuild -exportArchive -archivePath \(projectPath)/Build/\(configuration)/\(scheme).xcarchive -exportPath \(projectPath)/Build/\(configuration) -exportOptionsPlist \(export)"
-        if let toSavePath = toSavePath ,toSavePath != "" {
+        if let toSavePath = toSavePath {
             shell.connected(andCommand: "cp -R \(projectPath)/Build/\(configuration)/\(scheme).ipa \(toSavePath)/\(scheme)\(configuration)\(nameSuffix ?? "").ipa")
         }
         return ShellOutCommand(string: shell)

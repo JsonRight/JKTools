@@ -29,7 +29,7 @@ extension JKTool {
                    "exportOptionsPath": "export.plist路径",
                    "saveConfig": {
                      "nameSuffix": "String",
-                     "path": "绝对路径"
+                     "path": "路径"
                    }
                  },
                  "uploadConfig": {
