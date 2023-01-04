@@ -7,18 +7,6 @@
 
 import Foundation
 
-extension JKTool {
-    struct Build: ParsableCommand {
-        static var configuration = CommandConfiguration(
-            commandName: "build",
-            _superCommandName: "JKTool",
-            abstract: "build部分命令对于固定工程格式封装",
-            version: "1.0.0",
-            subcommands: [Clean.self,Static.self,Framework.self,XCFramework.self,All.self],
-            defaultSubcommand: All.self, helpNames: nil)
-    }
-}
-
 private struct Options: ParsableArguments {
     
     @Option(name: .long, help: "是否使用缓存，default：true")
@@ -39,29 +27,12 @@ private struct Options: ParsableArguments {
     @Option(name: .shortAndLong, help: "执行路径")
     var path: String?
     
-    @Option(name: .long, help: "副本存储路径【copyPath/{*.a\\*.framework\\*.xcframework\\Header}】")
+    @Option(name: .long, help: "build产物副本存储路径【copyPath/{*.a\\*.framework\\*.xcframework\\Header}】")
     var copyPath: String?
-}
-
-private struct AllOptions: ParsableArguments {
     
-    @Option(name: .long, help: "是否使用缓存，default：true")
-    var cache: Bool?
+    @Option(name: .long, help: "检查本地是否有自定义脚本，若有则执行自定义脚本[{projectPath}/build.sh]")
+    var checkCustomBuildScript: Bool?
     
-    @Option(name: .shortAndLong, help: "代码环境，default：Release")
-    var configuration: String?
-    
-    @Option(name: .shortAndLong, help: "设备类型，default：iOS")
-    var sdk: String?
-    
-    /*
-     xcodebuild -workspace {...}.xcworkspace -scheme {...} -showBuildSettings  -destination "generic/platform=iOS"
-     @Option(name: .shortAndLong, help: ".xcconfig路径")
-     var xcconfigPath: String?
-     */
-    
-    @Option(name: .shortAndLong, help: "执行路径")
-    var path: String?
     
     func encode(appedingCopyPath:Bool, projectPath: String?) -> Array<String> {
         var args: [String] = []
@@ -74,12 +45,100 @@ private struct AllOptions: ParsableArguments {
         if let sdk = sdk {
             args.append(contentsOf: ["--sdk",String(sdk)])
         }
+        
+        if appedingCopyPath, let copyPath = copyPath {
+            args.append(contentsOf: ["--copy-path",String(copyPath)])
+        }
+        
         if let projectPath = projectPath {
             args.append(contentsOf: ["--path",String(projectPath)])
         }
+        
+        if let checkCustomBuildScript = checkCustomBuildScript {
+            args.append(contentsOf: ["--check-custom-build-script",String(checkCustomBuildScript)])
+        }
+        
         return args
       }
 }
+
+extension JKTool {
+    struct Build: ParsableCommand {
+        static var configuration = CommandConfiguration(
+            commandName: "build",
+            _superCommandName: "JKTool",
+            abstract: "build部分命令对于固定工程格式封装",
+            version: "1.0.0",
+            subcommands: [Clean.self,Static.self,Framework.self,XCFramework.self, Other.self])
+        
+        @OptionGroup private var options: Options
+
+        mutating func run() {
+            func build(project:Project,appedingCopyPath:Bool) {
+                
+                let args = options.encode(appedingCopyPath:appedingCopyPath,projectPath: project.directoryPath)
+                
+                switch project.buildType {
+                case .Framework:
+                    JKTool.Build.Framework.main(args)
+                case .Static:
+                    JKTool.Build.Static.main(args)
+                case .Application:
+                    break
+                case .Other:
+                    JKTool.Build.Other.main(args)
+                }
+            }
+            
+            guard let project = Project.project(directoryPath: options.path ?? FileManager.default.currentDirectoryPath) else {
+                return po(tip: "\(options.path ?? FileManager.default.currentDirectoryPath)目录不存在", type: .error)
+            }
+            
+            guard project.rootProject == project else {
+                if !project.projectType.vaild() {
+                    return
+                }
+                
+                build(project: project, appedingCopyPath: true)
+                
+               return
+            }
+            
+            
+            guard project.recordList.count > 0 else {
+                
+                if !project.projectType.vaild() {
+                    return
+                }
+                
+                build(project: project, appedingCopyPath: true)
+
+               return
+            }
+            
+            po(tip: "======build项目开始======")
+            let date = Date.init().timeIntervalSince1970
+            for record in project.recordList {
+    
+                guard let subProject = Project.project(directoryPath: "\(project.checkoutsPath)/\(record)") else {
+                    po(tip:"\(record) 工程不存在，请检查 Modulefile.recordList 是否为最新内容",type: .warning)
+                    continue
+                }
+                
+                build(project: subProject, appedingCopyPath: false)
+            }
+            
+            switch project.buildType {
+                case .Static,.Framework:
+                    build(project: project, appedingCopyPath: true)
+                default: break
+            }
+            
+            po(tip: "======build项目完成[\(String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")]======")
+        }
+    }
+}
+
 
 extension JKTool.Build {
     
@@ -95,7 +154,6 @@ extension JKTool.Build {
             func clean(project:Project) {
                 po(tip:"【\(project.destination)】clean开始")
                 let date = Date.init().timeIntervalSince1970
-                let isRootProject = (project == project.rootProject)
                 // 删除主项目旧相关文件
                 if project != project.rootProject {
                     _ = try? shellOut(to: .removeFolder(from: project.rootProject.buildsPath + "/" + project.destination))
@@ -285,7 +343,23 @@ extension JKTool.Build {
                 return po(tip: "\(options.path ?? FileManager.default.currentDirectoryPath)目录不存在", type: .error)
             }
             
+            let buildScript = try? String(contentsOf: URL(fileURLWithPath: project.buildScriptPath))
+            
+            if let buildScript = buildScript {
+                do {
+                    try shellOut(to: ShellOutCommand(string: buildScript),at: project.directoryPath)
+                } catch  {
+                    let error = error as! ShellOutError
+                    po(tip: "【\(project.destination)】build.sh run error：\n" + error.message + error.output,type: .error)
+                }
+                return
+            }
+            
             if !project.projectType.vaild() {
+                return
+            }
+            
+            if project.buildType != .Static {
                 return
             }
             
@@ -422,7 +496,23 @@ extension JKTool.Build {
                 return po(tip: "\(options.path ?? FileManager.default.currentDirectoryPath)目录不存在", type: .error)
             }
             
+            let buildScript = try? String(contentsOf: URL(fileURLWithPath: project.buildScriptPath))
+            
+            if let buildScript = buildScript {
+                do {
+                    try shellOut(to: ShellOutCommand(string: buildScript),at: project.directoryPath)
+                } catch  {
+                    let error = error as! ShellOutError
+                    po(tip: "【\(project.destination)】build.sh run error：\n" + error.message + error.output,type: .error)
+                }
+                return
+            }
+            
             if !project.projectType.vaild() {
+                return
+            }
+            
+            if project.buildType != .Framework {
                 return
             }
             
@@ -562,9 +652,26 @@ extension JKTool.Build {
                 return po(tip: "\(options.path ?? FileManager.default.currentDirectoryPath)目录不存在", type: .error)
             }
             
+            let buildScript = try? String(contentsOf: URL(fileURLWithPath: project.buildScriptPath))
+            
+            if let buildScript = buildScript {
+                do {
+                    try shellOut(to: ShellOutCommand(string: buildScript),at: project.directoryPath)
+                } catch  {
+                    let error = error as! ShellOutError
+                    po(tip: "【\(project.destination)】build.sh run error：\n" + error.message + error.output,type: .error)
+                }
+                return
+            }
+            
             if !project.projectType.vaild() {
                 return
             }
+            
+            if project.buildType != .Framework {
+                return
+            }
+            
             build(project: project)
               
         }
@@ -594,7 +701,6 @@ extension JKTool.Build {
                     _ = try? shellOut(to: .copyFile(from: project.directoryPath, to: copyPath))
                 }
                 
-                
                 po(tip:"【\(project.destination)】Copy完成[\(String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")]")
             }
             
@@ -602,82 +708,28 @@ extension JKTool.Build {
                 return po(tip: "\(options.path ?? FileManager.default.currentDirectoryPath)目录不存在", type: .error)
             }
             
-            build(project: project)
+            let buildScript = try? String(contentsOf: URL(fileURLWithPath: project.buildScriptPath))
             
-        }
-    }
-}
-
-extension JKTool.Build{
-    struct All: ParsableCommand {
-        static var configuration = CommandConfiguration(
-            commandName: "all",
-            _superCommandName: "build",
-            abstract: "动态解析项目编译成.a｜.framework文件",
-            version: "1.0.0")
-
-        @OptionGroup private var options: AllOptions
-
-        mutating func run() {
-            func build(project:Project,appedingCopyPath:Bool) {
-                
-                let args = options.encode(appedingCopyPath:appedingCopyPath,projectPath: project.directoryPath)
-                
-                switch project.buildType {
+            if let buildScript = buildScript {
+                do {
+                    try shellOut(to: ShellOutCommand(string: buildScript),at: project.directoryPath)
+                } catch  {
+                    let error = error as! ShellOutError
+                    po(tip: "【\(project.destination)】build.sh run error：\n" + error.message + error.output,type: .error)
+                }
+                return
+            }
+            
+            switch project.buildType {
                 case .Framework:
-                    JKTool.Build.Framework.main(args)
+                    po(tip: "\(options.path ?? FileManager.default.currentDirectoryPath)检测到可以使用Framework编译，请确认命令", type: .warning)
                 case .Static:
-                    JKTool.Build.Static.main(args)
+                    po(tip: "\(options.path ?? FileManager.default.currentDirectoryPath)检测到可以使用Framework编译，请确认命令", type: .warning)
                 case .Application:
-                    break
+                    po(tip: "\(options.path ?? FileManager.default.currentDirectoryPath)检测到是一个App，请确认命令", type: .warning)
                 case .Other:
-                    JKTool.Build.Other.main(args)
-                }
+                    build(project: project)
             }
-            
-            guard let project = Project.project(directoryPath: options.path ?? FileManager.default.currentDirectoryPath) else {
-                return po(tip: "\(options.path ?? FileManager.default.currentDirectoryPath)目录不存在", type: .error)
-            }
-            
-            guard project.rootProject == project else {
-                if !project.projectType.vaild() {
-                    return
-                }
-                
-                build(project: project, appedingCopyPath: true)
-                
-               return
-            }
-            
-            
-            guard project.recordList.count > 0 else {
-                
-                if !project.projectType.vaild() {
-                    return
-                }
-                
-                build(project: project, appedingCopyPath: true)
-
-               return
-            }
-            
-            po(tip: "======All build项目开始======")
-            let date = Date.init().timeIntervalSince1970
-            for record in project.recordList {
-    
-                guard let subProject = Project.project(directoryPath: "\(project.checkoutsPath)/\(record)") else {
-                    po(tip:"\(record) 工程不存在，请检查 Modulefile.recordList 是否为最新内容",type: .warning)
-                    continue
-                }
-                
-                build(project: subProject, appedingCopyPath: false)
-            }
-            
-            if project.projectType.vaild() {
-                build(project: project, appedingCopyPath: true)
-            }
-            
-            po(tip: "======All build项目完成[\(String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")]======")
         }
     }
 }

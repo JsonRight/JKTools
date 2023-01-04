@@ -11,25 +11,12 @@ extension JKTool.Git {
         static var configuration = CommandConfiguration(
             commandName: "clone",
             _superCommandName: "git",
-            abstract: "clone",
+            abstract: "利用git clone构建/更新项目结构",
             version: "1.0.0",
-            subcommands: [Sub.self, All.self],
-            defaultSubcommand: Sub.self)
-    }
-}
-
-
-extension JKTool.Git.Clone {
-    struct Sub: ParsableCommand {
-        static var configuration = CommandConfiguration(
-            commandName: "sub",
-            _superCommandName: "clone",
-            abstract: "clone sub",
-            version: "1.0.0")
-
+            subcommands: [Init.self])
         
         @Option(name: .shortAndLong, help: "强制 clone，default：false")
-        var force: Bool = false
+        var force: Bool?
         
         @Option(name: .shortAndLong, help: "执行目录")
         var path: String?
@@ -84,7 +71,7 @@ extension JKTool.Git.Clone {
                return po(tip: "请在项目根目录执行脚本", type: .error)
             }
             
-            if force {
+            if force == true {
                 _ = try? shellOut(to: .removeFolder(from: project.checkoutsPath))
             }
             
@@ -95,12 +82,15 @@ extension JKTool.Git.Clone {
             po(tip: "======clone子模块完成======")
         }
     }
-    
-    struct All: ParsableCommand {
+}
+
+
+extension JKTool.Git.Clone {
+    struct Init: ParsableCommand {
         static var configuration = CommandConfiguration(
-            commandName: "all",
+            commandName: "init",
             _superCommandName: "clone",
-            abstract: "clone all",
+            abstract: "clone项目，并利用git clone构建/更新项目结构",
             version: "1.0.0")
 
         @Option(name: .shortAndLong, help: "项目git地址")
@@ -109,49 +99,40 @@ extension JKTool.Git.Clone {
         @Option(name: .shortAndLong, help: "保存目录【绝对路径】")
         var path: String
         
+        @Option(name: .shortAndLong, help: "强制 clone，default：false")
+        var force: Bool?
+        
         @Option(name: .shortAndLong, help: "分支名")
         var branch: String?
         
         mutating func run() {
             
             po(tip: "======开始准备clone项目======")
-            do {
-                try shellOut(to: .removeFolder(from: path))
-            } catch {
-                po(tip: "\(path) 无法删除",type: .warning)
+            let exist = FileManager.default.fileExists(atPath: path)
+            
+            if force == true && exist {
+                do {
+                    try shellOut(to: .removeFolder(from: path))
+                } catch {
+                    po(tip: "\(path) 无法删除",type: .error)
+                }
             }
-//            guard let urr = URL(string: url) else {
-//                return
-//            }
-//            let session = URLSession.shared
-//
-//            let path = path
-//            var sema = DispatchSemaphore( value: 0 )
-//            let task = session.downloadTask(with: urr) { location, response, error in
-//
-//                guard let locationPath = location?.path else {
-//                    return
-//                }
-//
-//                let fileManager = FileManager.default
-//                do {
-//                    try fileManager.moveItem(atPath: locationPath, toPath: path)
-//                } catch {
-//                    po(tip: "下载失败",type: .error)
-//                }
-//                sema.signal()
-//            }
-//
-//            task.resume()
-//
-//            sema.wait()
             do {
                 try shellOut(to: .gitClone(url: url, to: path, branch: branch))
             } catch {
                 let error = error as! ShellOutError
                 po(tip:  error.message + error.output,type: .error)
             }
-            Sub.main(["--force","\(true)","--path","\(path)"])
+            
+            var args = [String]()
+            
+            if let force = force {
+                args.append(contentsOf: ["--force",String(force)])
+            }
+            
+            args.append(contentsOf: ["--path",String(path)])
+            
+            JKTool.Git.Clone.main(args)
             po(tip: "======clone项目完成======")
         }
     }

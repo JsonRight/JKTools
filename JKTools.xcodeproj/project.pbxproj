@@ -86,6 +86,7 @@
 		BF70770228782F9500F71AEB /* Branch.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF70770128782F9500F71AEB /* Branch.swift */; };
 		BF85BADF2886BB5F00E916AD /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF85BADE2886BB5F00E916AD /* Config.swift */; };
 		BF8A3DAF2918FF6900E77E3D /* ShellOut.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA5290D2635169A003427A8 /* ShellOut.swift */; };
+		BF97BF7629656EB8009D4EFE /* Update.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF97BF7529656EB8009D4EFE /* Update.swift */; };
 		BFA528EC26351606003427A8 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA528EB26351606003427A8 /* main.swift */; };
 		BFA528F326351634003427A8 /* JKTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA528F226351634003427A8 /* JKTool.swift */; };
 		BFA528FB26351659003427A8 /* ANSIProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA528F726351659003427A8 /* ANSIProperties.swift */; };
@@ -216,6 +217,7 @@
 		BF7076FE28781FC500F71AEB /* Shell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shell.swift; sourceTree = "<group>"; };
 		BF70770128782F9500F71AEB /* Branch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Branch.swift; sourceTree = "<group>"; };
 		BF85BADE2886BB5F00E916AD /* Config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
+		BF97BF7529656EB8009D4EFE /* Update.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Update.swift; sourceTree = "<group>"; };
 		BFA528E926351606003427A8 /* JKTool */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = JKTool; sourceTree = BUILT_PRODUCTS_DIR; };
 		BFA528EB26351606003427A8 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		BFA528F226351634003427A8 /* JKTool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JKTool.swift; sourceTree = "<group>"; };
@@ -464,6 +466,7 @@
 		BF69D6B7286331BB009CE7D1 /* Commands */ = {
 			isa = PBXGroup;
 			children = (
+				BF97BF7729656EC3009D4EFE /* ModuleCommands */,
 				BF69D6A82862F662009CE7D1 /* GitCommands */,
 				BF69D6A72862F64D009CE7D1 /* XcodeCommands */,
 				BF70770028781FCC00F71AEB /* ShellCommands */,
@@ -486,6 +489,14 @@
 				BF85BADE2886BB5F00E916AD /* Config.swift */,
 			);
 			path = HelpCommand;
+			sourceTree = "<group>";
+		};
+		BF97BF7729656EC3009D4EFE /* ModuleCommands */ = {
+			isa = PBXGroup;
+			children = (
+				BF97BF7529656EB8009D4EFE /* Update.swift */,
+			);
+			path = ModuleCommands;
 			sourceTree = "<group>";
 		};
 		BFA528EA26351606003427A8 /* JKTool */ = {
@@ -755,6 +766,7 @@
 				BF69D6C1286478C5009CE7D1 /* Prune.swift in Sources */,
 				BF26C475287C31090071E3F9 /* Upload.swift in Sources */,
 				BF17DC222952B8D000E56FBE /* Zipper.swift in Sources */,
+				BF97BF7629656EB8009D4EFE /* Update.swift in Sources */,
 				BF69D69E2861C6B5009CE7D1 /* ToolInfo.swift in Sources */,
 				BFA528FC26351659003427A8 /* ANSIModifiers.swift in Sources */,
 				BF69D67E2861BF01009CE7D1 /* SequenceExtensions.swift in Sources */,

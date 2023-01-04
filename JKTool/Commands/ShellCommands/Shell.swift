@@ -41,17 +41,17 @@ extension JKTool {
                 return
             }
             
-            doShell(project: project)
-            
             for record in project.recordList {
     
                 guard let subProject = Project.project(directoryPath: "\(project.checkoutsPath)/\(record)") else {
                     po(tip:"\(record) 工程不存在，请检查 Modulefile.recordList 是否为最新内容",type: .warning)
-                    break
+                    continue
                 }
                 
                 doShell(project: subProject)
             }
+            
+            doShell(project: project)
             
         }
             

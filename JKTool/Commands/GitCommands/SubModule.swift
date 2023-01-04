@@ -13,39 +13,16 @@ extension JKTool.Git {
         static var configuration = CommandConfiguration(
             commandName: "submodule",
             _superCommandName: "git",
-            abstract: "submodule",
+            abstract: "利用git submodule构建/更新项目结构",
             version: "1.0.0",
-            subcommands: [Update.self],
-            defaultSubcommand: Update.self)
-    }
-}
-
-extension JKTool.Git.SubModule {
-    struct Update: ParsableCommand {
-        static var configuration = CommandConfiguration(
-            commandName: "update",
-            _superCommandName: "submodule",
-            abstract: "Update",
-            version: "1.0.0",
-            subcommands: [Sub.self,All.self],
-            defaultSubcommand: Sub.self)
+            subcommands: [Init.self])
         
-    }
-}
-
-extension JKTool.Git.SubModule.Update {
-    struct Sub: ParsableCommand {
-        static var configuration = CommandConfiguration(
-            commandName: "sub",
-            _superCommandName: "submodule",
-            abstract: "Update SubModule",
-            version: "1.0.0")
         
         @Option(name: .long, help: "移除不在SubModule中的SubProject，default：false")
-        var prune: Bool = false
+        var prune: Bool?
         
         @Option(name: .shortAndLong, help: "更新 submodule 为远程项目的最新版本，default：false")
-        var remote: Bool = false
+        var remote: Bool?
         
         @Option(name: .shortAndLong, help: "执行目录")
         var path: String?
@@ -62,7 +39,7 @@ extension JKTool.Git.SubModule.Update {
                         if let submodules = submodules, submodules.contains(module.name) {
                             
                             do {
-                                try shellOut(to: .gitSubmoduleUpdate(remote: remote,path: "\(JKToolConfig.sharedInstance.config.checkouts)/\(module.name)"),at: project.rootProject.directoryPath)
+                                try shellOut(to: .gitSubmoduleUpdate(remote: remote ?? false,path: "\(JKToolConfig.sharedInstance.config.checkouts)/\(module.name)"),at: project.rootProject.directoryPath)
                                 po(tip: "【\(module.name)】已存在， update 成功")
 
                             } catch {
@@ -115,7 +92,7 @@ extension JKTool.Git.SubModule.Update {
             let subRecordList = clone(project: project)
             
             let pruneRecordList = project.writeRecordList(recordList: subRecordList)
-            if prune {
+            if prune == true {
                 for record in pruneRecordList {
                     do {
                         try shellOut(to: .gitSubmoduleRemove(path: "\(JKToolConfig.sharedInstance.config.checkouts)/\(record)"),at: project.rootProject.directoryPath)
@@ -129,12 +106,15 @@ extension JKTool.Git.SubModule.Update {
             po(tip: "======Update SubModule or Add SubModule完成======")
         }
     }
+}
+
+extension JKTool.Git.SubModule {
     
-    struct All: ParsableCommand {
+    struct Init: ParsableCommand {
         static var configuration = CommandConfiguration(
-            commandName: "all",
+            commandName: "init",
             _superCommandName: "submodule",
-            abstract: "Clone Project and Update SubModule",
+            abstract: "clone项目，并利用git submodule构建/更新项目结构",
             version: "1.0.0")
 
         @Option(name: .shortAndLong, help: "项目git地址")
@@ -143,8 +123,11 @@ extension JKTool.Git.SubModule.Update {
         @Option(name: .shortAndLong, help: "保存目录【绝对路径】")
         var path: String
         
+        @Option(name: .long, help: "移除不在SubModule中的SubProject，default：false")
+        var prune: Bool?
+        
         @Option(name: .shortAndLong, help: "更新 submodule 为远程项目的最新版本，default：false")
-        var remote: Bool = false
+        var remote: Bool?
         
         @Option(name: .shortAndLong, help: "分支名")
         var branch: String?
@@ -163,7 +146,17 @@ extension JKTool.Git.SubModule.Update {
                 let error = error as! ShellOutError
                 po(tip:  error.message + error.output,type: .error)
             }
-            JKTool.Git.SubModule.Update.Sub.main(["--prune","\(false)","--remote","\(remote)","--path","\(path)"])
+            var args = [String]()
+            
+            if let prune = prune {
+                args.append(contentsOf: ["--prune",String(prune)])
+            }
+            if let remote = remote {
+                args.append(contentsOf: ["--remote",String(remote)])
+            }
+            args.append(contentsOf: ["--path",String(path)])
+            
+            JKTool.Git.SubModule.main(args)
             po(tip: "======Clone Project and Update SubModule项目完成======")
         }
     }

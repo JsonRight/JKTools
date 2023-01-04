@@ -250,6 +250,9 @@ public class Project {
             return []
         }
     }()
+    lazy var buildScriptPath: String = {
+        return self.directoryPath.appending("/build.sh")
+    }()
     
     lazy var checkoutsPath: String = {
         let checkoutsPath = self.directoryPath.appending("/\(JKToolConfig.sharedInstance.config.checkouts)")
