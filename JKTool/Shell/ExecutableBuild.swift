@@ -35,17 +35,17 @@ public extension ShellOutCommand {
         shell.connected(spaceCommand: "-output \(buildPath)/Universal/\(verison)/\(scheme).framework/\(scheme)")
         // cp shell
         if let toPath = toPath {
-            shell.connected(andCommand: "mkdir -p \(toPath)")
-            shell.connected(andCommand: "cp -R \(buildPath)/Universal/\(verison)/\(scheme).framework \(toPath)")
+            shell.connected(andCommand: "mkdir -p \(toPath.convertRelativePath(absolutPath: projectPath))")
+            shell.connected(andCommand: "cp -R \(buildPath)/Universal/\(verison)/\(scheme).framework \(toPath.convertRelativePath(absolutPath: projectPath))")
         }
         
         return ShellOutCommand(string:shell)
     }
     
-    static func frameworkWithCache(scheme:String, derivedDataPath: String, verison: String, toPath: String) -> ShellOutCommand {
+    static func frameworkWithCache(scheme:String,projectPath:String, derivedDataPath: String, verison: String, toPath: String) -> ShellOutCommand {
         let buildPath = URL(fileURLWithPath: (derivedDataPath as NSString).expandingTildeInPath).standardizedFileURL.path
-        var shell = "mkdir -p \(toPath)"
-        shell.connected(andCommand: "cp -R \(buildPath)/Universal/\(verison)/\(scheme).framework \(toPath)")
+        var shell = "mkdir -p \(toPath.convertRelativePath(absolutPath: projectPath))"
+        shell.connected(andCommand: "cp -R \(buildPath)/Universal/\(verison)/\(scheme).framework \(toPath.convertRelativePath(absolutPath: projectPath))")
         return ShellOutCommand(string:shell)
     }
 }
@@ -72,17 +72,17 @@ public extension ShellOutCommand {
         
         // cp shell
         if let toPath = toPath {
-            shell.connected(andCommand: "mkdir -p \(toPath)")
-            shell.connected(andCommand: "cp -R \(buildPath)/Universal/\(verison)/\(scheme).xcframework \(toPath)")
+            shell.connected(andCommand: "mkdir -p \(toPath.convertRelativePath(absolutPath: projectPath))")
+            shell.connected(andCommand: "cp -R \(buildPath)/Universal/\(verison)/\(scheme).xcframework \(toPath.convertRelativePath(absolutPath: projectPath))")
         }
         
         return ShellOutCommand(string:shell)
     }
     
-    static func xcframeworkWithCache(scheme:String, derivedDataPath: String, verison: String, toPath: String) -> ShellOutCommand {
+    static func xcframeworkWithCache(scheme:String,projectPath:String, derivedDataPath: String, verison: String, toPath: String) -> ShellOutCommand {
         let buildPath = URL(fileURLWithPath: (derivedDataPath as NSString).expandingTildeInPath).standardizedFileURL.path
-        var shell = "mkdir -p \(toPath)"
-        shell.connected(andCommand: "cp -R \(buildPath)/Universal/\(verison)/\(scheme).xcframework \(toPath)")
+        var shell = "mkdir -p \(toPath.convertRelativePath(absolutPath: projectPath))"
+        shell.connected(andCommand: "cp -R \(buildPath)/Universal/\(verison)/\(scheme).xcframework \(toPath.convertRelativePath(absolutPath: projectPath))")
         return ShellOutCommand(string:shell)
     }
 }
@@ -109,22 +109,22 @@ public extension ShellOutCommand {
         shell.connected(ifCommand: "cp -R \(buildPath)/Build/Products/Release-\(Platform(sdk).sdk(.Release))/include/\(scheme) \(buildPath)/Universal/\(verison)/", at: "\(buildPath)/Build/Products/Release-\(Platform(sdk).sdk(.Release))/include/\(scheme)")
         
         if let toStaticPath = toStaticPath {
-            shell.connected(andCommand: "mkdir -p \(toStaticPath)")
-            shell.connected(andCommand: "cp -R \(buildPath)/Universal/\(verison)/lib\(scheme).a \(toStaticPath)")
+            shell.connected(andCommand: "mkdir -p \(toStaticPath.convertRelativePath(absolutPath: projectPath))")
+            shell.connected(andCommand: "cp -R \(buildPath)/Universal/\(verison)/lib\(scheme).a \(toStaticPath.convertRelativePath(absolutPath: projectPath))")
         }
         if let toHeaderPath = toHeaderPath {
-            shell.connected(ifCommand: "mkdir -p \(toHeaderPath)", at: "\(buildPath)/Universal/\(verison)/\(scheme)")
-            shell.connected(ifCommand: "cp -R \(buildPath)/Universal/\(verison)/\(scheme) \(toHeaderPath)", at: "\(buildPath)/Universal/\(verison)/\(scheme)")
+            shell.connected(ifCommand: "mkdir -p \(toHeaderPath.convertRelativePath(absolutPath: projectPath))", at: "\(buildPath)/Universal/\(verison)/\(scheme)")
+            shell.connected(ifCommand: "cp -R \(buildPath)/Universal/\(verison)/\(scheme) \(toHeaderPath.convertRelativePath(absolutPath: projectPath))", at: "\(buildPath)/Universal/\(verison)/\(scheme)")
         }
         return ShellOutCommand(string:shell)
     }
     
-    static func staticWithCache(scheme:String, derivedDataPath: String, verison: String, toStaticPath: String, toHeaderPath: String) -> ShellOutCommand {
+    static func staticWithCache(scheme:String,projectPath:String, derivedDataPath: String, verison: String, toStaticPath: String, toHeaderPath: String) -> ShellOutCommand {
         let buildPath = URL(fileURLWithPath: (derivedDataPath as NSString).expandingTildeInPath).standardizedFileURL.path
-        var shell = "mkdir -p \(toStaticPath)"
-        shell.connected(andCommand: "cp -R \(buildPath)/Universal/\(verison)/lib\(scheme).a \(toStaticPath)")
-        shell.connected(ifCommand: "mkdir -p \(toHeaderPath)", at: "\(buildPath)/Universal/\(verison)/\(scheme)")
-        shell.connected(ifCommand: "cp -R \(buildPath)/Universal/\(verison)/\(scheme) \(toHeaderPath)", at: "\(buildPath)/Universal/\(verison)/\(scheme)")
+        var shell = "mkdir -p \(toStaticPath.convertRelativePath(absolutPath: projectPath))"
+        shell.connected(andCommand: "cp -R \(buildPath)/Universal/\(verison)/lib\(scheme).a \(toStaticPath.convertRelativePath(absolutPath: projectPath))")
+        shell.connected(ifCommand: "mkdir -p \(toHeaderPath.convertRelativePath(absolutPath: projectPath))", at: "\(buildPath)/Universal/\(verison)/\(scheme)")
+        shell.connected(ifCommand: "cp -R \(buildPath)/Universal/\(verison)/\(scheme) \(toHeaderPath.convertRelativePath(absolutPath: projectPath))", at: "\(buildPath)/Universal/\(verison)/\(scheme)")
         return ShellOutCommand(string:shell)
     }
 }
@@ -140,16 +140,16 @@ public extension ShellOutCommand {
         shell.connected(andCommand: "mkdir -p \(buildPath)/Universal/\(verison)/")
         shell.connected(andCommand: "cp -R \(buildPath)/Build/Products/Release-\(Platform(sdk).sdk(.Release))/\(bundleName).bundle \(buildPath)/Universal/\(verison)/")
         if let toBundlePath = toBundlePath {
-            shell.connected(andCommand: "mkdir -p \(toBundlePath)")
-            shell.connected(andCommand: "cp -R \(buildPath)/Universal/\(verison)/\(bundleName).bundle \(toBundlePath)")
+            shell.connected(andCommand: "mkdir -p \(toBundlePath.convertRelativePath(absolutPath: projectPath))")
+            shell.connected(andCommand: "cp -R \(buildPath)/Universal/\(verison)/\(bundleName).bundle \(toBundlePath.convertRelativePath(absolutPath: projectPath))")
         }
 
         return ShellOutCommand(string: shell)
     }
-    static func bundleWithCache(bundleName:String, derivedDataPath: String, verison: String, toBundlePath: String) -> ShellOutCommand {
+    static func bundleWithCache(bundleName:String,projectPath:String, derivedDataPath: String, verison: String, toBundlePath: String) -> ShellOutCommand {
         let buildPath = URL(fileURLWithPath: (derivedDataPath as NSString).expandingTildeInPath).standardizedFileURL.path
-        var shell = "mkdir -p \(toBundlePath)"
-        shell.connected(andCommand: "cp -R \(buildPath)/Universal/\(verison)/\(bundleName).bundle \(toBundlePath)")
+        var shell = "mkdir -p \(toBundlePath.convertRelativePath(absolutPath: projectPath))"
+        shell.connected(andCommand: "cp -R \(buildPath)/Universal/\(verison)/\(bundleName).bundle \(toBundlePath.convertRelativePath(absolutPath: projectPath))")
         return ShellOutCommand(string:shell)
     }
 }

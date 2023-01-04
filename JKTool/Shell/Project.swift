@@ -89,6 +89,7 @@ public class Project {
     public enum ProjectBuildType {
         case Static
         case Framework
+        case Application
         case Other
     }
                                           
@@ -132,6 +133,10 @@ public class Project {
             }
             if productType == "com.apple.product-type.library.static" {
                 buildType = .Static
+                break
+            }
+            if productType == "com.apple.product-type.application" {
+                buildType = .Application
                 break
             }
         }
