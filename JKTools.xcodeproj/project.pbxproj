@@ -86,7 +86,7 @@
 		BF85BADF2886BB5F00E916AD /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF85BADE2886BB5F00E916AD /* Config.swift */; };
 		BF8A3DAF2918FF6900E77E3D /* ShellOut.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA5290D2635169A003427A8 /* ShellOut.swift */; };
 		BF97BF7629656EB8009D4EFE /* Update.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF97BF7529656EB8009D4EFE /* Update.swift */; };
-		BF97BF7B29668151009D4EFE /* JKTools工具助手.md in Resources */ = {isa = PBXBuildFile; fileRef = BF97BF7A29668150009D4EFE /* JKTools工具助手.md */; };
+		BF97BF7D29668528009D4EFE /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = BF97BF7C29668528009D4EFE /* README.md */; };
 		BFA528EC26351606003427A8 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA528EB26351606003427A8 /* main.swift */; };
 		BFA528F326351634003427A8 /* JKTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA528F226351634003427A8 /* JKTool.swift */; };
 		BFA528FB26351659003427A8 /* ANSIProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA528F726351659003427A8 /* ANSIProperties.swift */; };
@@ -217,7 +217,7 @@
 		BF70770128782F9500F71AEB /* Branch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Branch.swift; sourceTree = "<group>"; };
 		BF85BADE2886BB5F00E916AD /* Config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
 		BF97BF7529656EB8009D4EFE /* Update.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Update.swift; sourceTree = "<group>"; };
-		BF97BF7A29668150009D4EFE /* JKTools工具助手.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = "JKTools工具助手.md"; sourceTree = "<group>"; };
+		BF97BF7C29668528009D4EFE /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = SOURCE_ROOT; };
 		BFA528E926351606003427A8 /* JKTool */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = JKTool; sourceTree = BUILT_PRODUCTS_DIR; };
 		BFA528EB26351606003427A8 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		BFA528F226351634003427A8 /* JKTool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JKTool.swift; sourceTree = "<group>"; };
@@ -316,8 +316,8 @@
 		BF3B804E263049AB0085E75A /* AppleScripts */ = {
 			isa = PBXGroup;
 			children = (
+				BF97BF7C29668528009D4EFE /* README.md */,
 				BF60AC92291BBFB200C7BF2E /* JKTool */,
-				BF97BF7A29668150009D4EFE /* JKTools工具助手.md */,
 				BF3B8062263194A00085E75A /* ConfigType.swift */,
 				BF3B8065263199A30085E75A /* ConsoleOptions.swift */,
 				BF3CBE3A2636D58C0082E869 /* JKToolScript.scpt */,
@@ -663,12 +663,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BF97BF7D29668528009D4EFE /* README.md in Resources */,
 				BF3A973328900120006134AE /* PreferencesCellView.xib in Resources */,
 				BF3CBE3B2636D58D0082E869 /* JKToolScript.scpt in Resources */,
 				BF25A47A26170AA300CB2F1B /* Main.storyboard in Resources */,
 				BF25A43D2615DE1D00CB2F1B /* Assets.xcassets in Resources */,
 				BF60AC94291C98A100C7BF2E /* JKTool in Resources */,
-				BF97BF7B29668151009D4EFE /* JKTools工具助手.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
