@@ -1,6 +1,6 @@
 # JKTools的起源@_@
 
-JKTools是为了实现项目模块化、插件化、快速编译产生的产物。如果你还在为以上目标发愁，可以试试，它的使用真的非常简单。完全符合命令行的操作规范。
+JKTools是为了实现项目模块化、插件化、快速编译产生的产物。如果你还在为以上目标发愁，可以试试，它的使用真的非常简单，完全符合命令行的操作规范。
 
 #### JKTools的支持的功能
 
@@ -87,7 +87,11 @@ JKTool会自动检查`Modulefile`文件，以及壳工程`module/checkouts`目�
 
 你还可以使用子命令`JKTool update init`将远程已经是JKTool管理的工程Clone到本地，并自动Clone子模块。
 
-下面列出JKTool的命令集：*你可以通过`JKTool help <subcommand>` 查看他提供了哪些子命令*
+*你可以通过`JKTool help <subcommand>` 查看JKTool提供的各种命令，以及各命令详细用法*
+
+
+
+下面列出当前JKTool的命令集：
 
 ```
 JKTool
@@ -126,7 +130,8 @@ JKTool
 │				├─add
 │				└─del
 ├─shell
-└─config
+├─config
+└─version
 ```
 
 # 模块化的应用<Modulefile>
