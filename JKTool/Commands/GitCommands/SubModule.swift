@@ -49,7 +49,7 @@ extension JKTool.Git {
                         }else {
                             
                             do {
-                                try shellOut(to: .gitSubmoduleAdd(name: module.name,url: module.url, path: "\(JKToolConfig.sharedInstance.config.checkouts)/\(module.name)"),at: project.rootProject.directoryPath)
+                                try shellOut(to: .gitSubmoduleAdd(name: module.name,url: module.url, path: "\(JKToolConfig.sharedInstance.config.checkouts)/\(module.name)",branch: module.branch),at: project.rootProject.directoryPath)
                                 po(tip: "【\(module.name)】:Add 成功")
                             } catch {
                                 let error = error as! ShellOutError

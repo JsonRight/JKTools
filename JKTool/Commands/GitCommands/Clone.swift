@@ -34,7 +34,7 @@ extension JKTool.Git {
                     // clone module
                     if needClone {
                         do {
-                            try shellOut(to: .gitClone(url: module.url, to: modulePath))
+                            try shellOut(to: .gitClone(url: module.url, to: modulePath, branch: module.branch))
                             po(tip: "【\(module.name)】:clone成功")
                             cloneHistory.append(module.name)
                         } catch {
