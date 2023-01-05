@@ -58,8 +58,12 @@
             isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
-            argument = "help update"
+            argument = "version"
             isEnabled = "YES">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "help update"
+            isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "build framework --cache false"
