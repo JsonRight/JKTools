@@ -313,18 +313,18 @@ Modulefile.recordList
                 </viewController>
                 <customObject id="Vj0-Tj-zpd" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="978" y="-983.5"/>
+            <point key="canvasLocation" x="970" y="-1078"/>
         </scene>
         <!--配置中心-->
         <scene sceneID="l9W-jh-1eG">
             <objects>
                 <viewController title="配置中心" id="9Bt-IX-SIf" customClass="PreferencesController" customModule="JKTools" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="QEg-z1-Ybc">
-                        <rect key="frame" x="0.0" y="0.0" width="450" height="155"/>
+                        <rect key="frame" x="0.0" y="0.0" width="450" height="205"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <box title="SubModule存储路径" translatesAutoresizingMaskIntoConstraints="NO" id="xs7-Tz-O7s">
-                                <rect key="frame" x="2" y="101" width="446" height="49"/>
+                                <rect key="frame" x="2" y="151" width="446" height="49"/>
                                 <view key="contentView" id="Dje-Ji-KoP">
                                     <rect key="frame" x="3" y="3" width="440" height="31"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -366,7 +366,7 @@ Modulefile.recordList
                                 </view>
                             </box>
                             <box title=".a、.framework、.xcframework等 存放路径" translatesAutoresizingMaskIntoConstraints="NO" id="cwS-wu-zte">
-                                <rect key="frame" x="2" y="51" width="446" height="49"/>
+                                <rect key="frame" x="2" y="101" width="446" height="49"/>
                                 <view key="contentView" id="FyD-xP-VE2">
                                     <rect key="frame" x="3" y="3" width="440" height="31"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -408,7 +408,7 @@ Modulefile.recordList
                                 </view>
                             </box>
                             <box title="xcodebuild 中间产物 存放路径" translatesAutoresizingMaskIntoConstraints="NO" id="o76-ly-n0R">
-                                <rect key="frame" x="2" y="1" width="446" height="49"/>
+                                <rect key="frame" x="2" y="51" width="446" height="49"/>
                                 <view key="contentView" id="Cuk-hi-WYV">
                                     <rect key="frame" x="3" y="3" width="440" height="31"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -449,16 +449,61 @@ Modulefile.recordList
                                     </constraints>
                                 </view>
                             </box>
+                            <box title="JKTool文件地址" translatesAutoresizingMaskIntoConstraints="NO" id="NuT-Km-3lI">
+                                <rect key="frame" x="2" y="1" width="446" height="49"/>
+                                <view key="contentView" id="knU-rd-vsw">
+                                    <rect key="frame" x="3" y="3" width="440" height="31"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <subviews>
+                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Rlm-gr-1V1">
+                                            <rect key="frame" x="3" y="8" width="36" height="16"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="32" id="ROL-LF-jhK"/>
+                                            </constraints>
+                                            <textFieldCell key="cell" lineBreakMode="clipping" title="地址" id="gmm-jk-hkR">
+                                                <font key="font" metaFont="system"/>
+                                                <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                        </textField>
+                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="753" verticalCompressionResistancePriority="747" tag="4" translatesAutoresizingMaskIntoConstraints="NO" id="sPj-5y-ged">
+                                            <rect key="frame" x="42" y="5" width="393" height="21"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="21" id="IDg-ui-7FE"/>
+                                            </constraints>
+                                            <textFieldCell key="cell" lineBreakMode="clipping" selectable="YES" editable="YES" refusesFirstResponder="YES" borderStyle="bezel" alignment="left" title="https://gitee.com/jk14138/JKTools/releases/download/JKTool/JKTool" placeholderString="默认为https://gitee.com/jk14138/JKTools/releases/download/JKTool/JKTool" bezelStyle="round" id="wrM-6p-IPJ">
+                                                <font key="font" metaFont="system"/>
+                                                <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                            <connections>
+                                                <outlet property="delegate" destination="9Bt-IX-SIf" id="3CG-xi-4Oi"/>
+                                            </connections>
+                                        </textField>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="sPj-5y-ged" firstAttribute="top" secondItem="knU-rd-vsw" secondAttribute="top" constant="5" id="42F-S2-1M3"/>
+                                        <constraint firstAttribute="trailing" secondItem="sPj-5y-ged" secondAttribute="trailing" constant="5" id="DZd-zC-Yrm"/>
+                                        <constraint firstItem="sPj-5y-ged" firstAttribute="centerY" secondItem="Rlm-gr-1V1" secondAttribute="centerY" id="RDJ-0I-UW2"/>
+                                        <constraint firstItem="Rlm-gr-1V1" firstAttribute="leading" secondItem="knU-rd-vsw" secondAttribute="leading" constant="5" id="SPx-Nk-eC6"/>
+                                        <constraint firstAttribute="bottom" secondItem="sPj-5y-ged" secondAttribute="bottom" constant="5" id="hzp-zZ-895"/>
+                                        <constraint firstItem="sPj-5y-ged" firstAttribute="leading" secondItem="Rlm-gr-1V1" secondAttribute="trailing" constant="5" id="ujb-cA-ya0"/>
+                                    </constraints>
+                                </view>
+                            </box>
                         </subviews>
                         <constraints>
-                            <constraint firstAttribute="bottom" secondItem="o76-ly-n0R" secondAttribute="bottom" constant="5" id="Cjn-WK-WaS"/>
+                            <constraint firstAttribute="trailing" secondItem="NuT-Km-3lI" secondAttribute="trailing" constant="5" id="F5s-Ub-beY"/>
                             <constraint firstItem="cwS-wu-zte" firstAttribute="leading" secondItem="QEg-z1-Ybc" secondAttribute="leading" constant="5" id="NZy-Go-Er8"/>
                             <constraint firstItem="xs7-Tz-O7s" firstAttribute="leading" secondItem="QEg-z1-Ybc" secondAttribute="leading" constant="5" id="RkN-bx-Pz9"/>
                             <constraint firstAttribute="trailing" secondItem="o76-ly-n0R" secondAttribute="trailing" constant="5" id="Shp-QU-Aoe"/>
                             <constraint firstAttribute="trailing" secondItem="cwS-wu-zte" secondAttribute="trailing" constant="5" id="c9t-cI-XQi"/>
+                            <constraint firstItem="NuT-Km-3lI" firstAttribute="leading" secondItem="QEg-z1-Ybc" secondAttribute="leading" constant="5" id="fKC-CW-ary"/>
                             <constraint firstAttribute="trailing" secondItem="xs7-Tz-O7s" secondAttribute="trailing" constant="5" id="gFi-Q5-FiF"/>
+                            <constraint firstItem="NuT-Km-3lI" firstAttribute="top" secondItem="o76-ly-n0R" secondAttribute="bottom" constant="5" id="gkh-1Q-K0m"/>
                             <constraint firstItem="xs7-Tz-O7s" firstAttribute="top" secondItem="QEg-z1-Ybc" secondAttribute="top" constant="5" id="iFE-oX-oz2"/>
                             <constraint firstItem="cwS-wu-zte" firstAttribute="top" secondItem="xs7-Tz-O7s" secondAttribute="bottom" constant="5" id="o2n-xz-0Nd"/>
+                            <constraint firstAttribute="bottom" secondItem="NuT-Km-3lI" secondAttribute="bottom" constant="5" id="wHk-14-WB1"/>
                             <constraint firstItem="o76-ly-n0R" firstAttribute="top" secondItem="cwS-wu-zte" secondAttribute="bottom" constant="5" id="y9W-aB-uyN"/>
                             <constraint firstItem="o76-ly-n0R" firstAttribute="leading" secondItem="QEg-z1-Ybc" secondAttribute="leading" constant="5" id="yww-gS-T4n"/>
                         </constraints>
@@ -467,11 +512,12 @@ Modulefile.recordList
                         <outlet property="buildPath" destination="e04-YU-QoV" id="t4Y-AB-6gA"/>
                         <outlet property="buildsPath" destination="LQn-sJ-XDT" id="CfT-sg-RUf"/>
                         <outlet property="subModulePath" destination="6BX-eu-sQc" id="QfZ-w2-3eh"/>
+                        <outlet property="toolUrl" destination="sPj-5y-ged" id="ngE-nh-HDm"/>
                     </connections>
                 </viewController>
                 <customObject id="17t-fm-h77" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="970" y="-671"/>
+            <point key="canvasLocation" x="970" y="-636"/>
         </scene>
         <!--Window Controller-->
         <scene sceneID="R2V-B0-nI4">
@@ -11329,7 +11375,7 @@ Cgo
                 </viewController>
                 <customObject id="ibN-4f-nSb" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1241" y="-382"/>
+            <point key="canvasLocation" x="1141" y="-243"/>
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>

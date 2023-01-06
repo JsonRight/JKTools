@@ -25,9 +25,14 @@ extension JKTool {
         
         mutating func run() {
             let sema = DispatchSemaphore( value: 0 )
+           
+            guard let urlStr = JKToolConfig.sharedInstance.config.toolUrl.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),let url = URL(string: urlStr) else {
+                return po(tip: "转换JKTool下载路径失败，请检查路径是否有效",type: .error)
+            }
+            po(tip: "download JKTool：\(urlStr)")
             let session = URLSession(configuration: URLSessionConfiguration.default)
             let request = URLRequest(
-                url: URL(string: "https://gitee.com/jk14138/JKTools/releases/download/JKTool/JKTool".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)!,
+                url: url,
                 cachePolicy: .reloadIgnoringCacheData,
                 timeoutInterval: 10)
             let downloadTask = session.downloadTask(with: request) { location, response, error in

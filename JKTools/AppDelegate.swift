@@ -66,10 +66,13 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
         self.download = true
         loadStatusItem(download: true)
+        guard let urlStr = JKToolConfig.read().toolUrl.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),let url = URL(string: urlStr) else {
+            Alert.alert(message: "转换JKTool下载路径失败，请检查路径是否有效")
+            return
+        }
         let session = URLSession(configuration: URLSessionConfiguration.default)
-        //https://gitee.com/jk14138/JKTools/raw/master/JKTools/AppleScripts/JKTool
         let request = URLRequest(
-            url: URL(string: "https://gitee.com/jk14138/JKTools/releases/download/JKTool/JKTool".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)!,
+            url: url,
             cachePolicy: .reloadIgnoringCacheData,
             timeoutInterval: 10)
         let downloadTask = session.downloadTask(with: request) { location, response, error in
