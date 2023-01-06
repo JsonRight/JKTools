@@ -26,7 +26,7 @@ extension JKTool.Git {
         mutating func run() {
             
             func commit(project: Project){
-                let status = try? shellOut(to: .gitStatus(), at: project.directoryPath)
+                let status = try? shellOut(to: .gitDiffHEAD(), at: project.directoryPath)
                 
                 guard  status?.count ?? 0 > 0 else {
                     po(tip: "【\(project.destination)】 没有需要提交的内容\n",type: .tip)
@@ -47,7 +47,7 @@ extension JKTool.Git {
             
             guard project.rootProject == project || recursive  else {
                 
-                let status = try? shellOut(to: .gitStatus(), at: project.directoryPath)
+                let status = try? shellOut(to: .gitDiffHEAD(), at: project.directoryPath)
                 
                 guard  status?.count ?? 0 > 0 else {
                     po(tip: "【\(project.destination)】 没有需要提交的内容\n",type: .tip)
@@ -65,7 +65,7 @@ extension JKTool.Git {
                     po(tip: "\(record) 工程不存在，请检查 Modulefile.recordList 是否为最新内容",type: .warning)
                     continue
                 }
-                let status = try? shellOut(to: .gitStatus(), at: pro.directoryPath)
+                let status = try? shellOut(to: .gitDiffHEAD(), at: pro.directoryPath)
                 
                 guard  status?.count ?? 0 > 0 else {
                     po(tip: "【\(pro.destination)】 没有需要提交的内容\n",type: .tip)
@@ -74,7 +74,7 @@ extension JKTool.Git {
                 commit(project: pro)
             }
             
-            let status = try? shellOut(to: .gitStatus(), at: project.directoryPath)
+            let status = try? shellOut(to: .gitDiffHEAD(), at: project.directoryPath)
             
             guard  status?.count ?? 0 > 0 else {
                 po(tip: "【\(project.destination)】 没有需要提交的内容\n",type: .tip)

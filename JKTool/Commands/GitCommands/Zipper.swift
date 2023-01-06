@@ -28,12 +28,12 @@ extension JKTool.Git {
             
             func zip(project: Project){
                 
-                let status = try? shellOut(to: .gitStatus(),at: project.directoryPath)
+                let status = try? shellOut(to: .gitDiffHEAD(),at: project.directoryPath)
                 
                 if status != "" {
                     po(tip: "【\(project.destination)】zip失败：git仓库存在未提交内容", type: .error)
                 }
-                guard let code = try? shellOut(to: .gitCodeVerison(),at: project.directoryPath) else {
+                guard let code = try? shellOut(to: .gitCurrentCommitId(),at: project.directoryPath) else {
                     po(tip: "【\(project.destination)】zip失败：未能检索到commit id，请检查git仓库", type: .error)
                     return
                 }
@@ -97,12 +97,12 @@ extension JKTool.Git.Zipper {
             
             func unzip(project: Project){
                 
-                let status = try? shellOut(to: .gitStatus(),at: project.directoryPath)
+                let status = try? shellOut(to: .gitDiffHEAD(),at: project.directoryPath)
                 
                 if status != "" {
                     po(tip: "【\(project.destination)】zip失败：git仓库存在未提交内容", type: .error)
                 }
-                guard let code = try? shellOut(to: .gitCodeVerison(),at: project.directoryPath) else {
+                guard let code = try? shellOut(to: .gitCurrentCommitId(),at: project.directoryPath) else {
                     po(tip: "【\(project.destination)】zip失败：未能检索到commit id，请检查git仓库", type: .error)
                     return
                 }

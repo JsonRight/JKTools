@@ -691,7 +691,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cp -R ${BUILD_DIR}/Debug/${TARGET_NAME} ${SRCROOT}/JKTools/AppleScripts\nrm -f /usr/local/bin/JKTool\ncp -R ${BUILD_DIR}/Debug/${TARGET_NAME} /usr/local/bin\n";
+			shellScript = "cp -R ${BUILD_DIR}/Debug/${TARGET_NAME} ${SRCROOT}/JKTools/AppleScripts\nrm -f /usr/local/bin/JKTool\ncp -R ${BUILD_DIR}/Debug/${TARGET_NAME} /usr/local/bin\ncp -R ${BUILD_DIR}/Debug/${TARGET_NAME} /Users/jiangkui/Desktop/JKTools\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 

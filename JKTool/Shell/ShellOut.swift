@@ -272,13 +272,18 @@ public extension ShellOutCommand {
         return ShellOutCommand(string: command)
     }
     
+    
     static func gitStatus() -> ShellOutCommand {
-         let command = "git add -A && git diff HEAD"
-        return ShellOutCommand(string: command)
+        let command = "git status"
+       return ShellOutCommand(string: command)
+    }
+    static func gitCurrentCommitId() -> ShellOutCommand {
+        let command = "git rev-parse HEAD"
+       return ShellOutCommand(string: command)
     }
     
-    static func gitCodeVerison() -> ShellOutCommand {
-        let command = "git add -A && git rev-parse HEAD"
+    static func gitDiffHEAD() -> ShellOutCommand {
+        let command = "git diff HEAD"
        return ShellOutCommand(string: command)
     }
     
@@ -603,7 +608,7 @@ private extension String {
     func appending(argument: String) -> String {
         return "\(self) \"\(argument)\""
     }
-
+    
     func appending(arguments: [String]) -> String {
         return appending(argument: arguments.joined(separator: "\" \""))
     }
@@ -657,6 +662,18 @@ extension String {
         }
         return self
     }
+    
+    static func safeString(string: String?,safeString: String = "null") -> String{
+        guard let string = string,string != "" else {
+            return safeString
+        }
+        return string
+    }
+    
+    func appendingBySeparator(_ argument: String,separator:String = "-") -> String {
+        return "\(self)\(separator)\(argument)"
+    }
+
 }
 
 public extension String {

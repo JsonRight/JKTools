@@ -233,10 +233,11 @@ extension JKTool.Build {
                 }
                 
                 let oldVersion = try? shellOut(to: .readVerison(path: "\(project.buildPath)/Universal/"))
-                let status = try? shellOut(to: .gitStatus(),at: project.directoryPath)
-                let code = try? shellOut(to: .gitCodeVerison(),at: project.directoryPath)
+                let status = try? shellOut(to: .gitDiffHEAD(),at: project.directoryPath)
+                let commitId = try? shellOut(to: .gitCurrentCommitId(),at: project.directoryPath)
                 
-                let currentVersion  = ShellOutCommand.MD5(string: "\(status ?? "")\(code ?? "")")
+                let currentVersion  =  String.safeString(string: commitId).appendingBySeparator(ShellOutCommand.MD5(string: String.safeString(string: status))).appendingBySeparator(configuration).appendingBySeparator(sdk)
+                let hasCache = oldVersion?.contains(currentVersion) ?? false
                 
                 func buildStatic(project:Project){
                     // 创建Module/Builds link 依赖库
@@ -286,7 +287,7 @@ extension JKTool.Build {
                     }
                 }
                 
-                if isRootProject || cache == false || oldVersion != currentVersion {
+                if isRootProject || cache == false || !hasCache {
                     po(tip:"【\(project.destination)】需重新编译")
 
                     // 删除历史build文件
@@ -299,6 +300,7 @@ extension JKTool.Build {
                     
                     
                 } else {
+                    po(tip:"【\(project.destination)】尝试读取缓存")
                     guard let toStaticPath =  copyPath else {
                         let cachePath = isRootProject ? (project.buildPath + "/Universal"): (project.buildPath + "/Universal/\(currentVersion)")
                         po(tip: "\(cachePath)已经存在缓存，请确认是否需要重新编译,如果缓存不可用,请手动删除，再重新编译", type: .warning)
@@ -396,11 +398,13 @@ extension JKTool.Build {
                     return po(tip: "\(project.directoryPath)无法解析出正确的项目",type: .error)
                 }
                 
-                let oldVersion = (try? shellOut(to: .readVerison(path: "\(project.buildPath)/Universal/")))
-                let status = try? shellOut(to: .gitStatus(),at: project.directoryPath)
-                let code = try? shellOut(to: .gitCodeVerison(),at: project.directoryPath)
+                let oldVersion = try? shellOut(to: .readVerison(path: "\(project.buildPath)/Universal/"))
+                let status = try? shellOut(to: .gitDiffHEAD(),at: project.directoryPath)
+                let commitId = try? shellOut(to: .gitCurrentCommitId(),at: project.directoryPath)
                 
-                let currentVersion  = ShellOutCommand.MD5(string: "\(status ?? "")\(code ?? "")")
+                let currentVersion  =  String.safeString(string: commitId).appendingBySeparator(ShellOutCommand.MD5(string: String.safeString(string: status))).appendingBySeparator(configuration).appendingBySeparator(sdk)
+                let hasCache = oldVersion?.contains(currentVersion) ?? false
+                
                 func buildFramework(project:Project){
                     // 创建Module/Builds link 依赖库
                     if project.recordList.count > 0 {
@@ -446,7 +450,7 @@ extension JKTool.Build {
                     }
                 }
                 
-                if isRootProject || cache == false || !String(oldVersion ?? "").contains(currentVersion) {
+                if isRootProject || cache == false || !hasCache {
                     po(tip:"【\(project.destination)】需重新编译")
                 
                     /// 删除历史build文件
@@ -457,6 +461,7 @@ extension JKTool.Build {
                     
                     buildBundle(project: project)
                 } else {
+                    po(tip:"【\(project.destination)】尝试读取缓存")
                     guard let toPath =  copyPath else {
                         let cachePath = isRootProject ? (project.buildPath + "/Universal"): (project.buildPath + "/Universal/\(currentVersion)")
                         po(tip: "\(cachePath)已经存在缓存，请确认是否需要重新编译,如果缓存不可用,请手动删除，再重新编译", type: .warning)
@@ -551,10 +556,12 @@ extension JKTool.Build {
                 }
                 
                 let oldVersion = try? shellOut(to: .readVerison(path: "\(project.buildPath)/Universal/"))
-                let status = try? shellOut(to: .gitStatus(),at: project.directoryPath)
-                let code = try? shellOut(to: .gitCodeVerison(),at: project.directoryPath)
+                let status = try? shellOut(to: .gitDiffHEAD(),at: project.directoryPath)
+                let commitId = try? shellOut(to: .gitCurrentCommitId(),at: project.directoryPath)
                 
-                let currentVersion  = ShellOutCommand.MD5(string: "\(status ?? "")\(code ?? "")")
+                let currentVersion  =  String.safeString(string: commitId).appendingBySeparator(ShellOutCommand.MD5(string: String.safeString(string: status))).appendingBySeparator(configuration).appendingBySeparator(sdk)
+                let hasCache = oldVersion?.contains(currentVersion) ?? false
+                
                 func buildXCFramework(project:Project){
                     // 创建Module/Builds link 依赖库
                     if project.recordList.count > 0 {
@@ -602,7 +609,7 @@ extension JKTool.Build {
                         po(tip: "【\(project.destination)】.bundle Build失败\n" + error.message + error.output,type: .error)
                     }
                 }
-                if isRootProject || cache == false || oldVersion != currentVersion {
+                if isRootProject || cache == false || !hasCache {
                     po(tip:"【\(project.destination)】需重新编译")
                     
                     // 删除历史build文件
@@ -613,6 +620,7 @@ extension JKTool.Build {
                     buildBundle(project: project)
                     
                 }else{
+                    po(tip:"【\(project.destination)】尝试读取缓存")
                     guard let toPath =  copyPath else {
                         let cachePath = isRootProject ? (project.buildPath + "/Universal"): (project.buildPath + "/Universal/\(currentVersion)")
                         po(tip: "\(cachePath)已经存在缓存，请确认是否需要重新编译,如果缓存不可用,请手动删除，再重新编译", type: .warning)
