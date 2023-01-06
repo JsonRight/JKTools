@@ -76,10 +76,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             cachePolicy: .reloadIgnoringCacheData,
             timeoutInterval: 10)
         let downloadTask = session.downloadTask(with: request) { location, response, error in
-            guard let locationPath = location?.path else {
+            guard let locationPath = location?.path,error == nil else {
                 self.download = false
+                self.loadStatusItem(download: false)
                 return
             }
+            
             print("locationPath:\(locationPath)")
             let document = FileManager.DocumnetsDirectory() + "/JKTool"
             print("document:\(document)")
@@ -88,7 +90,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             
             Constants.resetShellScpt(name: "JKTool")
             self.loadStatusItem(download: false)
-    
             self.download = false
         }
         downloadTask.resume()
