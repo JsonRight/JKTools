@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import Zip
 
 extension JKTool.Git {
     

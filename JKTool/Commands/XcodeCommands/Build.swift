@@ -18,6 +18,9 @@ private struct Options: ParsableArguments {
     @Option(name: .shortAndLong, help: "设备类型，default：iOS")
     var sdk: String?
     
+    @Option(name: .long, help: "团队ID，default：读取默认配置")
+    var teamId: String?
+    
     /*
      xcodebuild -workspace {...}.xcworkspace -scheme {...} -showBuildSettings  -destination "generic/platform=iOS"
      @Option(name: .shortAndLong, help: ".xcconfig路径")
@@ -44,6 +47,10 @@ private struct Options: ParsableArguments {
         }
         if let sdk = sdk {
             args.append(contentsOf: ["--sdk",String(sdk)])
+        }
+        
+        if let teamId = teamId {
+            args.append(contentsOf: ["--team-id",String(teamId)])
         }
         
         if appedingCopyPath, let copyPath = copyPath {
@@ -277,7 +284,7 @@ extension JKTool.Build {
                     }
                     let toBundlePath =  copyPath
                     
-                    let buildCommand = ShellOutCommand.buildBundle(bundleName:project.bundleName,isWorkspace: project.projectType.isWorkSpace(),projectName: project.projectType.entrance(), projectPath: project.directoryPath, derivedDataPath: project.buildPath, sdk: sdk, verison: isRootProject ? "Products" : currentVersion, toBundlePath: toBundlePath)
+                    let buildCommand = ShellOutCommand.buildBundle(bundleName:project.bundleName,isWorkspace: project.projectType.isWorkSpace(),projectName: project.projectType.entrance(), projectPath: project.directoryPath, derivedDataPath: project.buildPath, sdk: sdk, teameId: options.teamId, verison: isRootProject ? "Products" : currentVersion, toBundlePath: toBundlePath)
                     do {
                         try shellOut(to: buildCommand, at: project.directoryPath)
                         po(tip: "【\(project.destination)】.bundle Build成功",type: .tip)
@@ -441,7 +448,7 @@ extension JKTool.Build {
                        return
                     }
                     let toBundlePath =  copyPath
-                    let buildCommand = ShellOutCommand.buildBundle(bundleName:project.bundleName,isWorkspace: project.projectType.isWorkSpace(),projectName: project.projectType.entrance(), projectPath: project.directoryPath, derivedDataPath: project.buildPath, sdk: sdk, verison: isRootProject ? "Products" : currentVersion, toBundlePath: toBundlePath)
+                    let buildCommand = ShellOutCommand.buildBundle(bundleName:project.bundleName,isWorkspace: project.projectType.isWorkSpace(),projectName: project.projectType.entrance(), projectPath: project.directoryPath, derivedDataPath: project.buildPath, sdk: sdk, teameId: options.teamId, verison: isRootProject ? "Products" : currentVersion, toBundlePath: toBundlePath)
                     do {
                         try shellOut(to: buildCommand, at: project.directoryPath)
                     } catch  {
@@ -601,7 +608,7 @@ extension JKTool.Build {
                     }
                     
                     let toBundlePath =  copyPath
-                    let buildCommand = ShellOutCommand.buildBundle(bundleName:project.bundleName,isWorkspace: project.projectType.isWorkSpace(),projectName: project.projectType.entrance(), projectPath: project.directoryPath, derivedDataPath: project.buildPath, sdk: sdk, verison: isRootProject ? "Products" : currentVersion, toBundlePath: toBundlePath)
+                    let buildCommand = ShellOutCommand.buildBundle(bundleName:project.bundleName,isWorkspace: project.projectType.isWorkSpace(),projectName: project.projectType.entrance(), projectPath: project.directoryPath, derivedDataPath: project.buildPath, sdk: sdk, teameId: options.teamId, verison: isRootProject ? "Products" : currentVersion, toBundlePath: toBundlePath)
                     do {
                         try shellOut(to: buildCommand, at: project.directoryPath)
                     } catch  {

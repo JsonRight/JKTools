@@ -189,6 +189,76 @@ public class Project {
         
         return bundleName
     }()
+    
+    lazy var teamID: String = {
+        
+        var teamID = ""
+        
+        guard let fileData = try? Data(contentsOf: URL(fileURLWithPath: self.directoryPath + "/\(self.projectType.entrance())/project.pbxproj")) else {
+            return teamID
+        }
+        guard let plist = try? PropertyListSerialization.propertyList(from: fileData, options: .mutableContainersAndLeaves, format: nil) as? [String:Any] else {
+            return teamID
+        }
+        
+        guard let rootObjectValue = plist["rootObject"] as? String else {
+            return teamID
+        }
+        
+        guard let objects = plist["objects"] as? [String:Any] else {
+            return teamID
+        }
+        
+        guard let projectObject = objects[rootObjectValue] as? [String:Any] else {
+            return teamID
+        }
+        
+        guard let targetsValue = projectObject["targets"] as? [String] else {
+            return teamID
+        }
+        
+        for target in targetsValue {
+            guard let targetObject = objects[target] as? [String:Any] else {
+                continue
+            }
+            guard let productType = targetObject["productType"] as? String else {
+                continue
+            }
+            guard let buildConfigurationListValue = targetObject["buildConfigurationList"] as? String else {
+                continue
+            }
+            if productType == "com.apple.product-type.bundle" {
+                guard let buildConfigurationList = objects[buildConfigurationListValue] as? [String:Any] else {
+                    continue
+                }
+                guard let buildConfigurations = targetObject["buildConfigurations"] as? [String] else {
+                    continue
+                }
+                for buildConfigurationValue in buildConfigurations {
+                    guard let buildConfiguration = objects[buildConfigurationValue] as? [String:Any] else {
+                        continue
+                    }
+                    guard let name = buildConfiguration["name"] as? String else {
+                        continue
+                    }
+                    guard let buildSettings = buildConfiguration["buildSettings"] as? [String:Any] else {
+                        continue
+                    }
+                    if name == "Release" {
+                        guard let DEVELOPMENT_TEAM = buildSettings["DEVELOPMENT_TEAM"] as? String else {
+                            continue
+                        }
+                        
+                        teamID = DEVELOPMENT_TEAM
+                        break
+                    }
+                }
+                break
+            }
+        }
+        
+        return teamID
+    }()
     // 工程所在目录名称
     lazy var destination: String = {
         return destinationForPath(path: self.directoryPath)

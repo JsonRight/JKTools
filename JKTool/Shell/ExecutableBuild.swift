@@ -132,11 +132,16 @@ public extension ShellOutCommand {
 /// build Bundle commands
 public extension ShellOutCommand {
     /// IOS build Bundle
-    static func buildBundle(bundleName:String, isWorkspace:Bool,projectName: String, projectPath:String, derivedDataPath: String, sdk: String, verison: String, toBundlePath: String?) -> ShellOutCommand {
+    static func buildBundle(bundleName:String, isWorkspace:Bool,projectName: String, projectPath:String, derivedDataPath: String, sdk: String, teameId:String?, verison: String, toBundlePath: String?) -> ShellOutCommand {
         
         let buildPath = URL(fileURLWithPath: (derivedDataPath as NSString).expandingTildeInPath).standardizedFileURL.path
         
         var shell = "xcodebuild build \(isWorkspace ? "-workspace" : "-project") \(projectName) -scheme \(bundleName) -configuration \(ConfigOptions.Release) -destination 'generic/platform=\(Platform(sdk).platform(.Release))' -derivedDataPath \(buildPath)"
+        
+        if let teameId = teameId {
+            shell.connected(spaceCommand: "DEVELOPMENT_TEAM=\(teameId)")
+        }
+        
         shell.connected(andCommand: "mkdir -p \(buildPath)/Universal/\(verison)/")
         shell.connected(andCommand: "cp -R \(buildPath)/Build/Products/Release-\(Platform(sdk).sdk(.Release))/\(bundleName).bundle \(buildPath)/Universal/\(verison)/")
         if let toBundlePath = toBundlePath {
