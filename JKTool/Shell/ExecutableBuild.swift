@@ -91,7 +91,7 @@ public extension ShellOutCommand {
 public extension ShellOutCommand {
     
     /// IOS build Static.a
-    static func staticBuild(scheme:String, isWorkspace:Bool,projectName: String, projectPath:String, derivedDataPath: String, configuration: String, sdk: String, verison: String, toStaticPath: String?, toHeaderPath: String?) -> ShellOutCommand {
+    static func staticBuild(scheme:String, isWorkspace:Bool,projectName: String, projectPath:String, derivedDataPath: String, configuration: String, sdk: String, dstPath:String, verison: String, toStaticPath: String?, toHeaderPath: String?) -> ShellOutCommand {
         let buildPath = URL(fileURLWithPath: (derivedDataPath as NSString).expandingTildeInPath).standardizedFileURL.path
         // VALID_ARCHS='\(ConfigOptions(configuration).archs())'
         var shell = "xcodebuild build \(isWorkspace ? "-workspace" : "-project") \(projectName) -scheme \(scheme) -configuration \(configuration) VALID_ARCHS='\(ConfigOptions(configuration).archs())' -destination 'generic/platform=\(Platform(sdk).platform(ConfigOptions(configuration)))' -UseModernBuildSystem=YES BUILD_LIBRARIES_FOR_DISTRIBUTION=YES -derivedDataPath \(buildPath)"
@@ -106,7 +106,7 @@ public extension ShellOutCommand {
         }
         shell.connected(spaceCommand: "-output \(buildPath)/Universal/\(verison)/lib\(scheme).a")
         
-        shell.connected(ifCommand: "cp -R \(buildPath)/Build/Products/Release-\(Platform(sdk).sdk(.Release))/include/\(scheme) \(buildPath)/Universal/\(verison)/", at: "\(buildPath)/Build/Products/Release-\(Platform(sdk).sdk(.Release))/include/\(scheme)")
+        shell.connected(ifCommand: "cp -R \(buildPath)/Build/Products/Release-\(Platform(sdk).sdk(.Release))/\(dstPath) \(buildPath)/Universal/\(verison)/", at: "\(buildPath)/Build/Products/Release-\(Platform(sdk).sdk(.Release))/\(dstPath)")
         
         if let toStaticPath = toStaticPath {
             shell.connected(andCommand: "mkdir -p \(toStaticPath.convertRelativePath(absolutPath: projectPath))")

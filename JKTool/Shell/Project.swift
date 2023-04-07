@@ -190,6 +190,57 @@ public class Project {
         return bundleName
     }()
     
+    lazy var dstPath: String = {
+        var dstPath = ""
+        
+        guard let fileData = try? Data(contentsOf: URL(fileURLWithPath: self.directoryPath + "/\(self.projectType.entrance())/project.pbxproj")) else {
+            return dstPath
+        }
+        guard let plist = try? PropertyListSerialization.propertyList(from: fileData, options: .mutableContainersAndLeaves, format: nil) as? [String:Any] else {
+            return dstPath
+        }
+        
+        guard let rootObjectValue = plist["rootObject"] as? String else {
+            return dstPath
+        }
+        
+        guard let objects = plist["objects"] as? [String:Any] else {
+            return dstPath
+        }
+        
+        guard let projectObject = objects[rootObjectValue] as? [String:Any] else {
+            return dstPath
+        }
+        
+        guard let targetsValue = projectObject["targets"] as? [String] else {
+            return dstPath
+        }
+        
+        for target in targetsValue {
+            guard let targetObject = objects[target] as? [String:Any] else {
+                continue
+            }
+            guard let productType = targetObject["productType"] as? String else {
+                continue
+            }
+            guard let buildPhasesValue = targetObject["buildPhases"] as? String else {
+                continue
+            }
+            if productType == "com.apple.product-type.library.static" {
+                guard let buildPhases = objects[buildPhasesValue] as? [String:Any] else {
+                    continue
+                }
+                guard let dst = targetObject["dstPath"] as? String else {
+                    continue
+                }
+                dstPath = dst
+                break
+            }
+        }
+        
+        return dstPath
+    }()
+    
     lazy var teamID: String = {
         
         var teamID = ""
@@ -253,7 +304,6 @@ public class Project {
                         break
                     }
                 }
-                break
             }
         }
         
