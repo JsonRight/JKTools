@@ -18,8 +18,8 @@ private struct Options: ParsableArguments {
     @Option(name: .shortAndLong, help: "设备类型，default：iOS")
     var sdk: String?
     
-    @Option(name: .long, help: "团队ID，default：读取默认配置")
-    var teamId: String?
+    @Option(name: .long, help: "对Bundle进行签名，default：true")
+    var signBundle: Bool?
     
     /*
      xcodebuild -workspace {...}.xcworkspace -scheme {...} -showBuildSettings  -destination "generic/platform=iOS"
@@ -49,8 +49,8 @@ private struct Options: ParsableArguments {
             args.append(contentsOf: ["--sdk",String(sdk)])
         }
         
-        if let teamId = teamId {
-            args.append(contentsOf: ["--team-id",String(teamId)])
+        if let signBundle = signBundle {
+            args.append(contentsOf: ["--sign-bundle",String(signBundle)])
         }
         
         if appedingCopyPath, let copyPath = copyPath {
@@ -226,6 +226,7 @@ extension JKTool.Build {
                 let cache = options.cache ?? true
                 let configuration = options.configuration ?? "Release"
                 let sdk = options.sdk ?? "iOS"
+                let signBundle = options.signBundle ?? true
                 
                 let copyPath = isRootProject ? options.copyPath: (options.copyPath ?? project.rootProject.buildsPath + "/" + project.destination)
                 
@@ -284,7 +285,7 @@ extension JKTool.Build {
                     }
                     let toBundlePath =  copyPath
                     
-                    let buildCommand = ShellOutCommand.buildBundle(bundleName:project.bundleName,isWorkspace: project.projectType.isWorkSpace(),projectName: project.projectType.entrance(), projectPath: project.directoryPath, derivedDataPath: project.buildPath, sdk: sdk, teameId: options.teamId, verison: isRootProject ? "Products" : currentVersion, toBundlePath: toBundlePath)
+                    let buildCommand = ShellOutCommand.buildBundle(bundleName:project.bundleName,isWorkspace: project.projectType.isWorkSpace(),projectName: project.projectType.entrance(), projectPath: project.directoryPath, derivedDataPath: project.buildPath, sdk: sdk, codeSignAllowed: signBundle, verison: isRootProject ? "Products" : currentVersion, toBundlePath: toBundlePath)
                     do {
                         try shellOut(to: buildCommand, at: project.directoryPath)
                         po(tip: "【\(project.destination)】.bundle Build成功",type: .tip)
@@ -393,6 +394,8 @@ extension JKTool.Build {
                 let cache = options.cache ?? true
                 let configuration = options.configuration ?? "Release"
                 let sdk = options.sdk ?? "iOS"
+                let signBundle = options.signBundle ?? true
+                
                 let copyPath = isRootProject ? options.copyPath: (options.copyPath ?? project.rootProject.buildsPath + "/" + project.destination)
                 
                 let date = Date.init().timeIntervalSince1970
@@ -448,7 +451,7 @@ extension JKTool.Build {
                        return
                     }
                     let toBundlePath =  copyPath
-                    let buildCommand = ShellOutCommand.buildBundle(bundleName:project.bundleName,isWorkspace: project.projectType.isWorkSpace(),projectName: project.projectType.entrance(), projectPath: project.directoryPath, derivedDataPath: project.buildPath, sdk: sdk, teameId: options.teamId, verison: isRootProject ? "Products" : currentVersion, toBundlePath: toBundlePath)
+                    let buildCommand = ShellOutCommand.buildBundle(bundleName:project.bundleName,isWorkspace: project.projectType.isWorkSpace(),projectName: project.projectType.entrance(), projectPath: project.directoryPath, derivedDataPath: project.buildPath, sdk: sdk, codeSignAllowed: signBundle, verison: isRootProject ? "Products" : currentVersion, toBundlePath: toBundlePath)
                     do {
                         try shellOut(to: buildCommand, at: project.directoryPath)
                     } catch  {
@@ -550,6 +553,8 @@ extension JKTool.Build {
                 let cache = options.cache ?? true
                 let configuration = options.configuration ?? "Release"
                 let sdk = options.sdk ?? "iOS"
+                let signBundle = options.signBundle ?? true
+                
                 let copyPath = isRootProject ? options.copyPath: (options.copyPath ?? project.rootProject.buildsPath + "/" + project.destination)
                 
                 let date = Date.init().timeIntervalSince1970
@@ -608,7 +613,7 @@ extension JKTool.Build {
                     }
                     
                     let toBundlePath =  copyPath
-                    let buildCommand = ShellOutCommand.buildBundle(bundleName:project.bundleName,isWorkspace: project.projectType.isWorkSpace(),projectName: project.projectType.entrance(), projectPath: project.directoryPath, derivedDataPath: project.buildPath, sdk: sdk, teameId: options.teamId, verison: isRootProject ? "Products" : currentVersion, toBundlePath: toBundlePath)
+                    let buildCommand = ShellOutCommand.buildBundle(bundleName:project.bundleName,isWorkspace: project.projectType.isWorkSpace(),projectName: project.projectType.entrance(), projectPath: project.directoryPath, derivedDataPath: project.buildPath, sdk: sdk, codeSignAllowed: signBundle, verison: isRootProject ? "Products" : currentVersion, toBundlePath: toBundlePath)
                     do {
                         try shellOut(to: buildCommand, at: project.directoryPath)
                     } catch  {

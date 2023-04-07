@@ -114,7 +114,7 @@ public extension ShellOutCommand {
         }
         if let toHeaderPath = toHeaderPath {
             shell.connected(ifCommand: "mkdir -p \(toHeaderPath.convertRelativePath(absolutPath: projectPath))", at: "\(buildPath)/Universal/\(verison)/\(scheme)")
-            shell.connected(ifCommand: "cp -R \(buildPath)/Universal/\(verison)/\(scheme) \(toHeaderPath.convertRelativePath(absolutPath: projectPath))", at: "\(buildPath)/Universal/\(verison)/\(scheme)")
+            shell.connected(ifCommand: "cp -R \(buildPath)/Universal/\(verison)/\(dstPath) \(toHeaderPath.convertRelativePath(absolutPath: projectPath))", at: "\(buildPath)/Universal/\(verison)/\(dstPath)")
         }
         return ShellOutCommand(string:shell)
     }
@@ -132,14 +132,14 @@ public extension ShellOutCommand {
 /// build Bundle commands
 public extension ShellOutCommand {
     /// IOS build Bundle
-    static func buildBundle(bundleName:String, isWorkspace:Bool,projectName: String, projectPath:String, derivedDataPath: String, sdk: String, teameId:String?, verison: String, toBundlePath: String?) -> ShellOutCommand {
+    static func buildBundle(bundleName:String, isWorkspace:Bool,projectName: String, projectPath:String, derivedDataPath: String, sdk: String, codeSignAllowed:Bool, verison: String, toBundlePath: String?) -> ShellOutCommand {
         
         let buildPath = URL(fileURLWithPath: (derivedDataPath as NSString).expandingTildeInPath).standardizedFileURL.path
         
         var shell = "xcodebuild build \(isWorkspace ? "-workspace" : "-project") \(projectName) -scheme \(bundleName) -configuration \(ConfigOptions.Release) -destination 'generic/platform=\(Platform(sdk).platform(.Release))' -derivedDataPath \(buildPath)"
         
-        if let teameId = teameId {
-            shell.connected(spaceCommand: "DEVELOPMENT_TEAM=\(teameId)")
+        if codeSignAllowed == false {
+            shell.connected(spaceCommand: "CODE_SIGNING_ALLOWED=NO")
         }
         
         shell.connected(andCommand: "mkdir -p \(buildPath)/Universal/\(verison)/")
