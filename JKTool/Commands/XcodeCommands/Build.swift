@@ -156,26 +156,43 @@ extension JKTool.Build {
             abstract: "清除所有Universal中的编译产物",
             version: "1.0.0")
 
+        @Option(name: .shortAndLong, help: "设备类型，default：iOS")
+        var sdk: String?
+        
+        /*
+         xcodebuild -workspace {...}.xcworkspace -scheme {...} -showBuildSettings  -destination "generic/platform=iOS"
+         @Option(name: .shortAndLong, help: ".xcconfig路径")
+         var xcconfigPath: String?
+         */
+        
+        @Option(name: .shortAndLong, help: "执行路径")
+        var path: String?
+        
         mutating func run() {
             
             func clean(project:Project) {
-                po(tip:"【\(project.destination)】clean开始")
+                
+                let sdk = sdk ?? "iOS"
+                
+                let scheme = ProjectListsModel.projectList(project: project)?.defaultScheme(sdk) ?? project.destination
+                
+                po(tip:"【\(scheme)】clean开始")
                 let date = Date.init().timeIntervalSince1970
                 // 删除主项目旧相关文件
                 if project != project.rootProject {
-                    _ = try? shellOut(to: .removeFolder(from: project.rootProject.buildsPath + "/" + project.destination))
+                    _ = try? shellOut(to: .removeFolder(from: project.rootProject.buildsPath + "/" + scheme))
                 }
-                
-                _ = try? shellOut(to: .removeFolder(from: project.buildsPath + "/"))
                 
                 _ = try? shellOut(to: .removeFolder(from: project.buildPath + "/Universal/"))
                 
+                _ = try? shellOut(to: .removeFolder(from: project.buildsPath + "/"))
                 
-                po(tip:"【\(project.destination)】clean完成[\(String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")]")
+                
+                po(tip:"【\(scheme)】clean完成[\(String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")]")
             }
             
-            guard let project = Project.project(directoryPath: FileManager.default.currentDirectoryPath) else {
-                return po(tip: "\(FileManager.default.currentDirectoryPath)目录不存在", type: .error)
+            guard let project = Project.project(directoryPath: path ?? FileManager.default.currentDirectoryPath) else {
+                return po(tip: "\(path ?? FileManager.default.currentDirectoryPath)目录不存在", type: .error)
             }
             
             guard project.rootProject == project else {
@@ -219,25 +236,25 @@ extension JKTool.Build {
 
         mutating func run() {
             
+            let cache = options.cache ?? true
+            let configuration = options.configuration ?? "Release"
+            let sdk = options.sdk ?? "iOS"
+            let signBundle = options.signBundle ?? true
+            
             func build(project:Project) {
-                po(tip:"【\(project.destination)】build开始")
+                
+                let scheme = ProjectListsModel.projectList(project: project)?.defaultScheme(sdk) ?? project.destination
+                
+                po(tip:"【\(scheme)】build开始")
                 
                 let isRootProject = (project == project.rootProject)
-                let cache = options.cache ?? true
-                let configuration = options.configuration ?? "Release"
-                let sdk = options.sdk ?? "iOS"
-                let signBundle = options.signBundle ?? true
                 
-                let copyPath = isRootProject ? options.copyPath: (options.copyPath ?? project.rootProject.buildsPath + "/" + project.destination)
+                let copyPath = isRootProject ? options.copyPath: (options.copyPath ?? project.rootProject.buildsPath + "/" + scheme)
                 
                 let date = Date.init().timeIntervalSince1970
                 // 删除旧.a相关文件
                 if let copyPath = copyPath {
                     _ = try? shellOut(to: .removeFolder(from: copyPath))
-                }
-                
-                guard let scheme = ProjectListsModel.projectList(project: project)?.defaultScheme(sdk) else {
-                    return po(tip: "\(project.directoryPath)无法解析出正确的项目",type: .error)
                 }
                 
                 let oldVersion = try? shellOut(to: .readVerison(path: "\(project.buildPath)/Universal/"))
@@ -272,10 +289,11 @@ extension JKTool.Build {
                     let staticCommand = ShellOutCommand.staticBuild(scheme: scheme,isWorkspace: project.projectType.isWorkSpace(),projectName: project.projectType.entrance(), projectPath: project.directoryPath, derivedDataPath: project.buildPath, configuration: configuration, sdk: sdk,dstPath: project.dstPath,verison: isRootProject ? "Products" : currentVersion,toStaticPath: toStaticPath,toHeaderPath: toHeaderPath)
                     do {
                         try shellOut(to: staticCommand, at: project.directoryPath)
-                        po(tip: "【\(project.destination)】.a Build成功",type: .tip)
+                        po(tip: "【\(scheme)】.a Build成功",type: .tip)
                     } catch  {
                         let error = error as! ShellOutError
-                        po(tip: "【\(project.destination)】.a Build失败\n" +  error.message + error.output,type: .error)
+                        project.writeBuildLog(log: error.message + error.output)
+                        po(tip: "【\(scheme)】.a Build失败\n" +  error.message + error.output,type: .error)
                     }
                 }
                 
@@ -288,15 +306,16 @@ extension JKTool.Build {
                     let buildCommand = ShellOutCommand.buildBundle(bundleName:project.bundleName,isWorkspace: project.projectType.isWorkSpace(),projectName: project.projectType.entrance(), projectPath: project.directoryPath, derivedDataPath: project.buildPath, sdk: sdk, codeSignAllowed: signBundle, verison: isRootProject ? "Products" : currentVersion, toBundlePath: toBundlePath)
                     do {
                         try shellOut(to: buildCommand, at: project.directoryPath)
-                        po(tip: "【\(project.destination)】.bundle Build成功",type: .tip)
+                        po(tip: "【\(scheme)】.bundle Build成功",type: .tip)
                     } catch  {
                         let error = error as! ShellOutError
-                        po(tip: "【\(project.destination)】.bundle Build失败\n" + error.message + error.output,type: .error)
+                        project.writeBuildBundleLog(log: error.message + error.output)
+                        po(tip: "【\(scheme)】.bundle Build失败\n" + error.message + error.output,type: .error)
                     }
                 }
                 
                 if isRootProject || cache == false || !hasCache {
-                    po(tip:"【\(project.destination)】需重新编译")
+                    po(tip:"【\(scheme)】需重新编译")
 
                     // 删除历史build文件
                     let cachePath = isRootProject ? (project.buildPath + "/Universal"): (project.buildPath + "/Universal/\(currentVersion)")
@@ -308,7 +327,7 @@ extension JKTool.Build {
                     
                     
                 } else {
-                    po(tip:"【\(project.destination)】尝试读取缓存")
+                    po(tip:"【\(scheme)】尝试读取缓存")
                     guard let toStaticPath =  copyPath else {
                         let cachePath = isRootProject ? (project.buildPath + "/Universal"): (project.buildPath + "/Universal/\(currentVersion)")
                         po(tip: "\(cachePath)已经存在缓存，请确认是否需要重新编译,如果缓存不可用,请手动删除，再重新编译", type: .warning)
@@ -324,7 +343,7 @@ extension JKTool.Build {
                         try shellOut(to: staticCommand, at: project.directoryPath)
                     } catch  {
                         let error = error as! ShellOutError
-                        po(tip: "【\(project.destination)】.a copy失败\n" +  error.message + error.output,type: .warning)
+                        po(tip: "【\(scheme)】.a copy失败\n" +  error.message + error.output,type: .warning)
                         buildStatic(project: project)
                     }
                     
@@ -339,28 +358,30 @@ extension JKTool.Build {
                             try shellOut(to: buildCommand, at: project.directoryPath)
                         } catch  {
                             let error = error as! ShellOutError
-                            po(tip: "【\(project.destination)】.bundle copy失败\n" + error.message + error.output,type: .warning)
+                            po(tip: "【\(scheme)】.bundle copy失败\n" + error.message + error.output,type: .warning)
                             buildBundle(project: project)
                         }
                     }
                     
                 }
                 
-                po(tip:"【\(project.destination)】build完成[\(String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")]")
+                po(tip:"【\(scheme)】build完成[\(String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")]")
             }
             
             guard let project = Project.project(directoryPath: options.path ?? FileManager.default.currentDirectoryPath) else {
                 return po(tip: "\(options.path ?? FileManager.default.currentDirectoryPath)目录不存在", type: .error)
             }
             
-            let buildScript = try? String(contentsOf: URL(fileURLWithPath: project.buildScriptPath))
+            let scheme = ProjectListsModel.projectList(project: project)?.defaultScheme(sdk) ?? project.destination
             
-            if let buildScript = buildScript {
+            if options.checkCustomBuildScript == true, FileManager.default.fileExists(atPath: project.directoryPath + "/build.sh") {
                 do {
-                    try shellOut(to: ShellOutCommand(string: buildScript),at: project.directoryPath)
+                    po(tip:"【\(scheme)】执行build.sh")
+                    let msg = try shellOut(to: ShellOutCommand(string: "chmod +x build.sh && ./build.sh \(scheme) \(configuration) \(sdk) \(signBundle) \(project.directoryPath)"),at: project.directoryPath)
+                    po(tip:"\(msg)")
                 } catch  {
                     let error = error as! ShellOutError
-                    po(tip: "【\(project.destination)】build.sh run error：\n" + error.message + error.output,type: .error)
+                    po(tip: "【\(scheme)】build.sh run error：\n" + error.message + error.output,type: .error)
                 }
                 return
             }
@@ -388,24 +409,24 @@ extension JKTool.Build {
 
         mutating func run() {
             
+            let cache = options.cache ?? true
+            let configuration = options.configuration ?? "Release"
+            let sdk = options.sdk ?? "iOS"
+            let signBundle = options.signBundle ?? true
+            
             func build(project:Project) {
-                po(tip:"【\(project.destination)】build开始")
-                let isRootProject = (project == project.rootProject)
-                let cache = options.cache ?? true
-                let configuration = options.configuration ?? "Release"
-                let sdk = options.sdk ?? "iOS"
-                let signBundle = options.signBundle ?? true
                 
-                let copyPath = isRootProject ? options.copyPath: (options.copyPath ?? project.rootProject.buildsPath + "/" + project.destination)
+                let scheme = ProjectListsModel.projectList(project: project)?.defaultScheme(sdk) ?? project.destination
+                
+                po(tip:"【\(scheme)】build开始")
+                let isRootProject = (project == project.rootProject)
+                
+                let copyPath = isRootProject ? options.copyPath: (options.copyPath ?? project.rootProject.buildsPath + "/" + scheme)
                 
                 let date = Date.init().timeIntervalSince1970
                 // 删除主项目旧.framework相关文件
                 if let copyPath = copyPath {
                     _ = try? shellOut(to: .removeFolder(from: copyPath))
-                }
-                
-                guard let scheme = ProjectListsModel.projectList(project: project)?.defaultScheme(sdk) else {
-                    return po(tip: "\(project.directoryPath)无法解析出正确的项目",type: .error)
                 }
                 
                 let oldVersion = try? shellOut(to: .readVerison(path: "\(project.buildPath)/Universal/"))
@@ -438,10 +459,12 @@ extension JKTool.Build {
                     let frameworkCommand = ShellOutCommand.frameworkBuild(scheme:scheme,isWorkspace: project.projectType.isWorkSpace(),projectName: project.projectType.entrance(), projectPath: project.directoryPath, derivedDataPath: project.buildPath, configuration: configuration, sdk: sdk, verison: isRootProject ? "Products" : currentVersion, toPath: toPath)
                     
                     do {
-                        try shellOut(to: frameworkCommand, at: project.directoryPath)
+                        let msg = try shellOut(to: frameworkCommand, at: project.directoryPath)
+                        po(tip: msg)
                     } catch  {
                         let error = error as! ShellOutError
-                        po(tip: "【\(project.destination)】.framework Build失败\n" + error.message + error.output,type: .error)
+                        project.writeBuildLog(log: error.message + error.output)
+                        po(tip: "【\(scheme)】.framework Build失败\n" + error.message + error.output,type: .error)
                     }
                 }
                 
@@ -456,12 +479,13 @@ extension JKTool.Build {
                         try shellOut(to: buildCommand, at: project.directoryPath)
                     } catch  {
                         let error = error as! ShellOutError
-                        po(tip: "【\(project.destination)】.bundle Build失败\n" + error.message + error.output,type: .error)
+                        project.writeBuildBundleLog(log: error.message + error.output)
+                        po(tip: "【\(scheme)】.bundle Build失败\n" + error.message + error.output,type: .error)
                     }
                 }
                 
                 if isRootProject || cache == false || !hasCache {
-                    po(tip:"【\(project.destination)】需重新编译")
+                    po(tip:"【\(scheme)】需重新编译")
                 
                     /// 删除历史build文件
                     let cachePath = isRootProject ? (project.buildPath + "/Universal"): (project.buildPath + "/Universal/\(currentVersion)")
@@ -471,7 +495,7 @@ extension JKTool.Build {
                     
                     buildBundle(project: project)
                 } else {
-                    po(tip:"【\(project.destination)】尝试读取缓存")
+                    po(tip:"【\(scheme)】尝试读取缓存")
                     guard let toPath =  copyPath else {
                         let cachePath = isRootProject ? (project.buildPath + "/Universal"): (project.buildPath + "/Universal/\(currentVersion)")
                         po(tip: "\(cachePath)已经存在缓存，请确认是否需要重新编译,如果缓存不可用,请手动删除，再重新编译", type: .warning)
@@ -482,7 +506,7 @@ extension JKTool.Build {
                         try shellOut(to: frameworkCommand, at: project.directoryPath)
                     } catch  {
                         let error = error as! ShellOutError
-                        po(tip: "【\(project.destination)】.framework copy失败\n" + error.message + error.output,type: .warning)
+                        po(tip: "【\(scheme)】.framework copy失败\n" + error.message + error.output,type: .warning)
                         buildFramework(project: project)
                     }
                     
@@ -497,28 +521,31 @@ extension JKTool.Build {
                             try shellOut(to: buildCommand, at: project.directoryPath)
                         } catch  {
                             let error = error as! ShellOutError
-                            po(tip: "【\(project.destination)】.bundle copy失败\n" + error.message + error.output,type: .warning)
+                            po(tip: "【\(scheme)】.bundle copy失败\n" + error.message + error.output,type: .warning)
                             buildBundle(project: project)
                         }
                     }
                     
                 }
                 
-                po(tip:"【\(project.destination)】build完成[\(String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")]")
+                po(tip:"【\(scheme)】build完成[\(String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")]")
             }
             
             guard let project = Project.project(directoryPath: options.path ?? FileManager.default.currentDirectoryPath) else {
                 return po(tip: "\(options.path ?? FileManager.default.currentDirectoryPath)目录不存在", type: .error)
             }
             
-            let buildScript = try? String(contentsOf: URL(fileURLWithPath: project.buildScriptPath))
+            let scheme = ProjectListsModel.projectList(project: project)?.defaultScheme(sdk) ?? project.destination
             
-            if let buildScript = buildScript {
+            if options.checkCustomBuildScript == true, FileManager.default.fileExists(atPath: project.directoryPath + "/build.sh") {
+                
                 do {
-                    try shellOut(to: ShellOutCommand(string: buildScript),at: project.directoryPath)
+                    po(tip:"【\(scheme)】执行build.sh")
+                    let msg = try shellOut(to: ShellOutCommand(string: "chmod +x build.sh && ./build.sh \(scheme) \(configuration) \(sdk) \(signBundle) \(project.directoryPath)"),at: project.directoryPath)
+                    po(tip:"\(msg)")
                 } catch  {
                     let error = error as! ShellOutError
-                    po(tip: "【\(project.destination)】build.sh run error：\n" + error.message + error.output,type: .error)
+                    po(tip: "【\(scheme)】build.sh run error：\n" + error.message + error.output,type: .error)
                 }
                 return
             }
@@ -547,24 +574,24 @@ extension JKTool.Build {
 
         mutating func run() {
             
+            let cache = options.cache ?? true
+            let configuration = options.configuration ?? "Release"
+            let sdk = options.sdk ?? "iOS"
+            let signBundle = options.signBundle ?? true
+            
             func build(project:Project) {
-                po(tip:"【\(project.destination)】build开始")
-                let isRootProject = (project == project.rootProject)
-                let cache = options.cache ?? true
-                let configuration = options.configuration ?? "Release"
-                let sdk = options.sdk ?? "iOS"
-                let signBundle = options.signBundle ?? true
                 
-                let copyPath = isRootProject ? options.copyPath: (options.copyPath ?? project.rootProject.buildsPath + "/" + project.destination)
+                let scheme = ProjectListsModel.projectList(project: project)?.defaultScheme(sdk) ?? project.destination
+                
+                po(tip:"【\(scheme)】build开始")
+                let isRootProject = (project == project.rootProject)
+
+                let copyPath = isRootProject ? options.copyPath: (options.copyPath ?? project.rootProject.buildsPath + "/" + scheme)
                 
                 let date = Date.init().timeIntervalSince1970
                 // 删除主项目旧.xcframework相关文件
                 if let copyPath = copyPath {
                     _ = try? shellOut(to: .removeFolder(from: copyPath))
-                }
-                
-                guard let scheme = ProjectListsModel.projectList(project: project)?.defaultScheme(sdk) else {
-                    return po(tip: "\(project.directoryPath)无法解析出正确的项目",type: .error)
                 }
                 
                 let oldVersion = try? shellOut(to: .readVerison(path: "\(project.buildPath)/Universal/"))
@@ -602,7 +629,8 @@ extension JKTool.Build {
                         try shellOut(to: xcframeworkCommand, at: project.directoryPath)
                     } catch  {
                         let error = error as! ShellOutError
-                        po(tip: "【\(project.destination)】.xcframework Build失败\n" + error.message + error.output,type: .error)
+                        project.writeBuildLog(log: error.message + error.output)
+                        po(tip: "【\(scheme)】.xcframework Build失败\n" + error.message + error.output,type: .error)
                     }
                 }
                 
@@ -618,11 +646,12 @@ extension JKTool.Build {
                         try shellOut(to: buildCommand, at: project.directoryPath)
                     } catch  {
                         let error = error as! ShellOutError
-                        po(tip: "【\(project.destination)】.bundle Build失败\n" + error.message + error.output,type: .error)
+                        project.writeBuildBundleLog(log: error.message + error.output)
+                        po(tip: "【\(scheme)】.bundle Build失败\n" + error.message + error.output,type: .error)
                     }
                 }
                 if isRootProject || cache == false || !hasCache {
-                    po(tip:"【\(project.destination)】需重新编译")
+                    po(tip:"【\(scheme)】需重新编译")
                     
                     // 删除历史build文件
                     let cachePath = isRootProject ? (project.buildPath + "/Universal"): (project.buildPath + "/Universal/\(currentVersion)")
@@ -632,7 +661,7 @@ extension JKTool.Build {
                     buildBundle(project: project)
                     
                 }else{
-                    po(tip:"【\(project.destination)】尝试读取缓存")
+                    po(tip:"【\(scheme)】尝试读取缓存")
                     guard let toPath =  copyPath else {
                         let cachePath = isRootProject ? (project.buildPath + "/Universal"): (project.buildPath + "/Universal/\(currentVersion)")
                         po(tip: "\(cachePath)已经存在缓存，请确认是否需要重新编译,如果缓存不可用,请手动删除，再重新编译", type: .warning)
@@ -644,7 +673,7 @@ extension JKTool.Build {
                         try shellOut(to: xcframeworkCommand, at: project.directoryPath)
                     } catch  {
                         let error = error as! ShellOutError
-                        po(tip: "【\(project.destination)】.xcframework copy失败\n" + error.message + error.output,type: .warning)
+                        po(tip: "【\(scheme)】.xcframework copy失败\n" + error.message + error.output,type: .warning)
                         buildXCFramework(project: project)
                     }
                     
@@ -659,27 +688,29 @@ extension JKTool.Build {
                             try shellOut(to: buildCommand, at: project.directoryPath)
                         } catch  {
                             let error = error as! ShellOutError
-                            po(tip: "【\(project.destination)】.bundle copy失败\n" + error.message + error.output,type: .warning)
+                            po(tip: "【\(scheme)】.bundle copy失败\n" + error.message + error.output,type: .warning)
                             buildBundle(project: project)
                         }
                     }
                     
                 }
-                po(tip:"【\(project.destination)】build完成[\(String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")]")
+                po(tip:"【\(scheme)】build完成[\(String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")]")
             }
             
             guard let project = Project.project(directoryPath: options.path ?? FileManager.default.currentDirectoryPath) else {
                 return po(tip: "\(options.path ?? FileManager.default.currentDirectoryPath)目录不存在", type: .error)
             }
             
-            let buildScript = try? String(contentsOf: URL(fileURLWithPath: project.buildScriptPath))
+            let scheme = ProjectListsModel.projectList(project: project)?.defaultScheme(sdk) ?? project.destination
             
-            if let buildScript = buildScript {
+            if options.checkCustomBuildScript == true, FileManager.default.fileExists(atPath: project.directoryPath + "/build.sh") {
                 do {
-                    try shellOut(to: ShellOutCommand(string: buildScript),at: project.directoryPath)
+                    po(tip:"【\(scheme)】执行build.sh")
+                    let msg = try shellOut(to: ShellOutCommand(string: "chmod +x build.sh && ./build.sh \(scheme) \(configuration) \(sdk) \(signBundle) \(project.directoryPath)"),at: project.directoryPath)
+                    po(tip:"\(msg)")
                 } catch  {
                     let error = error as! ShellOutError
-                    po(tip: "【\(project.destination)】build.sh run error：\n" + error.message + error.output,type: .error)
+                    po(tip: "【\(scheme)】build.sh run error：\n" + error.message + error.output,type: .error)
                 }
                 return
             }
@@ -708,10 +739,17 @@ extension JKTool.Build {
 
         mutating func run() {
             
+            let configuration = options.configuration ?? "Release"
+            let sdk = options.sdk ?? "iOS"
+            let signBundle = options.signBundle ?? true
+            
             func build(project:Project) {
-                po(tip:"【\(project.destination)】不是一个可编译项目，将直接引用此目录。")
+                
+                let scheme = ProjectListsModel.projectList(project: project)?.defaultScheme(sdk) ?? project.destination
+                
+                po(tip:"【\(scheme)】不是一个可编译项目，将直接引用此目录。")
                 let isRootProject = (project == project.rootProject)
-                let copyPath = isRootProject ? options.copyPath: (options.copyPath ?? project.rootProject.buildsPath + "/" + project.destination)
+                let copyPath = isRootProject ? options.copyPath: (options.copyPath ?? project.rootProject.buildsPath + "/" + scheme)
                 
                 let date = Date.init().timeIntervalSince1970
                 // 删除主项目旧.framework相关文件
@@ -721,21 +759,23 @@ extension JKTool.Build {
                     _ = try? shellOut(to: .copyFile(from: project.directoryPath, to: copyPath))
                 }
                 
-                po(tip:"【\(project.destination)】Copy完成[\(String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")]")
+                po(tip:"【\(scheme)】Copy完成[\(String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")]")
             }
             
             guard let project = Project.project(directoryPath: options.path ?? FileManager.default.currentDirectoryPath) else {
                 return po(tip: "\(options.path ?? FileManager.default.currentDirectoryPath)目录不存在", type: .error)
             }
             
-            let buildScript = try? String(contentsOf: URL(fileURLWithPath: project.buildScriptPath))
+            let scheme = ProjectListsModel.projectList(project: project)?.defaultScheme(sdk) ?? project.destination
             
-            if let buildScript = buildScript {
+            if options.checkCustomBuildScript == true, FileManager.default.fileExists(atPath: project.directoryPath + "/build.sh") {
                 do {
-                    try shellOut(to: ShellOutCommand(string: buildScript),at: project.directoryPath)
+                    po(tip:"【\(scheme)】执行build.sh")
+                    let msg = try shellOut(to: ShellOutCommand(string: "chmod +x build.sh && ./build.sh \(scheme) \(configuration) \(sdk) \(signBundle) \(project.directoryPath)"),at: project.directoryPath)
+                    po(tip:"\(msg)")
                 } catch  {
                     let error = error as! ShellOutError
-                    po(tip: "【\(project.destination)】build.sh run error：\n" + error.message + error.output,type: .error)
+                    po(tip: "【\(scheme)】build.sh run error：\n" + error.message + error.output,type: .error)
                 }
                 return
             }

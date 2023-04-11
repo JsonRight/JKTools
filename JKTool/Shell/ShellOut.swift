@@ -282,6 +282,11 @@ public extension ShellOutCommand {
        return ShellOutCommand(string: command)
     }
     
+    static func gitShortCurrentCommitId() -> ShellOutCommand {
+        let command = "git rev-parse --short HEAD"
+       return ShellOutCommand(string: command)
+    }
+    
     static func gitDiffHEAD() -> ShellOutCommand {
         let command = "git diff HEAD"
        return ShellOutCommand(string: command)

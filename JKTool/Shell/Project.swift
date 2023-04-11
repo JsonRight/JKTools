@@ -370,6 +370,13 @@ public class Project {
             return []
         }
     }()
+    
+    lazy var buildLogPath: String = {
+        return self.buildPath.appending("/buildLog.log")
+    }()
+    lazy var buildBundleLogPath: String = {
+        return self.buildPath.appending("/buildBundleLog.log")
+    }()
     lazy var buildScriptPath: String = {
         return self.directoryPath.appending("/build.sh")
     }()
@@ -438,6 +445,26 @@ extension Project {
             }
         }
         return []
+    }
+    
+    func writeBuildLog(log: String) {
+        do {
+            let data = log.data(using: .utf8)
+            try data?.write(to: URL(fileURLWithPath: self.buildLogPath), options: .atomicWrite)
+            po(tip: "【\(self.destination)】buildLog.log 写入成功")
+        } catch {
+            po(tip: "【\(self.destination)】buildLog.log 写入失败",type: .error)
+        }
+    }
+    
+    func writeBuildBundleLog(log: String) {
+        do {
+            let data = log.data(using: .utf8)
+            try data?.write(to: URL(fileURLWithPath: self.buildBundleLogPath), options: .atomicWrite)
+            po(tip: "【\(self.destination)】buildBundleLog.log 写入成功")
+        } catch {
+            po(tip: "【\(self.destination)】buildBundleLog.log 写入失败",type: .error)
+        }
     }
 
     static func project(directoryPath: String = FileManager.default.currentDirectoryPath) -> Project?{
