@@ -457,6 +457,13 @@ extension Project {
         }
     }
     
+    func removeBuildLog() {
+        let exist = FileManager.default.fileExists(atPath: self.buildLogPath)
+        if !exist {
+            try? FileManager.default.removeItem(atPath: self.buildLogPath)
+        }
+    }
+    
     func writeBuildBundleLog(log: String) {
         do {
             let data = log.data(using: .utf8)
@@ -464,6 +471,13 @@ extension Project {
             po(tip: "【\(self.destination)】buildBundleLog.log 写入成功")
         } catch {
             po(tip: "【\(self.destination)】buildBundleLog.log 写入失败",type: .error)
+        }
+    }
+    
+    func removeBuildBundleLog() {
+        let exist = FileManager.default.fileExists(atPath: self.buildBundleLogPath)
+        if !exist {
+            try? FileManager.default.removeItem(atPath: self.buildBundleLogPath)
         }
     }
 

@@ -185,7 +185,7 @@ extension JKTool.Build {
                 
                 _ = try? shellOut(to: .removeFolder(from: project.buildPath + "/Universal/"))
                 
-                _ = try? shellOut(to: .removeFolder(from: project.buildsPath + "/"))
+                _ = try? shellOut(to: .removeFolder(from: project.buildPath + "/"))
                 
                 
                 po(tip:"【\(scheme)】clean完成[\(String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")]")
@@ -289,6 +289,7 @@ extension JKTool.Build {
                     let staticCommand = ShellOutCommand.staticBuild(scheme: scheme,isWorkspace: project.projectType.isWorkSpace(),projectName: project.projectType.entrance(), projectPath: project.directoryPath, derivedDataPath: project.buildPath, configuration: configuration, sdk: sdk,dstPath: project.dstPath,verison: isRootProject ? "Products" : currentVersion,toStaticPath: toStaticPath,toHeaderPath: toHeaderPath)
                     do {
                         try shellOut(to: staticCommand, at: project.directoryPath)
+                        project.removeBuildLog()
                         po(tip: "【\(scheme)】.a Build成功",type: .tip)
                     } catch  {
                         let error = error as! ShellOutError
@@ -306,6 +307,7 @@ extension JKTool.Build {
                     let buildCommand = ShellOutCommand.buildBundle(bundleName:project.bundleName,isWorkspace: project.projectType.isWorkSpace(),projectName: project.projectType.entrance(), projectPath: project.directoryPath, derivedDataPath: project.buildPath, sdk: sdk, codeSignAllowed: signBundle, verison: isRootProject ? "Products" : currentVersion, toBundlePath: toBundlePath)
                     do {
                         try shellOut(to: buildCommand, at: project.directoryPath)
+                        project.removeBuildBundleLog()
                         po(tip: "【\(scheme)】.bundle Build成功",type: .tip)
                     } catch  {
                         let error = error as! ShellOutError
@@ -341,6 +343,7 @@ extension JKTool.Build {
                     let staticCommand = ShellOutCommand.staticWithCache(scheme: scheme,projectPath: project.directoryPath, derivedDataPath: project.buildPath, verison: currentVersion,toStaticPath: toStaticPath,toHeaderPath: toHeaderPath)
                     do {
                         try shellOut(to: staticCommand, at: project.directoryPath)
+                        po(tip: "【\(scheme)】.a copy成功",type: .tip)
                     } catch  {
                         let error = error as! ShellOutError
                         po(tip: "【\(scheme)】.a copy失败\n" +  error.message + error.output,type: .warning)
@@ -356,6 +359,7 @@ extension JKTool.Build {
                         let buildCommand = ShellOutCommand.bundleWithCache(bundleName:project.bundleName,projectPath: project.directoryPath, derivedDataPath: project.buildPath, verison: currentVersion, toBundlePath: toBundlePath)
                         do {
                             try shellOut(to: buildCommand, at: project.directoryPath)
+                            po(tip: "【\(scheme)】.bundle copy成功",type: .tip)
                         } catch  {
                             let error = error as! ShellOutError
                             po(tip: "【\(scheme)】.bundle copy失败\n" + error.message + error.output,type: .warning)
@@ -375,14 +379,16 @@ extension JKTool.Build {
             let scheme = ProjectListsModel.projectList(project: project)?.defaultScheme(sdk) ?? project.destination
             
             if options.checkCustomBuildScript == true, FileManager.default.fileExists(atPath: project.directoryPath + "/build.sh") {
+                let date = Date.init().timeIntervalSince1970
                 do {
                     po(tip:"【\(scheme)】执行build.sh")
-                    let msg = try shellOut(to: ShellOutCommand(string: "chmod +x build.sh && ./build.sh \(scheme) \(configuration) \(sdk) \(signBundle) \(project.directoryPath)"),at: project.directoryPath)
-                    po(tip:"\(msg)")
+                    try shellOut(to: ShellOutCommand(string: "chmod +x build.sh && ./build.sh \(scheme) \(configuration) \(sdk) \(signBundle) \(project.directoryPath)"),at: project.directoryPath)
+                    po(tip: "【\(scheme)】执行build.sh 成功",type: .tip)
                 } catch  {
                     let error = error as! ShellOutError
                     po(tip: "【\(scheme)】build.sh run error：\n" + error.message + error.output,type: .error)
                 }
+                po(tip:"【\(scheme)】build完成[\(String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")]")
                 return
             }
             
@@ -459,8 +465,9 @@ extension JKTool.Build {
                     let frameworkCommand = ShellOutCommand.frameworkBuild(scheme:scheme,isWorkspace: project.projectType.isWorkSpace(),projectName: project.projectType.entrance(), projectPath: project.directoryPath, derivedDataPath: project.buildPath, configuration: configuration, sdk: sdk, verison: isRootProject ? "Products" : currentVersion, toPath: toPath)
                     
                     do {
-                        let msg = try shellOut(to: frameworkCommand, at: project.directoryPath)
-                        po(tip: msg)
+                        try shellOut(to: frameworkCommand, at: project.directoryPath)
+                        project.removeBuildLog()
+                        po(tip: "【\(scheme)】.framework Build成功",type: .tip)
                     } catch  {
                         let error = error as! ShellOutError
                         project.writeBuildLog(log: error.message + error.output)
@@ -477,6 +484,8 @@ extension JKTool.Build {
                     let buildCommand = ShellOutCommand.buildBundle(bundleName:project.bundleName,isWorkspace: project.projectType.isWorkSpace(),projectName: project.projectType.entrance(), projectPath: project.directoryPath, derivedDataPath: project.buildPath, sdk: sdk, codeSignAllowed: signBundle, verison: isRootProject ? "Products" : currentVersion, toBundlePath: toBundlePath)
                     do {
                         try shellOut(to: buildCommand, at: project.directoryPath)
+                        project.removeBuildBundleLog()
+                        po(tip: "【\(scheme)】.bundle Build成功",type: .tip)
                     } catch  {
                         let error = error as! ShellOutError
                         project.writeBuildBundleLog(log: error.message + error.output)
@@ -504,6 +513,7 @@ extension JKTool.Build {
                     let frameworkCommand = ShellOutCommand.frameworkWithCache(scheme: scheme,projectPath: project.directoryPath, derivedDataPath: project.buildPath, verison: currentVersion, toPath: toPath)
                     do {
                         try shellOut(to: frameworkCommand, at: project.directoryPath)
+                        po(tip: "【\(scheme)】.framework copy成功",type: .tip)
                     } catch  {
                         let error = error as! ShellOutError
                         po(tip: "【\(scheme)】.framework copy失败\n" + error.message + error.output,type: .warning)
@@ -519,6 +529,7 @@ extension JKTool.Build {
                         let buildCommand = ShellOutCommand.bundleWithCache(bundleName:project.bundleName,projectPath: project.directoryPath, derivedDataPath: project.buildPath, verison: currentVersion, toBundlePath: toBundlePath)
                         do {
                             try shellOut(to: buildCommand, at: project.directoryPath)
+                            po(tip: "【\(scheme)】.bundle copy成功",type: .tip)
                         } catch  {
                             let error = error as! ShellOutError
                             po(tip: "【\(scheme)】.bundle copy失败\n" + error.message + error.output,type: .warning)
@@ -538,15 +549,16 @@ extension JKTool.Build {
             let scheme = ProjectListsModel.projectList(project: project)?.defaultScheme(sdk) ?? project.destination
             
             if options.checkCustomBuildScript == true, FileManager.default.fileExists(atPath: project.directoryPath + "/build.sh") {
-                
+                let date = Date.init().timeIntervalSince1970
                 do {
                     po(tip:"【\(scheme)】执行build.sh")
-                    let msg = try shellOut(to: ShellOutCommand(string: "chmod +x build.sh && ./build.sh \(scheme) \(configuration) \(sdk) \(signBundle) \(project.directoryPath)"),at: project.directoryPath)
-                    po(tip:"\(msg)")
+                    try shellOut(to: ShellOutCommand(string: "chmod +x build.sh && ./build.sh \(scheme) \(configuration) \(sdk) \(signBundle) \(project.directoryPath)"),at: project.directoryPath)
+                    po(tip: "【\(scheme)】执行build.sh 成功",type: .tip)
                 } catch  {
                     let error = error as! ShellOutError
                     po(tip: "【\(scheme)】build.sh run error：\n" + error.message + error.output,type: .error)
                 }
+                po(tip:"【\(scheme)】build完成[\(String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")]")
                 return
             }
             
@@ -627,6 +639,8 @@ extension JKTool.Build {
                     
                     do {
                         try shellOut(to: xcframeworkCommand, at: project.directoryPath)
+                        project.removeBuildLog()
+                        po(tip: "【\(scheme)】.xcframework Build成功",type: .tip)
                     } catch  {
                         let error = error as! ShellOutError
                         project.writeBuildLog(log: error.message + error.output)
@@ -644,6 +658,8 @@ extension JKTool.Build {
                     let buildCommand = ShellOutCommand.buildBundle(bundleName:project.bundleName,isWorkspace: project.projectType.isWorkSpace(),projectName: project.projectType.entrance(), projectPath: project.directoryPath, derivedDataPath: project.buildPath, sdk: sdk, codeSignAllowed: signBundle, verison: isRootProject ? "Products" : currentVersion, toBundlePath: toBundlePath)
                     do {
                         try shellOut(to: buildCommand, at: project.directoryPath)
+                        project.removeBuildBundleLog()
+                        po(tip: "【\(scheme)】.bundle Build成功",type: .tip)
                     } catch  {
                         let error = error as! ShellOutError
                         project.writeBuildBundleLog(log: error.message + error.output)
@@ -671,6 +687,7 @@ extension JKTool.Build {
                     
                     do {
                         try shellOut(to: xcframeworkCommand, at: project.directoryPath)
+                        po(tip: "【\(scheme)】.xcfrmework copy成功",type: .tip)
                     } catch  {
                         let error = error as! ShellOutError
                         po(tip: "【\(scheme)】.xcframework copy失败\n" + error.message + error.output,type: .warning)
@@ -686,6 +703,7 @@ extension JKTool.Build {
                         let buildCommand = ShellOutCommand.bundleWithCache(bundleName:project.bundleName,projectPath: project.directoryPath, derivedDataPath: project.buildPath, verison: currentVersion, toBundlePath: toBundlePath)
                         do {
                             try shellOut(to: buildCommand, at: project.directoryPath)
+                            po(tip: "【\(scheme)】.bundle copy成功",type: .tip)
                         } catch  {
                             let error = error as! ShellOutError
                             po(tip: "【\(scheme)】.bundle copy失败\n" + error.message + error.output,type: .warning)
@@ -704,14 +722,16 @@ extension JKTool.Build {
             let scheme = ProjectListsModel.projectList(project: project)?.defaultScheme(sdk) ?? project.destination
             
             if options.checkCustomBuildScript == true, FileManager.default.fileExists(atPath: project.directoryPath + "/build.sh") {
+                let date = Date.init().timeIntervalSince1970
                 do {
                     po(tip:"【\(scheme)】执行build.sh")
-                    let msg = try shellOut(to: ShellOutCommand(string: "chmod +x build.sh && ./build.sh \(scheme) \(configuration) \(sdk) \(signBundle) \(project.directoryPath)"),at: project.directoryPath)
-                    po(tip:"\(msg)")
+                    try shellOut(to: ShellOutCommand(string: "chmod +x build.sh && ./build.sh \(scheme) \(configuration) \(sdk) \(signBundle) \(project.directoryPath)"),at: project.directoryPath)
+                    po(tip: "【\(scheme)】执行build.sh 成功",type: .tip)
                 } catch  {
                     let error = error as! ShellOutError
                     po(tip: "【\(scheme)】build.sh run error：\n" + error.message + error.output,type: .error)
                 }
+                po(tip:"【\(scheme)】build完成[\(String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")]")
                 return
             }
             
@@ -757,9 +777,12 @@ extension JKTool.Build {
                     _ = try? shellOut(to: .removeFolder(from: copyPath))
                     
                     _ = try? shellOut(to: .copyFile(from: project.directoryPath, to: copyPath))
+                    po(tip:"【\(scheme)】copy完成")
+                } else {
+                    po(tip:"【\(scheme)】为执行任何操作，请检查是否符合工程结构",type: .warning)
                 }
                 
-                po(tip:"【\(scheme)】Copy完成[\(String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")]")
+                po(tip:"【\(scheme)】build完成[\(String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")]")
             }
             
             guard let project = Project.project(directoryPath: options.path ?? FileManager.default.currentDirectoryPath) else {
@@ -769,14 +792,16 @@ extension JKTool.Build {
             let scheme = ProjectListsModel.projectList(project: project)?.defaultScheme(sdk) ?? project.destination
             
             if options.checkCustomBuildScript == true, FileManager.default.fileExists(atPath: project.directoryPath + "/build.sh") {
+                let date = Date.init().timeIntervalSince1970
                 do {
                     po(tip:"【\(scheme)】执行build.sh")
-                    let msg = try shellOut(to: ShellOutCommand(string: "chmod +x build.sh && ./build.sh \(scheme) \(configuration) \(sdk) \(signBundle) \(project.directoryPath)"),at: project.directoryPath)
-                    po(tip:"\(msg)")
+                    try shellOut(to: ShellOutCommand(string: "chmod +x build.sh && ./build.sh \(scheme) \(configuration) \(sdk) \(signBundle) \(project.directoryPath)"),at: project.directoryPath)
+                    po(tip: "【\(scheme)】执行build.sh 成功",type: .tip)
                 } catch  {
                     let error = error as! ShellOutError
                     po(tip: "【\(scheme)】build.sh run error：\n" + error.message + error.output,type: .error)
                 }
+                po(tip:"【\(scheme)】build完成[\(String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")]")
                 return
             }
             
