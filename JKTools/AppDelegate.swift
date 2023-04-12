@@ -55,7 +55,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         return false
     }
     
-
     @IBAction func clean(_ sender: AnyObject?) {
         resetScpt()
     }
