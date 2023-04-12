@@ -94,7 +94,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         downloadTask.resume()
     }
     
-    
     @IBAction func exit(_ sender: Any) {
         NSApplication.shared.terminate(self)
     }
