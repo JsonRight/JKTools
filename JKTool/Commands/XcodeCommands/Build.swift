@@ -108,9 +108,6 @@ extension JKTool {
             }
             
             guard project.rootProject == project else {
-                if !project.projectType.vaild() {
-                    return
-                }
                 
                 build(project: project, appedingCopyPath: true)
                 
@@ -119,11 +116,6 @@ extension JKTool {
             
             
             guard project.recordList.count > 0 else {
-                
-                if !project.projectType.vaild() {
-                    return
-                }
-                
                 build(project: project, appedingCopyPath: true)
 
                return
@@ -787,10 +779,11 @@ extension JKTool.Build {
                 let date = Date.init().timeIntervalSince1970
                 // 删除主项目旧相关文件
                 if let copyPath = copyPath {
-                    _ = try? shellOut(to: .removeFolder(from: copyPath))
                     _ = try? shellOut(to: .createFolder(path: copyPath))
+                    _ = try? shellOut(to: .removeFolder(from: copyPath + "/" + scheme))
+                    
                     do {
-                        try shellOut(to: .createSymlink(to: project.rootProject.checkoutsPath + "/" + scheme, at: project.rootProject.buildsPath))
+                        try shellOut(to: .createSymlink(to: project.directoryPath, at: copyPath))
                     } catch  {
                         let error = error as! ShellOutError
                         po(tip: "【\(scheme)】copy error：\n" + error.message + error.output,type: .error)
