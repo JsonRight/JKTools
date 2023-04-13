@@ -26,6 +26,7 @@
 		BF3B80692632686C0085E75A /* MenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3B80682632686C0085E75A /* MenuView.swift */; };
 		BF3CBE3B2636D58D0082E869 /* JKToolScript.scpt in Resources */ = {isa = PBXBuildFile; fileRef = BF3CBE3A2636D58C0082E869 /* JKToolScript.scpt */; };
 		BF41E5CC29E506AB0030CB5D /* Version.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF41E5CB29E506AB0030CB5D /* Version.swift */; };
+		BF41E5CE29E6CB2E0030CB5D /* Modules.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF41E5CD29E6CB2E0030CB5D /* Modules.swift */; };
 		BF60AC94291C98A100C7BF2E /* JKTool in Resources */ = {isa = PBXBuildFile; fileRef = BF60AC92291BBFB200C7BF2E /* JKTool */; };
 		BF60AC96291C999C00C7BF2E /* HelperViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF60AC95291C999C00C7BF2E /* HelperViewController.swift */; };
 		BF69D66D2861BF01009CE7D1 /* ParsableArguments.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF69D6402861BF01009CE7D1 /* ParsableArguments.swift */; };
@@ -86,7 +87,6 @@
 		BF70770228782F9500F71AEB /* Branch.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF70770128782F9500F71AEB /* Branch.swift */; };
 		BF85BADF2886BB5F00E916AD /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF85BADE2886BB5F00E916AD /* Config.swift */; };
 		BF8A3DAF2918FF6900E77E3D /* ShellOut.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA5290D2635169A003427A8 /* ShellOut.swift */; };
-		BF97BF7629656EB8009D4EFE /* Update.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF97BF7529656EB8009D4EFE /* Update.swift */; };
 		BF97BF7D29668528009D4EFE /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = BF97BF7C29668528009D4EFE /* README.md */; };
 		BFA528EC26351606003427A8 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA528EB26351606003427A8 /* main.swift */; };
 		BFA528F326351634003427A8 /* JKTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA528F226351634003427A8 /* JKTool.swift */; };
@@ -159,6 +159,7 @@
 		BF3B80682632686C0085E75A /* MenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuView.swift; sourceTree = "<group>"; };
 		BF3CBE3A2636D58C0082E869 /* JKToolScript.scpt */ = {isa = PBXFileReference; lastKnownFileType = text; path = JKToolScript.scpt; sourceTree = "<group>"; };
 		BF41E5CB29E506AB0030CB5D /* Version.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Version.swift; sourceTree = "<group>"; };
+		BF41E5CD29E6CB2E0030CB5D /* Modules.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Modules.swift; sourceTree = "<group>"; };
 		BF60AC92291BBFB200C7BF2E /* JKTool */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = JKTool; sourceTree = "<group>"; };
 		BF60AC95291C999C00C7BF2E /* HelperViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelperViewController.swift; sourceTree = "<group>"; };
 		BF69D6402861BF01009CE7D1 /* ParsableArguments.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParsableArguments.swift; sourceTree = "<group>"; };
@@ -218,7 +219,6 @@
 		BF7076FE28781FC500F71AEB /* Shell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shell.swift; sourceTree = "<group>"; };
 		BF70770128782F9500F71AEB /* Branch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Branch.swift; sourceTree = "<group>"; };
 		BF85BADE2886BB5F00E916AD /* Config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
-		BF97BF7529656EB8009D4EFE /* Update.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Update.swift; sourceTree = "<group>"; };
 		BF97BF7C29668528009D4EFE /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = SOURCE_ROOT; };
 		BFA528E926351606003427A8 /* JKTool */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = JKTool; sourceTree = BUILT_PRODUCTS_DIR; };
 		BFA528EB26351606003427A8 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
@@ -497,7 +497,7 @@
 		BF97BF7729656EC3009D4EFE /* ModuleCommands */ = {
 			isa = PBXGroup;
 			children = (
-				BF97BF7529656EB8009D4EFE /* Update.swift */,
+				BF41E5CD29E6CB2E0030CB5D /* Modules.swift */,
 			);
 			path = ModuleCommands;
 			sourceTree = "<group>";
@@ -748,6 +748,7 @@
 				BFA528F326351634003427A8 /* JKTool.swift in Sources */,
 				BFF72C06295306770050122C /* ioapi.c in Sources */,
 				BF69D6902861BF01009CE7D1 /* ArgumentDefinition.swift in Sources */,
+				BF41E5CE29E6CB2E0030CB5D /* Modules.swift in Sources */,
 				BF69D66E2861BF01009CE7D1 /* EnumerableFlag.swift in Sources */,
 				BF69D6AE28632E86009CE7D1 /* Pull.swift in Sources */,
 				BFA528FD26351659003427A8 /* Colors.swift in Sources */,
@@ -769,7 +770,6 @@
 				BF69D6C1286478C5009CE7D1 /* Prune.swift in Sources */,
 				BF26C475287C31090071E3F9 /* Upload.swift in Sources */,
 				BF17DC222952B8D000E56FBE /* Zipper.swift in Sources */,
-				BF97BF7629656EB8009D4EFE /* Update.swift in Sources */,
 				BF69D69E2861C6B5009CE7D1 /* ToolInfo.swift in Sources */,
 				BFA528FC26351659003427A8 /* ANSIModifiers.swift in Sources */,
 				BF69D67E2861BF01009CE7D1 /* SequenceExtensions.swift in Sources */,

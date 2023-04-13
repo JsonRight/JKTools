@@ -12,8 +12,7 @@ extension JKTool.Git {
             commandName: "clone",
             _superCommandName: "git",
             abstract: "利用git clone构建/更新项目结构",
-            version: "1.0.0",
-            subcommands: [Init.self])
+            version: "1.0.0")
         
         @Option(name: .shortAndLong, help: "强制 clone，default：false")
         var force: Bool?
@@ -29,13 +28,16 @@ extension JKTool.Git {
                     // 组装module路径
                     let modulePath = project.rootProject.checkoutsPath + "/" + module.name
                     //通过检查文件夹的方式，检查是否已经存在
-                    let needClone = !project.fileManager.fileExists(atPath: modulePath)
+                    let needClone = !FileManager.default.fileExists(atPath: modulePath)
+                    let isEmpty = FileManager.default.getFileList(directoryPath: modulePath)?.isEmpty
 
                     // clone module
-                    if needClone {
+                    if needClone || isEmpty == true {
                         do {
+                            po(tip: "【\(module.name)】开始执行：git clone")
+                            let date = Date.init().timeIntervalSince1970
                             try shellOut(to: .gitClone(url: module.url, to: modulePath, branch: module.branch))
-                            po(tip: "【\(module.name)】:clone成功")
+                            po(tip: "【\(module.name)】:clone成功[\(String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")]")
                             cloneHistory.append(module.name)
                         } catch {
                             let error = error as! ShellOutError
@@ -76,64 +78,10 @@ extension JKTool.Git {
             }
             
             po(tip: "======Clone子模块开始======", type: .tip)
-            
+            let date = Date.init().timeIntervalSince1970
             let subRecordList = clone(project: project)
             _ = project.writeRecordList(recordList: subRecordList)
-            po(tip: "======clone子模块完成======")
-        }
-    }
-}
-
-
-extension JKTool.Git.Clone {
-    struct Init: ParsableCommand {
-        static var configuration = CommandConfiguration(
-            commandName: "init",
-            _superCommandName: "clone",
-            abstract: "clone项目，并利用git clone构建/更新项目结构",
-            version: "1.0.0")
-
-        @Option(name: .shortAndLong, help: "项目git地址")
-        var url: String
-        
-        @Option(name: .shortAndLong, help: "保存目录【绝对路径】")
-        var path: String
-        
-        @Option(name: .shortAndLong, help: "强制 clone，default：false")
-        var force: Bool?
-        
-        @Option(name: .shortAndLong, help: "分支名")
-        var branch: String?
-        
-        mutating func run() {
-            
-            po(tip: "======开始准备clone项目======")
-            let exist = FileManager.default.fileExists(atPath: path)
-            
-            if force == true && exist {
-                do {
-                    try shellOut(to: .removeFolder(from: path))
-                } catch {
-                    po(tip: "\(path) 无法删除",type: .error)
-                }
-            }
-            do {
-                try shellOut(to: .gitClone(url: url, to: path, branch: branch))
-            } catch {
-                let error = error as! ShellOutError
-                po(tip:  error.message + error.output,type: .error)
-            }
-            
-            var args = [String]()
-            
-            if let force = force {
-                args.append(contentsOf: ["--force",String(force)])
-            }
-            
-            args.append(contentsOf: ["--path",String(path)])
-            
-            JKTool.Git.Clone.main(args)
-            po(tip: "======clone项目完成======")
+            po(tip: "======clone子模块完成[\(String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")]======")
         }
     }
 }

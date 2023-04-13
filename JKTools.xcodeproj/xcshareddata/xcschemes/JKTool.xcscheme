@@ -37,7 +37,7 @@
       disableMainThreadChecker = "YES"
       launchStyle = "0"
       useCustomWorkingDirectory = "YES"
-      customWorkingDirectory = "/Users/jiangkui/Desktop/JKProject/Notebook/Module/checkouts/JKFoundation_sec"
+      customWorkingDirectory = "/Users/jiangkui/Desktop/&#x8fd8;&#x5457;App/hb_module/LBKShell/Module/checkouts/dmPortrait"
       ignoresPersistentStateOnLaunch = "NO"
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
@@ -58,15 +58,19 @@
             isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
+            argument = "git merge --branch origin/feature/jiangkui/hb_ios_16 --recursive true"
+            isEnabled = "NO">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "module update  --path /Users/jiangkui/Desktop/&#x8fd8;&#x5457;App/hb_module/LBKShell"
+            isEnabled = "NO">
+         </CommandLineArgument>
+         <CommandLineArgument
             argument = "version"
             isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "help update"
-            isEnabled = "NO">
-         </CommandLineArgument>
-         <CommandLineArgument
-            argument = "build framework --cache false"
             isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument

@@ -182,11 +182,19 @@ public extension ShellOutCommand {
     }
     
     /// Perform a git merge
-    static func gitMerge(branch: String, squash: Bool?) -> ShellOutCommand {
+    static func gitMerge(branch: String, squash: Bool?, commit: Bool?, message:String?) -> ShellOutCommand {
         var command = "git merge \(branch)"
-        if squash != false {
+        
+        if squash == true  {
             command.append(" --squash")
+        } else if commit != false {
+            if let message = message {
+                command.append(" -m \(message)")
+            }
+        } else {
+            command.append(" --no-commit --no-ff")
         }
+        
         return ShellOutCommand(string: command)
     }
     
@@ -345,6 +353,14 @@ public extension ShellOutCommand {
     static func removeFolder(from path: String, arguments: [String] = ["-rf"]) -> ShellOutCommand {
         let command = "rm".appending(arguments: arguments)
                           .appending(argument: path)
+        
+        return ShellOutCommand(string: command)
+    }
+    
+    /// Copy a folderd from one path to another
+    static func copyFolder(from originPath: String, to targetPath: String) -> ShellOutCommand {
+        let command = "cp -R".appending(argument: originPath)
+                          .appending(argument: targetPath)
         
         return ShellOutCommand(string: command)
     }

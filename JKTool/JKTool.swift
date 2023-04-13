@@ -13,7 +13,7 @@ struct JKTool: ParsableCommand {
         commandName: "JKTool",
         abstract: "JKTool",
         version: "1.0.0",
-        subcommands: [Update.self,Build.self,Archive.self,Export.self,Upload.self,Git.self,Config.self,Shell.self,Version.self])
+        subcommands: [Modules.self,Build.self,Build.XCFramework.self,Build.Clean.self,Archive.self,Export.self,Upload.self,Git.self,Config.self,Shell.self,Version.self])
 }
 
 extension JKTool {

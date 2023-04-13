@@ -223,18 +223,21 @@ public class Project {
             guard let productType = targetObject["productType"] as? String else {
                 continue
             }
-            guard let buildPhasesValue = targetObject["buildPhases"] as? String else {
-                continue
-            }
+            
             if productType == "com.apple.product-type.library.static" {
-                guard let buildPhases = objects[buildPhasesValue] as? [String:Any] else {
+                guard let buildPhases = targetObject["buildPhases"] as? [String] else {
                     continue
                 }
-                guard let dst = targetObject["dstPath"] as? String else {
-                    continue
+                for buildPhasesValue in buildPhases {
+                    guard let copyFlies = objects[buildPhasesValue] as? [String:Any] else {
+                        continue
+                    }
+                    guard let dst = copyFlies["dstPath"] as? String else {
+                        continue
+                    }
+                    dstPath = dst
+                    break
                 }
-                dstPath = dst
-                break
             }
         }
         
@@ -448,13 +451,8 @@ extension Project {
     }
     
     func writeBuildLog(log: String) {
-        do {
-            let data = log.data(using: .utf8)
-            try data?.write(to: URL(fileURLWithPath: self.buildLogPath), options: .atomicWrite)
-            po(tip: "【\(self.destination)】buildLog.log 写入成功")
-        } catch {
-            po(tip: "【\(self.destination)】buildLog.log 写入失败",type: .error)
-        }
+        let data = log.data(using: .utf8)
+        _ = try? data?.write(to: URL(fileURLWithPath: self.buildLogPath), options: .atomicWrite)
     }
     
     func removeBuildLog() {
@@ -465,13 +463,8 @@ extension Project {
     }
     
     func writeBuildBundleLog(log: String) {
-        do {
-            let data = log.data(using: .utf8)
-            try data?.write(to: URL(fileURLWithPath: self.buildBundleLogPath), options: .atomicWrite)
-            po(tip: "【\(self.destination)】buildBundleLog.log 写入成功")
-        } catch {
-            po(tip: "【\(self.destination)】buildBundleLog.log 写入失败",type: .error)
-        }
+        let data = log.data(using: .utf8)
+        _ = try? data?.write(to: URL(fileURLWithPath: self.buildBundleLogPath), options: .atomicWrite)
     }
     
     func removeBuildBundleLog() {

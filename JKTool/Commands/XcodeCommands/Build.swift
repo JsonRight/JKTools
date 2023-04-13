@@ -18,8 +18,11 @@ private struct Options: ParsableArguments {
     @Option(name: .shortAndLong, help: "设备类型，default：iOS")
     var sdk: String?
     
-    @Option(name: .long, help: "对Bundle进行签名，default：true")
+    @Option(name: .long, help: "对Bundle进行签名，default：false")
     var signBundle: Bool?
+    
+    @Option(name: .long, help: "mac解锁密码（访问钥匙串），Bundle签名时才需要访问mac的钥匙串")
+    var macPassword: String?
     
     /*
      xcodebuild -workspace {...}.xcworkspace -scheme {...} -showBuildSettings  -destination "generic/platform=iOS"
@@ -53,6 +56,10 @@ private struct Options: ParsableArguments {
             args.append(contentsOf: ["--sign-bundle",String(signBundle)])
         }
         
+        if let macPassword = macPassword {
+            args.append(contentsOf: ["--mac-password",String(macPassword)])
+        }
+        
         if appedingCopyPath, let copyPath = copyPath {
             args.append(contentsOf: ["--copy-path",String(copyPath)])
         }
@@ -75,8 +82,7 @@ extension JKTool {
             commandName: "build",
             _superCommandName: "JKTool",
             abstract: "build部分命令对于固定工程格式封装",
-            version: "1.0.0",
-            subcommands: [Clean.self,Static.self,Framework.self,XCFramework.self, Other.self])
+            version: "1.0.0")
         
         @OptionGroup private var options: Options
 
@@ -187,7 +193,6 @@ extension JKTool.Build {
                 
                 _ = try? shellOut(to: .removeFolder(from: project.buildPath + "/"))
                 
-                
                 po(tip:"【\(scheme)】clean完成[\(String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")]")
             }
             
@@ -196,9 +201,6 @@ extension JKTool.Build {
             }
             
             guard project.rootProject == project else {
-                if !project.projectType.vaild() {
-                    return
-                }
                 
                 clean(project: project)
                 
@@ -214,9 +216,7 @@ extension JKTool.Build {
                     po(tip:"\(record) 工程不存在，请检查 Modulefile.recordList 是否为最新内容",type: .warning)
                     continue
                 }
-                if !subProject.projectType.vaild() {
-                    continue
-                }
+                
                 clean(project: subProject)
                 
             }
@@ -239,7 +239,7 @@ extension JKTool.Build {
             let cache = options.cache ?? true
             let configuration = options.configuration ?? "Release"
             let sdk = options.sdk ?? "iOS"
-            let signBundle = options.signBundle ?? true
+            let signBundle = options.signBundle ?? false
             
             func build(project:Project) {
                 
@@ -294,7 +294,7 @@ extension JKTool.Build {
                     } catch  {
                         let error = error as! ShellOutError
                         project.writeBuildLog(log: error.message + error.output)
-                        po(tip: "【\(scheme)】.a Build失败\n" +  error.message + error.output,type: .error)
+                        po(tip: "【\(scheme)】.a Build失败，详情(\(project.buildLogPath))",type: .error)
                     }
                 }
                 
@@ -304,6 +304,10 @@ extension JKTool.Build {
                     }
                     let toBundlePath =  copyPath
                     
+                    if signBundle, let macPassword = options.macPassword {
+                        _ = try? shellOut(to: .unlockSecurity(password: macPassword))
+                    }
+                    
                     let buildCommand = ShellOutCommand.buildBundle(bundleName:project.bundleName,isWorkspace: project.projectType.isWorkSpace(),projectName: project.projectType.entrance(), projectPath: project.directoryPath, derivedDataPath: project.buildPath, sdk: sdk, codeSignAllowed: signBundle, verison: isRootProject ? "Products" : currentVersion, toBundlePath: toBundlePath)
                     do {
                         try shellOut(to: buildCommand, at: project.directoryPath)
@@ -312,7 +316,7 @@ extension JKTool.Build {
                     } catch  {
                         let error = error as! ShellOutError
                         project.writeBuildBundleLog(log: error.message + error.output)
-                        po(tip: "【\(scheme)】.bundle Build失败\n" + error.message + error.output,type: .error)
+                        po(tip: "【\(scheme)】.bundle Build失败，详情(\(project.buildBundleLogPath))",type: .error)
                     }
                 }
                 
@@ -418,7 +422,7 @@ extension JKTool.Build {
             let cache = options.cache ?? true
             let configuration = options.configuration ?? "Release"
             let sdk = options.sdk ?? "iOS"
-            let signBundle = options.signBundle ?? true
+            let signBundle = options.signBundle ?? false
             
             func build(project:Project) {
                 
@@ -471,7 +475,7 @@ extension JKTool.Build {
                     } catch  {
                         let error = error as! ShellOutError
                         project.writeBuildLog(log: error.message + error.output)
-                        po(tip: "【\(scheme)】.framework Build失败\n" + error.message + error.output,type: .error)
+                        po(tip: "【\(scheme)】.framework Build失败，详情(\(project.buildLogPath))",type: .error)
                     }
                 }
                 
@@ -480,6 +484,11 @@ extension JKTool.Build {
                     if project.bundleName == "" {
                        return
                     }
+                    
+                    if signBundle, let macPassword = options.macPassword {
+                        _ = try? shellOut(to: .unlockSecurity(password: macPassword))
+                    }
+                    
                     let toBundlePath =  copyPath
                     let buildCommand = ShellOutCommand.buildBundle(bundleName:project.bundleName,isWorkspace: project.projectType.isWorkSpace(),projectName: project.projectType.entrance(), projectPath: project.directoryPath, derivedDataPath: project.buildPath, sdk: sdk, codeSignAllowed: signBundle, verison: isRootProject ? "Products" : currentVersion, toBundlePath: toBundlePath)
                     do {
@@ -489,7 +498,7 @@ extension JKTool.Build {
                     } catch  {
                         let error = error as! ShellOutError
                         project.writeBuildBundleLog(log: error.message + error.output)
-                        po(tip: "【\(scheme)】.bundle Build失败\n" + error.message + error.output,type: .error)
+                        po(tip: "【\(scheme)】.bundle Build失败，详情(\(project.buildLogPath))",type: .error)
                     }
                 }
                 
@@ -532,7 +541,7 @@ extension JKTool.Build {
                             po(tip: "【\(scheme)】.bundle copy成功",type: .tip)
                         } catch  {
                             let error = error as! ShellOutError
-                            po(tip: "【\(scheme)】.bundle copy失败\n" + error.message + error.output,type: .warning)
+                            po(tip: "【\(scheme)】.bundle copy失败(\(project.buildBundleLogPath))",type: .warning)
                             buildBundle(project: project)
                         }
                     }
@@ -577,9 +586,9 @@ extension JKTool.Build {
     
     struct XCFramework: ParsableCommand {
         static var configuration = CommandConfiguration(
-            commandName: "xcframework",
-            _superCommandName: "build",
-            abstract: "编译成.xcframework文件",
+            commandName: "--build-xcframework",
+            _superCommandName: "JKTool",
+            abstract: "build成.xcframework文件",
             version: "1.0.0")
 
         @OptionGroup private var options: Options
@@ -589,7 +598,7 @@ extension JKTool.Build {
             let cache = options.cache ?? true
             let configuration = options.configuration ?? "Release"
             let sdk = options.sdk ?? "iOS"
-            let signBundle = options.signBundle ?? true
+            let signBundle = options.signBundle ?? false
             
             func build(project:Project) {
                 
@@ -644,7 +653,7 @@ extension JKTool.Build {
                     } catch  {
                         let error = error as! ShellOutError
                         project.writeBuildLog(log: error.message + error.output)
-                        po(tip: "【\(scheme)】.xcframework Build失败\n" + error.message + error.output,type: .error)
+                        po(tip: "【\(scheme)】.xcframework Build失败，详情(\(project.buildLogPath))",type: .error)
                     }
                 }
                 
@@ -652,6 +661,10 @@ extension JKTool.Build {
                     
                     if project.bundleName == "" {
                        return
+                    }
+                    
+                    if signBundle, let macPassword = options.macPassword {
+                        _ = try? shellOut(to: .unlockSecurity(password: macPassword))
                     }
                     
                     let toBundlePath =  copyPath
@@ -663,7 +676,7 @@ extension JKTool.Build {
                     } catch  {
                         let error = error as! ShellOutError
                         project.writeBuildBundleLog(log: error.message + error.output)
-                        po(tip: "【\(scheme)】.bundle Build失败\n" + error.message + error.output,type: .error)
+                        po(tip: "【\(scheme)】.bundle Build失败，详情(\(project.buildLogPath))",type: .error)
                     }
                 }
                 if isRootProject || cache == false || !hasCache {
@@ -761,7 +774,7 @@ extension JKTool.Build {
             
             let configuration = options.configuration ?? "Release"
             let sdk = options.sdk ?? "iOS"
-            let signBundle = options.signBundle ?? true
+            let signBundle = options.signBundle ?? false
             
             func build(project:Project) {
                 
@@ -769,20 +782,25 @@ extension JKTool.Build {
                 
                 po(tip:"【\(scheme)】不是一个可编译项目，将直接引用此目录。")
                 let isRootProject = (project == project.rootProject)
-                let copyPath = isRootProject ? options.copyPath: (options.copyPath ?? project.rootProject.buildsPath + "/" + scheme)
+                let copyPath = isRootProject ? options.copyPath: (options.copyPath ?? project.rootProject.buildsPath)
                 
                 let date = Date.init().timeIntervalSince1970
-                // 删除主项目旧.framework相关文件
+                // 删除主项目旧相关文件
                 if let copyPath = copyPath {
                     _ = try? shellOut(to: .removeFolder(from: copyPath))
+                    _ = try? shellOut(to: .createFolder(path: copyPath))
+                    do {
+                        try shellOut(to: .createSymlink(to: project.rootProject.checkoutsPath + "/" + scheme, at: project.rootProject.buildsPath))
+                    } catch  {
+                        let error = error as! ShellOutError
+                        po(tip: "【\(scheme)】copy error：\n" + error.message + error.output,type: .error)
+                    }
                     
-                    _ = try? shellOut(to: .copyFile(from: project.directoryPath, to: copyPath))
-                    po(tip:"【\(scheme)】copy完成")
                 } else {
-                    po(tip:"【\(scheme)】为执行任何操作，请检查是否符合工程结构",type: .warning)
+                    po(tip:"【\(scheme)】未执行任何操作，请检查是否符合工程结构",type: .warning)
                 }
                 
-                po(tip:"【\(scheme)】build完成[\(String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")]")
+                po(tip:"【\(scheme)】createSymlink完成[\(String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")]")
             }
             
             guard let project = Project.project(directoryPath: options.path ?? FileManager.default.currentDirectoryPath) else {
