@@ -13,13 +13,36 @@ struct JKTool: ParsableCommand {
         commandName: "JKTool",
         abstract: "JKTool",
         version: "1.0.0",
-        subcommands: [Modules.self,Build.self,Build.XCFramework.self,Build.Clean.self,Archive.self,Export.self,Upload.self,Git.self,Config.self,Shell.self,Version.self])
+        subcommands: [Modules.self,
+                      Build.self,
+                      Build.XCFramework.self,
+                      Build.Clean.self,
+                      Archive.self,
+                      Export.self,
+                      Upload.self,
+                      Git.self,
+                      Config.self,
+                      Shell.self,
+                      Zipper.self,
+                      UNZipper.self,
+                      Version.self])
 }
 
 extension JKTool {
     struct Version: ParsableCommand {
         static var configuration = CommandConfiguration(
             commandName: "version",
+            abstract: "JKTool检查更新",
+            subcommands: [Update.self],
+            defaultSubcommand: Update.self)
+    }
+}
+
+extension JKTool.Version {
+    struct Update: ParsableCommand {
+        static var configuration = CommandConfiguration(
+            commandName: "update",
+            _superCommandName: "version",
             abstract: "JKTool检查更新",
             version: "1.0.0")
         

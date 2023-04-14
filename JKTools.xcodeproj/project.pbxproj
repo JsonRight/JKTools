@@ -460,7 +460,6 @@
 				BF41E5CB29E506AB0030CB5D /* Version.swift */,
 				BF69D6AF28632E90009CE7D1 /* Tag.swift */,
 				BF69D6B328632EC1009CE7D1 /* SubModule.swift */,
-				BF17DC212952B8D000E56FBE /* Zipper.swift */,
 				BF69D6A52862EA8D009CE7D1 /* Git.swift */,
 			);
 			path = GitCommands;
@@ -481,6 +480,7 @@
 		BF70770028781FCC00F71AEB /* ShellCommands */ = {
 			isa = PBXGroup;
 			children = (
+				BF17DC212952B8D000E56FBE /* Zipper.swift */,
 				BF7076FE28781FC500F71AEB /* Shell.swift */,
 			);
 			path = ShellCommands;
