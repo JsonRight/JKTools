@@ -37,7 +37,7 @@
       disableMainThreadChecker = "YES"
       launchStyle = "0"
       useCustomWorkingDirectory = "YES"
-      customWorkingDirectory = "/Users/jiangkui/Desktop/&#x8fd8;&#x5457;App/hb_module/LBKShell/Module/checkouts/MPaaSPackage"
+      customWorkingDirectory = "/Users/jiangkui/Desktop/&#x8fd8;&#x5457;App/hb_module/LBKShell"
       ignoresPersistentStateOnLaunch = "NO"
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
@@ -54,7 +54,11 @@
       </BuildableProductRunnable>
       <CommandLineArguments>
          <CommandLineArgument
-            argument = "build"
+            argument = "build "
+            isEnabled = "NO">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "module update"
             isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument

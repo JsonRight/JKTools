@@ -89,21 +89,21 @@ public enum ValidArchs {
             case .Debug:
                 return "x86_64 i386"
             case .Release:
-                return "arm64 armv7"
+                return "arm64"
             }
         case .xcframework(let configOptions):
             switch configOptions {
             case .Debug:
                 return "x86_64 i386"
             case .Release:
-                return "arm64 armv7"
+                return "arm64"
             }
         case .a(let configOptions):
             switch configOptions {
             case .Debug:
                 return "x86_64 i386"
             case .Release:
-                return "arm64 armv7"
+                return "arm64"
             }
         }
     }

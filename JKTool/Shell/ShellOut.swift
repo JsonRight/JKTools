@@ -736,7 +736,8 @@ public extension String {
         if let ifCommand = ifCommand {
             return  """
                     \(self)
-                      if [ -d "\(path)" ];then
+                      if [ -d \(path) ]
+                    then
                              \(ifCommand)
                         else
                           echo "【\(path)】不存在，无需 cp"
@@ -753,12 +754,13 @@ public extension String {
     func connecting(ifCommand: String? ,file:String) -> String {
         if let ifCommand = ifCommand {
             return  """
-                    \(self) \
-                      if [ -f "\(file)" ];then
-                             \(ifCommand)
-                        else
-                          echo "【\(file)】不存在，无需 cp"
-                        fi
+                    \(self)
+                    if [ -f \(file) ]
+                    then
+                    \(ifCommand)
+                    else
+                    echo "【\(file)】不存在，无需 cp"
+                    fi
                     """
         }
         return self
@@ -766,6 +768,36 @@ public extension String {
     
     mutating func connected(ifCommand: String?, file:String) {
         self = connecting(ifCommand: ifCommand ,file: file)
+    }
+    
+    func fileExisting(at path:String) -> String {
+        return  """
+                \(self)
+                if [ ! -f \(path) ]
+                then
+                echo "【\(path)】不存在！"
+                exit 1
+                fi
+                """
+    }
+    
+    mutating func fileExisted(at path:String) {
+        self = fileExisting(at: path)
+    }
+    
+    func folderExisting(at path:String) -> String {
+        return  """
+                \(self)
+                if [ ! -d \(path) ]
+                then
+                echo "【\(path)】不存在！"
+                exit 1
+                fi
+                """
+    }
+    
+    mutating func folderExisted(at path:String) {
+        self = folderExisting(at: path)
     }
    
 }

@@ -342,7 +342,7 @@ extension JKTool.Build {
                         po(tip: "【\(scheme)】.a copy成功",type: .tip)
                     } catch  {
                         let error = error as! ShellOutError
-                        po(tip: "【\(scheme)】.a copy失败\n" +  error.message + error.output,type: .warning)
+                        po(tip: "【\(scheme)】.a copy失败\n" + error.message + error.output,type: .warning)
                         buildStatic(project: project)
                     }
                     
@@ -533,7 +533,7 @@ extension JKTool.Build {
                             po(tip: "【\(scheme)】.bundle copy成功",type: .tip)
                         } catch  {
                             let error = error as! ShellOutError
-                            po(tip: "【\(scheme)】.bundle copy失败(\(project.buildBundleLogPath))",type: .warning)
+                            po(tip: "【\(scheme)】.bundle copy失败\n" + error.message + error.output,type: .warning)
                             buildBundle(project: project)
                         }
                     }
