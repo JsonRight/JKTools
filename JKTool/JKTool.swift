@@ -25,11 +25,13 @@ struct JKTool: ParsableCommand {
                       Shell.self,
                       Zipper.self,
                       UNZipper.self,
-                      Version.self])
+                      ToolDictionary.self,
+                      ToolArray.self,
+                      ToolVersion.self])
 }
 
 extension JKTool {
-    struct Version: ParsableCommand {
+    struct ToolVersion: ParsableCommand {
         static var configuration = CommandConfiguration(
             commandName: "version",
             abstract: "JKTool检查更新",
@@ -38,7 +40,7 @@ extension JKTool {
     }
 }
 
-extension JKTool.Version {
+extension JKTool.ToolVersion {
     struct Update: ParsableCommand {
         static var configuration = CommandConfiguration(
             commandName: "update",

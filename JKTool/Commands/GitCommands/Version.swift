@@ -8,15 +8,15 @@
 import Foundation
 
 extension JKTool.Git {
-    struct Version: ParsableCommand {
+    struct GitVersion: ParsableCommand {
         static var configuration = CommandConfiguration(
             commandName: "version",
             _superCommandName: "git",
-            abstract: "获取 当前git目录下的各种版本信息",subcommands: [CommitId.self, Version.self], defaultSubcommand: Version.self)
+            abstract: "获取 当前git目录下的各种版本信息",subcommands: [JKTool.Git.GitVersion.CommitId.self, JKTool.Git.GitVersion.GitVersion.self], defaultSubcommand: JKTool.Git.GitVersion.GitVersion.self)
     }
 }
  
-extension JKTool.Git.Version {
+extension JKTool.Git.GitVersion {
     struct CommitId: ParsableCommand {
         static var configuration = CommandConfiguration(
             commandName: "commit",
@@ -53,8 +53,8 @@ extension JKTool.Git.Version {
     }
 }
     
-extension JKTool.Git.Version {
-    struct Version: ParsableCommand {
+extension JKTool.Git.GitVersion {
+    struct GitVersion: ParsableCommand {
         static var configuration = CommandConfiguration(
             commandName: "version",
             _superCommandName: "version",

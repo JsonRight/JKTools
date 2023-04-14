@@ -27,6 +27,8 @@
 		BF3CBE3B2636D58D0082E869 /* JKToolScript.scpt in Resources */ = {isa = PBXBuildFile; fileRef = BF3CBE3A2636D58C0082E869 /* JKToolScript.scpt */; };
 		BF41E5CC29E506AB0030CB5D /* Version.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF41E5CB29E506AB0030CB5D /* Version.swift */; };
 		BF41E5CE29E6CB2E0030CB5D /* Modules.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF41E5CD29E6CB2E0030CB5D /* Modules.swift */; };
+		BF5C7E7829E92CBB003F3009 /* Json.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF5C7E7729E92CBB003F3009 /* Json.swift */; };
+		BF5C7E7A29E94366003F3009 /* JSONExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF5C7E7929E94366003F3009 /* JSONExtension.swift */; };
 		BF60AC94291C98A100C7BF2E /* JKTool in Resources */ = {isa = PBXBuildFile; fileRef = BF60AC92291BBFB200C7BF2E /* JKTool */; };
 		BF60AC96291C999C00C7BF2E /* HelperViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF60AC95291C999C00C7BF2E /* HelperViewController.swift */; };
 		BF69D66D2861BF01009CE7D1 /* ParsableArguments.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF69D6402861BF01009CE7D1 /* ParsableArguments.swift */; };
@@ -160,6 +162,8 @@
 		BF3CBE3A2636D58C0082E869 /* JKToolScript.scpt */ = {isa = PBXFileReference; lastKnownFileType = text; path = JKToolScript.scpt; sourceTree = "<group>"; };
 		BF41E5CB29E506AB0030CB5D /* Version.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Version.swift; sourceTree = "<group>"; };
 		BF41E5CD29E6CB2E0030CB5D /* Modules.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Modules.swift; sourceTree = "<group>"; };
+		BF5C7E7729E92CBB003F3009 /* Json.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Json.swift; sourceTree = "<group>"; };
+		BF5C7E7929E94366003F3009 /* JSONExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONExtension.swift; sourceTree = "<group>"; };
 		BF60AC92291BBFB200C7BF2E /* JKTool */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = JKTool; sourceTree = "<group>"; };
 		BF60AC95291C999C00C7BF2E /* HelperViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelperViewController.swift; sourceTree = "<group>"; };
 		BF69D6402861BF01009CE7D1 /* ParsableArguments.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParsableArguments.swift; sourceTree = "<group>"; };
@@ -481,6 +485,7 @@
 			isa = PBXGroup;
 			children = (
 				BF17DC212952B8D000E56FBE /* Zipper.swift */,
+				BF5C7E7729E92CBB003F3009 /* Json.swift */,
 				BF7076FE28781FC500F71AEB /* Shell.swift */,
 			);
 			path = ShellCommands;
@@ -537,6 +542,7 @@
 				BFA529082635169A003427A8 /* SubProject.swift */,
 				BFA529092635169A003427A8 /* ConfigType.swift */,
 				BFA5290C2635169A003427A8 /* Project.swift */,
+				BF5C7E7929E94366003F3009 /* JSONExtension.swift */,
 			);
 			path = Shell;
 			sourceTree = "<group>";
@@ -782,6 +788,7 @@
 				BF69D68F2861BF01009CE7D1 /* Parsed.swift in Sources */,
 				BF69D6722861BF01009CE7D1 /* ExpressibleByArgument.swift in Sources */,
 				BFA529122635169A003427A8 /* Project.swift in Sources */,
+				BF5C7E7829E92CBB003F3009 /* Json.swift in Sources */,
 				BF41E5CC29E506AB0030CB5D /* Version.swift in Sources */,
 				BF69D67C2861BF01009CE7D1 /* MessageInfo.swift in Sources */,
 				BFA5290E2635169A003427A8 /* SubProject.swift in Sources */,
@@ -808,6 +815,7 @@
 				BFF72C05295306770050122C /* zip.c in Sources */,
 				BF69D6892861BF01009CE7D1 /* NameSpecification.swift in Sources */,
 				BFA528FE26351659003427A8 /* ANSIColorCode.swift in Sources */,
+				BF5C7E7A29E94366003F3009 /* JSONExtension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

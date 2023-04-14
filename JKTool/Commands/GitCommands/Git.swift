@@ -25,7 +25,7 @@ extension JKTool {
                           Status.self,
                           Tag.self,
                           SubModule.self,
-                          Version.self,
+                          GitVersion.self,
                           Zipper.self])
     }
 }
