@@ -67,6 +67,10 @@
          </CommandLineArgument>
          <CommandLineArgument
             argument = "dict set -d &apos;{ &quot;a&quot;: &quot;a&quot;, &quot;b&quot;: &quot;b&quot; }&apos; -k c -v c"
+            isEnabled = "NO">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "biz mpaas -t Loan -c Debug"
             isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument

@@ -27,7 +27,8 @@ struct JKTool: ParsableCommand {
                       UNZipper.self,
                       ToolDictionary.self,
                       ToolArray.self,
-                      ToolVersion.self])
+                      ToolVersion.self,
+                      HBBiz.self])
 }
 
 extension JKTool {

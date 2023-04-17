@@ -70,9 +70,9 @@ public enum ConfigOptions: String {
     public func archs()-> String {
         switch self {
         case .Debug:
-            return "x86_64 i386"
+            return "x86_64"
         case .Release:
-            return "arm64 armv7"
+            return "arm64"
         }
     }
 }

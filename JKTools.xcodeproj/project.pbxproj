@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BF14657229ED385C0022D8D5 /* Biz.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF14657129ED385C0022D8D5 /* Biz.swift */; };
 		BF17DC222952B8D000E56FBE /* Zipper.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF17DC212952B8D000E56FBE /* Zipper.swift */; };
 		BF25A4392615DE1B00CB2F1B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF25A4382615DE1B00CB2F1B /* AppDelegate.swift */; };
 		BF25A43B2615DE1B00CB2F1B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF25A43A2615DE1B00CB2F1B /* ViewController.swift */; };
@@ -139,6 +140,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		BF14657129ED385C0022D8D5 /* Biz.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Biz.swift; sourceTree = "<group>"; };
 		BF17DC212952B8D000E56FBE /* Zipper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Zipper.swift; sourceTree = "<group>"; };
 		BF25A4352615DE1B00CB2F1B /* JKTools.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JKTools.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BF25A4382615DE1B00CB2F1B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -276,6 +278,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		BF14657329ED38660022D8D5 /* HBBiz */ = {
+			isa = PBXGroup;
+			children = (
+				BF14657129ED385C0022D8D5 /* Biz.swift */,
+			);
+			path = HBBiz;
+			sourceTree = "<group>";
+		};
 		BF25A42C2615DE1B00CB2F1B = {
 			isa = PBXGroup;
 			children = (
@@ -476,6 +486,7 @@
 				BF69D6A82862F662009CE7D1 /* GitCommands */,
 				BF69D6A72862F64D009CE7D1 /* XcodeCommands */,
 				BF70770028781FCC00F71AEB /* ShellCommands */,
+				BF14657329ED38660022D8D5 /* HBBiz */,
 				BF85BAE02886BB6500E916AD /* HelpCommand */,
 			);
 			path = Commands;
@@ -806,6 +817,7 @@
 				BFF72C03295306770050122C /* ZipUtilities.swift in Sources */,
 				BF69D6742861BF01009CE7D1 /* BashCompletionsGenerator.swift in Sources */,
 				BFEB07B5286AA7DB00B5D197 /* Merge.swift in Sources */,
+				BF14657229ED385C0022D8D5 /* Biz.swift in Sources */,
 				BF69D6BB2864789B009CE7D1 /* Init.swift in Sources */,
 				BF69D6BF286478B6009CE7D1 /* Push.swift in Sources */,
 				BF69D6792861BF01009CE7D1 /* HelpCommand.swift in Sources */,

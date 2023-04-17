@@ -157,7 +157,7 @@ extension JKTool.ToolArray {
         var array: String?
         
         @Option(name: .shortAndLong, help: "index")
-        var index: Int
+        var index: Int?
         
         @Option(name: .shortAndLong, help: "value")
         var value: String?
@@ -171,60 +171,72 @@ extension JKTool.ToolArray {
             
             switch type {
             case "Dictionary":
-                if let value = value {
-                    let val = String.toDictionary(string: value)
-                    if index > json.count - 1 {
-                        json.append(val)
-                    }else{
+                if let index = index, index < json.count {
+                    if let value = value {
+                        let val = String.toDictionary(string: value)
                         json[index] = val
+                    } else {
+                        json.remove(at: index)
                     }
-                } else {
-                    json.remove(at: index)
+                }else{
+                    if let value = value {
+                        let val = String.toDictionary(string: value)
+                        json.append(val)
+                    }
                 }
                 break
             case "Array":
-                if let value = value {
-                    let val = String.toArray(string: value)
-                    if index > json.count - 1 {
-                        json.append(val)
-                    }else{
+                if let index = index, index < json.count {
+                    if let value = value {
+                        let val = String.toArray(string: value)
                         json[index] = val
+                    } else {
+                        json.remove(at: index)
                     }
-                } else {
-                    json.remove(at: index)
+                }else{
+                    if let value = value {
+                        let val = String.toDictionary(string: value)
+                        json.append(val)
+                    }
                 }
                 break
             case "String":
-                if let value = value {
-                    if index > json.count - 1 {
-                        json.append(value)
-                    }else{
+                if let index = index, index < json.count {
+                    if let value = value {
                         json[index] = value
+                    } else {
+                        json.remove(at: index)
                     }
-                } else {
-                    json.remove(at: index)
+                }else{
+                    if let value = value {
+                        json.append(value)
+                    }
                 }
                 break
             case "Number":
-                if let value = value {
-                    if index > json.count - 1 {
-                        json.append(value)
-                    }else{
+                if let index = index, index < json.count {
+                    if let value = value {
                         json[index] = value
+                    } else {
+                        json.remove(at: index)
                     }
-                } else {
-                    json.remove(at: index)
+                }else{
+                    if let value = value {
+                        json.append(value)
+                    }
                 }
                 break
             default:
-                if let value = value {
-                    if index > json.count - 1 {
-                        json.append(value)
-                    }else{
+                if let index = index, index < json.count {
+                    if let value = value {
                         json[index] = value
+                    } else {
+                        json.remove(at: index)
                     }
-                } else {
-                    json.remove(at: index)
+                }else{
+                    if let value = value {
+                        json.append(value)
+                    }
                 }
                 break
             }
