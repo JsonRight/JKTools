@@ -59,11 +59,15 @@
          </CommandLineArgument>
          <CommandLineArgument
             argument = "module update"
-            isEnabled = "YES">
+            isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "git merge --branch origin/feature/jiangkui/hb_ios_16 --recursive true"
             isEnabled = "NO">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "dict set -d &apos;{ &quot;a&quot;: &quot;a&quot;, &quot;b&quot;: &quot;b&quot; }&apos; -k c -v c"
+            isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "module update  --path /Users/jiangkui/Desktop/&#x8fd8;&#x5457;App/hb_module/LBKShell"

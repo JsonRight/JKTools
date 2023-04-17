@@ -100,43 +100,42 @@ extension JKTool.ToolDictionary {
         var type: String = "String"
         
         mutating func run() {
-            
-            var json = String.toDictionary(string: dict)
+            let json = String.toDictionary(string: dict)
             let value = json[key]
             switch type {
             case "Dictionary":
                 if let value = value, let val = value as? [String: Any] {
                     po(tip: val.toString())
                 } else {
-                    po(tip: "")
+                    po(tip: "Undefined")
                 }
                 break
             case "Array":
                 if let value = value, let val = value as? [Any] {
                     po(tip: val.toString())
                 } else {
-                    po(tip: "")
+                    po(tip: "Undefined")
                 }
                 break
             case "String":
                 if let value = value as? String {
                     po(tip: value)
                 } else {
-                    po(tip: "")
+                    po(tip: "Undefined")
                 }
                 break
             case "Number":
                 if let value = value as? String {
                     po(tip: value)
                 } else {
-                    po(tip: "")
+                    po(tip: "Undefined")
                 }
                 break
             default:
                 if let value = value as? String {
                     po(tip: value)
                 } else {
-                    po(tip: "")
+                    po(tip: "Undefined")
                 }
                 break
             }
@@ -253,7 +252,7 @@ extension JKTool.ToolArray {
             
             var json = String.toArray(string: array)
             guard index > json.count - 1 else {
-                return po(tip: "")
+                return po(tip: "Undefined")
             }
             let value = json[index]
             switch type {
@@ -261,35 +260,35 @@ extension JKTool.ToolArray {
                 if let val = value as? [String: Any] {
                     po(tip: val.toString())
                 } else {
-                    po(tip: "")
+                    po(tip: "Undefined")
                 }
                 break
             case "Array":
                 if let val = value as? [Any] {
                     po(tip: val.toString())
                 } else {
-                    po(tip: "")
+                    po(tip: "Undefined")
                 }
                 break
             case "String":
                 if let value = value as? String {
                     po(tip: value)
                 } else {
-                    po(tip: "")
+                    po(tip: "Undefined")
                 }
                 break
             case "Number":
                 if let value = value as? String {
                     po(tip: value)
                 } else {
-                    po(tip: "")
+                    po(tip: "Undefined")
                 }
                 break
             default:
                 if let value = value as? String {
                     po(tip: value)
                 } else {
-                    po(tip: "")
+                    po(tip: "Undefined")
                 }
                 break
             }
