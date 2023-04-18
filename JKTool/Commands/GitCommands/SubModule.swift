@@ -51,10 +51,10 @@ extension JKTool.Git {
                             do {
                                 po(tip: "【\(module.name)】开始执行：git submodule add")
                                 try shellOut(to: .gitSubmoduleAdd(name: module.name,url: module.url, path: "\(JKToolConfig.sharedInstance.config.checkouts)/\(module.name)",branch: module.branch),at: project.rootProject.directoryPath)
-                                po(tip: "【\(module.name)】:Add 成功")
+                                po(tip: "【\(module.name)】Add 成功")
                             } catch {
                                 let error = error as! ShellOutError
-                                po(tip: "【\(module.name)】:Add 异常" + error.message + error.output,type: .warning)
+                                po(tip: "【\(module.name)】Add 异常" + error.message + error.output,type: .warning)
                             }
                         }
                     }
@@ -97,10 +97,10 @@ extension JKTool.Git {
                 for record in pruneRecordList {
                     do {
                         try shellOut(to: .gitSubmoduleRemove(path: "\(JKToolConfig.sharedInstance.config.checkouts)/\(record)"),at: project.rootProject.directoryPath)
-                        po(tip: "【\(record)】:Remove 成功")
+                        po(tip: "【\(record)】Remove 成功")
                     } catch {
                         let error = error as! ShellOutError
-                        po(tip: "【\(record)】:Remove 异常" + error.message + error.output,type: .error)
+                        po(tip: "【\(record)】Remove 异常" + error.message + error.output,type: .error)
                     }
                 }
             }

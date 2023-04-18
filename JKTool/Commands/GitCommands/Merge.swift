@@ -23,8 +23,11 @@ extension JKTool.Git {
         @Option(name: .shortAndLong, help: "递归子模块，default：false")
         var recursive: Bool = false
         
-        @Option(name: .shortAndLong, help: "自动commit，squash为true时无效")
+        @Option(name: .shortAndLong, help: "是否自动commit，默认为true")
         var commit: Bool = true
+        
+        @Option(name: .shortAndLong, help: "commit消息")
+        var message: String?
         
         @Option(name: .shortAndLong, help: "执行路径")
         var path: String?
@@ -35,7 +38,7 @@ extension JKTool.Git {
             func merge(project: Project){
                 
                 do {
-                    let result = try shellOut(to: .gitMerge(branch: branch, squash: squash,commit: commit), at: project.directoryPath)
+                    let result = try shellOut(to: .gitMerge(branch: branch, squash: squash,commit: commit,message: message), at: project.directoryPath)
                     po(tip: "【\(project.destination)】Merge完成\n\(result)", type: .tip)
                 } catch {
                     let error = error as! ShellOutError

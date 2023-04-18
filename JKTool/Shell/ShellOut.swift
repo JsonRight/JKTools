@@ -181,13 +181,17 @@ public extension ShellOutCommand {
     }
     
     /// Perform a git merge
-    static func gitMerge(branch: String, squash: Bool?, commit: Bool?) -> ShellOutCommand {
+    static func gitMerge(branch: String, squash: Bool?, commit: Bool?, message: String?) -> ShellOutCommand {
         var command = "git merge \(branch)"
         
         if squash == true  {
             command.append(" --squash")
-        } else if commit == false {
+        } else {
             command.append(" --no-commit --no-ff")
+        }
+        
+        if commit == true, let message = message {
+            command.connected(andCommand: gitCommit(message: message).string)
         }
         
         return ShellOutCommand(string: command)

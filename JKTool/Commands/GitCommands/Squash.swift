@@ -36,25 +36,23 @@ extension JKTool.Git {
             
             func squash(project: Project) {
                 
-                JKTool.Git.Checkout.main(["--branch","\(from)","--recursive","\(false)","--force","\(false)","--path","\(project.directoryPath)"])
+                JKTool.Git.Checkout.main(["--branch",from,"--recursive","\(false)","--force","\(false)","--path",project.directoryPath])
                 
-                JKTool.Git.Pull.main(["--recursive","\(false)","--path","\(project.directoryPath)"])
+                JKTool.Git.Pull.main(["--recursive","\(false)","--path",project.directoryPath])
                 
-                JKTool.Git.Checkout.main(["--branch","\(to)","--recursive","\(false)","--force","\(false)","--path","\(project.directoryPath)"])
+                JKTool.Git.Checkout.main(["--branch",to,"--recursive","\(false)","--force","\(false)","--path",project.directoryPath])
                 
-                JKTool.Git.Pull.main(["--recursive","\(false)","--path","\(project.directoryPath)"])
+                JKTool.Git.Pull.main(["--recursive","\(false)","--path",project.directoryPath])
                 
-                JKTool.Git.Merge.main(["--branch","\(from)","--squash","\(true)","--recursive","\(false)","--path","\(project.directoryPath)"])
+                JKTool.Git.Merge.main(["--branch",from,"--squash","\(true)","--recursive","\(false)","--commit","\(false)","--message",message,"--path",project.directoryPath])
                 
-                JKTool.Git.Commit.main(["--message","\(message)","--recursive","\(false)","--path","\(project.directoryPath)"])
-                
-                JKTool.Git.Push.main(["--branch","\(to)","--recursive","\(false)","--path","\(project.directoryPath)"])
+                JKTool.Git.Push.main(["--branch",to,"--recursive","\(false)","--path",project.directoryPath])
                 
                 if del {
                     
-                    JKTool.Git.Branch.Del.Local.main(["--branch","\(from)","--recursive","\(false)","--path","\(project.directoryPath)"])
+                    JKTool.Git.Branch.Del.Local.main(["--branch",from,"--recursive","\(false)","--path",project.directoryPath])
                     
-                    JKTool.Git.Branch.Del.Origin.main(["--branch","\(from)","--recursive","\(false)","--path","\(project.directoryPath)"])
+                    JKTool.Git.Branch.Del.Origin.main(["--branch",from,"--recursive","\(false)","--path",project.directoryPath])
                 }
                 
                 po(tip: "【\(project.destination)】Merge squash完成", type: .tip)

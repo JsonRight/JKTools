@@ -111,24 +111,25 @@ extension JKTool.Modules {
             po(tip: "======开始准备clone项目======")
             let date = Date.init().timeIntervalSince1970
             let path = path ?? FileManager.default.currentDirectoryPath
-            let isEmpty = FileManager.default.getFileList(directoryPath: path)?.isEmpty
-            if force == true, isEmpty == false {
-                do {
-                    try shellOut(to: .removeFolder(from: path))
-                    po(tip:"【\(destinationForPath(path: path))】清理完成")
-                } catch {
-                    
+            let fileList = FileManager.default.getFileList(directoryPath: path)
+            let isEmpty = fileList?.isEmpty
+            
+            if isEmpty == true || force == true {
+                if let fileList = fileList {
+                    for file in fileList {
+                        do {
+                            try FileManager.default.removeItem(atPath: file.path)
+                        } catch {
+                            po(tip: "【\(file.path)】无法清理，请检查！")
+                        }
+                    }
                 }
-            }
-            
-            let exist = FileManager.default.fileExists(atPath: path)
-            
-            if exist == false || isEmpty == true {
+                
                 do {
                     po(tip: "【\(destinationForPath(path: path))】开始执行：git clone")
                     let date = Date.init().timeIntervalSince1970
                     try shellOut(to: .gitClone(url: url, to: path, branch: branch))
-                    po(tip:"【\(destinationForPath(path: path))】:clone成功[\(String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")]")
+                    po(tip:"【\(destinationForPath(path: path))】clone成功[\(String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")]")
                 } catch {
                     let error = error as! ShellOutError
                     po(tip:  error.message + error.output,type: .error)
