@@ -864,4 +864,11 @@ public extension FileManager {
             }
         }
     }
+    
+    func isDirectory(path: String) -> Bool {
+        guard let attributes = try? FileManager.default.attributesOfItem(atPath: path),attributes[FileAttributeKey.type] as! FileAttributeType == FileAttributeType.typeDirectory else {
+            return false
+        }
+        return true
+    }
 }

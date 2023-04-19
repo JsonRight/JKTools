@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		BF14657229ED385C0022D8D5 /* Biz.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF14657129ED385C0022D8D5 /* Biz.swift */; };
+		BF1469FE29EFED6A0022D8D5 /* Open.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF1469FD29EFED6A0022D8D5 /* Open.swift */; };
 		BF17DC222952B8D000E56FBE /* Zipper.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF17DC212952B8D000E56FBE /* Zipper.swift */; };
 		BF25A4392615DE1B00CB2F1B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF25A4382615DE1B00CB2F1B /* AppDelegate.swift */; };
 		BF25A43B2615DE1B00CB2F1B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF25A43A2615DE1B00CB2F1B /* ViewController.swift */; };
@@ -141,6 +142,7 @@
 
 /* Begin PBXFileReference section */
 		BF14657129ED385C0022D8D5 /* Biz.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Biz.swift; sourceTree = "<group>"; };
+		BF1469FD29EFED6A0022D8D5 /* Open.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Open.swift; sourceTree = "<group>"; };
 		BF17DC212952B8D000E56FBE /* Zipper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Zipper.swift; sourceTree = "<group>"; };
 		BF25A4352615DE1B00CB2F1B /* JKTools.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JKTools.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BF25A4382615DE1B00CB2F1B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -498,6 +500,7 @@
 				BF17DC212952B8D000E56FBE /* Zipper.swift */,
 				BF5C7E7729E92CBB003F3009 /* Json.swift */,
 				BF7076FE28781FC500F71AEB /* Shell.swift */,
+				BF1469FD29EFED6A0022D8D5 /* Open.swift */,
 			);
 			path = ShellCommands;
 			sourceTree = "<group>";
@@ -763,6 +766,7 @@
 				BF69D6B028632E90009CE7D1 /* Tag.swift in Sources */,
 				BFA529132635169A003427A8 /* ShellOut.swift in Sources */,
 				BFA528F326351634003427A8 /* JKTool.swift in Sources */,
+				BF1469FE29EFED6A0022D8D5 /* Open.swift in Sources */,
 				BFF72C06295306770050122C /* ioapi.c in Sources */,
 				BF69D6902861BF01009CE7D1 /* ArgumentDefinition.swift in Sources */,
 				BF41E5CE29E6CB2E0030CB5D /* Modules.swift in Sources */,
