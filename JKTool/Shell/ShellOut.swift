@@ -809,8 +809,17 @@ public extension String {
             return self
         }
         
-        guard var path = self.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),let urlStr = absolutPath.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed), var url = URL(string: urlStr) else {
-            return self
+        if self.hasPrefix("~") {
+            return (self as NSString).expandingTildeInPath
+        }
+        
+        var url = URL(fileURLWithPath: absolutPath)
+        
+        var path = self
+        
+        while path.hasPrefix("./") {
+            let index = path.index(path.startIndex, offsetBy: 2)
+            path = String(path[index...])
         }
         
         while path.hasPrefix("../") {
@@ -819,13 +828,7 @@ public extension String {
             url.deleteLastPathComponent()
         }
         
-        while path.hasPrefix("./") {
-            let index = path.index(path.startIndex, offsetBy: 2)
-            path = String(path[index...])
-            url.deleteLastPathComponent()
-        }
-        
-        return url.appendingPathComponent(path).absoluteString.removingPercentEncoding ?? ""
+        return url.appendingPathComponent(path).path
         
     }
 }

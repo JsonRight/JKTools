@@ -209,7 +209,7 @@ public extension ShellOutCommand {
         var shell = "".folderExisting(at: "\(projectPath)/Build/\(configuration)/\(scheme).xcarchive")
         shell.connected(andCommand: "xcodebuild -exportArchive -archivePath \(projectPath)/Build/\(configuration)/\(scheme).xcarchive -exportPath \(projectPath)/Build/\(configuration) -exportOptionsPlist \(export)")
         if let toSavePath = toSavePath {
-            shell.connected(andCommand: "cp -R \(projectPath)/Build/\(configuration)/\(scheme).ipa \(toSavePath)/\(scheme)\(configuration)\(nameSuffix ?? "").ipa")
+            shell.connected(andCommand: "cp -R \(projectPath)/Build/\(configuration)/\(scheme).ipa \(toSavePath.convertRelativePath(absolutPath:projectPath))/\(scheme)\(configuration)\(nameSuffix ?? "").ipa")
         }
         return ShellOutCommand(string: shell)
     }
@@ -219,7 +219,8 @@ public extension ShellOutCommand {
 public extension ShellOutCommand {
     
     /// IOS archive VALID_ARCHS=\("arm64")
-    static func upload(path:String, username: String, password: String) -> ShellOutCommand {
+    static func upload(scheme:String, projectPath:String,configuration:String, path:String?, username: String, password: String) -> ShellOutCommand {
+        let path = path ?? "\(projectPath)/Build/\(configuration)/\(scheme).ipa"
         var shell = "".fileExisting(at: path)
         shell.connected(andCommand: "xcrun altool --validate-app -f \(path) -u \(username) -p \(password) --output-format xml")
         shell.connected(andCommand: "xcrun altool --upload-app -f \(path) -u \(username) -p \(password) --output-format xml")
@@ -227,7 +228,8 @@ public extension ShellOutCommand {
     }
     
     /// IOS archive VALID_ARCHS=\("arm64")
-    static func upload(path:String, apiKey: String, apiIssuerID: String) -> ShellOutCommand {
+    static func upload(scheme:String, projectPath:String, configuration:String, path:String?, apiKey: String, apiIssuerID: String) -> ShellOutCommand {
+        let path = path ?? "\(projectPath)/Build/\(configuration)/\(scheme).ipa"
         var shell = "".fileExisting(at: path)
         shell.connected(andCommand: "xcrun altool --validate-app -f \(path) --apiKey \(apiKey) --apiIssuer \(apiIssuerID) --output-format xml")
         shell.connected(andCommand: "xcrun altool --upload-app --apiKey \(apiKey) --apiIssuer \(apiIssuerID) --output-format xml")

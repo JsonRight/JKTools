@@ -257,24 +257,6 @@ extension JKTool.Build {
                 let hasCache = oldVersion?.contains(currentVersion) ?? false
                 
                 func buildStatic(project:Project){
-                    // 创建Module/Builds link 依赖库
-                    if project.recordList.count > 0 {
-                        _ = try? shellOut(to: .removeFolder(from: project.buildsPath + "/"))
-                        
-                        _ = try? shellOut(to: .createFolder(path: project.buildsPath + "/"))
-                        
-                        for moduleName in project.recordList {
-                            guard let link = Project.project(directoryPath: project.rootProject.checkoutsPath + "/" + moduleName) else {
-                                return po(tip: "\(project.rootProject.buildsPath + "/" + moduleName)目录不存在", type: .error)
-                            }
-                            
-                            if link.projectType.vaild() {
-                                _ = try? shellOut(to: .createSymlink(to: project.rootProject.buildsPath + "/" + moduleName, at: project.buildsPath))
-                            } else {
-                                _ = try? shellOut(to: .createSymlink(to: project.rootProject.checkoutsPath + "/" + moduleName, at: project.buildsPath))
-                            }
-                        }
-                    }
                     let toStaticPath =  copyPath
                     let toHeaderPath =  copyPath
                     
@@ -368,8 +350,28 @@ extension JKTool.Build {
                 po(tip:"【\(scheme)】build完成[\(String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")]")
             }
             
+            
             guard let project = Project.project(directoryPath: options.path ?? FileManager.default.currentDirectoryPath) else {
                 return po(tip: "\(options.path ?? FileManager.default.currentDirectoryPath)目录不存在", type: .error)
+            }
+            
+            // 创建Module/Builds link 依赖库
+            if project.recordList.count > 0 {
+                _ = try? shellOut(to: .removeFolder(from: project.buildsPath + "/"))
+                
+                _ = try? shellOut(to: .createFolder(path: project.buildsPath + "/"))
+                
+                for moduleName in project.recordList {
+                    guard let link = Project.project(directoryPath: project.rootProject.checkoutsPath + "/" + moduleName) else {
+                        return po(tip: "\(project.rootProject.buildsPath + "/" + moduleName)目录不存在", type: .error)
+                    }
+                    
+                    if link.projectType.vaild() {
+                        _ = try? shellOut(to: .createSymlink(to: project.rootProject.buildsPath + "/" + moduleName, at: project.buildsPath))
+                    } else {
+                        _ = try? shellOut(to: .createSymlink(to: project.rootProject.checkoutsPath + "/" + moduleName, at: project.buildsPath))
+                    }
+                }
             }
             
             let scheme = ProjectListsModel.projectList(project: project)?.defaultScheme(sdk) ?? project.destination
@@ -378,7 +380,8 @@ extension JKTool.Build {
                 let date = Date.init().timeIntervalSince1970
                 do {
                     po(tip:"【\(scheme)】执行build.sh")
-                    try shellOut(to: ShellOutCommand(string: "chmod +x build.sh && ./build.sh \(scheme) \(configuration) \(sdk) \(signBundle) \(project.directoryPath)"),at: project.directoryPath)
+                    let msg = try shellOut(to: ShellOutCommand(string: "chmod +x build.sh && ./build.sh \(scheme) \(configuration) \(sdk) \(signBundle) \(project.directoryPath)"),at: project.directoryPath)
+                    po(tip:"【\(scheme)】执行build.sh:\(msg)")
                     po(tip: "【\(scheme)】执行build.sh 成功",type: .tip)
                 } catch  {
                     let error = error as! ShellOutError
@@ -439,24 +442,7 @@ extension JKTool.Build {
                 let hasCache = oldVersion?.contains(currentVersion) ?? false
                 
                 func buildFramework(project:Project){
-                    // 创建Module/Builds link 依赖库
-                    if project.recordList.count > 0 {
-                        
-                        _ = try? shellOut(to: .removeFolder(from: project.buildsPath + "/"))
-                        _ = try? shellOut(to: .createFolder(path: project.buildsPath + "/"))
-                        
-                        for moduleName in project.recordList {
-                            guard let link = Project.project(directoryPath: project.rootProject.checkoutsPath + "/" + moduleName) else {
-                                return po(tip: "\(options.path ?? FileManager.default.currentDirectoryPath)目录不存在", type: .error)
-                            }
-                            
-                            if link.projectType.vaild() {
-                                _ = try? shellOut(to: .createSymlink(to: project.rootProject.buildsPath + "/" + moduleName, at: project.buildsPath))
-                            } else {
-                                _ = try? shellOut(to: .createSymlink(to: project.rootProject.checkoutsPath + "/" + moduleName, at: project.buildsPath))
-                            }
-                        }
-                    }
+                    
                     let toPath =  copyPath
                     let frameworkCommand = ShellOutCommand.frameworkBuild(scheme:scheme,isWorkspace: project.projectType.isWorkSpace(),projectName: project.projectType.entrance(), projectPath: project.directoryPath, derivedDataPath: project.buildPath, configuration: configuration, sdk: sdk, verison: isRootProject ? "Products" : currentVersion, toPath: toPath)
                     
@@ -547,6 +533,25 @@ extension JKTool.Build {
                 return po(tip: "\(options.path ?? FileManager.default.currentDirectoryPath)目录不存在", type: .error)
             }
             
+            // 创建Module/Builds link 依赖库
+            if project.recordList.count > 0 {
+                
+                _ = try? shellOut(to: .removeFolder(from: project.buildsPath + "/"))
+                _ = try? shellOut(to: .createFolder(path: project.buildsPath + "/"))
+                
+                for moduleName in project.recordList {
+                    guard let link = Project.project(directoryPath: project.rootProject.checkoutsPath + "/" + moduleName) else {
+                        return po(tip: "\(options.path ?? FileManager.default.currentDirectoryPath)目录不存在", type: .error)
+                    }
+                    
+                    if link.projectType.vaild() {
+                        _ = try? shellOut(to: .createSymlink(to: project.rootProject.buildsPath + "/" + moduleName, at: project.buildsPath))
+                    } else {
+                        _ = try? shellOut(to: .createSymlink(to: project.rootProject.checkoutsPath + "/" + moduleName, at: project.buildsPath))
+                    }
+                }
+            }
+            
             let scheme = ProjectListsModel.projectList(project: project)?.defaultScheme(sdk) ?? project.destination
             
             if options.checkCustomBuildScript == true, FileManager.default.fileExists(atPath: project.directoryPath + "/build.sh") {
@@ -615,24 +620,6 @@ extension JKTool.Build {
                 let hasCache = oldVersion?.contains(currentVersion) ?? false
                 
                 func buildXCFramework(project:Project){
-                    // 创建Module/Builds link 依赖库
-                    if project.recordList.count > 0 {
-                        
-                        _ = try? shellOut(to: .removeFolder(from: project.buildsPath + "/"))
-                        _ = try? shellOut(to: .createFolder(path: project.buildsPath + "/"))
-                        
-                        for moduleName in project.recordList {
-                            guard let link = Project.project(directoryPath: project.rootProject.checkoutsPath + "/" + moduleName) else {
-                                return po(tip: "\(options.path ?? FileManager.default.currentDirectoryPath)目录不存在", type: .error)
-                            }
-                            
-                            if link.projectType.vaild() {
-                                _ = try? shellOut(to: .createSymlink(to: project.rootProject.buildsPath + "/" + moduleName, at: project.buildsPath))
-                            } else {
-                                _ = try? shellOut(to: .createSymlink(to: project.rootProject.checkoutsPath + "/" + moduleName, at: project.buildsPath))
-                            }
-                        }
-                    }
                     
                     let toPath =  copyPath
                     
@@ -724,6 +711,25 @@ extension JKTool.Build {
                 return po(tip: "\(options.path ?? FileManager.default.currentDirectoryPath)目录不存在", type: .error)
             }
             
+            // 创建Module/Builds link 依赖库
+            if project.recordList.count > 0 {
+                
+                _ = try? shellOut(to: .removeFolder(from: project.buildsPath + "/"))
+                _ = try? shellOut(to: .createFolder(path: project.buildsPath + "/"))
+                
+                for moduleName in project.recordList {
+                    guard let link = Project.project(directoryPath: project.rootProject.checkoutsPath + "/" + moduleName) else {
+                        return po(tip: "\(options.path ?? FileManager.default.currentDirectoryPath)目录不存在", type: .error)
+                    }
+                    
+                    if link.projectType.vaild() {
+                        _ = try? shellOut(to: .createSymlink(to: project.rootProject.buildsPath + "/" + moduleName, at: project.buildsPath))
+                    } else {
+                        _ = try? shellOut(to: .createSymlink(to: project.rootProject.checkoutsPath + "/" + moduleName, at: project.buildsPath))
+                    }
+                }
+            }
+            
             let scheme = ProjectListsModel.projectList(project: project)?.defaultScheme(sdk) ?? project.destination
             
             if options.checkCustomBuildScript == true, FileManager.default.fileExists(atPath: project.directoryPath + "/build.sh") {
@@ -798,6 +804,25 @@ extension JKTool.Build {
             
             guard let project = Project.project(directoryPath: options.path ?? FileManager.default.currentDirectoryPath) else {
                 return po(tip: "\(options.path ?? FileManager.default.currentDirectoryPath)目录不存在", type: .error)
+            }
+            
+            // 创建Module/Builds link 依赖库
+            if project.recordList.count > 0 {
+                
+                _ = try? shellOut(to: .removeFolder(from: project.buildsPath + "/"))
+                _ = try? shellOut(to: .createFolder(path: project.buildsPath + "/"))
+                
+                for moduleName in project.recordList {
+                    guard let link = Project.project(directoryPath: project.rootProject.checkoutsPath + "/" + moduleName) else {
+                        return po(tip: "\(options.path ?? FileManager.default.currentDirectoryPath)目录不存在", type: .error)
+                    }
+                    
+                    if link.projectType.vaild() {
+                        _ = try? shellOut(to: .createSymlink(to: project.rootProject.buildsPath + "/" + moduleName, at: project.buildsPath))
+                    } else {
+                        _ = try? shellOut(to: .createSymlink(to: project.rootProject.checkoutsPath + "/" + moduleName, at: project.buildsPath))
+                    }
+                }
             }
             
             let scheme = ProjectListsModel.projectList(project: project)?.defaultScheme(sdk) ?? project.destination

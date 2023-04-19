@@ -27,6 +27,12 @@ extension JKTool.Upload {
             abstract: "upload account",
             version: "1.0.0")
 
+        @Option(name: .shortAndLong, help: "导出环境，default：Release")
+        var configuration: String = "Release"
+        
+        @Option(name: .shortAndLong, help: "Scheme")
+        var scheme: String
+        
         @Option(name: .long, help: "内容格式请参照：JKTool config")
         var configPath: String
         
@@ -35,7 +41,15 @@ extension JKTool.Upload {
 
         mutating func run() {
             
-            guard let data = try? Data(contentsOf: URL(fileURLWithPath: configPath.convertRelativePath(absolutPath: path ?? FileManager.default.currentDirectoryPath))) else {
+            guard let project = Project.project(directoryPath: path ?? FileManager.default.currentDirectoryPath) else {
+                return po(tip: "\(path ?? FileManager.default.currentDirectoryPath)目录没有检索到工程", type: .error)
+            }
+            
+            guard project.rootProject == project else {
+                return po(tip: "请在项目根目录执行脚本", type: .error)
+            }
+            
+            guard let data = try? Data(contentsOf: URL(fileURLWithPath: configPath.convertRelativePath(absolutPath: project.directoryPath))) else {
                 return po(tip: "请检查配置文件是否存在！",type: .error)
             }
             
@@ -45,9 +59,8 @@ extension JKTool.Upload {
             
             po(tip: "======Upload项目开始======")
             let date = Date.init().timeIntervalSince1970
-            
             do {
-                try shellOut(to: .upload(path: configs.uploadConfig.ipaPath.convertRelativePath(absolutPath: path ?? FileManager.default.currentDirectoryPath), username: configs.uploadConfig.accountAuthConfig!.username, password: configs.uploadConfig.accountAuthConfig!.password))
+                try shellOut(to: .upload(scheme: scheme, projectPath: project.directoryPath, configuration: configuration,path: configs.uploadConfig.ipaPath?.convertRelativePath(absolutPath: project.directoryPath), username: configs.uploadConfig.accountAuthConfig!.username, password: configs.uploadConfig.accountAuthConfig!.password))
             } catch  {
                 let error = error as! ShellOutError
                 po(tip:  error.message + error.output,type: .error)
@@ -62,6 +75,12 @@ extension JKTool.Upload {
             abstract: "upload api",
             version: "1.0.0")
 
+        @Option(name: .shortAndLong, help: "导出环境，default：Release")
+        var configuration: String = "Release"
+        
+        @Option(name: .shortAndLong, help: "Scheme")
+        var scheme: String
+        
         @Option(name: .long, help: "内容格式请参照：JKTool config")
         var configPath: String
         
@@ -69,7 +88,16 @@ extension JKTool.Upload {
         var path: String?
         
         mutating func run() {
-            guard let data = try? Data(contentsOf: URL(fileURLWithPath: configPath.convertRelativePath(absolutPath: path ?? FileManager.default.currentDirectoryPath))) else {
+            
+            guard let project = Project.project(directoryPath: path ?? FileManager.default.currentDirectoryPath) else {
+                return po(tip: "\(path ?? FileManager.default.currentDirectoryPath)目录没有检索到工程", type: .error)
+            }
+            
+            guard project.rootProject == project else {
+                return po(tip: "请在项目根目录执行脚本", type: .error)
+            }
+            
+            guard let data = try? Data(contentsOf: URL(fileURLWithPath: configPath.convertRelativePath(absolutPath: project.directoryPath))) else {
                 return po(tip: "请检查配置文件是否存在！",type: .error)
             }
             
@@ -87,7 +115,7 @@ extension JKTool.Upload {
                 po(tip:  error.message + error.output,type: .error)
             }
             do {
-                try shellOut(to: .upload(path: configs.uploadConfig.ipaPath.convertRelativePath(absolutPath: path ?? FileManager.default.currentDirectoryPath), apiKey: configs.uploadConfig.apiAuthConfig!.apiKey, apiIssuerID: configs.uploadConfig.apiAuthConfig!.apiIssuerID))
+                try shellOut(to: .upload(scheme: scheme, projectPath: project.directoryPath, configuration: configuration,path: configs.uploadConfig.ipaPath?.convertRelativePath(absolutPath: project.directoryPath), apiKey: configs.uploadConfig.apiAuthConfig!.apiKey, apiIssuerID: configs.uploadConfig.apiAuthConfig!.apiIssuerID))
             } catch  {
                 let error = error as! ShellOutError
                 po(tip:  error.message + error.output,type: .error)

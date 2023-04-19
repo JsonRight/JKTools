@@ -13,7 +13,7 @@ extension JKTool {
         static var configuration = CommandConfiguration(
             commandName: "biz",
             _superCommandName: "JKTool",
-            abstract: "还呗特殊脚本", subcommands: [MPaaS.self])
+            abstract: "还呗特殊脚本", subcommands: [MPaaS.self,BBSec.self])
     }
 }
 
@@ -23,7 +23,7 @@ extension JKTool.HBBiz {
         
         static var configuration = CommandConfiguration(
             commandName: "mpaas",
-            _superCommandName: "JKTool",
+            _superCommandName: "biz",
             abstract: "MPaaS工程处理")
         
         @Option(name: .shortAndLong, help: "工程对应的Target")
@@ -36,6 +36,7 @@ extension JKTool.HBBiz {
         var path: String?
         
         mutating func run() {
+            
             guard let project = Project.project(directoryPath: path ?? FileManager.default.currentDirectoryPath) else {
                 return po(tip: "\(path ?? FileManager.default.currentDirectoryPath)目录不存在", type: .error)
             }
@@ -209,4 +210,82 @@ extension JKTool.HBBiz {
     }
     
     
+}
+
+extension JKTool.HBBiz {
+    
+    struct BBSec: ParsableCommand {
+        
+        static var configuration = CommandConfiguration(
+            commandName: "bbsec",
+            _superCommandName: "biz",
+            abstract: "还呗特殊脚本,梆梆加固")
+        
+        @Option(name: .shortAndLong, help: "设备类型，default：iOS")
+        var sdk: String?
+        
+        @Option(name: .long, help: "sec_config.xml路径，default：项目目录下sec_config.xml文件")
+        var secConfigPath: String?
+        
+        @Option(name: .long, help: "sec_license.lic路径，default：项目目录下sec_license.lic文件")
+        var secLicensePath: String?
+        
+        @Option(name: .shortAndLong, help: "执行路径")
+        var path: String?
+        
+        mutating func run() {
+            
+            guard let project = Project.project(directoryPath: path ?? FileManager.default.currentDirectoryPath) else {
+                return po(tip: "\(path ?? FileManager.default.currentDirectoryPath)目录不存在", type: .error)
+            }
+            
+            if !project.projectType.vaild() {
+                return po(tip: "\(path ?? FileManager.default.currentDirectoryPath)目录下不是个正确的Xcode工程", type: .error)
+            }
+            
+            let secConfigPath = secConfigPath ?? "\(project.directoryPath)/sec_config.xml"
+            
+            if !FileManager.default.fileExists(atPath: secConfigPath) {
+                return po(tip: "\(secConfigPath)不存在！", type: .error)
+            }
+            
+            let secLicensePath = secLicensePath ?? "\(project.directoryPath)/sec_license.lic"
+            
+            if !FileManager.default.fileExists(atPath: secLicensePath) {
+                return po(tip: "\(secLicensePath)不存在！", type: .error)
+            }
+            
+                        
+            let sdk = sdk ?? "iOS"
+            
+            let scheme = ProjectListsModel.projectList(project: project)?.defaultScheme(sdk) ?? project.destination
+            
+            po(tip: "【\(scheme)】开始加固！")
+            
+            guard let sec_config = try? String(contentsOf: URL(fileURLWithPath: secConfigPath)) else {
+                return po(tip: "\(secConfigPath)无法解析！", type: .error)
+            }
+            
+            let config = sec_config.replacingOccurrences(of: "${SourceRoot}", with: project.directoryPath)
+                .replacingOccurrences(of: "${XcodeProject}", with: "\(project.directoryPath)/\(project.projectType.entrance())")
+                .replacingOccurrences(of: "${Scheme}", with: scheme)
+            
+            _ = try? config.data(using: .utf8)?.write(to: URL(fileURLWithPath: secConfigPath), options: .atomicWrite)
+            
+            
+            _ = try? shellOut(to: ShellOutCommand(string: "./native_tools_mac_221013.1/tools/bclm -i \(secLicensePath)"), at: "~/Documents/SCShield")
+            
+            do {
+                try shellOut(to: ShellOutCommand(string: "./native_tools_mac_221013.1/build_tools guider_v3 -i \(secConfigPath) --token offlinemode --online 0 --log-level DEBUG"), at: "~/Documents/SCShield")
+            } catch {
+                let error = error as! ShellOutError
+                po(tip: "【\(scheme)】加固失败：\n" + error.message + error.output,type: .error)
+            }
+            
+            _ = try? sec_config.data(using: .utf8)?.write(to: URL(fileURLWithPath: secConfigPath), options: .atomicWrite)
+            
+            
+            po(tip: "【\(scheme)】加固完成！")
+        }
+    }
 }

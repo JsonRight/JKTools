@@ -69,8 +69,12 @@ extension JKTool {
                 po(tip:  "installProfiles:" + error.message + error.output,type: .error)
             }
             
+            guard let exportConfig = configs.exportConfigList.filter({ $0.configuration == configuration }).first else {
+                return po(tip: "【\(scheme)】exportConfigList没有匹配到\(configuration)",type: .error)
+            }
+            
             do {
-                try shellOut(to: .export(scheme: scheme, projectPath: project.directoryPath, configuration: configuration, export: configs.exportConfig.exportOptionsPath.convertRelativePath(absolutPath:project.directoryPath), nameSuffix: configs.exportConfig.saveConfig?.nameSuffix,toSavePath: configs.exportConfig.saveConfig?.path.convertRelativePath(absolutPath:project.directoryPath)), at: project.directoryPath)
+                try shellOut(to: .export(scheme: scheme, projectPath: project.directoryPath, configuration: configuration, export: exportConfig.exportOptionsPath.convertRelativePath(absolutPath:project.directoryPath), nameSuffix: exportConfig.saveConfig?.nameSuffix,toSavePath: exportConfig.saveConfig?.path), at: project.directoryPath)
             } catch  {
                 let error = error as! ShellOutError
                 po(tip:  error.message + error.output,type: .error)

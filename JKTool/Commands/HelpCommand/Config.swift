@@ -25,13 +25,24 @@ extension JKTool {
                    "p12Pwd": "p12文件密码",
                    "profilesPath": "路径"
                  },
-                 "exportConfig": {
-                   "exportOptionsPath": "export.plist路径",
-                   "saveConfig": {
-                     "nameSuffix": "String",
-                     "path": "路径"
+                 "exportConfigList": [
+                   {
+                     "configuration": "Debug",
+                     "exportOptionsPath": "export.plist路径",
+                     "saveConfig": {
+                       "nameSuffix": "String",
+                       "path": "路径"
+                     }
+                   },
+                   {
+                     "configuration": "Release",
+                     "exportOptionsPath": "export.plist路径",
+                     "saveConfig": {
+                       "nameSuffix": "String",
+                       "path": "路径"
+                     }
                    }
-                 },
+                 ],
                  "uploadConfig": {
                    "accountAuthConfig": {
                      "username": "appleid账户",
@@ -40,9 +51,9 @@ extension JKTool {
                    "apiAuthConfig": {
                      "apiKey": "String",
                      "apiIssuerID": "String",
-                     "authKeyPath": "ipa路径"
+                     "authKeyPath": "authKeyPath路径"
                    },
-                    "ipaPath": "ipa路径"
+                   "ipaPath": "ipa路径"
                  }
                }
                ’‘’

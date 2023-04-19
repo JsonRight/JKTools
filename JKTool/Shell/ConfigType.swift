@@ -198,6 +198,8 @@ public struct ProjectConfigModel: Decodable {
 
     struct ExportConfigModel:Decodable {
         
+        var configuration: String
+        
         var exportOptionsPath: String
         
         var saveConfig: SaveConfigModel?
@@ -240,15 +242,15 @@ public struct ProjectConfigModel: Decodable {
         
         var apiAuthConfig: UploadApiAuthConfigModel?
         
-        var ipaPath: String
+        var ipaPath: String?
         
     }
     
-    var sdk: String
+    var sdk: String?
     
     var certificateConfig: CertificateConfigModel
     
-    var exportConfig: ExportConfigModel
+    var exportConfigList: [ExportConfigModel]
     
     var uploadConfig: UploadConfigModel
     
