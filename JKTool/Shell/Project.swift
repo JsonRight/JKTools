@@ -417,6 +417,9 @@ public class Project {
 
 extension Project {
     
+    /// 写入RecordList
+    /// - Parameter recordList: 需要写入的List
+    /// - Returns: 返回剔除的旧item
     func writeRecordList(recordList: Array<String>) -> [String] {
         // 检查是否还有SubProject。没有则直接return
         if recordList.isEmpty {
