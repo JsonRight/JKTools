@@ -30,16 +30,14 @@ extension JKTool {
                      "configuration": "Debug",
                      "exportOptionsPath": "export.plist路径",
                      "saveConfig": {
-                       "nameSuffix": "String",
-                       "path": "路径"
+                       "path": "另存的路径"
                      }
                    },
                    {
                      "configuration": "Release",
                      "exportOptionsPath": "export.plist路径",
                      "saveConfig": {
-                       "nameSuffix": "String",
-                       "path": "路径"
+                       "path": "另存的路径"
                      }
                    }
                  ],

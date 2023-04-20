@@ -205,7 +205,7 @@ public extension ShellOutCommand {
 public extension ShellOutCommand {
     
     /// IOS archive VALID_ARCHS=\("arm64")
-    static func export(scheme:String, projectPath:String,configuration:String, export:String, fileExtension: String, nameSuffix:String?,toSavePath:String?) -> ShellOutCommand {
+    static func export(scheme:String, projectPath:String,configuration:String, export:String, fileExtension: String,toSavePath:String?) -> ShellOutCommand {
         var shell = "".folderExisting(at: "\(projectPath)/Build/\(configuration)/\(scheme).xcarchive")
         shell.connected(andCommand: "xcodebuild -exportArchive -archivePath \(projectPath)/Build/\(configuration)/\(scheme).xcarchive -exportPath \(projectPath)/Build/\(configuration) -exportOptionsPlist \(export)")
         if let toSavePath = toSavePath {

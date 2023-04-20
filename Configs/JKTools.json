@@ -23,7 +23,6 @@
       "configuration": "Debug",
       "exportOptionsPath": "Configs/exports/ExportOptions.plist",
       "saveConfig": {
-        "nameSuffix": "",
         "path": ""
       }
     },
@@ -31,7 +30,6 @@
       "configuration": "Release",
       "exportOptionsPath": "Configs/exports/ExportOptions.plist",
       "saveConfig": {
-        "nameSuffix": "",
         "path": "/Users/jiangkui/Desktop/JKTools"
       }
     }

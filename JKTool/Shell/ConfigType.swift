@@ -205,9 +205,6 @@ public enum Platform: String {
 public struct ProjectConfigModel: Decodable {
     
     struct SaveConfigModel:Decodable {
-        
-        var nameSuffix: String?
-        
         var path: String
         
     }
