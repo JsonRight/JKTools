@@ -37,7 +37,7 @@
       disableMainThreadChecker = "YES"
       launchStyle = "0"
       useCustomWorkingDirectory = "YES"
-      customWorkingDirectory = "/Users/jiangkui/Desktop/&#x8fd8;&#x5457;App/hb_module/LBKShell"
+      customWorkingDirectory = "/Users/jiangkui/Desktop/JKProject/JKTools"
       ignoresPersistentStateOnLaunch = "NO"
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
@@ -79,6 +79,10 @@
          </CommandLineArgument>
          <CommandLineArgument
             argument = "version"
+            isEnabled = "NO">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "archive -c Release -s JKTools --config-path Configs/JKTools.json -e true"
             isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument

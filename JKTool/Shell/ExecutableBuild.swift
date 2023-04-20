@@ -209,7 +209,8 @@ public extension ShellOutCommand {
         var shell = "".folderExisting(at: "\(projectPath)/Build/\(configuration)/\(scheme).xcarchive")
         shell.connected(andCommand: "xcodebuild -exportArchive -archivePath \(projectPath)/Build/\(configuration)/\(scheme).xcarchive -exportPath \(projectPath)/Build/\(configuration) -exportOptionsPlist \(export)")
         if let toSavePath = toSavePath {
-            shell.connected(andCommand: "cp -R \(projectPath)/Build/\(configuration)/\(scheme).\(fileExtension) \(toSavePath.convertRelativePath(absolutPath:projectPath))/\(scheme)\(configuration)\(nameSuffix ?? "").\(fileExtension)")
+            shell.connected(andCommand: "rm -rf \(toSavePath.convertRelativePath(absolutPath:projectPath))/\(scheme).\(fileExtension)")
+            shell.connected(andCommand: "cp -R \(projectPath)/Build/\(configuration)/\(scheme).\(fileExtension) \(toSavePath.convertRelativePath(absolutPath:projectPath))")
         }
         return ShellOutCommand(string: shell)
     }
