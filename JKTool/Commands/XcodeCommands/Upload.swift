@@ -60,7 +60,7 @@ extension JKTool.Upload {
             po(tip: "======Upload项目开始======")
             let date = Date.init().timeIntervalSince1970
             do {
-                try shellOut(to: .upload(scheme: scheme, projectPath: project.directoryPath, configuration: configuration,path: configs.uploadConfig.ipaPath?.convertRelativePath(absolutPath: project.directoryPath), username: configs.uploadConfig.accountAuthConfig!.username, password: configs.uploadConfig.accountAuthConfig!.password))
+                try shellOut(to: .upload(scheme: scheme, projectPath: project.directoryPath, configuration: configuration,fileExtension: Platform(configs.sdk).fileExtension(), path: configs.uploadConfig.ipaPath, username: configs.uploadConfig.accountAuthConfig!.username, password: configs.uploadConfig.accountAuthConfig!.password))
             } catch  {
                 let error = error as! ShellOutError
                 po(tip:  error.message + error.output,type: .error)
@@ -115,7 +115,7 @@ extension JKTool.Upload {
                 po(tip:  error.message + error.output,type: .error)
             }
             do {
-                try shellOut(to: .upload(scheme: scheme, projectPath: project.directoryPath, configuration: configuration,path: configs.uploadConfig.ipaPath?.convertRelativePath(absolutPath: project.directoryPath), apiKey: configs.uploadConfig.apiAuthConfig!.apiKey, apiIssuerID: configs.uploadConfig.apiAuthConfig!.apiIssuerID))
+                try shellOut(to: .upload(scheme: scheme, projectPath: project.directoryPath, configuration: configuration,fileExtension: Platform(configs.sdk).fileExtension(), path: configs.uploadConfig.ipaPath, apiKey: configs.uploadConfig.apiAuthConfig!.apiKey, apiIssuerID: configs.uploadConfig.apiAuthConfig!.apiIssuerID))
             } catch  {
                 let error = error as! ShellOutError
                 po(tip:  error.message + error.output,type: .error)

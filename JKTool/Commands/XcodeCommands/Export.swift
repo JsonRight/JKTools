@@ -74,7 +74,7 @@ extension JKTool {
             }
             
             do {
-                try shellOut(to: .export(scheme: scheme, projectPath: project.directoryPath, configuration: configuration, export: exportConfig.exportOptionsPath.convertRelativePath(absolutPath:project.directoryPath), nameSuffix: exportConfig.saveConfig?.nameSuffix,toSavePath: exportConfig.saveConfig?.path), at: project.directoryPath)
+                try shellOut(to: .export(scheme: scheme, projectPath: project.directoryPath, configuration: configuration, export: exportConfig.exportOptionsPath.convertRelativePath(absolutPath:project.directoryPath), fileExtension: Platform(configs.sdk).fileExtension(), nameSuffix: exportConfig.saveConfig?.nameSuffix,toSavePath: exportConfig.saveConfig?.path), at: project.directoryPath)
             } catch  {
                 let error = error as! ShellOutError
                 po(tip:  error.message + error.output,type: .error)

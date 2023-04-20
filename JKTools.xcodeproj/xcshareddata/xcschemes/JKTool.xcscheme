@@ -71,7 +71,7 @@
          </CommandLineArgument>
          <CommandLineArgument
             argument = "biz mpaas -t Loan -c Debug"
-            isEnabled = "YES">
+            isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "module update  --path /Users/jiangkui/Desktop/&#x8fd8;&#x5457;App/hb_module/LBKShell"
@@ -79,7 +79,7 @@
          </CommandLineArgument>
          <CommandLineArgument
             argument = "version"
-            isEnabled = "NO">
+            isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "help update"

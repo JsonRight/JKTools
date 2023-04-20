@@ -65,7 +65,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
         self.download = true
         loadStatusItem(download: true)
-        guard let urlStr = JKToolConfig.read().toolUrl.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),let url = URL(string: urlStr) else {
+        guard let url = URL(string: JKToolConfig.read().toolUrl) else {
             Alert.alert(message: "转换JKTool下载路径失败，请检查路径是否有效")
             return
         }

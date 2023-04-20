@@ -53,10 +53,10 @@ extension JKTool.ToolVersion {
         mutating func run() {
             let sema = DispatchSemaphore( value: 0 )
            
-            guard let urlStr = JKToolConfig.sharedInstance.config.toolUrl.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),let url = URL(string: urlStr) else {
+            guard let url = URL(string: JKToolConfig.sharedInstance.config.toolUrl) else {
                 return po(tip: "转换JKTool下载路径失败，请检查路径是否有效",type: .error)
             }
-            po(tip: "download JKTool：\(urlStr)")
+            po(tip: "download JKTool：\(url.absoluteString)")
             let session = URLSession(configuration: URLSessionConfiguration.default)
             let request = URLRequest(
                 url: url,

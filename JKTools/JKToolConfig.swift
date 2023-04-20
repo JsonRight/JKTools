@@ -36,8 +36,8 @@ public struct JKToolConfig: Decodable,Encodable {
         _ = try? json.write(to: URL(fileURLWithPath: "\(FileManager.DocumnetsDirectory())/config.json"))
     }
     static func read() ->JKToolConfig {
-        
-        guard let data = try? Data(contentsOf: URL(fileURLWithPath: "\(FileManager.DocumnetsDirectory())/config.json")),let config = try? JSONDecoder().decode(JKToolConfig.self, from: data) else {
+        let url = URL(fileURLWithPath: "\(FileManager.DocumnetsDirectory())/config.json")
+        guard let data = try? Data(contentsOf: url),let config = try? JSONDecoder().decode(JKToolConfig.self, from: data) else {
             return JKToolConfig()
         }
         return config

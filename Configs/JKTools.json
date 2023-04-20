@@ -1,0 +1,39 @@
+{
+  "sdk": "macOS",
+  "certificateConfig": {
+    "macPwd": "password",
+    "p12sPath": "Configs/Certificates",
+    "p12Pwd": "123456",
+    "profilesPath": "Configs/Profiles"
+  },
+  "uploadConfig": {
+    "accountAuthConfig": {
+      "username": "jiangkui@lattebank.com",
+      "password": "Jk601539674"
+    },
+    "apiAuthConfig": {
+      "apiKey": "String",
+      "apiIssuerID": "String",
+      "authKeyPath": "ipa路径"
+    },
+    "ipaPath": "ipa路径"
+  },
+  "exportConfigList": [
+    {
+      "configuration": "Debug",
+      "exportOptionsPath": "Configs/exports/ExportOptions.plist",
+      "saveConfig": {
+        "nameSuffix": "",
+        "path": ""
+      }
+    },
+    {
+      "configuration": "Release",
+      "exportOptionsPath": "Configs/exports/ExportOptions.plist",
+      "saveConfig": {
+        "nameSuffix": "",
+        "path": "/Users/jiangkui/Desktop/JKTools/JKTools.app"
+      }
+    }
+  ]
+}

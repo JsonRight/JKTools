@@ -184,6 +184,22 @@ public enum Platform: String {
             return "carPlayOS"
         }
     }
+    func fileExtension() -> String {
+        switch self {
+        case .iOS :
+            return "ipa"
+        case .macOS:
+            return "app"
+        case .iPadOS:
+            return "ipa"
+        case .tvOS:
+            return "ipa"
+        case .watchOS:
+            return "ipa"
+        case .carPlayOS:
+            return "ipa"
+        }
+    }
 }
 
 public struct ProjectConfigModel: Decodable {
@@ -246,7 +262,7 @@ public struct ProjectConfigModel: Decodable {
         
     }
     
-    var sdk: String?
+    var sdk: String
     
     var certificateConfig: CertificateConfigModel
     
@@ -306,7 +322,8 @@ public class JKToolConfig {
     
     static let sharedInstance = JKToolConfig()
     private init() {
-        if let data = try? Data(contentsOf: URL(fileURLWithPath: "\(NSHomeDirectory())/Library/Containers/com.jk.JKTools/Data/Documents/config.json")),let config = try? JSONDecoder().decode(Config.self, from: data) {
+        let url = URL(fileURLWithPath: "\(NSHomeDirectory())/Library/Containers/com.jk.JKTool/Data/Documents/config.json")
+        if let data = try? Data(contentsOf: url),let config = try? JSONDecoder().decode(Config.self, from: data) {
             self.config = config
         } else {
             self.config = Config()
