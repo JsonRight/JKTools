@@ -58,7 +58,7 @@ extension JKTool.Open {
                 return po(tip: "\(path ?? FileManager.default.currentDirectoryPath)目录不存在", type: .error)
             }
             
-            _ = try? shellOut(to: ShellOutCommand(string: "xed \(project.directoryPath)"))
+            _ = try? shellOut(to: ShellOutCommand(string: "code \(project.directoryPath)"))
         }
     }
     
