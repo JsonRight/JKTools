@@ -96,6 +96,41 @@ extension JKTool.ToolVersion {
                     let error = error as! ShellOutError
                     po(tip: "修改`/usr/local/bin/JKTool`可执行权限失败：\n" + error.message + error.output,type: .error)
                 }
+                
+                let sourcePath = "\(NSHomeDirectory())/Library/Containers/com.jk.JKTool/Data/Documents/JKTool-completion"
+                let completionPath = "/usr/local/etc/bash_completion.d/JKTool-completion"
+                try? manager.removeItem(atPath: completionPath)
+                
+                do {
+                    try manager.copyItem(atPath: sourcePath, toPath: completionPath)
+                    try manager.setAttributes([FileAttributeKey.posixPermissions: 0o777], ofItemAtPath: completionPath)
+                } catch {
+                    po(tip: "写入JKTool命令提示功能代码失败：\n" + error.localizedDescription,type: .warning)
+                }
+                
+                let profilePath = URL(fileURLWithPath: "\(NSHomeDirectory())/.bash_profile")
+                
+                let data = try? Data(contentsOf: profilePath)
+                
+                
+                var profile = String(data: data ?? Data(), encoding: .utf8) ?? ""
+                
+                do {
+                    if !profile.contains("/usr/local/etc/bash_completion.d/JKTool-completion") {
+                        profile = profile + """
+                        \n
+                        if [ -f /usr/local/etc/bash_completion.d/JKTool-completion ]; then
+                            . /usr/local/etc/bash_completion.d/JKTool-completion
+                        fi
+                        """
+                        try profile.write(to: profilePath, atomically: true, encoding: .utf8)
+                    }
+                } catch {
+                    po(tip: "写入JKTool命令提示功能失败：\n" + error.localizedDescription,type: .warning)
+                }
+                
+                _ = try? shellOut(to: ShellOutCommand(string: "source ~/.bash_profile && source /usr/local/etc/bash_completion.d"))
+                
                 sema.signal()
             }
             downloadTask.resume()

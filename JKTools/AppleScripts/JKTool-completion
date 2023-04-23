@@ -1,0 +1,177 @@
+_JKTool()
+{
+    # local cur prev opts commands
+    local cur opts commands
+    COMPREPLY=()
+    # cur="${COMP_WORDS[COMP_CWORD]}"
+    # prev="${COMP_WORDS[1]}"
+    commands="module build xcframework clean archive export upload git config shell zip unzip dict array open version"
+
+    case "${COMP_WORDS[1]}" in
+        module)
+            case "${COMP_WORDS[2]}" in
+                update)
+                    opts="--force --submodule --prune --remote --branch --path"
+                    ;;
+                init)
+                    opts="--url --path --force --submodule --prune --remote --branch"
+                    ;;
+                *)
+                    opts="update init"
+                    ;;
+            esac
+            ;;
+        build|xcframework)
+            opts="--cache --configuration --sdk --sign-bundle --mac-password --copy-path --path --check-custom-build-script"
+            ;;
+        clean)
+            opts="--sdk --path"
+            ;;
+        archive)
+            opts="--configuration --scheme --config-path --export --path"
+            ;;
+        export|upload)
+            opts="--configuration --scheme --config-path --path"
+            ;;
+        git)
+            case "${COMP_WORDS[2]}" in
+                init)
+                    opts="--path"
+                    ;;
+                clone)
+                    opts="--force --path"
+                    ;;
+                commit)
+                    opts="--message --recursive --path"
+                    ;;
+                pull|prune)
+                    opts="--recursive --path"
+                    ;;
+                push)
+                    opts="--branch --recursive --path"
+                    ;;
+                merge)
+                    opts="--branch --squash --recursive --commit --message --path"
+                    ;;
+                squash)
+                    opts="--from --to --message --del --recursive --path"
+                    ;;
+                branch)
+                    case "${COMP_WORDS[3]}" in
+                        create)
+                            opts="--branch --recursive --quiet --path"
+                            ;;
+                        del)
+                            case "${COMP_WORDS[4]}" in
+                                local|origin)
+                                    opts="--branch --recursive --path"
+                                    ;;
+                                *)
+                                    opts="local origin"
+                                    ;;
+                            esac
+                            ;;
+                        *)
+                            opts="create del"
+                            ;;
+                    esac
+                    ;;
+                checkout)
+                    opts="--branch --recursive --force --path"
+                    ;;
+                status)
+                    opts="--recursive --path"
+                    ;;
+                tag)
+                    case "${COMP_WORDS[3]}" in
+                        add|del)
+                            opts="--tag --recursive --path"
+                            ;;
+                        *)
+                            opts="add del"
+                            ;;
+                    esac
+                    ;;
+                submodule)
+                    opts="--prune --remote --path"
+                    ;;
+                version)
+                    case "${COMP_WORDS[3]}" in
+                        commit)
+                            opts="--short --path"
+                            ;;
+                        version)
+                            opts="--configuration --sdk --path"
+                            ;;
+                        *)
+                            opts="commit version"
+                            ;;
+                    esac
+                    ;;
+                *)
+                    opts="init colne commit pull prune push merge squash branch checkout status tag submodule version"
+                    ;;
+            esac
+            ;;
+        shell)
+            opts="--shell --path"
+            ;;
+        zip)
+            opts="--source --path --password"
+            ;;
+        unzip)
+            opts="--source --path --overwrite --password"
+            ;;
+        dict)
+            case "${COMP_WORDS[2]}" in
+                set)
+                    opts="--dict --key --value --type"
+                    ;;
+                get)
+                    opts="--dict --key --type"
+                    ;;
+                *)
+                    opts="set get"
+                    ;;
+            esac
+            ;;
+        array)
+            case "${COMP_WORDS[2]}" in
+                set)
+                    opts="--array --index --value --type"
+                    ;;
+                get)
+                    opts="--array --index --value --type"
+                    ;;
+                *)
+                    opts="set get"
+                    ;;
+            esac
+            ;;
+        open)
+            case "${COMP_WORDS[2]}" in
+                xcode|vscode)
+                    opts="--path"
+                    ;;
+                *)
+                    opts="xcode vscode"
+                    ;;
+            esac
+            ;;
+        *)
+            opts="${commands}"
+            ;;
+    esac
+
+    case "${cur}" in
+        -*)
+            COMPREPLY=( $(compgen -W "${opts}" -- ${COMP_WORDS[COMP_CWORD]}) )
+            return 0
+            ;;
+        *)
+            COMPREPLY=($(compgen -W "${opts}" -- ${COMP_WORDS[COMP_CWORD]}))
+            ;;
+    esac
+}
+
+complete -F _JKTool JKTool

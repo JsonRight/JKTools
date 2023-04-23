@@ -105,6 +105,7 @@
 		BFA9F76528865EE300EE989B /* Export.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA9F76428865EE300EE989B /* Export.swift */; };
 		BFB7CA822700893F0099B634 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFB7CA812700893F0099B634 /* Constants.swift */; };
 		BFB7CA85270092080099B634 /* Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFB7CA84270092080099B634 /* Alert.swift */; };
+		BFE94AF529F50DBA006A85F1 /* JKTool-completion in Resources */ = {isa = PBXBuildFile; fileRef = BFE94AF429F50DBA006A85F1 /* JKTool-completion */; };
 		BFEB07B5286AA7DB00B5D197 /* Merge.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFEB07B4286AA7DB00B5D197 /* Merge.swift */; };
 		BFEB07D2286B0ECD00B5D197 /* Squash.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFEB07D1286B0ECD00B5D197 /* Squash.swift */; };
 		BFEBAE6828608295006928AD /* ExecutableBuild.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFEBAE6728608295006928AD /* ExecutableBuild.swift */; };
@@ -242,6 +243,7 @@
 		BFA9F76428865EE300EE989B /* Export.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Export.swift; sourceTree = "<group>"; };
 		BFB7CA812700893F0099B634 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		BFB7CA84270092080099B634 /* Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alert.swift; sourceTree = "<group>"; };
+		BFE94AF429F50DBA006A85F1 /* JKTool-completion */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "JKTool-completion"; sourceTree = "<group>"; };
 		BFEB07B4286AA7DB00B5D197 /* Merge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Merge.swift; sourceTree = "<group>"; };
 		BFEB07D1286B0ECD00B5D197 /* Squash.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Squash.swift; sourceTree = "<group>"; };
 		BFEBAE6728608295006928AD /* ExecutableBuild.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExecutableBuild.swift; sourceTree = "<group>"; };
@@ -336,6 +338,7 @@
 			children = (
 				BF97BF7C29668528009D4EFE /* README.md */,
 				BF60AC92291BBFB200C7BF2E /* JKTool */,
+				BFE94AF429F50DBA006A85F1 /* JKTool-completion */,
 				BF3B8062263194A00085E75A /* ConfigType.swift */,
 				BF3B8065263199A30085E75A /* ConsoleOptions.swift */,
 				BF3CBE3A2636D58C0082E869 /* JKToolScript.scpt */,
@@ -690,6 +693,7 @@
 				BF3A973328900120006134AE /* PreferencesCellView.xib in Resources */,
 				BF3CBE3B2636D58D0082E869 /* JKToolScript.scpt in Resources */,
 				BF25A47A26170AA300CB2F1B /* Main.storyboard in Resources */,
+				BFE94AF529F50DBA006A85F1 /* JKTool-completion in Resources */,
 				BF25A43D2615DE1D00CB2F1B /* Assets.xcassets in Resources */,
 				BF60AC94291C98A100C7BF2E /* JKTool in Resources */,
 			);

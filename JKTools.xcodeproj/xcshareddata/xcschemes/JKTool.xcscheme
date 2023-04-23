@@ -79,11 +79,11 @@
          </CommandLineArgument>
          <CommandLineArgument
             argument = "version"
-            isEnabled = "NO">
+            isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "archive -c Release -s JKTools --config-path Configs/JKTools.json -e true"
-            isEnabled = "YES">
+            isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "help update"
