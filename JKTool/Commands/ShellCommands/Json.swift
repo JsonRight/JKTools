@@ -79,7 +79,7 @@ extension JKTool.ToolDictionary {
                 json[key] = value
                 break
             }
-            po(tip: json.toString())
+            po(tip: json.toString(),type: .echo)
         }
     }
     
@@ -107,35 +107,35 @@ extension JKTool.ToolDictionary {
                 if let value = value, let val = value as? [String: Any] {
                     po(tip: val.toString())
                 } else {
-                    po(tip: "Undefined")
+                    po(tip: "Undefined",type: .echo)
                 }
                 break
             case "Array":
                 if let value = value, let val = value as? [Any] {
                     po(tip: val.toString())
                 } else {
-                    po(tip: "Undefined")
+                    po(tip: "Undefined",type: .echo)
                 }
                 break
             case "String":
                 if let value = value as? String {
                     po(tip: value)
                 } else {
-                    po(tip: "Undefined")
+                    po(tip: "Undefined",type: .echo)
                 }
                 break
             case "Number":
                 if let value = value as? String {
                     po(tip: value)
                 } else {
-                    po(tip: "Undefined")
+                    po(tip: "Undefined",type: .echo)
                 }
                 break
             default:
                 if let value = value as? String {
                     po(tip: value)
                 } else {
-                    po(tip: "Undefined")
+                    po(tip: "Undefined",type: .echo)
                 }
                 break
             }
@@ -240,7 +240,7 @@ extension JKTool.ToolArray {
                 }
                 break
             }
-            po(tip: json.toString())
+            po(tip: json.toString(),type: .echo)
         }
     }
     
@@ -264,43 +264,43 @@ extension JKTool.ToolArray {
             
             var json = String.toArray(string: array)
             guard index > json.count - 1 else {
-                return po(tip: "Undefined")
+                return po(tip: "Undefined",type: .echo)
             }
             let value = json[index]
             switch type {
             case "Dictionary":
                 if let val = value as? [String: Any] {
-                    po(tip: val.toString())
+                    po(tip: val.toString(),type: .echo)
                 } else {
-                    po(tip: "Undefined")
+                    po(tip: "Undefined",type: .echo)
                 }
                 break
             case "Array":
                 if let val = value as? [Any] {
-                    po(tip: val.toString())
+                    po(tip: val.toString(),type: .echo)
                 } else {
-                    po(tip: "Undefined")
+                    po(tip: "Undefined",type: .echo)
                 }
                 break
             case "String":
                 if let value = value as? String {
                     po(tip: value)
                 } else {
-                    po(tip: "Undefined")
+                    po(tip: "Undefined",type: .echo)
                 }
                 break
             case "Number":
                 if let value = value as? String {
                     po(tip: value)
                 } else {
-                    po(tip: "Undefined")
+                    po(tip: "Undefined",type: .echo)
                 }
                 break
             default:
                 if let value = value as? String {
                     po(tip: value)
                 } else {
-                    po(tip: "Undefined")
+                    po(tip: "Undefined",type: .echo)
                 }
                 break
             }

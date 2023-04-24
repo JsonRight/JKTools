@@ -86,8 +86,14 @@ extension JKTool.Git.GitVersion {
                 return po(tip: "\(project.directoryPath)获取 gitCurrentCommitId 失败，请检查是否为git仓库", type: .error)
             }
             
-            let currentVersion  =  String.safeString(string: commitId).appendingBySeparator(ShellOutCommand.MD5(string: String.safeString(string: status))).appendingBySeparator(configuration).appendingBySeparator(sdk)
-            po(tip: currentVersion, type: .none)
+            guard var xcodeVersion = try? shellOut(to: .xcodeVersion(),at: project.directoryPath) else {
+                return po(tip: "\(project.directoryPath)获取 xcodeVersion 失败，请检查是否安装了xcode", type: .error)
+            }
+            
+            xcodeVersion = xcodeVersion.replacingOccurrences(of: " ", with: "-").replacingOccurrences(of: "\n", with: "-")
+            
+            let currentVersion  =  String.safeString(string: commitId).appendingBySeparator(ShellOutCommand.MD5(string: String.safeString(string: status))).appendingBySeparator(configuration).appendingBySeparator(sdk).appendingBySeparator(xcodeVersion)
+            po(tip: currentVersion, type: .echo)
         }
     }
 }

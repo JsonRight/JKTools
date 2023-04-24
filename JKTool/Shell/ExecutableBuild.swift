@@ -255,6 +255,11 @@ public extension ShellOutCommand {
         let shell = "xcodebuild -list \(isWorkspace ? "-workspace" : "-project") \(projectPath)/\(projectName) -json"
         return ShellOutCommand(string: shell)
     }
+    
+    static func xcodeVersion() -> ShellOutCommand {
+        let shell = "xcodebuild -version"
+        return ShellOutCommand(string: shell)
+    }
 }
 
 public extension ShellOutCommand {

@@ -253,7 +253,11 @@ extension JKTool.Build {
                 let status = try? shellOut(to: .gitDiffHEAD(),at: project.directoryPath)
                 let commitId = try? shellOut(to: .gitCurrentCommitId(),at: project.directoryPath)
                 
-                let currentVersion  =  String.safeString(string: commitId).appendingBySeparator(ShellOutCommand.MD5(string: String.safeString(string: status))).appendingBySeparator(configuration).appendingBySeparator(sdk)
+                var xcodeVersion = try? shellOut(to: .xcodeVersion(),at: project.directoryPath)
+                
+                xcodeVersion = String.safeString(string: xcodeVersion).replacingOccurrences(of: " ", with: "-").replacingOccurrences(of: "\n", with: "-")
+                
+                let currentVersion  =  String.safeString(string: commitId).appendingBySeparator(ShellOutCommand.MD5(string: String.safeString(string: status))).appendingBySeparator(configuration).appendingBySeparator(sdk).appendingBySeparator(xcodeVersion!)
                 let hasCache = oldVersion?.contains(currentVersion) ?? false
                 
                 func buildStatic(project:Project){
@@ -437,8 +441,12 @@ extension JKTool.Build {
                 let oldVersion = try? shellOut(to: .readVerison(path: "\(project.buildPath)/Universal/"))
                 let status = try? shellOut(to: .gitDiffHEAD(),at: project.directoryPath)
                 let commitId = try? shellOut(to: .gitCurrentCommitId(),at: project.directoryPath)
+                var xcodeVersion = try? shellOut(to: .xcodeVersion(),at: project.directoryPath)
                 
-                let currentVersion  =  String.safeString(string: commitId).appendingBySeparator(ShellOutCommand.MD5(string: String.safeString(string: status))).appendingBySeparator(configuration).appendingBySeparator(sdk)
+                xcodeVersion = String.safeString(string: xcodeVersion).replacingOccurrences(of: " ", with: "-").replacingOccurrences(of: "\n", with: "-")
+                
+                let currentVersion  =  String.safeString(string: commitId).appendingBySeparator(ShellOutCommand.MD5(string: String.safeString(string: status))).appendingBySeparator(configuration).appendingBySeparator(sdk).appendingBySeparator(xcodeVersion!)
+                
                 let hasCache = oldVersion?.contains(currentVersion) ?? false
                 
                 func buildFramework(project:Project){
@@ -615,8 +623,11 @@ extension JKTool.Build {
                 let oldVersion = try? shellOut(to: .readVerison(path: "\(project.buildPath)/Universal/"))
                 let status = try? shellOut(to: .gitDiffHEAD(),at: project.directoryPath)
                 let commitId = try? shellOut(to: .gitCurrentCommitId(),at: project.directoryPath)
+                var xcodeVersion = try? shellOut(to: .xcodeVersion(),at: project.directoryPath)
                 
-                let currentVersion  =  String.safeString(string: commitId).appendingBySeparator(ShellOutCommand.MD5(string: String.safeString(string: status))).appendingBySeparator(configuration).appendingBySeparator(sdk)
+                xcodeVersion = String.safeString(string: xcodeVersion).replacingOccurrences(of: " ", with: "-").replacingOccurrences(of: "\n", with: "-")
+                
+                let currentVersion  =  String.safeString(string: commitId).appendingBySeparator(ShellOutCommand.MD5(string: String.safeString(string: status))).appendingBySeparator(configuration).appendingBySeparator(sdk).appendingBySeparator(xcodeVersion!)
                 let hasCache = oldVersion?.contains(currentVersion) ?? false
                 
                 func buildXCFramework(project:Project){

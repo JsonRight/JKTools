@@ -26,12 +26,8 @@ extension JKTool.Git {
         mutating func run() {
             
             func commit(project: Project){
-                let status = try? shellOut(to: .gitDiffHEAD(), at: project.directoryPath)
                 
-                guard  status?.count ?? 0 > 0 else {
-                    po(tip: "【\(project.destination)】 没有需要提交的内容\n",type: .tip)
-                    return
-                }
+                _ = try? shellOut(to: .gitAdd(), at: project.directoryPath)
                 
                 do {
                     try shellOut(to: .gitCommit(message: message), at: project.directoryPath)
@@ -46,13 +42,6 @@ extension JKTool.Git {
             }
             
             guard project.rootProject == project || recursive  else {
-                
-                let status = try? shellOut(to: .gitDiffHEAD(), at: project.directoryPath)
-                
-                guard  status?.count ?? 0 > 0 else {
-                    po(tip: "【\(project.destination)】 没有需要提交的内容\n",type: .tip)
-                    return
-                }
                 commit(project: project)
                return
             }
@@ -65,20 +54,7 @@ extension JKTool.Git {
                     po(tip: "\(record) 工程不存在，请检查 Modulefile.recordList 是否为最新内容",type: .warning)
                     continue
                 }
-                let status = try? shellOut(to: .gitDiffHEAD(), at: pro.directoryPath)
-                
-                guard  status?.count ?? 0 > 0 else {
-                    po(tip: "【\(pro.destination)】 没有需要提交的内容\n",type: .tip)
-                    continue
-                }
                 commit(project: pro)
-            }
-            
-            let status = try? shellOut(to: .gitDiffHEAD(), at: project.directoryPath)
-            
-            guard  status?.count ?? 0 > 0 else {
-                po(tip: "【\(project.destination)】 没有需要提交的内容\n",type: .tip)
-                return
             }
             
             commit(project: project)

@@ -128,6 +128,10 @@ public extension ShellOutCommand {
     static func gitInit() -> ShellOutCommand {
         return ShellOutCommand(string: "git init")
     }
+    
+    static func gitAdd() -> ShellOutCommand {
+        return ShellOutCommand(string: "git add -A")
+    }
 
     /// Clone a git repository at a given URL
     static func gitClone(url: URL, to path: String? = nil, branch: String? = nil) -> ShellOutCommand {
@@ -145,7 +149,7 @@ public extension ShellOutCommand {
 
     /// Create a git commit with a given message (also adds all untracked file to the index)
     static func gitCommit(message: String) -> ShellOutCommand {
-        var command = "git add -A && git commit -a -m"
+        var command = "git commit -a -m"
         command.append(argument: message)
 
         return ShellOutCommand(string: command)

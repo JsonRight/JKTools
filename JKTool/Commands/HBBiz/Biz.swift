@@ -221,8 +221,11 @@ extension JKTool.HBBiz {
             _superCommandName: "biz",
             abstract: "还呗特殊脚本,梆梆加固")
         
-        @Option(name: .shortAndLong, help: "设备类型，default：iOS")
+        @Option(name: .long, help: "设备类型，default：iOS")
         var sdk: String?
+        
+        @Option(name: .long, help: "sec版本")
+        var secScriptPathName: String
         
         @Option(name: .long, help: "sec_config.xml路径，default：项目目录下sec_config.xml文件")
         var secConfigPath: String?
@@ -273,11 +276,14 @@ extension JKTool.HBBiz {
             _ = try? config.data(using: .utf8)?.write(to: URL(fileURLWithPath: secConfigPath), options: .atomicWrite)
             
             
-            _ = try? shellOut(to: ShellOutCommand(string: "./native_tools_mac_221013.1/tools/bclm -i \(secLicensePath)"), at: "~/Documents/SCShield")
+            _ = try? shellOut(to: ShellOutCommand(string: "./\(secScriptPathName)/tools/bclm -i \(secLicensePath)"),at: "~/Documents/SCShield")
             
             do {
-                try shellOut(to: ShellOutCommand(string: "./native_tools_mac_221013.1/build_tools guider_v3 -i \(secConfigPath) --token offlinemode --online 0 --log-level DEBUG"), at: "~/Documents/SCShield")
+                try shellOut(to: ShellOutCommand(string: "./\(secScriptPathName)/build_tools guider_v3 -i \(secConfigPath) --token offlinemode --online 0 --log-level DEBUG"),at: "~/Documents/SCShield")
             } catch {
+                
+                _ = try? sec_config.data(using: .utf8)?.write(to: URL(fileURLWithPath: secConfigPath), options: .atomicWrite)
+                
                 let error = error as! ShellOutError
                 po(tip: "【\(scheme)】加固失败：\n" + error.message + error.output,type: .error)
             }

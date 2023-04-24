@@ -8,11 +8,13 @@
 import Foundation
 
 public enum Status {
-    case desp, tip, warning, error
+    case echo, desp, tip, warning, error
 }
 
 public func po(tip: String, type:Status? = .tip){
     switch type {
+    case .echo:
+        print("\(tip)")
     case .desp:
         print(Colors.blue("\(tip)"))
     case .tip,.none:
