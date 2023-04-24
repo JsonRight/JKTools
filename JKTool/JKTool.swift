@@ -129,7 +129,31 @@ extension JKTool.ToolVersion {
                     po(tip: "写入JKTool命令提示功能失败：\n" + error.localizedDescription,type: .warning)
                 }
                 
-                _ = try? shellOut(to: ShellOutCommand(string: "source ~/.bash_profile && source /usr/local/etc/bash_completion.d"))
+                let zshrcPath = URL(fileURLWithPath: "\(NSHomeDirectory())/.zshrc")
+                
+                let zshrcData = try? Data(contentsOf: zshrcPath)
+                
+                
+                var zshrc = String(data: zshrcData ?? Data(), encoding: .utf8) ?? ""
+                
+                do {
+                    if !zshrc.contains("source ~/.bash_profile") {
+                        zshrc = zshrc + """
+                        \n
+                        source ~/.bash_profile
+                        """
+                        try zshrc.write(to: zshrcPath, atomically: true, encoding: .utf8)
+                    }
+                } catch {
+                    po(tip: "写入JKTool命令提示功能失败：\n" + error.localizedDescription,type: .warning)
+                }
+                
+                do {
+                    _ = try shellOut(to: ShellOutCommand(string: "source ~/.bash_profile && source ~/.zshrc"))
+                } catch {
+                    let error = error as! ShellOutError
+                    po(tip: "写入JKTool命令提示功能激活失败：\n" + error.message + error.output,type: .warning)
+                }
                 
                 sema.signal()
             }

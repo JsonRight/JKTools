@@ -5,7 +5,7 @@ _JKTool()
     COMPREPLY=()
     # cur="${COMP_WORDS[COMP_CWORD]}"
     # prev="${COMP_WORDS[1]}"
-    commands="module build xcframework clean archive export upload git config shell zip unzip dict array open version"
+    commands="module build xcframework clean archive export upload git config shell zip unzip dict array open biz version"
 
     case "${COMP_WORDS[1]}" in
         module)
@@ -155,6 +155,22 @@ _JKTool()
                     ;;
                 *)
                     opts="xcode vscode"
+                    ;;
+            esac
+            ;;
+        biz)
+            case "${COMP_WORDS[2]}" in
+                mpaas)
+                    opts="--target --configuration --path"
+                    ;;
+                bbsec)
+                    opts="--sdk --sec-script-path-name --sec-config-path --sec-license-path --path"
+                    ;;
+                fir)
+                    opts="--sdk --configuration --scheme --message --path"
+                    ;;
+                *)
+                    opts="mpaas bbsec fir"
                     ;;
             esac
             ;;

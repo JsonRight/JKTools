@@ -41,7 +41,7 @@ extension JKTool.Git {
                             cloneHistory.append(module.name)
                         } catch {
                             let error = error as! ShellOutError
-                            po(tip:  error.message + error.output,type: .error)
+                            po(tip: "【\(module.name)】clone失败：\n" + error.message + error.output,type: .error)
                         }
                     } else if !cloneHistory.contains(module.name) {
                         po(tip: "【\(module.name)】已经存在,无需Clone！",type: .warning)

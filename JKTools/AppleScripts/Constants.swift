@@ -241,7 +241,7 @@ public extension Constants {
         /// 设置文件权限： [FileAttributeKey.posixPermissions: 0o777]
         manager.createFile(atPath: binPathURL.path, contents: JKTool, attributes: [FileAttributeKey.posixPermissions: 0o777])
 
-        Alert.alert(message: "Done")
+        Alert.alert(message: "更新JKTool完成，准备写入命令自动提示功能")
         
         DispatchQueue.main.async{
             resetTip(name: "JKTool-completion")
@@ -360,7 +360,7 @@ public extension Constants{
             return
         }
 
-        Alert.alert(message: "自动补全功能代码写入成功")
+        Alert.alert(message: "写入命令自动提示功能完成，准备激活命令自动提示功能（1）")
         
         DispatchQueue.main.async{
             resetProfile()
@@ -471,7 +471,115 @@ public extension Constants{
                 return
             }
         }
+        
+        Alert.alert(message: "写入命令自动提示功能完成，准备激活命令自动提示功能（2）")
+        DispatchQueue.main.async{
+            resetZshrc()
+        }
+    }
+}
 
-        Alert.alert(message: "写入自动补全功能成功")
+public extension Constants{
+    
+    static func ZshrcPanelDirectoryKey() -> String {
+        return "ZshrcPanelDirectory"
+    }
+    
+    static func ZshrcPanelDirectoryBookmarkDataKey() -> String {
+        return "ZshrcPanelDirectoryBookmarkData"
+    }
+    
+    static func hasZshrc() -> Bool {
+        return FileManager.default.fileExists(atPath: ZshrcPath().path)
+    }
+    
+    static func ZshrcPath() -> URL {
+        let profile = FileManager.DocumnetsDirectory().replacingOccurrences(of: "/Library/Containers/com.jk.JKTool/Data/Documents", with: "/.zshrc")
+        return URL(fileURLWithPath: profile)
+    }
+    
+    static func resetZshrcByBookmarkData() -> Bool{
+        guard let bookmarkData = UserDefaults.standard.data(forKey:ZshrcPanelDirectoryBookmarkDataKey() ) else {
+            return false
+        }
+        var isStale = false
+        guard let binDirectory = try? URL(resolvingBookmarkData: bookmarkData, options: URL.BookmarkResolutionOptions.withSecurityScope, relativeTo: nil, bookmarkDataIsStale: &isStale) else {
+            return false
+        }
+        
+        _ = binDirectory.startAccessingSecurityScopedResource()
+        modifyZshrc()
+        binDirectory.stopAccessingSecurityScopedResource()
+        
+        return true
+    }
+    
+    static func resetZshrcByPanel(){
+        DispatchQueue.main.async{
+            
+            let path = self.ZshrcPath().deletingLastPathComponent()
+            let panel = NSOpenPanel()
+
+            panel.directoryURL = path
+            panel.canChooseDirectories = true
+            panel.canCreateDirectories = true
+            panel.canChooseFiles = false
+            panel.prompt = "脚本安装目录"
+            panel.message = "请选择 \(path), 不存在时请手动创建"
+
+            panel.begin { result in
+                guard result.rawValue == NSApplication.ModalResponse.OK.rawValue,
+                      path.path == panel.url?.path else {
+                          Alert.alert(message: "Shell folder was not selected")
+                    return
+                }
+                
+                guard let binDirectory = panel.url else {
+                    return
+                }
+                
+                guard let bookmarkData = try? binDirectory.bookmarkData(options: URL.BookmarkCreationOptions.withSecurityScope, includingResourceValuesForKeys: nil, relativeTo: nil) else {
+                    return
+                }
+                UserDefaults.standard.set(binDirectory, forKey: ZshrcPanelDirectoryKey())
+                UserDefaults.standard.setValue(bookmarkData, forKey: ZshrcPanelDirectoryBookmarkDataKey())
+                modifyZshrc()
+
+            }
+        }
+    }
+
+    static func resetZshrc() {
+        
+        guard resetZshrcByBookmarkData() == false else {
+            if !Constants.hasZshrc() {
+                resetZshrcByPanel()
+            }
+            return
+        }
+        resetZshrcByPanel()
+    }
+
+    static func modifyZshrc() {
+        
+        let data = try? Data(contentsOf: ZshrcPath())
+        
+        
+        var profile = String(data: data ?? Data(), encoding: .utf8) ?? ""
+        
+        if !profile.contains("source ~/.bash_profile") {
+            profile = profile + """
+            \n
+            source ~/.bash_profile
+            """
+            do {
+                try profile.write(to: ZshrcPath(), atomically: true, encoding: .utf8)
+            } catch {
+                Alert.alert(message: "写入自动补全功能失败")
+                return
+            }
+        }
+
+        Alert.alert(message: "写入自动补全功能成功，重启Vim使用全部功能")
     }
 }

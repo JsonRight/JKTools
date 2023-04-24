@@ -53,7 +53,7 @@ extension JKTool {
             let date = Date.init().timeIntervalSince1970
             
             do {
-                try shellOut(to: .archive(scheme: scheme, isWorkspace: project.projectType.isWorkSpace(),projectName: project.projectType.entrance(), projectPath: project.directoryPath, configuration: configuration, sdk: configs.sdk ?? "iOS"), at: project.directoryPath)
+                try shellOut(to: .archive(scheme: scheme, isWorkspace: project.projectType.isWorkSpace(),projectName: project.projectType.entrance(), buildPath: project.buildPath, configuration: configuration, sdk: configs.sdk), at: project.directoryPath)
             } catch  {
                 let error = error as! ShellOutError
                 po(tip:  error.message + error.output,type: .error)

@@ -13,7 +13,7 @@ extension JKTool {
         static var configuration = CommandConfiguration(
             commandName: "biz",
             _superCommandName: "JKTool",
-            abstract: "还呗特殊脚本", subcommands: [MPaaS.self,BBSec.self])
+            abstract: "还呗特殊脚本", subcommands: [MPaaS.self,BBSec.self,Fir.self])
     }
 }
 
@@ -292,6 +292,75 @@ extension JKTool.HBBiz {
             
             
             po(tip: "【\(scheme)】加固完成！")
+        }
+    }
+}
+
+extension JKTool.HBBiz {
+    
+    struct Fir: ParsableCommand {
+        
+        static var configuration = CommandConfiguration(
+            commandName: "fir",
+            _superCommandName: "biz",
+            abstract: "还呗特殊脚本,梆梆加固")
+        
+        @Option(name: .long, help: "设备类型，default：iOS")
+        var sdk: String = "iOS"
+        
+        @Option(name: .shortAndLong, help: "导出环境，default：Release")
+        var configuration: String = "Release"
+        
+        @Option(name: .long, help: "Scheme")
+        var scheme: String
+        
+        @Option(name: .shortAndLong, help: "更新话术,默认：上传时间")
+        var message: String?
+        
+        @Option(name: .shortAndLong, help: "执行路径")
+        var path: String?
+        
+        mutating func run() {
+            
+            guard let project = Project.project(directoryPath: path ?? FileManager.default.currentDirectoryPath) else {
+                return po(tip: "\(path ?? FileManager.default.currentDirectoryPath)目录不存在", type: .error)
+            }
+            
+            if !project.projectType.vaild() {
+                return po(tip: "\(path ?? FileManager.default.currentDirectoryPath)目录下不是个正确的Xcode工程", type: .error)
+            }
+            
+            guard project.rootProject == project else {
+                return po(tip: "请在项目根目录执行脚本", type: .error)
+            }
+            
+            
+            
+            let message = message ?? ({
+                //创建一个时间对象
+                let today = Date()// 获取格林威治时间（GMT）/ 标准时间
+                //获取当前时区
+                let zone = NSTimeZone.system
+                //获取当前时区和GMT的时间间隔
+                let interval = zone.secondsFromGMT()
+                //获取当前系统时间
+                let now = today.addingTimeInterval(TimeInterval(interval))
+                let dateformatter = DateFormatter()
+
+                dateformatter.dateFormat = "YYYY-MM-dd HH:mm:ss"// 自定义时间格式
+
+                let time = dateformatter.string(from: now)
+                return time
+            })()
+            
+            do {
+                try shellOut(to: ShellOutCommand(string: "fir publish \(project.buildPath)/\(configuration)/\(scheme).\(Platform(sdk).fileExtension()) -c \(message)"))
+            } catch {
+                let error = error as! ShellOutError
+                po(tip: "【\(scheme)】fir上传失败：\n" + error.message + error.output,type: .error)
+            }
+            
+            po(tip: "【\(scheme)】fir上传完成！")
         }
     }
 }
