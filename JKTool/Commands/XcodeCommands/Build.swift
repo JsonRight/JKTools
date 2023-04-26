@@ -395,15 +395,12 @@ extension JKTool.Build {
                 return
             }
             
-            if !project.projectType.vaild() {
-                return
+            if project.buildType == .Static {
+                build(project: project)
+            } else {
+                let args = options.encode(appedingCopyPath:true,projectPath: project.directoryPath)
+                JKTool.Build.main(args)
             }
-            
-            if project.buildType != .Static {
-                return
-            }
-            
-            build(project: project)
         }
     }
     
@@ -576,22 +573,19 @@ extension JKTool.Build {
                 return
             }
             
-            if !project.projectType.vaild() {
-                return
+            if project.buildType == .Framework {
+                build(project: project)
+            } else {
+                let args = options.encode(appedingCopyPath:true,projectPath: project.directoryPath)
+                JKTool.Build.main(args)
             }
-            
-            if project.buildType != .Framework {
-                return
-            }
-            
-            build(project: project)
             
         }
     }
     
     struct XCFramework: ParsableCommand {
         static var configuration = CommandConfiguration(
-            commandName: "--build-xcframework",
+            commandName: "xcframework",
             _superCommandName: "JKTool",
             abstract: "build成.xcframework文件",
             version: "1.0.0")
@@ -757,15 +751,14 @@ extension JKTool.Build {
                 return
             }
             
-            if !project.projectType.vaild() {
-                return
+            if project.buildType == .Framework {
+                build(project: project)
+            } else {
+                let args = options.encode(appedingCopyPath:true,projectPath: project.directoryPath)
+                JKTool.Build.main(args)
             }
             
-            if project.buildType != .Framework {
-                return
-            }
             
-            build(project: project)
               
         }
     }
@@ -852,15 +845,11 @@ extension JKTool.Build {
                 return
             }
             
-            switch project.buildType {
-                case .Framework:
-                    po(tip: "\(options.path ?? FileManager.default.currentDirectoryPath)检测到可以使用Framework编译，请确认命令", type: .warning)
-                case .Static:
-                    po(tip: "\(options.path ?? FileManager.default.currentDirectoryPath)检测到可以使用Framework编译，请确认命令", type: .warning)
-                case .Application:
-                    po(tip: "\(options.path ?? FileManager.default.currentDirectoryPath)检测到是一个App，请确认命令", type: .warning)
-                case .Other:
-                    build(project: project)
+            if project.buildType == .Other {
+                build(project: project)
+            } else {
+                let args = options.encode(appedingCopyPath:true,projectPath: project.directoryPath)
+                JKTool.Build.main(args)
             }
         }
     }

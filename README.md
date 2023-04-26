@@ -37,7 +37,7 @@ JKTools分为两大部分：JKTools程序、JKTool命令行工具。
 #### JKTools的安装
 
 1. 将`JKTools.app`拖进Mac的应用程序，双击`JKTools[🐢]`，你会看到出现安装JKTool命令行工具的文件夹选择窗口。
-2. 点击`Selecte Script Folder`他会将JKTool安装到对的目录，接下来会出现一个Alert，`Done`代表安装成功，`Fail`代表安装失败。
+2. 点击`Selecte Script Folder`他会将JKTool安装到对的目录，接下来会出现一个Alert，`Done`代表安装成功，`Fail`代表安装失败，随之会安装命令行自动提示能力。
 3. 你不需要过多操作，请相信我，JKTools是无害的，JKTool也很小。如果你没看到窗口，大概率这个窗口在其他Mac App的窗口后面，你会看到他的！
 
 #### JKTools的能力
@@ -58,9 +58,15 @@ JKTools它仅提供`git忽略文件示例` `配置中心` `安装脚本` `帮助
 
 方式一：安装JKTools，并运行；将自动安装JKTool，并可以通过JKTools 远程更新公版JKTool。
 
-方式二：下载JKTool，或者打开JKTools.dmg 将JKTool 拷贝到`/usr/**local**/bin`目录即可。
+方式二：下载JKTool，或者打开JKTools.dmg 将JKTool 拷贝到`/usr/local/bin`目录即可。
 
 建议使用方式一（可持续获得最新公版JKTool）
+
+#### JKTool的更新
+
+方式一：打开JKTools软件，点击`JKTools[🐢]`唤出菜单，点击`安装脚本`。
+
+方式二：打开终端执行`JKTool version`。
 
 #### JKTool的能力
 
@@ -75,9 +81,9 @@ JKTool是一个很简单的命令行工具。
 ...
 ```
 
-2、在壳工程目录下执行命令：`JKTool update`。
+2、在壳工程目录下执行命令：`JKTool module update`。
 
-JKTool会自动检查`Modulefile`文件，以及壳工程`module/checkouts`目录，递归所有JKTool管理模式的子模块。
+JKTool会自动检查`Modulefile`文件，以及壳工程`Module/checkouts`目录，递归所有JKTool管理模式的子模块。
 
 你可以使用`--force true` 强制重新Clone子模块，避免发生异常引用。
 
@@ -85,7 +91,7 @@ JKTool会自动检查`Modulefile`文件，以及壳工程`module/checkouts`目�
 
 你可以使用`--submodule true`将子模块同时拉入git submodule的管理方案中，请注意：*仅支持加入git submodule，不支持自动移除*。
 
-你还可以使用子命令`JKTool update init`将远程已经是JKTool管理的工程Clone到本地，并自动Clone子模块。
+你还可以使用子命令`JKTool module init`将远程已经是JKTool管理的工程Clone到本地，并自动Clone子模块。
 
 *你可以通过`JKTool help <subcommand>` 查看JKTool提供的各种命令，以及各命令详细用法*
 
@@ -95,43 +101,51 @@ JKTool会自动检查`Modulefile`文件，以及壳工程`module/checkouts`目�
 
 ```
 JKTool
-├─update
-│        └─init
-├─build
-│        ├─clean
-│        ├─static
-│        ├─framework
-│        ├─xcframework
-│        └─other
-├─export
+├─module
+│	├─update（更新固定格式下的工程引用）
+│	└─init（直接拉取固定格式下的工程及其引用）
+├─build（根据子模块性质，编译成相应库：.a、.framework、.bundle、other）
+├─xcframework（仅适用于全部子库是framework的库，或者用于单个framework库编译）
+├─clean（清除历史编译记录）
+├─archive（归档.archive）
+├─export（基于.archive导出ipa）
 ├─upload
-│        ├─account
-│        └─api
+│ ├─account（基于account上传ipa）
+│ └─api（基于api上传ipa）
 ├─git
-│        ├─init
-│        ├─clone 
-│        │        └─init
-│        └─submodule
-│     │        └─init
-│        ├─commit
-│        ├─pull
-│        ├─push
-│        ├─prune
-│        ├─merge
-│        ├─squash
-│        ├─branch
-│        │        ├─create
-│        │        └─del
-│        │            ├─local
-│        │            └─origin
-│        ├─checkout
-│        ├─status
-│        └─tag
-│                ├─add
-│                └─del
-├─shell
+│	├─init（目录下创建git仓库）
+│	├─clone （clone项目，可自动clone固定格式下所有子库）
+│	├─submodule（用于固定格式下所有库构建git submodule，更新子库）
+│	├─commit（commit工程，可自动commit固定格式下所有库，包含壳工程）
+│	├─pull（...）
+│	├─push（...）
+│	├─prune（...）
+│	├─merge（...）
+│	├─squash（...）
+│	├─branch
+│	│	├─create（...）
+│	│	└─del
+│	│		├─local（...）
+│	│		└─origin（...）
+│	├─checkout（...）
+│	├─status（...）
+│	└─tag
+│		├─add（...）
+│		└─del（...）
+├─shell（自动在固定格式子库下执行脚本，包含壳工程）
+├─zip（提供文件压缩功能）
+├─unzip（提供文件解压缩功能）
+├─dict
+│	├─set（提供jsonString set key-value功能）
+│	└─get（提供jsonString get key-value功能）
+├─array
+│	├─set（提供jsonString set key-value功能）
+│	└─get（提供jsonString get key-value功能）
+├─open
+│	├─xcode（提供打开Xcode）
+│	└─vscode（vscode，需vscode支持）
 ├─config
-└─version
+└─version（更新JKTool功能）
 ```
 
 # 模块化的应用<Modulefile>
@@ -152,62 +166,62 @@ Notebook（壳工程）
 ├─Modulefile
 ├─Modulefile.recordList
 └─Module
-        ├─Builds
-        │        ├─JKFoundation
-        │        │        └─JKFoundation.framework
-        │        ├─JKUIKit
-        │        │        ├─JKUIKit.a
-        │        │        ├─JKUIKit.bundle
-        │        │        └─JKUIKit
-        │        │                └─...*.h
-        │        ├─JKCommon
-        │        │        └─JKFoundation.framework
-        │        ├─...
-        │        └─JKSwift
-        │                └─JKFoundation.framework
-        └─checkouts
-                ├─JKFoundation
-                │        ├─.git
-                │        ├─.gitgnore
-                │        ├─JKFoundation
-                │        └─JKFoundation.xcodeproj
-                ├─JKUIKit
-                │        ├─.git
-                │        ├─.gitgnore
-                │        ├─.gitmodules
-                │        ├─JKUIKit
-                │        ├─JKUIKit.xcodeproj
-                │        ├─Modulefile
-                │        ├─Modulefile.recordList
-                │        └─Module
-                │                └─Builds
-                │                        └─JKFoundation (壳工程Module/Builds/JKFoundation 的links)
-                ├─JKCommon
-                │        ├─.git
-                │        ├─.gitgnore
-                │        ├─.gitmodules
-                │        ├─JKCommon
-                │        ├─JKCommon.xcodeproj
-                │        ├─Modulefile
-                │        ├─Modulefile.recordList
-                │        └─Module
-                │                └─Builds
-                │                        ├─JKFoundation (壳工程Module/Builds/JKFoundation 的links)
-                │                        └─JKUIKit (壳工程Module/Builds/JKUIKit 的links)
-                ├─JKSwift
-                │        ├─.git
-                │        ├─.gitgnore
-                │        ├─.gitmodules
-                │        ├─JKSwift
-                │        ├─JKSwift.xcodeproj
-                │        ├─Modulefile
-                │        ├─Modulefile.recordList
-                │        └─Module
-                │                └─Builds
-                │                        ├─JKFoundation (壳工程Module/Builds/JKFoundation 的links)
-                │                        ├─JKUIKit (壳工程Module/Builds/JKUIKit 的links)
-                │                        └─JKCommon (壳工程Module/Builds/JKCommon 的links)
-                └─...
+├─Builds
+│ ├─JKFoundation
+│ │ └─JKFoundation.framework
+│ ├─JKUIKit
+│ │ ├─JKUIKit.a
+│ │ ├─JKUIKit.bundle
+│ │ └─JKUIKit
+│ │  	└─...*.h
+│ ├─JKCommon
+│ │ └─JKFoundation.framework
+│ ├─...
+│ └─JKSwift
+│  └─JKFoundation.framework
+└─checkouts
+  ├─JKFoundation
+  │ ├─.git
+  │ ├─.gitgnore
+  │ ├─JKFoundation
+  │ └─JKFoundation.xcodeproj
+  ├─JKUIKit
+  │ ├─.git
+  │ ├─.gitgnore
+  │ ├─.gitmodules
+  │ ├─JKUIKit
+  │ ├─JKUIKit.xcodeproj
+  │ ├─Modulefile
+  │ ├─Modulefile.recordList
+  │ └─Module
+  │  	└─Builds
+  │   	└─JKFoundation (壳工程Module/Builds/JKFoundation 的links)
+  ├─JKCommon
+  │ ├─.git
+  │ ├─.gitgnore
+  │ ├─.gitmodules
+  │ ├─JKCommon
+  │ ├─JKCommon.xcodeproj
+  │ ├─Modulefile
+  │ ├─Modulefile.recordList
+  │ └─Module
+  │  	└─Builds
+  │   	├─JKFoundation (壳工程Module/Builds/JKFoundation 的links)
+  │   	└─JKUIKit (壳工程Module/Builds/JKUIKit 的links)
+  ├─JKSwift
+  │ ├─.git
+  │ ├─.gitgnore
+  │ ├─.gitmodules
+  │ ├─JKSwift
+  │ ├─JKSwift.xcodeproj
+  │ ├─Modulefile
+  │ ├─Modulefile.recordList
+  │ └─Module
+  │  	└─Builds
+  │   	├─JKFoundation (壳工程Module/Builds/JKFoundation 的links)
+  │   	├─JKUIKit (壳工程Module/Builds/JKUIKit 的links)
+  │   	└─JKCommon (壳工程Module/Builds/JKCommon 的links)
+  └─...
 ```
 
 以上依赖关系可以简化为：
