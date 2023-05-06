@@ -22,7 +22,7 @@ _JKTool()
             esac
             ;;
         build|xcframework)
-            opts="--cache --configuration --sdk --sign-bundle --mac-password --copy-path --path --check-custom-build-script"
+            opts="--cache --configuration --sdk --included-simulators --sign-bundle --mac-password --copy-path --path --check-custom-build-script"
             ;;
         clean)
             opts="--sdk --path"
@@ -39,7 +39,7 @@ _JKTool()
                     opts="--path"
                     ;;
                 clone)
-                    opts="--force --path"
+                    opts="--force --prune --path"
                     ;;
                 commit)
                     opts="--message --recursive --path"

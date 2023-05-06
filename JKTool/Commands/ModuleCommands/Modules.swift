@@ -31,7 +31,7 @@ extension JKTool.Modules {
         @Option(name: .shortAndLong, help: "利用git submodule构建/更新项目结构，default：false")
         var submodule: Bool?
         
-        @Option(name: .long, help: "移除不在submodules中的submodule,仅在`--submodule true`时有效，default：false")
+        @Option(name: .long, help: "移除不在submodules中的submodule，default：false")
         var prune: Bool?
         
         @Option(name: .shortAndLong, help: "更新submodules为远程项目的最新版本,仅在`--submodule true`时有效，default：false")
@@ -57,11 +57,13 @@ extension JKTool.Modules {
             if let path = path {
                 args.append(contentsOf: ["--path",String(path)])
             }
+            
+            if let prune = prune {
+                args.append(contentsOf: ["--prune",String(prune)])
+            }
+            
             if submodule == true {
                 
-                if let prune = prune {
-                    args.append(contentsOf: ["--prune",String(prune)])
-                }
                 if let remote = remote {
                     args.append(contentsOf: ["--remote",String(remote)])
                 }

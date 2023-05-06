@@ -8,47 +8,47 @@
 
 import Foundation
 
-public protocol ExecutableTypeProtocol {
-    var value: String {set get}
-    init(_ value: String)
-}
-
-public class ExecutableType: ExecutableTypeProtocol, CustomStringConvertible, Equatable {
-    public var value: String
-    
-    required public init(_ value: String) {
-        self.value = value
-    }
-    
-    public static func == (lhs: ExecutableType, rhs: ExecutableType) -> Bool {
-        return lhs.value == rhs.value
-    }
-    
-    public var description: String {
-        return value
-    }
-    
-}
-
-public class ConfigType: ExecutableType {
-    init(_ options: ConfigOptions) {
-        super.init(options.rawValue)
-    }
-    
-    required public init(_ value: String) {
-        super.init(value)
-    }
-}
-
-public class LibraryType: ExecutableType {
-    init(_ options: LibraryOptions) {
-        super.init(options.rawValue)
-    }
-    
-    required public init(_ value: String) {
-        super.init(value)
-    }
-}
+//public protocol ExecutableTypeProtocol {
+//    var value: String {set get}
+//    init(_ value: String)
+//}
+//
+//public class ExecutableType: ExecutableTypeProtocol, CustomStringConvertible, Equatable {
+//    public var value: String
+//
+//    required public init(_ value: String) {
+//        self.value = value
+//    }
+//
+//    public static func == (lhs: ExecutableType, rhs: ExecutableType) -> Bool {
+//        return lhs.value == rhs.value
+//    }
+//
+//    public var description: String {
+//        return value
+//    }
+//
+//}
+//
+//public class ConfigType: ExecutableType {
+//    init(_ options: ConfigOptions) {
+//        super.init(options.rawValue)
+//    }
+//
+//    required public init(_ value: String) {
+//        super.init(value)
+//    }
+//}
+//
+//public class LibraryType: ExecutableType {
+//    init(_ options: LibraryOptions) {
+//        super.init(options.rawValue)
+//    }
+//
+//    required public init(_ value: String) {
+//        super.init(value)
+//    }
+//}
 
 
 public enum LibraryOptions: String {
@@ -57,56 +57,34 @@ public enum LibraryOptions: String {
     case Static = "Static"
 }
 
-public enum ConfigOptions: String {
-    case Debug = "Debug"
-    case Release = "Release"
-    public init(_ string: String) {
-        if string == "Release" {
-            self = .Release
-        }else{
-            self = .Debug
-        }
-    }
-    public func archs()-> String {
-        switch self {
-        case .Debug:
-            return "x86_64"
-        case .Release:
-            return "arm64"
+//public enum ConfigOptions: String {
+//    case Debug = "Debug"
+//    case Release = "Release"
+//    public init(_ string: String) {
+//        if string == "Release" {
+//            self = .Release
+//        }else{
+//            self = .Debug
+//        }
+//    }
+//}
+
+public enum SdkType: String {
+    case Simulator, RealMachine
+    init(_ includedSimulators: Bool?) {
+        switch includedSimulators {
+        case true:
+            self = .Simulator
+        default:
+            self = .RealMachine
         }
     }
 }
 
 public enum ValidArchs {
-    case framework(ConfigOptions)
-    case xcframework(ConfigOptions)
-    case a(ConfigOptions)
-    
-    public func archs()-> String {
-        switch self {
-        case .framework(let configOptions):
-            switch configOptions {
-            case .Debug:
-                return "x86_64 i386"
-            case .Release:
-                return "arm64"
-            }
-        case .xcframework(let configOptions):
-            switch configOptions {
-            case .Debug:
-                return "x86_64 i386"
-            case .Release:
-                return "arm64"
-            }
-        case .a(let configOptions):
-            switch configOptions {
-            case .Debug:
-                return "x86_64 i386"
-            case .Release:
-                return "arm64"
-            }
-        }
-    }
+    case framework(SdkType)
+    case xcframework(SdkType)
+    case a(SdkType)
 }
 
 public enum Platform: String {
@@ -131,59 +109,89 @@ public enum Platform: String {
         }
     }
     
-    func sdk(_ config: ConfigOptions) -> String {
+    func sdk(_ sdk: SdkType) -> String {
         switch self {
-        case .iOS where config == .Debug:
+        case .iOS where sdk == .Simulator:
             return "iphonesimulator"
         case .iOS:
             return "iphoneos"
-        case .iPadOS where config == .Debug:
+        case .iPadOS where sdk == .Simulator:
             return "ipadsimulator"
         case .iPadOS:
             return "ipados"
         case .macOS:
             return "macosx"
-        case .tvOS where config == .Debug:
+        case .tvOS where sdk == .Simulator:
             return "appletvsimulator"
         case .tvOS:
             return "appletvos"
-        case .watchOS where config == .Debug:
+        case .watchOS where sdk == .Simulator:
             return "watchsimulator"
         case .watchOS:
             return "watchos"
-        case .carPlayOS where config == .Debug:
+        case .carPlayOS where sdk == .Simulator:
             return "carplaysimulator"
         case .carPlayOS:
             return "carplayos"
         }
     }
     
-    func platform(_ config: ConfigOptions) -> String {
+    func platform(_ sdk: SdkType) -> String {
         switch self {
-        case .iOS where config == .Debug:
+        case .iOS where sdk == .Simulator:
             return "iOS Simulator"
         case .iOS:
             return "iOS"
-        case .iPadOS where config == .Debug:
+        case .iPadOS where sdk == .Simulator:
             return "iPadOS Simulator"
         case .iPadOS:
             return "iPadOS"
         case .macOS:
             return "macOS"
-        case .tvOS where config == .Debug:
+        case .tvOS where sdk == .Simulator:
             return "tvOS Simulator"
         case .tvOS:
             return "tvOS"
-        case .watchOS where config == .Debug:
+        case .watchOS where sdk == .Simulator:
             return "watchOS Simulator"
         case .watchOS:
             return "watchOS"
-        case .carPlayOS where config == .Debug:
+        case .carPlayOS where sdk == .Simulator:
             return "carPlayOS Simulator"
         case .carPlayOS:
             return "carPlayOS"
         }
     }
+    
+    func archs(_ sdk: SdkType) -> String {
+        switch self {
+        case .iOS where sdk == .Simulator:
+            return "x86_64"
+        case .iOS:
+            return "arm64"
+        case .iPadOS where sdk == .Simulator:
+            return "x86_64"
+        case .iPadOS:
+            return "arm64"
+        case .macOS where sdk == .Simulator:
+            return "x86_64"
+        case .macOS:
+            return "arm64"
+        case .tvOS where sdk == .Simulator:
+            return "x86_64"
+        case .tvOS:
+            return "arm64"
+        case .watchOS where sdk == .Simulator:
+            return "x86_64"
+        case .watchOS:
+            return "arm64"
+        case .carPlayOS where sdk == .Simulator:
+            return "x86_64"
+        case .carPlayOS:
+            return "arm64"
+        }
+    }
+    
     func fileExtension() -> String {
         switch self {
         case .iOS :

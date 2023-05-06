@@ -18,6 +18,9 @@ private struct Options: ParsableArguments {
     @Option(name: .shortAndLong, help: "设备类型，default：iOS")
     var sdk: String?
     
+    @Option(name: .long, help: "加入模拟器架构，false")
+    var includedSimulators: Bool?
+    
     @Option(name: .long, help: "对Bundle进行签名，default：false")
     var signBundle: Bool?
     
@@ -52,6 +55,10 @@ private struct Options: ParsableArguments {
             args.append(contentsOf: ["--sdk",String(sdk)])
         }
         
+        if let includedSimulators = includedSimulators {
+            args.append(contentsOf: ["--included-simulators",String(includedSimulators)])
+        }
+        
         if let signBundle = signBundle {
             args.append(contentsOf: ["--sign-bundle",String(signBundle)])
         }
@@ -73,6 +80,37 @@ private struct Options: ParsableArguments {
         }
         
         return args
+      }
+    
+    func customBuildScript() -> String {
+        var args = [String]()
+        if let cache = cache {
+            args.append(contentsOf: ["--cache",String(cache)])
+        }
+        if let configuration = configuration {
+            args.append(contentsOf: ["--configuration",String(configuration)])
+        }
+        if let sdk = sdk {
+            args.append(contentsOf: ["--sdk",String(sdk)])
+        }
+        
+        if let includedSimulators = includedSimulators {
+            args.append(contentsOf: ["--included-simulators",String(includedSimulators)])
+        }
+        
+        if let signBundle = signBundle {
+            args.append(contentsOf: ["--sign-bundle",String(signBundle)])
+        }
+        
+        if let macPassword = macPassword {
+            args.append(contentsOf: ["--mac-password",String(macPassword)])
+        }
+        
+        if let copyPath = copyPath {
+            args.append(contentsOf: ["--copy-path",String(copyPath)])
+        }
+        
+        return args.joined(separator: " ")
       }
 }
 
@@ -257,14 +295,14 @@ extension JKTool.Build {
                 
                 xcodeVersion = String.safeString(string: xcodeVersion).replacingOccurrences(of: " ", with: "-").replacingOccurrences(of: "\n", with: "-")
                 
-                let currentVersion  =  String.safeString(string: commitId).appendingBySeparator(ShellOutCommand.MD5(string: String.safeString(string: status))).appendingBySeparator(configuration).appendingBySeparator(sdk).appendingBySeparator(xcodeVersion!)
+                let currentVersion  =  String.safeString(string: commitId).appendingBySeparator(ShellOutCommand.MD5(string: String.safeString(string: status))).appendingBySeparator(configuration).appendingBySeparator(sdk).appendingBySeparator(xcodeVersion!).appendingBySeparator(SdkType(options.includedSimulators).rawValue)
                 let hasCache = oldVersion?.contains(currentVersion) ?? false
                 
                 func buildStatic(project:Project){
                     let toStaticPath =  copyPath
                     let toHeaderPath =  copyPath
                     
-                    let staticCommand = ShellOutCommand.staticBuild(scheme: scheme,isWorkspace: project.projectType.isWorkSpace(),projectName: project.projectType.entrance(), projectPath: project.directoryPath, derivedDataPath: project.buildPath, configuration: configuration, sdk: sdk,dstPath: project.dstPath,verison: isRootProject ? "Products" : currentVersion,toStaticPath: toStaticPath,toHeaderPath: toHeaderPath)
+                    let staticCommand = ShellOutCommand.staticBuild(scheme: scheme,isWorkspace: project.projectType.isWorkSpace(),projectName: project.projectType.entrance(), projectPath: project.directoryPath, derivedDataPath: project.buildPath, configuration: configuration, sdk: sdk,includedSimulators: options.includedSimulators,dstPath: project.dstPath,verison: isRootProject ? "Products" : currentVersion,toStaticPath: toStaticPath,toHeaderPath: toHeaderPath)
                     do {
                         try shellOut(to: staticCommand, at: project.directoryPath)
                         project.removeBuildLog()
@@ -384,7 +422,7 @@ extension JKTool.Build {
                 let date = Date.init().timeIntervalSince1970
                 do {
                     po(tip:"【\(scheme)】执行build.sh")
-                    let msg = try shellOut(to: ShellOutCommand(string: "chmod +x build.sh && ./build.sh \(scheme) \(configuration) \(sdk) \(signBundle) \(project.directoryPath)"),at: project.directoryPath)
+                    let msg = try shellOut(to: ShellOutCommand(string: "chmod +x build.sh && ./build.sh \(scheme) \(configuration) \(sdk) \(project.directoryPath) \(options.customBuildScript())"),at: project.directoryPath)
                     po(tip:"【\(scheme)】执行build.sh:\(msg)")
                     po(tip: "【\(scheme)】执行build.sh 成功",type: .tip)
                 } catch  {
@@ -442,14 +480,14 @@ extension JKTool.Build {
                 
                 xcodeVersion = String.safeString(string: xcodeVersion).replacingOccurrences(of: " ", with: "-").replacingOccurrences(of: "\n", with: "-")
                 
-                let currentVersion  =  String.safeString(string: commitId).appendingBySeparator(ShellOutCommand.MD5(string: String.safeString(string: status))).appendingBySeparator(configuration).appendingBySeparator(sdk).appendingBySeparator(xcodeVersion!)
+                let currentVersion  =  String.safeString(string: commitId).appendingBySeparator(ShellOutCommand.MD5(string: String.safeString(string: status))).appendingBySeparator(configuration).appendingBySeparator(sdk).appendingBySeparator(xcodeVersion!).appendingBySeparator(SdkType(options.includedSimulators).rawValue)
                 
                 let hasCache = oldVersion?.contains(currentVersion) ?? false
                 
                 func buildFramework(project:Project){
                     
                     let toPath =  copyPath
-                    let frameworkCommand = ShellOutCommand.frameworkBuild(scheme:scheme,isWorkspace: project.projectType.isWorkSpace(),projectName: project.projectType.entrance(), projectPath: project.directoryPath, derivedDataPath: project.buildPath, configuration: configuration, sdk: sdk, verison: isRootProject ? "Products" : currentVersion, toPath: toPath)
+                    let frameworkCommand = ShellOutCommand.frameworkBuild(scheme:scheme,isWorkspace: project.projectType.isWorkSpace(),projectName: project.projectType.entrance(), projectPath: project.directoryPath, derivedDataPath: project.buildPath, configuration: configuration, sdk: sdk,includedSimulators: options.includedSimulators, verison: isRootProject ? "Products" : currentVersion, toPath: toPath)
                     
                     do {
                         try shellOut(to: frameworkCommand, at: project.directoryPath)
@@ -563,7 +601,8 @@ extension JKTool.Build {
                 let date = Date.init().timeIntervalSince1970
                 do {
                     po(tip:"【\(scheme)】执行build.sh")
-                    try shellOut(to: ShellOutCommand(string: "chmod +x build.sh && ./build.sh \(scheme) \(configuration) \(sdk) \(signBundle) \(project.directoryPath)"),at: project.directoryPath)
+                    let msg = try shellOut(to: ShellOutCommand(string: "chmod +x build.sh && ./build.sh \(scheme) \(configuration) \(sdk) \(project.directoryPath) \(options.customBuildScript())"),at: project.directoryPath)
+                    po(tip:"【\(scheme)】执行build.sh:\(msg)")
                     po(tip: "【\(scheme)】执行build.sh 成功",type: .tip)
                 } catch  {
                     let error = error as! ShellOutError
@@ -621,14 +660,14 @@ extension JKTool.Build {
                 
                 xcodeVersion = String.safeString(string: xcodeVersion).replacingOccurrences(of: " ", with: "-").replacingOccurrences(of: "\n", with: "-")
                 
-                let currentVersion  =  String.safeString(string: commitId).appendingBySeparator(ShellOutCommand.MD5(string: String.safeString(string: status))).appendingBySeparator(configuration).appendingBySeparator(sdk).appendingBySeparator(xcodeVersion!)
+                let currentVersion  =  String.safeString(string: commitId).appendingBySeparator(ShellOutCommand.MD5(string: String.safeString(string: status))).appendingBySeparator(configuration).appendingBySeparator(sdk).appendingBySeparator(xcodeVersion!).appendingBySeparator(SdkType(options.includedSimulators).rawValue)
                 let hasCache = oldVersion?.contains(currentVersion) ?? false
                 
                 func buildXCFramework(project:Project){
                     
                     let toPath =  copyPath
                     
-                    let xcframeworkCommand = ShellOutCommand.xcframeworkBuild(scheme:scheme,isWorkspace: project.projectType.isWorkSpace(),projectName: project.projectType.entrance(), projectPath: project.directoryPath, derivedDataPath: project.buildPath, configuration: configuration, sdk: sdk, verison: isRootProject ? "Products" : currentVersion, toPath: toPath)
+                    let xcframeworkCommand = ShellOutCommand.xcframeworkBuild(scheme:scheme,isWorkspace: project.projectType.isWorkSpace(),projectName: project.projectType.entrance(), projectPath: project.directoryPath, derivedDataPath: project.buildPath, configuration: configuration, sdk: sdk,includedSimulators: options.includedSimulators, verison: isRootProject ? "Products" : currentVersion, toPath: toPath)
                     
                     do {
                         try shellOut(to: xcframeworkCommand, at: project.directoryPath)
@@ -741,7 +780,8 @@ extension JKTool.Build {
                 let date = Date.init().timeIntervalSince1970
                 do {
                     po(tip:"【\(scheme)】执行build.sh")
-                    try shellOut(to: ShellOutCommand(string: "chmod +x build.sh && ./build.sh \(scheme) \(configuration) \(sdk) \(signBundle) \(project.directoryPath)"),at: project.directoryPath)
+                    let msg = try shellOut(to: ShellOutCommand(string: "chmod +x build.sh && ./build.sh \(scheme) \(configuration) \(sdk) \(project.directoryPath) \(options.customBuildScript())"),at: project.directoryPath)
+                    po(tip:"【\(scheme)】执行build.sh:\(msg)")
                     po(tip: "【\(scheme)】执行build.sh 成功",type: .tip)
                 } catch  {
                     let error = error as! ShellOutError
@@ -776,7 +816,6 @@ extension JKTool.Build {
             
             let configuration = options.configuration ?? "Release"
             let sdk = options.sdk ?? "iOS"
-            let signBundle = options.signBundle ?? false
             
             func build(project:Project) {
                 
@@ -835,7 +874,8 @@ extension JKTool.Build {
                 let date = Date.init().timeIntervalSince1970
                 do {
                     po(tip:"【\(scheme)】执行build.sh")
-                    try shellOut(to: ShellOutCommand(string: "chmod +x build.sh && ./build.sh \(scheme) \(configuration) \(sdk) \(signBundle) \(project.directoryPath)"),at: project.directoryPath)
+                    let msg = try shellOut(to: ShellOutCommand(string: "chmod +x build.sh && ./build.sh \(scheme) \(configuration) \(sdk) \(project.directoryPath) \(options.customBuildScript())"),at: project.directoryPath)
+                    po(tip:"【\(scheme)】执行build.sh:\(msg)")
                     po(tip: "【\(scheme)】执行build.sh 成功",type: .tip)
                 } catch  {
                     let error = error as! ShellOutError

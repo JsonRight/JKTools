@@ -17,6 +17,9 @@ extension JKTool.Git {
         @Option(name: .shortAndLong, help: "强制 clone，default：false")
         var force: Bool?
         
+        @Option(name: .long, help: "移除不在submodules中的submodule，default：false")
+        var prune: Bool?
+        
         @Option(name: .shortAndLong, help: "执行目录")
         var path: String?
         
@@ -80,7 +83,18 @@ extension JKTool.Git {
             po(tip: "======Clone子模块开始======", type: .tip)
             let date = Date.init().timeIntervalSince1970
             let subRecordList = clone(project: project)
-            _ = project.writeRecordList(recordList: subRecordList)
+            let pruneRecordList = project.writeRecordList(recordList: subRecordList)
+            if prune == true {
+                for record in pruneRecordList {
+                    do {
+                        try shellOut(to: .removeFolder(from: "\(project.rootProject.checkoutsPath)/\(record)"),at: project.rootProject.directoryPath)
+                        po(tip: "【\(record)】Remove 成功")
+                    } catch {
+                        let error = error as! ShellOutError
+                        po(tip: "【\(record)】Remove 异常" + error.message + error.output,type: .warning)
+                    }
+                }
+            }
             po(tip: "======clone子模块完成[\(String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")]======")
         }
     }

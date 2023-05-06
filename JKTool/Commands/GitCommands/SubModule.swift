@@ -100,7 +100,7 @@ extension JKTool.Git {
                         po(tip: "【\(record)】Remove 成功")
                     } catch {
                         let error = error as! ShellOutError
-                        po(tip: "【\(record)】Remove 异常" + error.message + error.output,type: .error)
+                        po(tip: "【\(record)】Remove 异常" + error.message + error.output,type: .warning)
                     }
                 }
             }
