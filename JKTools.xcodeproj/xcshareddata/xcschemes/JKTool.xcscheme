@@ -55,7 +55,7 @@
       <CommandLineArguments>
          <CommandLineArgument
             argument = "build --cache false --check-custom-build-script true "
-            isEnabled = "YES">
+            isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "module update"
@@ -79,7 +79,7 @@
          </CommandLineArgument>
          <CommandLineArgument
             argument = "version"
-            isEnabled = "NO">
+            isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "git version"

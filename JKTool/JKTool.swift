@@ -71,7 +71,7 @@ extension JKTool.ToolVersion {
                 
                 do {
                     try FileManager.default.setAttributes([FileAttributeKey.posixPermissions: 0o777], ofItemAtPath: toolPath)
-                    po(tip: "`\(toolPath)`已更新",type: .tip)
+                    po(tip: "`\(toolPath)`已更新！！",type: .tip)
                 } catch {
                     po(tip: "修改`\(toolPath)`可执行权限失败：\n" + error.localizedDescription,type: .error)
                 }
@@ -83,7 +83,7 @@ extension JKTool.ToolVersion {
                     return po(tip: "转换JKTool命令提示下载路径失败，请检查路径是否有效",type: .error)
                 }
                 guard let data = try? Data(contentsOf: completionUrl) else {
-                    return po(tip: "JKTool命令提示下载失败")
+                    return po(tip: "JKTool命令提示下载失败",type: .error)
                 }
                 
                 
@@ -123,7 +123,7 @@ extension JKTool.ToolVersion {
                     try profile.write(to: profilePath, atomically: true, encoding: .utf8)
                 }
             } catch {
-                po(tip: "写入JKTool命令提示功能失败：\n" + error.localizedDescription,type: .warning)
+                po(tip: "写入`\(profilePath)`JKTool命令提示功能失败：\n" + error.localizedDescription,type: .warning)
             }
             
             let zshrcPath = URL(fileURLWithPath: "\(NSHomeDirectory())/.zshrc")
@@ -142,14 +142,15 @@ extension JKTool.ToolVersion {
                     try zshrc.write(to: zshrcPath, atomically: true, encoding: .utf8)
                 }
             } catch {
-                po(tip: "写入JKTool命令提示功能失败：\n" + error.localizedDescription,type: .warning)
+                po(tip: "写入`\(zshrcPath)`JKTool命令提示功能失败：\n" + error.localizedDescription,type: .warning)
             }
             
             do {
                 _ = try shellOut(to: ShellOutCommand(string: "source ~/.bash_profile && source ~/.zshrc"))
+                po(tip: "JKTool命令提示功能已更新",type: .tip)
             } catch {
                 let error = error as! ShellOutError
-                po(tip: "写入JKTool命令提示功能激活失败：\n" + error.message + error.output,type: .warning)
+                po(tip: "激活JKTool命令提示功能失败：\n" + error.message + error.output,type: .warning)
             }
         }
     }

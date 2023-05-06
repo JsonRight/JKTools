@@ -175,7 +175,14 @@ _JKTool()
             esac
             ;;
         version)
-            opts="update"
+            case "${COMP_WORDS[2]}" in
+                update)
+                    opts=""
+                    ;;
+                *)
+                    opts="update"
+                    ;;
+            esac
             ;;
         *)
             opts="${commands}"
