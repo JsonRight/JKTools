@@ -17,6 +17,8 @@ class PreferencesController: NSViewController {
     
     @IBOutlet weak var toolUrl: NSTextField!
     
+    @IBOutlet weak var toolCompletion: NSTextField!
+    
     lazy var config: JKToolConfig = {
         return JKToolConfig.read()
     }()
@@ -28,6 +30,7 @@ class PreferencesController: NSViewController {
         self.buildsPath.stringValue = self.config.builds
         self.buildPath.stringValue = self.config.build
         self.toolUrl.stringValue = self.config.toolUrl
+        self.toolCompletion.stringValue = self.config.completionUrl
     }
     
 }
@@ -46,6 +49,9 @@ extension PreferencesController: NSTextFieldDelegate {
             self.config.save()
         } else if textfield.tag == 4 && self.config.toolUrl != textfield.stringValue {
             self.config.toolUrl = textfield.stringValue
+            self.config.save()
+        } else if textfield.tag == 5 && self.config.completionUrl != textfield.stringValue {
+            self.config.completionUrl = textfield.stringValue
             self.config.save()
         }
     }
