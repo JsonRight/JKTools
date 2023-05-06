@@ -14,6 +14,7 @@ public struct JKToolConfig: Decodable,Encodable {
     var builds: String = "Module/Builds"
     var build: String = "Build"
     var toolUrl: String = "https://gitee.com/jk14138/JKTools/releases/download/JKTool/JKTool"
+    var completionUrl: String = "https://gitee.com/jk14138/JKTools/releases/download/JKTool-completion/JKTool-completion"
     
     mutating func save() {
         
@@ -28,6 +29,10 @@ public struct JKToolConfig: Decodable,Encodable {
         }
         if self.toolUrl == "" {
             self.toolUrl = "https://gitee.com/jk14138/JKTools/releases/download/JKTool/JKTool"
+        }
+        
+        if self.completionUrl == "" {
+            self.completionUrl = "https://gitee.com/jk14138/JKTools/releases/download/JKTool-completion/JKTool-completion"
         }
         
         guard let json = try? JSONEncoder().encode(self) else {

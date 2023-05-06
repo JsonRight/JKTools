@@ -65,33 +65,79 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
         self.download = true
         loadStatusItem(download: true)
-        guard let url = URL(string: JKToolConfig.read().toolUrl) else {
-            Alert.alert(message: "转换JKTool下载路径失败，请检查路径是否有效")
-            return
-        }
-        let session = URLSession(configuration: URLSessionConfiguration.default)
-        let request = URLRequest(
-            url: url,
-            cachePolicy: .reloadIgnoringCacheData,
-            timeoutInterval: 10)
-        let downloadTask = session.downloadTask(with: request) { location, response, error in
-            guard let locationPath = location?.path,error == nil else {
-                self.download = false
-                self.loadStatusItem(download: false)
+        
+        func downTool() async {
+            guard let toolUrl = URL(string: JKToolConfig.read().toolUrl) else {
+                Alert.alert(message: "转换JKTool下载路径失败，请检查路径是否有效")
+                return
+            }
+            guard let (data, response) = try? await URLSession.shared.data(from: toolUrl),let httpResponse = response as? HTTPURLResponse,httpResponse.statusCode == 200 else {
+                Alert.alert(message: "JKTool下载失败")
                 return
             }
             
-            print("locationPath:\(locationPath)")
+            
             let document = FileManager.DocumnetsDirectory() + "/JKTool"
-            print("document:\(document)")
-            try? FileManager.default.removeItem(atPath: document)
-            try? FileManager.default.moveItem(atPath: locationPath, toPath: document)
+            
+            try? data.write(to: URL(fileURLWithPath: document), options: .atomicWrite)
+            
+        }
+        
+        
+        func downToolCompletion() async {
+            guard let completionUrl = URL(string: JKToolConfig.read().completionUrl) else {
+                Alert.alert(message: "转换JKTool命令提示下载路径失败，请检查路径是否有效")
+                return
+            }
+            guard let (data, response) = try? await URLSession.shared.data(from: completionUrl),let httpResponse = response as? HTTPURLResponse,httpResponse.statusCode == 200 else {
+                Alert.alert(message: "JKTool命令提示下载失败")
+                return
+            }
+            
+            
+            let document = FileManager.DocumnetsDirectory() + "/JKTool-completion"
+            
+            try? data.write(to: URL(fileURLWithPath: document), options: .atomicWrite)
+        }
+        
+        
+        // 等待多个异步任务的结果
+        Task {
+            _ = await (downTool(), downToolCompletion())
             
             Constants.resetShellScpt(name: "JKTool")
             self.loadStatusItem(download: false)
             self.download = false
         }
-        downloadTask.resume()
+//
+//        guard let completionUrl = URL(string: JKToolConfig.read().completionUrl) else {
+//            Alert.alert(message: "转换JKTool命令提示下载路径失败，请检查路径是否有效")
+//            return
+//        }
+//
+//        let session = URLSession(configuration: URLSessionConfiguration.default)
+//        let request = URLRequest(
+//            url: url,
+//            cachePolicy: .reloadIgnoringCacheData,
+//            timeoutInterval: 10)
+//        let downloadTask = session.downloadTask(with: request) { location, response, error in
+//            guard let locationPath = location?.path,error == nil else {
+//                self.download = false
+//                self.loadStatusItem(download: false)
+//                return
+//            }
+//
+//            print("locationPath:\(locationPath)")
+//            let document = FileManager.DocumnetsDirectory() + "/JKTool"
+//            print("document:\(document)")
+//            try? FileManager.default.removeItem(atPath: document)
+//            try? FileManager.default.moveItem(atPath: locationPath, toPath: document)
+//
+//            Constants.resetShellScpt(name: "JKTool")
+//            self.loadStatusItem(download: false)
+//            self.download = false
+//        }
+//        downloadTask.resume()
     }
     
     @IBAction func exit(_ sender: Any) {

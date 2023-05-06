@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="20037" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="21507" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="20037"/>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="21507"/>
         <capability name="System colors introduced in macOS 10.14" minToolsVersion="10.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -205,17 +206,17 @@
             <objects>
                 <viewController title="git忽略文件示例" id="zLn-Ji-4ny" sceneMemberID="viewController">
                     <view key="view" id="g3E-GC-oEM">
-                        <rect key="frame" x="0.0" y="0.0" width="466" height="412"/>
+                        <rect key="frame" x="0.0" y="0.0" width="466" height="418"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <box title="`git submodule`管理" translatesAutoresizingMaskIntoConstraints="NO" id="LPs-R3-tcr">
-                                <rect key="frame" x="2" y="283" width="462" height="124"/>
+                                <rect key="frame" x="2" y="287" width="462" height="126"/>
                                 <view key="contentView" id="T0z-MC-7PL">
-                                    <rect key="frame" x="3" y="3" width="456" height="106"/>
+                                    <rect key="frame" x="4" y="5" width="454" height="106"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="KZp-HT-TD9">
-                                            <rect key="frame" x="3" y="5" width="450" height="96"/>
+                                            <rect key="frame" x="3" y="5" width="448" height="96"/>
                                             <textFieldCell key="cell" lineBreakMode="clipping" selectable="YES" id="mb0-Pm-uin">
                                                 <font key="font" metaFont="system"/>
                                                 <string key="title">.DS_Store /build/
@@ -237,13 +238,13 @@ Modulefile.recordList
                                 </view>
                             </box>
                             <box title="非`git submodule`管理" translatesAutoresizingMaskIntoConstraints="NO" id="t9j-6V-NUy">
-                                <rect key="frame" x="2" y="142" width="462" height="140"/>
+                                <rect key="frame" x="2" y="144" width="462" height="142"/>
                                 <view key="contentView" id="aAA-ED-JeD">
-                                    <rect key="frame" x="3" y="3" width="456" height="122"/>
+                                    <rect key="frame" x="4" y="5" width="454" height="122"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="vpG-Py-3da">
-                                            <rect key="frame" x="3" y="5" width="450" height="112"/>
+                                            <rect key="frame" x="3" y="5" width="448" height="112"/>
                                             <textFieldCell key="cell" lineBreakMode="clipping" selectable="YES" id="khi-lh-vSI">
                                                 <font key="font" metaFont="system"/>
                                                 <string key="title">.DS_Store /build/
@@ -267,13 +268,13 @@ Modulefile.recordList
                                 </view>
                             </box>
                             <box title="Xcode工程`git submodule` 示例" translatesAutoresizingMaskIntoConstraints="NO" id="cnh-N0-tpC">
-                                <rect key="frame" x="2" y="1" width="462" height="140"/>
+                                <rect key="frame" x="2" y="1" width="462" height="142"/>
                                 <view key="contentView" id="S7Q-EX-mCh">
-                                    <rect key="frame" x="3" y="3" width="456" height="122"/>
+                                    <rect key="frame" x="4" y="5" width="454" height="122"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="gvG-wT-Prz">
-                                            <rect key="frame" x="3" y="5" width="450" height="112"/>
+                                            <rect key="frame" x="3" y="5" width="448" height="112"/>
                                             <textFieldCell key="cell" lineBreakMode="clipping" selectable="YES" id="QLg-Ti-Pvm">
                                                 <font key="font" metaFont="system"/>
                                                 <string key="title">.DS_Store /build/
@@ -320,13 +321,13 @@ Modulefile.recordList
             <objects>
                 <viewController title="配置中心" id="9Bt-IX-SIf" customClass="PreferencesController" customModule="JKTools" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="QEg-z1-Ybc">
-                        <rect key="frame" x="0.0" y="0.0" width="450" height="205"/>
+                        <rect key="frame" x="0.0" y="0.0" width="450" height="213"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <box title="SubModule存储路径" translatesAutoresizingMaskIntoConstraints="NO" id="xs7-Tz-O7s">
-                                <rect key="frame" x="2" y="151" width="446" height="49"/>
+                                <rect key="frame" x="2" y="157" width="446" height="51"/>
                                 <view key="contentView" id="Dje-Ji-KoP">
-                                    <rect key="frame" x="3" y="3" width="440" height="31"/>
+                                    <rect key="frame" x="4" y="5" width="438" height="31"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="sGx-qA-RaF">
@@ -341,7 +342,7 @@ Modulefile.recordList
                                             </textFieldCell>
                                         </textField>
                                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="753" verticalCompressionResistancePriority="747" tag="1" translatesAutoresizingMaskIntoConstraints="NO" id="6BX-eu-sQc">
-                                            <rect key="frame" x="42" y="5" width="393" height="21"/>
+                                            <rect key="frame" x="42" y="5" width="391" height="21"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="21" id="ASN-cH-shf"/>
                                             </constraints>
@@ -366,9 +367,9 @@ Modulefile.recordList
                                 </view>
                             </box>
                             <box title=".a、.framework、.xcframework等 存放路径" translatesAutoresizingMaskIntoConstraints="NO" id="cwS-wu-zte">
-                                <rect key="frame" x="2" y="101" width="446" height="49"/>
+                                <rect key="frame" x="2" y="105" width="446" height="51"/>
                                 <view key="contentView" id="FyD-xP-VE2">
-                                    <rect key="frame" x="3" y="3" width="440" height="31"/>
+                                    <rect key="frame" x="4" y="5" width="438" height="31"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="qyD-bT-3md">
@@ -383,7 +384,7 @@ Modulefile.recordList
                                             </textFieldCell>
                                         </textField>
                                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="753" verticalCompressionResistancePriority="747" tag="2" translatesAutoresizingMaskIntoConstraints="NO" id="LQn-sJ-XDT">
-                                            <rect key="frame" x="42" y="5" width="393" height="21"/>
+                                            <rect key="frame" x="42" y="5" width="391" height="21"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="21" id="HNd-Zm-L3v"/>
                                             </constraints>
@@ -408,9 +409,9 @@ Modulefile.recordList
                                 </view>
                             </box>
                             <box title="xcodebuild 中间产物 存放路径" translatesAutoresizingMaskIntoConstraints="NO" id="o76-ly-n0R">
-                                <rect key="frame" x="2" y="51" width="446" height="49"/>
+                                <rect key="frame" x="2" y="53" width="446" height="51"/>
                                 <view key="contentView" id="Cuk-hi-WYV">
-                                    <rect key="frame" x="3" y="3" width="440" height="31"/>
+                                    <rect key="frame" x="4" y="5" width="438" height="31"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Lhb-JD-co6">
@@ -425,7 +426,7 @@ Modulefile.recordList
                                             </textFieldCell>
                                         </textField>
                                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="753" verticalCompressionResistancePriority="747" tag="3" translatesAutoresizingMaskIntoConstraints="NO" id="e04-YU-QoV">
-                                            <rect key="frame" x="42" y="5" width="393" height="21"/>
+                                            <rect key="frame" x="42" y="5" width="391" height="21"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="21" id="vK0-Rd-7ex"/>
                                             </constraints>
@@ -450,9 +451,9 @@ Modulefile.recordList
                                 </view>
                             </box>
                             <box title="JKTool文件地址" translatesAutoresizingMaskIntoConstraints="NO" id="NuT-Km-3lI">
-                                <rect key="frame" x="2" y="1" width="446" height="49"/>
+                                <rect key="frame" x="2" y="1" width="446" height="51"/>
                                 <view key="contentView" id="knU-rd-vsw">
-                                    <rect key="frame" x="3" y="3" width="440" height="31"/>
+                                    <rect key="frame" x="4" y="5" width="438" height="31"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Rlm-gr-1V1">
@@ -467,7 +468,7 @@ Modulefile.recordList
                                             </textFieldCell>
                                         </textField>
                                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="753" verticalCompressionResistancePriority="747" tag="4" translatesAutoresizingMaskIntoConstraints="NO" id="sPj-5y-ged">
-                                            <rect key="frame" x="42" y="5" width="393" height="21"/>
+                                            <rect key="frame" x="42" y="5" width="391" height="21"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="21" id="IDg-ui-7FE"/>
                                             </constraints>
@@ -558,13 +559,13 @@ Modulefile.recordList
             <objects>
                 <viewController title="InsertProject" storyboardIdentifier="InsertProjectViewController" id="GcU-lO-azW" customClass="InsertProjectViewController" customModule="JKTools" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="zaf-16-xR2">
-                        <rect key="frame" x="0.0" y="0.0" width="454" height="104"/>
+                        <rect key="frame" x="0.0" y="0.0" width="454" height="106"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <box title="CurrentProject" translatesAutoresizingMaskIntoConstraints="NO" id="c8X-ek-gHc">
-                                <rect key="frame" x="2" y="1" width="450" height="98"/>
+                                <rect key="frame" x="2" y="1" width="450" height="100"/>
                                 <view key="contentView" id="lRE-bI-vMw">
-                                    <rect key="frame" x="3" y="3" width="444" height="80"/>
+                                    <rect key="frame" x="4" y="5" width="442" height="80"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="z0W-i6-61L">
@@ -576,7 +577,7 @@ Modulefile.recordList
                                             </textFieldCell>
                                         </textField>
                                         <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="eCG-2L-Vde">
-                                            <rect key="frame" x="64" y="55" width="300" height="20"/>
+                                            <rect key="frame" x="64" y="55" width="298" height="20"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="20" id="vhv-tW-2t9"/>
                                             </constraints>
@@ -598,7 +599,7 @@ Modulefile.recordList
                                             </textFieldCell>
                                         </textField>
                                         <textField verticalHuggingPriority="750" verticalCompressionResistancePriority="751" translatesAutoresizingMaskIntoConstraints="NO" id="3pe-PY-HZU">
-                                            <rect key="frame" x="64" y="30" width="300" height="20"/>
+                                            <rect key="frame" x="64" y="30" width="298" height="20"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="20" id="RJ3-qM-tQK"/>
                                             </constraints>
@@ -620,7 +621,7 @@ Modulefile.recordList
                                             </textFieldCell>
                                         </textField>
                                         <textField verticalHuggingPriority="750" verticalCompressionResistancePriority="751" translatesAutoresizingMaskIntoConstraints="NO" id="csx-K1-Acs">
-                                            <rect key="frame" x="64" y="5" width="300" height="20"/>
+                                            <rect key="frame" x="64" y="5" width="298" height="20"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="20" id="PPs-QD-Mc7"/>
                                             </constraints>
@@ -635,7 +636,7 @@ Modulefile.recordList
                                             </connections>
                                         </textField>
                                         <box boxType="custom" cornerRadius="4" title="Box" translatesAutoresizingMaskIntoConstraints="NO" id="Myt-X2-Hp8">
-                                            <rect key="frame" x="369" y="5" width="70" height="70"/>
+                                            <rect key="frame" x="367" y="5" width="70" height="70"/>
                                             <view key="contentView" id="7Ic-nc-6FD">
                                                 <rect key="frame" x="1" y="1" width="68" height="68"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

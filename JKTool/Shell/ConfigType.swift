@@ -321,6 +321,7 @@ public class JKToolConfig {
         var builds: String = "Module/Builds"
         var build: String = "Build"
         var toolUrl: String = "https://gitee.com/jk14138/JKTools/releases/download/JKTool/JKTool"
+        var completionUrl: String = "https://gitee.com/jk14138/JKTools/releases/download/JKTool-completion/JKTool-completion"
     }
     
     var config: Config
