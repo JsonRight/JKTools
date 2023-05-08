@@ -47,7 +47,7 @@ JKTools它仅提供`git忽略文件示例` `配置中心` `安装脚本` `帮助
 注意：他并不需要持续运行。
 
 1. `git忽略文件示例`内附带简单的Xcode工程几条个人认为务必要忽略的内容，仅供参考；
-2. `配置中心` 内提供 JKTools格式的模块化管理工具需要配置的几个路径：SubModule相对于壳工程的统一路径、Build产物（.a、.framework、.bundle）相对于壳工程的统一路径、Build中间产物（缓存）相对于壳工程的统一路径；
+2. `配置中心` 内提供 JKTools格式的模块化管理工具需要配置的几个路径：SubModule相对于壳工程的统一路径、Build产物（.a、.framework、.bundle）相对于壳工程的统一路径、Build中间产物（缓存）相对于壳工程的统一路径，以及JKTool、命令提示功能脚本远程地址；
 3. `安装脚本`提供了在首次启动JKTools时安装JKTool命令行工具失败或者失误删除JKTool命令行工具时，手动安装JKTool的入口。
 4. `帮助`这里很大概率看到的就是本文档了。
 5. `退出`退出功能是有必要的，JKTools没有任何必要长期存在于进程中，它只是提供以上4个功能，在学会并安装使用本工具后，它只是一个没用的图标。
@@ -60,13 +60,13 @@ JKTools它仅提供`git忽略文件示例` `配置中心` `安装脚本` `帮助
 
 方式二：下载JKTool，或者打开JKTools.dmg 将JKTool 拷贝到`/usr/local/bin`目录即可。
 
-建议使用方式一（可持续获得最新公版JKTool）
+建议使用方式一（可持续获得最新公版JKTool，并可配置JKTool、命令提示功能脚本远程地址）
 
 #### JKTool的更新
 
-方式一：打开JKTools软件，点击`JKTools[🐢]`唤出菜单，点击`安装脚本`。
+方式一：打开JKTools软件，点击`JKTools[🐢]`唤出菜单，点击`安装脚本`，并自动安装命令提示功能。
 
-方式二：打开终端执行`JKTool version`。
+方式二：打开终端执行`JKTool version`，并自动安装命令提示功能。
 
 #### JKTool的能力
 
@@ -93,7 +93,7 @@ JKTool会自动检查`Modulefile`文件，以及壳工程`Module/checkouts`目�
 
 你还可以使用子命令`JKTool module init`将远程已经是JKTool管理的工程Clone到本地，并自动Clone子模块。
 
-*你可以通过`JKTool help <subcommand>` 查看JKTool提供的各种命令，以及各命令详细用法*
+*你可以通过`JKTool help <subcommand>` 查看JKTool提供的所有命令，以及各命令所有参数和详细用法*
 
 
 
@@ -102,8 +102,8 @@ JKTool会自动检查`Modulefile`文件，以及壳工程`Module/checkouts`目�
 ```
 JKTool
 ├─module
-│	├─update（更新固定格式下的工程引用）
-│	└─init（直接拉取固定格式下的工程及其引用）
+│ ├─update（更新固定格式下的工程引用）
+│ └─init（直接拉取固定格式下的工程及其引用）
 ├─build（根据子模块性质，编译成相应库：.a、.framework、.bundle、other）
 ├─xcframework（仅适用于全部子库是framework的库，或者用于单个framework库编译）
 ├─clean（清除历史编译记录）
@@ -113,37 +113,37 @@ JKTool
 │ ├─account（基于account上传ipa）
 │ └─api（基于api上传ipa）
 ├─git
-│	├─init（目录下创建git仓库）
-│	├─clone （clone项目，可自动clone固定格式下所有子库）
-│	├─submodule（用于固定格式下所有库构建git submodule，更新子库）
-│	├─commit（commit工程，可自动commit固定格式下所有库，包含壳工程）
-│	├─pull（...）
-│	├─push（...）
-│	├─prune（...）
-│	├─merge（...）
-│	├─squash（...）
-│	├─branch
-│	│	├─create（...）
-│	│	└─del
-│	│		├─local（...）
-│	│		└─origin（...）
-│	├─checkout（...）
-│	├─status（...）
-│	└─tag
-│		├─add（...）
-│		└─del（...）
+│ ├─init（目录下创建git仓库）
+│ ├─clone （clone项目，可自动clone固定格式下所有子库）
+│ ├─submodule（用于固定格式下所有库构建git submodule，更新子库）
+│ ├─commit（commit工程，可自动commit固定格式下所有库，包含壳工程）
+│ ├─pull（...）
+│ ├─push（...）
+│ ├─prune（...）
+│ ├─merge（...）
+│ ├─squash（...）
+│ ├─branch
+│ │	├─create（...）
+│ │	└─del
+│ │   ├─local（...）
+│ │   └─origin（...）
+│ ├─checkout（...）
+│ ├─status（...）
+│ └─tag
+│   ├─add（...）
+│	└─del（...）
 ├─shell（自动在固定格式子库下执行脚本，包含壳工程）
 ├─zip（提供文件压缩功能）
 ├─unzip（提供文件解压缩功能）
 ├─dict
-│	├─set（提供jsonString set key-value功能）
-│	└─get（提供jsonString get key-value功能）
+│ ├─set（提供jsonString set key-value功能）
+│ └─get（提供jsonString get key-value功能）
 ├─array
-│	├─set（提供jsonString set key-value功能）
-│	└─get（提供jsonString get key-value功能）
+│ ├─set（提供jsonString set key-value功能）
+│ └─get（提供jsonString get key-value功能）
 ├─open
-│	├─xcode（提供打开Xcode）
-│	└─vscode（vscode，需vscode支持）
+│ ├─xcode（提供打开Xcode）
+│ └─vscode（vscode，需vscode支持）
 ├─config
 └─version（更新JKTool功能）
 ```
@@ -173,7 +173,7 @@ Notebook（壳工程）
 │ │ ├─JKUIKit.a
 │ │ ├─JKUIKit.bundle
 │ │ └─JKUIKit
-│ │  	└─...*.h
+│ │   └─...*.h
 │ ├─JKCommon
 │ │ └─JKFoundation.framework
 │ ├─...
@@ -194,8 +194,8 @@ Notebook（壳工程）
   │ ├─Modulefile
   │ ├─Modulefile.recordList
   │ └─Module
-  │  	└─Builds
-  │   	└─JKFoundation (壳工程Module/Builds/JKFoundation 的links)
+  │   └─Builds
+  │   └─JKFoundation (壳工程Module/Builds/JKFoundation 的links)
   ├─JKCommon
   │ ├─.git
   │ ├─.gitgnore
@@ -205,9 +205,9 @@ Notebook（壳工程）
   │ ├─Modulefile
   │ ├─Modulefile.recordList
   │ └─Module
-  │  	└─Builds
-  │   	├─JKFoundation (壳工程Module/Builds/JKFoundation 的links)
-  │   	└─JKUIKit (壳工程Module/Builds/JKUIKit 的links)
+  │   └─Builds
+  │     ├─JKFoundation (壳工程Module/Builds/JKFoundation 的links)
+  │     └─JKUIKit (壳工程Module/Builds/JKUIKit 的links)
   ├─JKSwift
   │ ├─.git
   │ ├─.gitgnore
@@ -217,10 +217,10 @@ Notebook（壳工程）
   │ ├─Modulefile
   │ ├─Modulefile.recordList
   │ └─Module
-  │  	└─Builds
-  │   	├─JKFoundation (壳工程Module/Builds/JKFoundation 的links)
-  │   	├─JKUIKit (壳工程Module/Builds/JKUIKit 的links)
-  │   	└─JKCommon (壳工程Module/Builds/JKCommon 的links)
+  │   └─Builds
+  │     ├─JKFoundation (壳工程Module/Builds/JKFoundation 的links)
+  │     ├─JKUIKit (壳工程Module/Builds/JKUIKit 的links)
+  │     └─JKCommon (壳工程Module/Builds/JKCommon 的links)
   └─...
 ```
 
