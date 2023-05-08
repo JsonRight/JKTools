@@ -25,7 +25,9 @@ extension JKTool {
             
             func doShell(project:Project){
                 do {
-                    try shellOut(to: ShellOutCommand(string: shell),at: project.directoryPath)
+                    let result = try shellOut(to: ShellOutCommand(string: shell),at: project.directoryPath)
+                    let scheme = ProjectListsModel.projectList(project: project)?.defaultScheme() ?? project.destination
+                    po(tip:"【\(scheme)】[\(result)]")
                 } catch  {
                     let error = error as! ShellOutError
                     po(tip: "doShell：\n" + error.message + error.output,type: .error)

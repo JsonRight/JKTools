@@ -55,7 +55,7 @@
       <CommandLineArguments>
          <CommandLineArgument
             argument = "build --check-custom-build-script true "
-            isEnabled = "YES">
+            isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "module update"

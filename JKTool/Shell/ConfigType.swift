@@ -286,7 +286,7 @@ public struct ProjectListsModel: Decodable {
     }
     var project: ProjectModel
     
-    func defaultScheme(_ sdk: String) -> String? {
+    func defaultScheme(_ sdk: String = "iOS") -> String? {
         var scheme: String?
         if self.project.schemes.contains(self.project.name) {
             scheme = self.project.name
