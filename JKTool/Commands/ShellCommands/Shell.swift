@@ -24,13 +24,14 @@ extension JKTool {
         mutating func run() {
             
             func doShell(project:Project){
+                let scheme = ProjectListsModel.projectList(project: project)?.defaultScheme() ?? project.destination
                 do {
                     let result = try shellOut(to: ShellOutCommand(string: shell),at: project.directoryPath)
-                    let scheme = ProjectListsModel.projectList(project: project)?.defaultScheme() ?? project.destination
+                    
                     po(tip:"【\(scheme)】[\(result)]")
                 } catch  {
                     let error = error as! ShellOutError
-                    po(tip: "doShell：\n" + error.message + error.output,type: .error)
+                    po(tip: "【\(scheme)】doShell error：\n" + error.message + error.output,type: .warning)
                 }
             }
             
