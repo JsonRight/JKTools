@@ -18,7 +18,7 @@ private struct Options: ParsableArguments {
     @Option(name: .shortAndLong, help: "设备类型，default：iOS")
     var sdk: String?
     
-    @Option(name: .long, help: "加入模拟器架构，false")
+    @Option(name: .long, help: "加入模拟器(x86_64)架构，default：false")
     var includedSimulators: Bool?
     
     @Option(name: .long, help: "对Bundle进行签名，default：false")

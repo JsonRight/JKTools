@@ -271,7 +271,7 @@ extension JKTool.HBBiz {
             
             let config = sec_config.replacingOccurrences(of: "${SourceRoot}", with: project.directoryPath)
                 .replacingOccurrences(of: "${XcodeProject}", with: "\(project.directoryPath)/\(project.projectType.entrance())")
-                .replacingOccurrences(of: "${Scheme}", with: scheme)
+                .replacingOccurrences(of: "${Scheme}", with: scheme).replacingOccurrences(of: "${Target}", with: scheme)
             
             _ = try? config.data(using: .utf8)?.write(to: URL(fileURLWithPath: secConfigPath), options: .atomicWrite)
             
