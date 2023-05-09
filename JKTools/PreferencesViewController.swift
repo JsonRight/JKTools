@@ -116,7 +116,6 @@ class ProjectsAdapter: NSObject,NSTableViewDelegate,NSTableViewDataSource {
     }
     
     func numberOfRows(in tableView: NSTableView) -> Int {
-        return 10
         return self.projectArr.count
     }
     
@@ -173,7 +172,6 @@ class SubModuleAdapter: NSObject,NSTableViewDelegate,NSTableViewDataSource {
     }
     
     func numberOfRows(in tableView: NSTableView) -> Int {
-        return 10
         return self.projectArr.count
     }
     

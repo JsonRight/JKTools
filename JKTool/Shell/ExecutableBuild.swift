@@ -133,7 +133,8 @@ public extension ShellOutCommand {
             shell.connected(andCommand: "cp -R \(buildPath)/Universal/\(verison)/lib\(scheme).a \(toStaticPath.convertRelativePath(absolutPath: projectPath))")
         }
         if let toHeaderPath = toHeaderPath {
-            shell.connected(ifCommand: "mkdir -p \(toHeaderPath.convertRelativePath(absolutPath: projectPath)) && cp -R \(buildPath)/Universal/\(verison)/\(scheme) \(toHeaderPath.convertRelativePath(absolutPath: projectPath))", at: "\(buildPath)/Universal/\(verison)/\(scheme)")
+            shell.connected(ifCommand: "mkdir -p \(toHeaderPath.convertRelativePath(absolutPath: projectPath))", at: "\(buildPath)/Universal/\(verison)/\(scheme)")
+            shell.connected(andCommand: "cp -R \(buildPath)/Universal/\(verison)/\(scheme) \(toHeaderPath.convertRelativePath(absolutPath: projectPath))")
         }
         return ShellOutCommand(string:shell)
     }
@@ -200,7 +201,8 @@ public extension ShellOutCommand {
     static func export(scheme:String, buildPath:String,configuration:String, export:String, fileExtension: String,toSavePath:String?) -> ShellOutCommand {
         var shell = "".folderExisting(at: "\(buildPath)/\(configuration)/\(scheme).xcarchive")
         shell.connected(andCommand: "xcodebuild -exportArchive -archivePath \(buildPath)/\(configuration)/\(scheme).xcarchive -exportPath \(buildPath)/\(configuration) -exportOptionsPlist \(export)")
-        if let toSavePath = toSavePath {
+        if let toSavePath = toSavePath,!toSavePath.isEmpty {
+            shell.connected(andCommand: "mkdir -p \(toSavePath)")
             shell.connected(andCommand: "rm -rf \(toSavePath)/\(scheme).\(fileExtension)")
             shell.connected(andCommand: "cp -R \(buildPath)/\(configuration)/\(scheme).\(fileExtension) \(toSavePath)")
         }
@@ -262,7 +264,7 @@ public extension ShellOutCommand {
             messageData.withUnsafeBytes { messageBytes -> UInt8 in
                 if let messageBytesBaseAddress = messageBytes.baseAddress, let digestBytesBlindMemory = digestBytes.bindMemory(to: UInt8.self).baseAddress {
                     let messageLength = CC_LONG(messageData.count)
-                    CC_MD5(messageBytesBaseAddress, messageLength, digestBytesBlindMemory)
+                    CC_SHA256(messageBytesBaseAddress, messageLength, digestBytesBlindMemory)
                 }
                 return 0
             }
