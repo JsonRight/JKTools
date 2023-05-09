@@ -37,7 +37,7 @@
       disableMainThreadChecker = "YES"
       launchStyle = "0"
       useCustomWorkingDirectory = "YES"
-      customWorkingDirectory = "/Users/jiangkui/Desktop/JKProject/Notebook"
+      customWorkingDirectory = "/Users/jiangkui/Desktop/JKProject/JKTools"
       ignoresPersistentStateOnLaunch = "NO"
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
@@ -86,8 +86,8 @@
             isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
-            argument = "archive -c Release -s JKTools --config-path Configs/JKTools.json -e true"
-            isEnabled = "NO">
+            argument = "archive --config-path /Users/jiangkui/Desktop/JKProject/JKTools/Configs/JKTools.json --scheme JKTools"
+            isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "help update"
