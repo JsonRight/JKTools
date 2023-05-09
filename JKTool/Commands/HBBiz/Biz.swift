@@ -354,13 +354,13 @@ extension JKTool.HBBiz {
             })()
             
             do {
-                try shellOut(to: ShellOutCommand(string: "fir publish \(project.buildPath)/\(configuration)/\(scheme).\(Platform(sdk).fileExtension()) -c \(message)"))
+                let result = try shellOut(to: ShellOutCommand(string: "fir publish \(project.buildPath)/\(configuration)/\(scheme).\(Platform(sdk).fileExtension()) -c \(message)"))
+                
+                po(tip:"【\(scheme)】fir 上传成功！[\(result)]")
             } catch {
                 let error = error as! ShellOutError
                 po(tip: "【\(scheme)】fir上传失败：\n" + error.message + error.output,type: .error)
             }
-            
-            po(tip: "【\(scheme)】fir上传完成！")
         }
     }
 }
