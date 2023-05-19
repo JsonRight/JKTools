@@ -306,12 +306,32 @@ public struct ProjectListsModel: Decodable {
     }
     
     static func projectList(project: Project) -> ProjectListsModel? {
-        guard let json = try? shellOut(to: .list(isWorkspace: project.projectType.isWorkSpace(),projectName: project.projectType.entrance(), projectPath: project.directoryPath), at: project.directoryPath),
+        guard let json = try? shellOut(to: .list(), at: project.directoryPath),
               let data = json.data(using: .utf8),
               let projectList = try? JSONDecoder().decode(ProjectListsModel.self, from:data) else {
             return nil
         }
         return projectList
+    }
+}
+
+public struct BuildSettingsModel: Decodable {
+    struct SettingsModel: Decodable {
+        var BUILD_ROOT: String
+        var XCODE_PRODUCT_BUILD_VERSION: String
+        
+    }
+    var action: String
+    var buildSettings: SettingsModel
+    var target: String
+    
+    static func projectList(project: Project) -> BuildSettingsModel? {
+        guard let json = try? shellOut(to: .buildSettings(isWorkspace: project.projectType.isWorkSpace(),projectName: project.projectType.entrance(), projectPath: project.directoryPath), at: project.directoryPath),
+              let data = json.data(using: .utf8),
+              let projectList = try? JSONDecoder().decode([BuildSettingsModel].self, from:data) else {
+            return nil
+        }
+        return projectList.first
     }
 }
 

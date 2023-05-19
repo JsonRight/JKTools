@@ -12,31 +12,29 @@ import CommonCrypto
 public extension ShellOutCommand {
     /// IOS build Framework Debug x86_64 iphonesimulator
     /// IOS build Framework Release arm64 iphoneos
-    static func frameworkBuild(scheme:String, isWorkspace:Bool,projectName: String, projectPath:String, derivedDataPath: String, configuration: String, sdk: String, includedSimulators: Bool?, verison: String, toPath: String?) -> ShellOutCommand {
-        let buildPath = URL(fileURLWithPath: (derivedDataPath as NSString).expandingTildeInPath).standardizedFileURL.path
-
+    static func frameworkBuild(scheme:String, isWorkspace:Bool,projectName: String, projectPath:String,buildPath: String, buildRootPath: String, configuration: String, sdk: String, includedSimulators: Bool?, verison: String, toPath: String?) -> ShellOutCommand {
         var shell = "xcodebuild clean \(isWorkspace ? "-workspace" : "-project") \(projectName) -scheme \(scheme) -configuration \(configuration) -quiet -UseModernBuildSystem=YES"
         
         shell.connected(andCommand: "xcodebuild build \(isWorkspace ? "-workspace" : "-project") \(projectName) -scheme \(scheme) -configuration \(configuration) VALID_ARCHS='\(Platform(sdk).archs(.RealMachine))' -destination 'generic/platform=\(Platform(sdk).platform(.RealMachine))' -UseModernBuildSystem=YES BUILD_LIBRARIES_FOR_DISTRIBUTION=YES")
-        shell.fileExisted(at: "${BUILD_ROOT}/\(configuration)-\(Platform(sdk).sdk(.RealMachine))/\(scheme).framework/\(scheme)")
+        shell.fileExisted(at: "\(buildRootPath)/\(configuration)-\(Platform(sdk).sdk(.RealMachine))/\(scheme).framework/\(scheme)")
         
         
         if includedSimulators == true  {
             shell.connected(andCommand: "xcodebuild build \(isWorkspace ? "-workspace" : "-project") \(projectName) -scheme \(scheme) -configuration \(configuration) VALID_ARCHS='\(Platform(sdk).archs(.Simulator))' -destination 'generic/platform=\(Platform(sdk).platform(.Simulator))' -UseModernBuildSystem=YES BUILD_LIBRARIES_FOR_DISTRIBUTION=YES")
-            shell.fileExisted(at: "${BUILD_ROOT}/\(configuration)-\(Platform(sdk).sdk(.Simulator))/\(scheme).framework/\(scheme)")
+            shell.fileExisted(at: "\(buildRootPath)/\(configuration)-\(Platform(sdk).sdk(.Simulator))/\(scheme).framework/\(scheme)")
         }
         
         
         // cp Release shell
         shell.connected(andCommand: "mkdir -p \(buildPath)/Universal/\(verison)/")
-        shell.connected(andCommand: "cp -R ${BUILD_ROOT}/\(configuration)-\(Platform(sdk).sdk(.RealMachine))/\(scheme).framework \(buildPath)/Universal/\(verison)/")
+        shell.connected(andCommand: "cp -R \(buildRootPath)/\(configuration)-\(Platform(sdk).sdk(.RealMachine))/\(scheme).framework \(buildPath)/Universal/\(verison)/")
         
         // lipo Release & debug shell
         shell.connected(andCommand: "lipo -create")
         
-        shell.connected(spaceCommand: "${BUILD_ROOT}/\(configuration)-\(Platform(sdk).sdk(.RealMachine))/\(scheme).framework/\(scheme)")
+        shell.connected(spaceCommand: "\(buildRootPath)/\(configuration)-\(Platform(sdk).sdk(.RealMachine))/\(scheme).framework/\(scheme)")
         if includedSimulators == true  {
-            shell.connected(spaceCommand: "${BUILD_ROOT}/\(configuration)-\(Platform(sdk).sdk(.Simulator))/\(scheme).framework/\(scheme)")
+            shell.connected(spaceCommand: "\(buildRootPath)/\(configuration)-\(Platform(sdk).sdk(.Simulator))/\(scheme).framework/\(scheme)")
         }
         shell.connected(spaceCommand: "-output \(buildPath)/Universal/\(verison)/\(scheme).framework/\(scheme)")
         // cp shell
@@ -48,8 +46,7 @@ public extension ShellOutCommand {
         return ShellOutCommand(string:shell)
     }
     
-    static func frameworkWithCache(scheme:String,projectPath:String, derivedDataPath: String, verison: String, toPath: String) -> ShellOutCommand {
-        let buildPath = URL(fileURLWithPath: (derivedDataPath as NSString).expandingTildeInPath).standardizedFileURL.path
+    static func frameworkWithCache(scheme:String,projectPath:String,buildPath: String, buildRootPath: String, verison: String, toPath: String) -> ShellOutCommand {
         var shell = "".fileExisting(at: "\(buildPath)/Universal/\(verison)/\(scheme).framework/\(scheme)")
         shell.connected(andCommand: "mkdir -p \(toPath.convertRelativePath(absolutPath: projectPath))")
         shell.connected(andCommand: "cp -R \(buildPath)/Universal/\(verison)/\(scheme).framework \(toPath.convertRelativePath(absolutPath: projectPath))")
@@ -61,25 +58,24 @@ public extension ShellOutCommand {
 public extension ShellOutCommand {
     /// IOS build Framework Debug x86_64 iphonesimulator
     /// IOS build Framework Release arm64 iphoneos
-    static func xcframeworkBuild(scheme:String, isWorkspace:Bool,projectName: String, projectPath:String, derivedDataPath: String, configuration: String, sdk: String, includedSimulators: Bool?, verison: String, toPath: String?) -> ShellOutCommand {
-        let buildPath = URL(fileURLWithPath: (derivedDataPath as NSString).expandingTildeInPath).standardizedFileURL.path
+    static func xcframeworkBuild(scheme:String, isWorkspace:Bool,projectName: String, projectPath:String,buildPath: String, buildRootPath: String, configuration: String, sdk: String, includedSimulators: Bool?, verison: String, toPath: String?) -> ShellOutCommand {
         
         var shell = "xcodebuild clean \(isWorkspace ? "-workspace" : "-project") \(projectName) -scheme \(scheme) -configuration \(configuration) -quiet -UseModernBuildSystem=YES"
         
         shell.connected(andCommand: "xcodebuild build \(isWorkspace ? "-workspace" : "-project") \(projectName) -scheme \(scheme) -configuration \(configuration) VALID_ARCHS='\(Platform(sdk).archs(.RealMachine))' -destination 'generic/platform=\(Platform(sdk).platform(.RealMachine))' -UseModernBuildSystem=YES BUILD_LIBRARIES_FOR_DISTRIBUTION=YES")
-        shell.fileExisted(at: "${BUILD_ROOT}/\(configuration)-\(Platform(sdk).sdk(.RealMachine))/\(scheme).framework/\(scheme)")
+        shell.fileExisted(at: "\(buildRootPath)/\(configuration)-\(Platform(sdk).sdk(.RealMachine))/\(scheme).framework/\(scheme)")
         
         if includedSimulators == true  {
             shell.connected(andCommand: "xcodebuild build \(isWorkspace ? "-workspace" : "-project") \(projectName) -scheme \(scheme) -configuration \(configuration) VALID_ARCHS='\(Platform(sdk).archs(.Simulator))' -destination 'generic/platform=\(Platform(sdk).platform(.Simulator))' -UseModernBuildSystem=YES BUILD_LIBRARIES_FOR_DISTRIBUTION=YES")
-            shell.fileExisted(at: "${BUILD_ROOT}/\(configuration)-\(Platform(sdk).sdk(.Simulator))/\(scheme).framework/\(scheme)")
+            shell.fileExisted(at: "\(buildRootPath)/\(configuration)-\(Platform(sdk).sdk(.Simulator))/\(scheme).framework/\(scheme)")
         }
 
         // build shell
         shell.connected(andCommand: "mkdir -p \(buildPath)/Universal/\(verison)/")
         shell.connected(andCommand: "xcodebuild -create-xcframework")
-        shell.connected(spaceCommand: "-framework ${BUILD_ROOT}/\(configuration)-\(Platform(sdk).sdk(.RealMachine))/\(scheme).framework")
+        shell.connected(spaceCommand: "-framework \(buildRootPath)/\(configuration)-\(Platform(sdk).sdk(.RealMachine))/\(scheme).framework")
         if includedSimulators == true  {
-            shell.connected(spaceCommand: "-framework ${BUILD_ROOT}/\(configuration)-\(Platform(sdk).sdk(.Simulator))/\(scheme).framework")
+            shell.connected(spaceCommand: "-framework \(buildRootPath)/\(configuration)-\(Platform(sdk).sdk(.Simulator))/\(scheme).framework")
         }
         shell.connected(spaceCommand: "-output \(buildPath)/Universal/\(verison)/\(scheme).xcframework")
         
@@ -92,8 +88,7 @@ public extension ShellOutCommand {
         return ShellOutCommand(string:shell)
     }
     
-    static func xcframeworkWithCache(scheme:String,projectPath:String, derivedDataPath: String, verison: String, toPath: String) -> ShellOutCommand {
-        let buildPath = URL(fileURLWithPath: (derivedDataPath as NSString).expandingTildeInPath).standardizedFileURL.path
+    static func xcframeworkWithCache(scheme:String,projectPath:String,buildPath: String, buildRootPath: String, verison: String, toPath: String) -> ShellOutCommand {
         var shell = "".folderExisting(at: "\(buildPath)/Universal/\(verison)/\(scheme).xcframework")
         shell.connected(andCommand: "mkdir -p \(toPath.convertRelativePath(absolutPath: projectPath))")
         shell.connected(andCommand: "cp -R \(buildPath)/Universal/\(verison)/\(scheme).xcframework \(toPath.convertRelativePath(absolutPath: projectPath))")
@@ -105,28 +100,27 @@ public extension ShellOutCommand {
 public extension ShellOutCommand {
     
     /// IOS build Static.a
-    static func staticBuild(scheme:String, isWorkspace:Bool,projectName: String, projectPath:String, derivedDataPath: String, configuration: String, sdk: String, includedSimulators: Bool?, dstPath:String, verison: String, toStaticPath: String?, toHeaderPath: String?) -> ShellOutCommand {
-        let buildPath = URL(fileURLWithPath: (derivedDataPath as NSString).expandingTildeInPath).standardizedFileURL.path
+    static func staticBuild(scheme:String, isWorkspace:Bool,projectName: String, projectPath:String,buildPath: String, buildRootPath: String, configuration: String, sdk: String, includedSimulators: Bool?, dstPath:String, verison: String, toStaticPath: String?, toHeaderPath: String?) -> ShellOutCommand {
         
         var shell = "xcodebuild clean \(isWorkspace ? "-workspace" : "-project") \(projectName) -scheme \(scheme) -configuration \(configuration) -quiet -UseModernBuildSystem=YES"
         
         shell.connected(andCommand: "xcodebuild build \(isWorkspace ? "-workspace" : "-project") \(projectName) -scheme \(scheme) -configuration \(configuration) VALID_ARCHS='\(Platform(sdk).archs(.RealMachine))' -destination 'generic/platform=\(Platform(sdk).platform(.RealMachine))' -UseModernBuildSystem=YES BUILD_LIBRARIES_FOR_DISTRIBUTION=YES")
-        shell.fileExisted(at: "${BUILD_ROOT}/\(configuration)-\(Platform(sdk).sdk(.RealMachine))/lib\(scheme).a")
+        shell.fileExisted(at: "\(buildRootPath)/\(configuration)-\(Platform(sdk).sdk(.RealMachine))/lib\(scheme).a")
         
         if includedSimulators == true  {
             shell.connected(andCommand: "xcodebuild build \(isWorkspace ? "-workspace" : "-project") \(projectName) -scheme \(scheme) -configuration \(configuration) VALID_ARCHS='\(Platform(sdk).archs(.Simulator))' -destination 'generic/platform=\(Platform(sdk).platform(.Simulator))' -UseModernBuildSystem=YES BUILD_LIBRARIES_FOR_DISTRIBUTION=YES")
-            shell.fileExisted(at: "${BUILD_ROOT}/\(configuration)-\(Platform(sdk).sdk(.Simulator))/lib\(scheme).a")
+            shell.fileExisted(at: "\(buildRootPath)/\(configuration)-\(Platform(sdk).sdk(.Simulator))/lib\(scheme).a")
         }
         
         shell.connected(andCommand: "mkdir -p \(buildPath)/Universal/\(verison)/")
         shell.connected(andCommand: "lipo -create")
-        shell.connected(spaceCommand: "${BUILD_ROOT}/\(configuration)-\(Platform(sdk).sdk(.RealMachine))/lib\(scheme).a")
+        shell.connected(spaceCommand: "\(buildRootPath)/\(configuration)-\(Platform(sdk).sdk(.RealMachine))/lib\(scheme).a")
         if includedSimulators == true  {
-            shell.connected(spaceCommand: "${BUILD_ROOT}/\(configuration)-\(Platform(sdk).sdk(.Simulator))/lib\(scheme).a")
+            shell.connected(spaceCommand: "\(buildRootPath)/\(configuration)-\(Platform(sdk).sdk(.Simulator))/lib\(scheme).a")
         }
         shell.connected(spaceCommand: "-output \(buildPath)/Universal/\(verison)/lib\(scheme).a")
         
-        shell.connected(ifCommand: "cp -R ${BUILD_ROOT}/\(configuration)-\(Platform(sdk).sdk(.RealMachine))/\(dstPath) \(buildPath)/Universal/\(verison)/", at: "${BUILD_ROOT}/\(configuration)-\(Platform(sdk).sdk(.RealMachine))/\(dstPath)")
+        shell.connected(ifCommand: "cp -R \(buildRootPath)/\(configuration)-\(Platform(sdk).sdk(.RealMachine))/\(dstPath) \(buildPath)/Universal/\(verison)/", at: "\(buildRootPath)/\(configuration)-\(Platform(sdk).sdk(.RealMachine))/\(dstPath)")
         
         if let toStaticPath = toStaticPath {
             shell.connected(andCommand: "mkdir -p \(toStaticPath.convertRelativePath(absolutPath: projectPath))")
@@ -139,8 +133,7 @@ public extension ShellOutCommand {
         return ShellOutCommand(string:shell)
     }
     
-    static func staticWithCache(scheme:String,projectPath:String, derivedDataPath: String, verison: String, toStaticPath: String, toHeaderPath: String) -> ShellOutCommand {
-        let buildPath = URL(fileURLWithPath: (derivedDataPath as NSString).expandingTildeInPath).standardizedFileURL.path
+    static func staticWithCache(scheme:String,projectPath:String,buildPath: String, buildRootPath: String, verison: String, toStaticPath: String, toHeaderPath: String) -> ShellOutCommand {
         var shell = "".fileExisting(at: "\(buildPath)/Universal/\(verison)/lib\(scheme).a")
         
         shell.connected(andCommand: "mkdir -p \(toStaticPath.convertRelativePath(absolutPath: projectPath))")
@@ -154,17 +147,16 @@ public extension ShellOutCommand {
 /// build Bundle commands
 public extension ShellOutCommand {
     /// IOS build Bundle
-    static func buildBundle(bundleName:String, isWorkspace:Bool,projectName: String, projectPath:String, derivedDataPath: String, sdk: String, codeSignAllowed:Bool, verison: String, toBundlePath: String?) -> ShellOutCommand {
+    static func buildBundle(bundleName:String, isWorkspace:Bool,projectName: String, projectPath:String,buildPath: String, buildRootPath: String, sdk: String, codeSignAllowed:Bool, verison: String, toBundlePath: String?) -> ShellOutCommand {
         
-        let buildPath = URL(fileURLWithPath: (derivedDataPath as NSString).expandingTildeInPath).standardizedFileURL.path
         var shell = "xcodebuild clean \(isWorkspace ? "-workspace" : "-project") \(projectName) -scheme \(bundleName) -configuration Release -quiet -UseModernBuildSystem=YES"
         
         shell.connected(andCommand: "xcodebuild build \(isWorkspace ? "-workspace" : "-project") \(projectName) -scheme \(bundleName) -configuration Release -destination 'generic/platform=\(Platform(sdk).platform(.RealMachine))'\(codeSignAllowed == false ? " CODE_SIGNING_ALLOWED=NO" : "")")
             
-        shell.folderExisted(at: "${BUILD_ROOT}/Release-\(Platform(sdk).sdk(.RealMachine))/\(bundleName).bundle")
+        shell.folderExisted(at: "\(buildRootPath)/Release-\(Platform(sdk).sdk(.RealMachine))/\(bundleName).bundle")
         
         shell.connected(andCommand: "mkdir -p \(buildPath)/Universal/\(verison)/")
-        shell.connected(andCommand: "cp -R ${BUILD_ROOT}/Release-\(Platform(sdk).sdk(.RealMachine))/\(bundleName).bundle \(buildPath)/Universal/\(verison)/")
+        shell.connected(andCommand: "cp -R \(buildRootPath)/Release-\(Platform(sdk).sdk(.RealMachine))/\(bundleName).bundle \(buildPath)/Universal/\(verison)/")
         if let toBundlePath = toBundlePath {
             shell.connected(andCommand: "mkdir -p \(toBundlePath.convertRelativePath(absolutPath: projectPath))")
             shell.connected(andCommand: "cp -R \(buildPath)/Universal/\(verison)/\(bundleName).bundle \(toBundlePath.convertRelativePath(absolutPath: projectPath))")
@@ -172,8 +164,8 @@ public extension ShellOutCommand {
 
         return ShellOutCommand(string: shell)
     }
-    static func bundleWithCache(bundleName:String,projectPath:String, derivedDataPath: String, verison: String, toBundlePath: String) -> ShellOutCommand {
-        let buildPath = URL(fileURLWithPath: (derivedDataPath as NSString).expandingTildeInPath).standardizedFileURL.path
+    static func bundleWithCache(bundleName:String,projectPath:String, buildRootPath: String, verison: String, toBundlePath: String) -> ShellOutCommand {
+        let buildPath = URL(fileURLWithPath: (buildRootPath as NSString).expandingTildeInPath).standardizedFileURL.path
         var shell = "".folderExisting(at: "\(buildPath)/Universal/\(verison)/\(bundleName).bundle")
         shell.connected(andCommand: "mkdir -p \(toBundlePath.convertRelativePath(absolutPath: projectPath))")
         shell.connected(andCommand: "cp -R \(buildPath)/Universal/\(verison)/\(bundleName).bundle \(toBundlePath.convertRelativePath(absolutPath: projectPath))")
@@ -243,13 +235,18 @@ public extension ShellOutCommand {
 
 /// archive upload fir  commands
 public extension ShellOutCommand {
-    static func list(isWorkspace:Bool,projectName: String, projectPath:String) -> ShellOutCommand {
-        let shell = "xcodebuild -list \(isWorkspace ? "-workspace" : "-project") \(projectPath)/\(projectName) -json"
+    static func list() -> ShellOutCommand {
+        let shell = "xcodebuild -list -json"
         return ShellOutCommand(string: shell)
     }
     
     static func xcodeVersion() -> ShellOutCommand {
         let shell = "xcodebuild -version"
+        return ShellOutCommand(string: shell)
+    }
+    
+    static func buildSettings(isWorkspace:Bool,projectName: String, projectPath:String) -> ShellOutCommand {
+        let shell = "xcodebuild -showBuildSettings \(isWorkspace ? "-workspace" : "-project") \(projectPath)/\(projectName) -json"
         return ShellOutCommand(string: shell)
     }
 }

@@ -221,8 +221,6 @@ extension JKTool.Build {
                 
                 _ = try? shellOut(to: .removeFolder(from: project.buildPath + "/Universal/"))
                 
-                _ = try? shellOut(to: .removeFolder(from: project.buildPath + "/"))
-                
                 po(tip:"【\(scheme)】clean完成[\(String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")]")
             }
             
@@ -277,6 +275,8 @@ extension JKTool.Build {
                 
                 po(tip:"【\(scheme)】build开始")
                 
+                _ = try? shellOut(to: .createFolder(path: project.buildPath))
+                
                 let isRootProject = (project == project.rootProject)
                 
                 let copyPath = isRootProject ? options.copyPath: (options.copyPath ?? project.rootProject.buildsPath + "/" + scheme)
@@ -298,11 +298,17 @@ extension JKTool.Build {
                 let currentVersion  =  String.safeString(string: commitId).appendingBySeparator(ShellOutCommand.MD5(string: String.safeString(string: status))).appendingBySeparator(configuration).appendingBySeparator(sdk).appendingBySeparator(xcodeVersion!).appendingBySeparator(SdkType(options.includedSimulators).rawValue)
                 let hasCache = oldVersion?.contains(currentVersion) ?? false
                 
+                 
+                guard let buildRoot = BuildSettingsModel.projectList(project: project)?.buildSettings.BUILD_ROOT else {
+                    project.writeBuildLog(log: "获取`BUILD_ROOT`失败，请检查XCode-File-Project Settings")
+                    return po(tip: "【\(scheme)】.a Build失败，详情(\(project.buildLogPath))",type: .error)
+                }
+                
                 func buildStatic(project:Project){
                     let toStaticPath =  copyPath
                     let toHeaderPath =  copyPath
                     
-                    let staticCommand = ShellOutCommand.staticBuild(scheme: scheme,isWorkspace: project.projectType.isWorkSpace(),projectName: project.projectType.entrance(), projectPath: project.directoryPath, derivedDataPath: project.buildPath, configuration: configuration, sdk: sdk,includedSimulators: options.includedSimulators,dstPath: project.dstPath,verison: isRootProject ? "Products" : currentVersion,toStaticPath: toStaticPath,toHeaderPath: toHeaderPath)
+                    let staticCommand = ShellOutCommand.staticBuild(scheme: scheme,isWorkspace: project.projectType.isWorkSpace(),projectName: project.projectType.entrance(), projectPath: project.directoryPath,buildPath: project.buildPath, buildRootPath: buildRoot, configuration: configuration, sdk: sdk,includedSimulators: options.includedSimulators,dstPath: project.dstPath,verison: isRootProject ? "Products" : currentVersion,toStaticPath: toStaticPath,toHeaderPath: toHeaderPath)
                     do {
                         try shellOut(to: staticCommand, at: project.directoryPath)
                         project.removeBuildLog()
@@ -324,7 +330,7 @@ extension JKTool.Build {
                         _ = try? shellOut(to: .unlockSecurity(password: macPassword))
                     }
                     
-                    let buildCommand = ShellOutCommand.buildBundle(bundleName:project.bundleName,isWorkspace: project.projectType.isWorkSpace(),projectName: project.projectType.entrance(), projectPath: project.directoryPath, derivedDataPath: project.buildPath, sdk: sdk, codeSignAllowed: signBundle, verison: isRootProject ? "Products" : currentVersion, toBundlePath: toBundlePath)
+                    let buildCommand = ShellOutCommand.buildBundle(bundleName:project.bundleName,isWorkspace: project.projectType.isWorkSpace(),projectName: project.projectType.entrance(), projectPath: project.directoryPath,buildPath: project.buildPath, buildRootPath: buildRoot, sdk: sdk, codeSignAllowed: signBundle, verison: isRootProject ? "Products" : currentVersion, toBundlePath: toBundlePath)
                     do {
                         try shellOut(to: buildCommand, at: project.directoryPath)
                         project.removeBuildBundleLog()
@@ -360,7 +366,7 @@ extension JKTool.Build {
                         po(tip: "\(cachePath)已经存在缓存，请确认是否需要重新编译,如果缓存不可用,请手动删除，再重新编译", type: .warning)
                         return
                     }
-                    let staticCommand = ShellOutCommand.staticWithCache(scheme: scheme,projectPath: project.directoryPath, derivedDataPath: project.buildPath, verison: currentVersion,toStaticPath: toStaticPath,toHeaderPath: toHeaderPath)
+                    let staticCommand = ShellOutCommand.staticWithCache(scheme: scheme,projectPath: project.directoryPath,buildPath: project.buildPath, buildRootPath: buildRoot, verison: currentVersion,toStaticPath: toStaticPath,toHeaderPath: toHeaderPath)
                     do {
                         try shellOut(to: staticCommand, at: project.directoryPath)
                         po(tip: "【\(scheme)】.a copy成功",type: .tip)
@@ -376,7 +382,7 @@ extension JKTool.Build {
                             po(tip: "\(cachePath)已经存在缓存，请确认是否需要重新编译,如果缓存不可用,请手动删除，再重新编译", type: .warning)
                             return
                         }
-                        let buildCommand = ShellOutCommand.bundleWithCache(bundleName:project.bundleName,projectPath: project.directoryPath, derivedDataPath: project.buildPath, verison: currentVersion, toBundlePath: toBundlePath)
+                        let buildCommand = ShellOutCommand.bundleWithCache(bundleName:project.bundleName,projectPath: project.directoryPath, buildRootPath: buildRoot, verison: currentVersion, toBundlePath: toBundlePath)
                         do {
                             try shellOut(to: buildCommand, at: project.directoryPath)
                             po(tip: "【\(scheme)】.bundle copy成功",type: .tip)
@@ -463,6 +469,9 @@ extension JKTool.Build {
                 let scheme = ProjectListsModel.projectList(project: project)?.defaultScheme(sdk) ?? project.destination
                 
                 po(tip:"【\(scheme)】build开始")
+                
+                _ = try? shellOut(to: .createFolder(path: project.buildPath))
+                
                 let isRootProject = (project == project.rootProject)
                 
                 let copyPath = isRootProject ? options.copyPath: (options.copyPath ?? project.rootProject.buildsPath + "/" + scheme)
@@ -484,10 +493,15 @@ extension JKTool.Build {
                 
                 let hasCache = oldVersion?.contains(currentVersion) ?? false
                 
+                guard let buildRoot = BuildSettingsModel.projectList(project: project)?.buildSettings.BUILD_ROOT else {
+                    project.writeBuildLog(log: "获取`BUILD_ROOT`失败，请检查XCode-File-Project Settings")
+                    return po(tip: "【\(scheme)】.framework Build失败，详情(\(project.buildLogPath))",type: .error)
+                }
+                
                 func buildFramework(project:Project){
                     
                     let toPath =  copyPath
-                    let frameworkCommand = ShellOutCommand.frameworkBuild(scheme:scheme,isWorkspace: project.projectType.isWorkSpace(),projectName: project.projectType.entrance(), projectPath: project.directoryPath, derivedDataPath: project.buildPath, configuration: configuration, sdk: sdk,includedSimulators: options.includedSimulators, verison: isRootProject ? "Products" : currentVersion, toPath: toPath)
+                    let frameworkCommand = ShellOutCommand.frameworkBuild(scheme:scheme,isWorkspace: project.projectType.isWorkSpace(),projectName: project.projectType.entrance(), projectPath: project.directoryPath,buildPath: project.buildPath, buildRootPath: buildRoot, configuration: configuration, sdk: sdk,includedSimulators: options.includedSimulators, verison: isRootProject ? "Products" : currentVersion, toPath: toPath)
                     
                     do {
                         try shellOut(to: frameworkCommand, at: project.directoryPath)
@@ -511,7 +525,7 @@ extension JKTool.Build {
                     }
                     
                     let toBundlePath =  copyPath
-                    let buildCommand = ShellOutCommand.buildBundle(bundleName:project.bundleName,isWorkspace: project.projectType.isWorkSpace(),projectName: project.projectType.entrance(), projectPath: project.directoryPath, derivedDataPath: project.buildPath, sdk: sdk, codeSignAllowed: signBundle, verison: isRootProject ? "Products" : currentVersion, toBundlePath: toBundlePath)
+                    let buildCommand = ShellOutCommand.buildBundle(bundleName:project.bundleName,isWorkspace: project.projectType.isWorkSpace(),projectName: project.projectType.entrance(), projectPath: project.directoryPath,buildPath: project.buildPath, buildRootPath: buildRoot, sdk: sdk, codeSignAllowed: signBundle, verison: isRootProject ? "Products" : currentVersion, toBundlePath: toBundlePath)
                     do {
                         try shellOut(to: buildCommand, at: project.directoryPath)
                         project.removeBuildBundleLog()
@@ -540,7 +554,7 @@ extension JKTool.Build {
                         po(tip: "\(cachePath)已经存在缓存，请确认是否需要重新编译,如果缓存不可用,请手动删除，再重新编译", type: .warning)
                         return
                     }
-                    let frameworkCommand = ShellOutCommand.frameworkWithCache(scheme: scheme,projectPath: project.directoryPath, derivedDataPath: project.buildPath, verison: currentVersion, toPath: toPath)
+                    let frameworkCommand = ShellOutCommand.frameworkWithCache(scheme: scheme,projectPath: project.directoryPath,buildPath: project.buildPath, buildRootPath: buildRoot, verison: currentVersion, toPath: toPath)
                     do {
                         try shellOut(to: frameworkCommand, at: project.directoryPath)
                         po(tip: "【\(scheme)】.framework copy成功",type: .tip)
@@ -556,7 +570,7 @@ extension JKTool.Build {
                             po(tip: "\(cachePath)已经存在缓存，请确认是否需要重新编译,如果缓存不可用,请手动删除，再重新编译", type: .warning)
                             return
                         }
-                        let buildCommand = ShellOutCommand.bundleWithCache(bundleName:project.bundleName,projectPath: project.directoryPath, derivedDataPath: project.buildPath, verison: currentVersion, toBundlePath: toBundlePath)
+                        let buildCommand = ShellOutCommand.bundleWithCache(bundleName:project.bundleName,projectPath: project.directoryPath, buildRootPath: buildRoot, verison: currentVersion, toBundlePath: toBundlePath)
                         do {
                             try shellOut(to: buildCommand, at: project.directoryPath)
                             po(tip: "【\(scheme)】.bundle copy成功",type: .tip)
@@ -643,6 +657,9 @@ extension JKTool.Build {
                 let scheme = ProjectListsModel.projectList(project: project)?.defaultScheme(sdk) ?? project.destination
                 
                 po(tip:"【\(scheme)】build开始")
+                
+                _ = try? shellOut(to: .createFolder(path: project.buildPath))
+                
                 let isRootProject = (project == project.rootProject)
 
                 let copyPath = isRootProject ? options.copyPath: (options.copyPath ?? project.rootProject.buildsPath + "/" + scheme)
@@ -663,11 +680,16 @@ extension JKTool.Build {
                 let currentVersion  =  String.safeString(string: commitId).appendingBySeparator(ShellOutCommand.MD5(string: String.safeString(string: status))).appendingBySeparator(configuration).appendingBySeparator(sdk).appendingBySeparator(xcodeVersion!).appendingBySeparator(SdkType(options.includedSimulators).rawValue)
                 let hasCache = oldVersion?.contains(currentVersion) ?? false
                 
+                guard let buildRoot = BuildSettingsModel.projectList(project: project)?.buildSettings.BUILD_ROOT else {
+                    project.writeBuildLog(log: "获取`BUILD_ROOT`失败，请检查XCode-File-Project Settings")
+                    return po(tip: "【\(scheme)】.xcframework Build失败，详情(\(project.buildLogPath))",type: .error)
+                }
+                
                 func buildXCFramework(project:Project){
                     
                     let toPath =  copyPath
                     
-                    let xcframeworkCommand = ShellOutCommand.xcframeworkBuild(scheme:scheme,isWorkspace: project.projectType.isWorkSpace(),projectName: project.projectType.entrance(), projectPath: project.directoryPath, derivedDataPath: project.buildPath, configuration: configuration, sdk: sdk,includedSimulators: options.includedSimulators, verison: isRootProject ? "Products" : currentVersion, toPath: toPath)
+                    let xcframeworkCommand = ShellOutCommand.xcframeworkBuild(scheme:scheme,isWorkspace: project.projectType.isWorkSpace(),projectName: project.projectType.entrance(), projectPath: project.directoryPath,buildPath: project.buildPath, buildRootPath: buildRoot, configuration: configuration, sdk: sdk,includedSimulators: options.includedSimulators, verison: isRootProject ? "Products" : currentVersion, toPath: toPath)
                     
                     do {
                         try shellOut(to: xcframeworkCommand, at: project.directoryPath)
@@ -691,7 +713,7 @@ extension JKTool.Build {
                     }
                     
                     let toBundlePath =  copyPath
-                    let buildCommand = ShellOutCommand.buildBundle(bundleName:project.bundleName,isWorkspace: project.projectType.isWorkSpace(),projectName: project.projectType.entrance(), projectPath: project.directoryPath, derivedDataPath: project.buildPath, sdk: sdk, codeSignAllowed: signBundle, verison: isRootProject ? "Products" : currentVersion, toBundlePath: toBundlePath)
+                    let buildCommand = ShellOutCommand.buildBundle(bundleName:project.bundleName,isWorkspace: project.projectType.isWorkSpace(),projectName: project.projectType.entrance(), projectPath: project.directoryPath,buildPath: project.buildPath, buildRootPath: buildRoot, sdk: sdk, codeSignAllowed: signBundle, verison: isRootProject ? "Products" : currentVersion, toBundlePath: toBundlePath)
                     do {
                         try shellOut(to: buildCommand, at: project.directoryPath)
                         project.removeBuildBundleLog()
@@ -719,7 +741,7 @@ extension JKTool.Build {
                         po(tip: "\(cachePath)已经存在缓存，请确认是否需要重新编译,如果缓存不可用,请手动删除，再重新编译", type: .warning)
                         return
                     }
-                    let xcframeworkCommand = ShellOutCommand.xcframeworkWithCache(scheme:scheme,projectPath: project.directoryPath, derivedDataPath: project.buildPath, verison: currentVersion, toPath: toPath)
+                    let xcframeworkCommand = ShellOutCommand.xcframeworkWithCache(scheme:scheme,projectPath: project.directoryPath,buildPath: project.buildPath, buildRootPath: buildRoot, verison: currentVersion, toPath: toPath)
                     
                     do {
                         try shellOut(to: xcframeworkCommand, at: project.directoryPath)
@@ -736,7 +758,7 @@ extension JKTool.Build {
                             po(tip: "\(cachePath)已经存在缓存，请确认是否需要重新编译,如果缓存不可用,请手动删除，再重新编译", type: .warning)
                             return
                         }
-                        let buildCommand = ShellOutCommand.bundleWithCache(bundleName:project.bundleName,projectPath: project.directoryPath, derivedDataPath: project.buildPath, verison: currentVersion, toBundlePath: toBundlePath)
+                        let buildCommand = ShellOutCommand.bundleWithCache(bundleName:project.bundleName,projectPath: project.directoryPath, buildRootPath: buildRoot, verison: currentVersion, toBundlePath: toBundlePath)
                         do {
                             try shellOut(to: buildCommand, at: project.directoryPath)
                             po(tip: "【\(scheme)】.bundle copy成功",type: .tip)
