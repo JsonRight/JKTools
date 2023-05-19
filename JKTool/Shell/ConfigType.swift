@@ -108,7 +108,8 @@ public enum Platform: String {
             self = .iOS
         }
     }
-    
+//    ${PLATFORM_NAME} = iphoneos
+//    ${EFFECTIVE_PLATFORM_NAME} = -iphoneos
     func sdk(_ sdk: SdkType) -> String {
         switch self {
         case .iOS where sdk == .Simulator:
