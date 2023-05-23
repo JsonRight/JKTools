@@ -366,7 +366,7 @@ extension JKTool.Build {
                         po(tip: "\(cachePath)已经存在缓存，请确认是否需要重新编译,如果缓存不可用,请手动删除，再重新编译", type: .warning)
                         return
                     }
-                    let staticCommand = ShellOutCommand.staticWithCache(scheme: scheme,projectPath: project.directoryPath,buildPath: project.buildPath, buildRootPath: buildRoot, verison: currentVersion,toStaticPath: toStaticPath,toHeaderPath: toHeaderPath)
+                    let staticCommand = ShellOutCommand.staticWithCache(scheme: scheme,projectPath: project.directoryPath,buildPath: project.buildPath, verison: currentVersion,toStaticPath: toStaticPath,toHeaderPath: toHeaderPath)
                     do {
                         try shellOut(to: staticCommand, at: project.directoryPath)
                         po(tip: "【\(scheme)】.a copy成功",type: .tip)
@@ -382,7 +382,7 @@ extension JKTool.Build {
                             po(tip: "\(cachePath)已经存在缓存，请确认是否需要重新编译,如果缓存不可用,请手动删除，再重新编译", type: .warning)
                             return
                         }
-                        let buildCommand = ShellOutCommand.bundleWithCache(bundleName:project.bundleName,projectPath: project.directoryPath, buildRootPath: buildRoot, verison: currentVersion, toBundlePath: toBundlePath)
+                        let buildCommand = ShellOutCommand.bundleWithCache(bundleName:project.bundleName,projectPath: project.directoryPath, buildPath: project.buildPath, verison: currentVersion, toBundlePath: toBundlePath)
                         do {
                             try shellOut(to: buildCommand, at: project.directoryPath)
                             po(tip: "【\(scheme)】.bundle copy成功",type: .tip)
@@ -554,7 +554,7 @@ extension JKTool.Build {
                         po(tip: "\(cachePath)已经存在缓存，请确认是否需要重新编译,如果缓存不可用,请手动删除，再重新编译", type: .warning)
                         return
                     }
-                    let frameworkCommand = ShellOutCommand.frameworkWithCache(scheme: scheme,projectPath: project.directoryPath,buildPath: project.buildPath, buildRootPath: buildRoot, verison: currentVersion, toPath: toPath)
+                    let frameworkCommand = ShellOutCommand.frameworkWithCache(scheme: scheme,projectPath: project.directoryPath,buildPath: project.buildPath, verison: currentVersion, toPath: toPath)
                     do {
                         try shellOut(to: frameworkCommand, at: project.directoryPath)
                         po(tip: "【\(scheme)】.framework copy成功",type: .tip)
@@ -570,7 +570,7 @@ extension JKTool.Build {
                             po(tip: "\(cachePath)已经存在缓存，请确认是否需要重新编译,如果缓存不可用,请手动删除，再重新编译", type: .warning)
                             return
                         }
-                        let buildCommand = ShellOutCommand.bundleWithCache(bundleName:project.bundleName,projectPath: project.directoryPath, buildRootPath: buildRoot, verison: currentVersion, toBundlePath: toBundlePath)
+                        let buildCommand = ShellOutCommand.bundleWithCache(bundleName:project.bundleName,projectPath: project.directoryPath,buildPath:project.buildPath, verison: currentVersion, toBundlePath: toBundlePath)
                         do {
                             try shellOut(to: buildCommand, at: project.directoryPath)
                             po(tip: "【\(scheme)】.bundle copy成功",type: .tip)
@@ -741,7 +741,7 @@ extension JKTool.Build {
                         po(tip: "\(cachePath)已经存在缓存，请确认是否需要重新编译,如果缓存不可用,请手动删除，再重新编译", type: .warning)
                         return
                     }
-                    let xcframeworkCommand = ShellOutCommand.xcframeworkWithCache(scheme:scheme,projectPath: project.directoryPath,buildPath: project.buildPath, buildRootPath: buildRoot, verison: currentVersion, toPath: toPath)
+                    let xcframeworkCommand = ShellOutCommand.xcframeworkWithCache(scheme:scheme,projectPath: project.directoryPath,buildPath: project.buildPath, verison: currentVersion, toPath: toPath)
                     
                     do {
                         try shellOut(to: xcframeworkCommand, at: project.directoryPath)
@@ -758,7 +758,7 @@ extension JKTool.Build {
                             po(tip: "\(cachePath)已经存在缓存，请确认是否需要重新编译,如果缓存不可用,请手动删除，再重新编译", type: .warning)
                             return
                         }
-                        let buildCommand = ShellOutCommand.bundleWithCache(bundleName:project.bundleName,projectPath: project.directoryPath, buildRootPath: buildRoot, verison: currentVersion, toBundlePath: toBundlePath)
+                        let buildCommand = ShellOutCommand.bundleWithCache(bundleName:project.bundleName,projectPath: project.directoryPath, buildPath: project.buildPath, verison: currentVersion, toBundlePath: toBundlePath)
                         do {
                             try shellOut(to: buildCommand, at: project.directoryPath)
                             po(tip: "【\(scheme)】.bundle copy成功",type: .tip)

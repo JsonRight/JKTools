@@ -15,12 +15,12 @@ public extension ShellOutCommand {
     static func frameworkBuild(scheme:String, isWorkspace:Bool,projectName: String, projectPath:String,buildPath: String, buildRootPath: String, configuration: String, sdk: String, includedSimulators: Bool?, verison: String, toPath: String?) -> ShellOutCommand {
         var shell = "xcodebuild clean \(isWorkspace ? "-workspace" : "-project") \(projectName) -scheme \(scheme) -configuration \(configuration) -quiet -UseModernBuildSystem=YES"
         
-        shell.connected(andCommand: "xcodebuild build \(isWorkspace ? "-workspace" : "-project") \(projectName) -scheme \(scheme) -configuration \(configuration) VALID_ARCHS='\(Platform(sdk).archs(.RealMachine))' -destination 'generic/platform=\(Platform(sdk).platform(.RealMachine))' -UseModernBuildSystem=YES BUILD_LIBRARIES_FOR_DISTRIBUTION=YES")
+        shell.connected(andCommand: "xcodebuild build \(isWorkspace ? "-workspace" : "-project") \(projectName) -scheme \(scheme) -configuration \(configuration) VALID_ARCHS='\(Platform(sdk).archs(.RealMachine))' -destination 'generic/platform=\(Platform(sdk).platform(.RealMachine))' -UseModernBuildSystem=YES BUILD_LIBRARIES_FOR_DISTRIBUTION=YES -parallelizeTargets -jobs \(ProcessInfo.processInfo.activeProcessorCount)")
         shell.fileExisted(at: "\(buildRootPath)/\(configuration)-\(Platform(sdk).sdk(.RealMachine))/\(scheme).framework/\(scheme)")
         
         
         if includedSimulators == true  {
-            shell.connected(andCommand: "xcodebuild build \(isWorkspace ? "-workspace" : "-project") \(projectName) -scheme \(scheme) -configuration \(configuration) VALID_ARCHS='\(Platform(sdk).archs(.Simulator))' -destination 'generic/platform=\(Platform(sdk).platform(.Simulator))' -UseModernBuildSystem=YES BUILD_LIBRARIES_FOR_DISTRIBUTION=YES")
+            shell.connected(andCommand: "xcodebuild build \(isWorkspace ? "-workspace" : "-project") \(projectName) -scheme \(scheme) -configuration \(configuration) VALID_ARCHS='\(Platform(sdk).archs(.Simulator))' -destination 'generic/platform=\(Platform(sdk).platform(.Simulator))' -UseModernBuildSystem=YES BUILD_LIBRARIES_FOR_DISTRIBUTION=YES -parallelizeTargets -jobs \(ProcessInfo.processInfo.activeProcessorCount)")
             shell.fileExisted(at: "\(buildRootPath)/\(configuration)-\(Platform(sdk).sdk(.Simulator))/\(scheme).framework/\(scheme)")
         }
         
@@ -46,7 +46,7 @@ public extension ShellOutCommand {
         return ShellOutCommand(string:shell)
     }
     
-    static func frameworkWithCache(scheme:String,projectPath:String,buildPath: String, buildRootPath: String, verison: String, toPath: String) -> ShellOutCommand {
+    static func frameworkWithCache(scheme:String,projectPath:String,buildPath: String, verison: String, toPath: String) -> ShellOutCommand {
         var shell = "".fileExisting(at: "\(buildPath)/Universal/\(verison)/\(scheme).framework/\(scheme)")
         shell.connected(andCommand: "mkdir -p \(toPath.convertRelativePath(absolutPath: projectPath))")
         shell.connected(andCommand: "cp -R \(buildPath)/Universal/\(verison)/\(scheme).framework \(toPath.convertRelativePath(absolutPath: projectPath))")
@@ -62,11 +62,11 @@ public extension ShellOutCommand {
         
         var shell = "xcodebuild clean \(isWorkspace ? "-workspace" : "-project") \(projectName) -scheme \(scheme) -configuration \(configuration) -quiet -UseModernBuildSystem=YES"
         
-        shell.connected(andCommand: "xcodebuild build \(isWorkspace ? "-workspace" : "-project") \(projectName) -scheme \(scheme) -configuration \(configuration) VALID_ARCHS='\(Platform(sdk).archs(.RealMachine))' -destination 'generic/platform=\(Platform(sdk).platform(.RealMachine))' -UseModernBuildSystem=YES BUILD_LIBRARIES_FOR_DISTRIBUTION=YES")
+        shell.connected(andCommand: "xcodebuild build \(isWorkspace ? "-workspace" : "-project") \(projectName) -scheme \(scheme) -configuration \(configuration) VALID_ARCHS='\(Platform(sdk).archs(.RealMachine))' -destination 'generic/platform=\(Platform(sdk).platform(.RealMachine))' -UseModernBuildSystem=YES BUILD_LIBRARIES_FOR_DISTRIBUTION=YES -parallelizeTargets -jobs \(ProcessInfo.processInfo.activeProcessorCount)")
         shell.fileExisted(at: "\(buildRootPath)/\(configuration)-\(Platform(sdk).sdk(.RealMachine))/\(scheme).framework/\(scheme)")
         
         if includedSimulators == true  {
-            shell.connected(andCommand: "xcodebuild build \(isWorkspace ? "-workspace" : "-project") \(projectName) -scheme \(scheme) -configuration \(configuration) VALID_ARCHS='\(Platform(sdk).archs(.Simulator))' -destination 'generic/platform=\(Platform(sdk).platform(.Simulator))' -UseModernBuildSystem=YES BUILD_LIBRARIES_FOR_DISTRIBUTION=YES")
+            shell.connected(andCommand: "xcodebuild build \(isWorkspace ? "-workspace" : "-project") \(projectName) -scheme \(scheme) -configuration \(configuration) VALID_ARCHS='\(Platform(sdk).archs(.Simulator))' -destination 'generic/platform=\(Platform(sdk).platform(.Simulator))' -UseModernBuildSystem=YES BUILD_LIBRARIES_FOR_DISTRIBUTION=YES -parallelizeTargets -jobs \(ProcessInfo.processInfo.activeProcessorCount)")
             shell.fileExisted(at: "\(buildRootPath)/\(configuration)-\(Platform(sdk).sdk(.Simulator))/\(scheme).framework/\(scheme)")
         }
 
@@ -88,7 +88,7 @@ public extension ShellOutCommand {
         return ShellOutCommand(string:shell)
     }
     
-    static func xcframeworkWithCache(scheme:String,projectPath:String,buildPath: String, buildRootPath: String, verison: String, toPath: String) -> ShellOutCommand {
+    static func xcframeworkWithCache(scheme:String,projectPath:String,buildPath: String, verison: String, toPath: String) -> ShellOutCommand {
         var shell = "".folderExisting(at: "\(buildPath)/Universal/\(verison)/\(scheme).xcframework")
         shell.connected(andCommand: "mkdir -p \(toPath.convertRelativePath(absolutPath: projectPath))")
         shell.connected(andCommand: "cp -R \(buildPath)/Universal/\(verison)/\(scheme).xcframework \(toPath.convertRelativePath(absolutPath: projectPath))")
@@ -104,11 +104,11 @@ public extension ShellOutCommand {
         
         var shell = "xcodebuild clean \(isWorkspace ? "-workspace" : "-project") \(projectName) -scheme \(scheme) -configuration \(configuration) -quiet -UseModernBuildSystem=YES"
         
-        shell.connected(andCommand: "xcodebuild build \(isWorkspace ? "-workspace" : "-project") \(projectName) -scheme \(scheme) -configuration \(configuration) VALID_ARCHS='\(Platform(sdk).archs(.RealMachine))' -destination 'generic/platform=\(Platform(sdk).platform(.RealMachine))' -UseModernBuildSystem=YES BUILD_LIBRARIES_FOR_DISTRIBUTION=YES")
+        shell.connected(andCommand: "xcodebuild build \(isWorkspace ? "-workspace" : "-project") \(projectName) -scheme \(scheme) -configuration \(configuration) VALID_ARCHS='\(Platform(sdk).archs(.RealMachine))' -destination 'generic/platform=\(Platform(sdk).platform(.RealMachine))' -UseModernBuildSystem=YES BUILD_LIBRARIES_FOR_DISTRIBUTION=YES -parallelizeTargets -jobs \(ProcessInfo.processInfo.activeProcessorCount)")
         shell.fileExisted(at: "\(buildRootPath)/\(configuration)-\(Platform(sdk).sdk(.RealMachine))/lib\(scheme).a")
         
         if includedSimulators == true  {
-            shell.connected(andCommand: "xcodebuild build \(isWorkspace ? "-workspace" : "-project") \(projectName) -scheme \(scheme) -configuration \(configuration) VALID_ARCHS='\(Platform(sdk).archs(.Simulator))' -destination 'generic/platform=\(Platform(sdk).platform(.Simulator))' -UseModernBuildSystem=YES BUILD_LIBRARIES_FOR_DISTRIBUTION=YES")
+            shell.connected(andCommand: "xcodebuild build \(isWorkspace ? "-workspace" : "-project") \(projectName) -scheme \(scheme) -configuration \(configuration) VALID_ARCHS='\(Platform(sdk).archs(.Simulator))' -destination 'generic/platform=\(Platform(sdk).platform(.Simulator))' -UseModernBuildSystem=YES BUILD_LIBRARIES_FOR_DISTRIBUTION=YES -parallelizeTargets -jobs \(ProcessInfo.processInfo.activeProcessorCount)")
             shell.fileExisted(at: "\(buildRootPath)/\(configuration)-\(Platform(sdk).sdk(.Simulator))/lib\(scheme).a")
         }
         
@@ -128,12 +128,12 @@ public extension ShellOutCommand {
         }
         if let toHeaderPath = toHeaderPath {
             shell.connected(ifCommand: "mkdir -p \(toHeaderPath.convertRelativePath(absolutPath: projectPath))", at: "\(buildPath)/Universal/\(verison)/\(scheme)")
-            shell.connected(andCommand: "cp -R \(buildPath)/Universal/\(verison)/\(scheme) \(toHeaderPath.convertRelativePath(absolutPath: projectPath))")
+            shell.connected(ifCommand: "cp -R \(buildPath)/Universal/\(verison)/\(scheme) \(toHeaderPath.convertRelativePath(absolutPath: projectPath))", at: "\(buildPath)/Universal/\(verison)/\(scheme)")
         }
         return ShellOutCommand(string:shell)
     }
     
-    static func staticWithCache(scheme:String,projectPath:String,buildPath: String, buildRootPath: String, verison: String, toStaticPath: String, toHeaderPath: String) -> ShellOutCommand {
+    static func staticWithCache(scheme:String,projectPath:String,buildPath: String, verison: String, toStaticPath: String, toHeaderPath: String) -> ShellOutCommand {
         var shell = "".fileExisting(at: "\(buildPath)/Universal/\(verison)/lib\(scheme).a")
         
         shell.connected(andCommand: "mkdir -p \(toStaticPath.convertRelativePath(absolutPath: projectPath))")
@@ -151,7 +151,7 @@ public extension ShellOutCommand {
         
         var shell = "xcodebuild clean \(isWorkspace ? "-workspace" : "-project") \(projectName) -scheme \(bundleName) -configuration Release -quiet -UseModernBuildSystem=YES"
         
-        shell.connected(andCommand: "xcodebuild build \(isWorkspace ? "-workspace" : "-project") \(projectName) -scheme \(bundleName) -configuration Release -destination 'generic/platform=\(Platform(sdk).platform(.RealMachine))'\(codeSignAllowed == false ? " CODE_SIGNING_ALLOWED=NO" : "")")
+        shell.connected(andCommand: "xcodebuild build \(isWorkspace ? "-workspace" : "-project") \(projectName) -scheme \(bundleName) -configuration Release -destination 'generic/platform=\(Platform(sdk).platform(.RealMachine))'\(codeSignAllowed == false ? " CODE_SIGNING_ALLOWED=NO" : "") -parallelizeTargets -jobs \(ProcessInfo.processInfo.activeProcessorCount)")
             
         shell.folderExisted(at: "\(buildRootPath)/Release-\(Platform(sdk).sdk(.RealMachine))/\(bundleName).bundle")
         
@@ -164,8 +164,7 @@ public extension ShellOutCommand {
 
         return ShellOutCommand(string: shell)
     }
-    static func bundleWithCache(bundleName:String,projectPath:String, buildRootPath: String, verison: String, toBundlePath: String) -> ShellOutCommand {
-        let buildPath = URL(fileURLWithPath: (buildRootPath as NSString).expandingTildeInPath).standardizedFileURL.path
+    static func bundleWithCache(bundleName:String,projectPath:String,buildPath: String, verison: String, toBundlePath: String) -> ShellOutCommand {
         var shell = "".folderExisting(at: "\(buildPath)/Universal/\(verison)/\(bundleName).bundle")
         shell.connected(andCommand: "mkdir -p \(toBundlePath.convertRelativePath(absolutPath: projectPath))")
         shell.connected(andCommand: "cp -R \(buildPath)/Universal/\(verison)/\(bundleName).bundle \(toBundlePath.convertRelativePath(absolutPath: projectPath))")
@@ -180,7 +179,7 @@ public extension ShellOutCommand {
     static func archive(scheme:String, isWorkspace:Bool,projectName: String, buildPath:String,configuration:String, sdk: String) -> ShellOutCommand {
         
         var shell = "xcodebuild clean \(isWorkspace ? "-workspace" : "-project") \(projectName) -scheme \(scheme)"
-        shell.connected(andCommand: "xcodebuild archive \(isWorkspace ? "-workspace" : "-project") \(projectName) -scheme \(scheme) -configuration \(configuration)")
+        shell.connected(andCommand: "xcodebuild archive \(isWorkspace ? "-workspace" : "-project") \(projectName) -scheme \(scheme) -configuration \(configuration) -parallelizeTargets -jobs \(ProcessInfo.processInfo.activeProcessorCount)")
         shell.connected(spaceCommand: "-archivePath \(buildPath)/\(configuration)/\(scheme).xcarchive")
         return ShellOutCommand(string: shell)
     }
@@ -339,3 +338,4 @@ public extension ShellOutCommand {
     }
     
 }
+
