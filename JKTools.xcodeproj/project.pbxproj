@@ -20,6 +20,15 @@
 		BF2BC8F12620370D005802E4 /* PreferencesCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2BC8F02620370D005802E4 /* PreferencesCellView.swift */; };
 		BF2BC8F4262064D0005802E4 /* ProjectInfoBean.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2BC8F3262064D0005802E4 /* ProjectInfoBean.swift */; };
 		BF2BC8F72620681B005802E4 /* InsertProjectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2BC8F62620681B005802E4 /* InsertProjectViewController.swift */; };
+		BF2FCBE22A1C69F4006ABF4F /* GitCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2FCBE12A1C69F4006ABF4F /* GitCommands.swift */; };
+		BF2FCBE42A1C6A56006ABF4F /* FileCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2FCBE32A1C6A56006ABF4F /* FileCommands.swift */; };
+		BF2FCBE62A1C6A6F006ABF4F /* MarathonCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2FCBE52A1C6A6F006ABF4F /* MarathonCommands.swift */; };
+		BF2FCBE82A1C6AA2006ABF4F /* SPMCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2FCBE72A1C6AA2006ABF4F /* SPMCommands.swift */; };
+		BF2FCBEA2A1C6ABD006ABF4F /* FastlaneCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2FCBE92A1C6ABD006ABF4F /* FastlaneCommands.swift */; };
+		BF2FCBEC2A1C6AE4006ABF4F /* PodsCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2FCBEB2A1C6AE4006ABF4F /* PodsCommands.swift */; };
+		BF2FCBEE2A1C6B60006ABF4F /* XcodeCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2FCBED2A1C6B60006ABF4F /* XcodeCommands.swift */; };
+		BF2FCBF32A1C9DC6006ABF4F /* ModulesConfigs.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2FCBF22A1C9DC6006ABF4F /* ModulesConfigs.swift */; };
+		BF2FCBFD2A1DE232006ABF4F /* GlobalConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2FCBFC2A1DE232006ABF4F /* GlobalConstants.swift */; };
 		BF3A973328900120006134AE /* PreferencesCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF3A973228900120006134AE /* PreferencesCellView.xib */; };
 		BF3B8054263171390085E75A /* Projects.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3B8053263171390085E75A /* Projects.swift */; };
 		BF3B805F26318A7A0085E75A /* AppleScriptCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3B805E26318A7A0085E75A /* AppleScriptCommand.swift */; };
@@ -108,7 +117,6 @@
 		BFE94AF529F50DBA006A85F1 /* JKTool-completion in Resources */ = {isa = PBXBuildFile; fileRef = BFE94AF429F50DBA006A85F1 /* JKTool-completion */; };
 		BFEB07B5286AA7DB00B5D197 /* Merge.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFEB07B4286AA7DB00B5D197 /* Merge.swift */; };
 		BFEB07D2286B0ECD00B5D197 /* Squash.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFEB07D1286B0ECD00B5D197 /* Squash.swift */; };
-		BFEBAE6828608295006928AD /* ExecutableBuild.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFEBAE6728608295006928AD /* ExecutableBuild.swift */; };
 		BFF30917288A3F11002D9A47 /* PreferencesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFF30916288A3F11002D9A47 /* PreferencesController.swift */; };
 		BFF72C03295306770050122C /* ZipUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFF72BEF295306770050122C /* ZipUtilities.swift */; };
 		BFF72C04295306770050122C /* unzip.c in Sources */ = {isa = PBXBuildFile; fileRef = BFF72BF1295306770050122C /* unzip.c */; };
@@ -158,6 +166,15 @@
 		BF2BC8F02620370D005802E4 /* PreferencesCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesCellView.swift; sourceTree = "<group>"; };
 		BF2BC8F3262064D0005802E4 /* ProjectInfoBean.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectInfoBean.swift; sourceTree = "<group>"; };
 		BF2BC8F62620681B005802E4 /* InsertProjectViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsertProjectViewController.swift; sourceTree = "<group>"; };
+		BF2FCBE12A1C69F4006ABF4F /* GitCommands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitCommands.swift; sourceTree = "<group>"; };
+		BF2FCBE32A1C6A56006ABF4F /* FileCommands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileCommands.swift; sourceTree = "<group>"; };
+		BF2FCBE52A1C6A6F006ABF4F /* MarathonCommands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarathonCommands.swift; sourceTree = "<group>"; };
+		BF2FCBE72A1C6AA2006ABF4F /* SPMCommands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPMCommands.swift; sourceTree = "<group>"; };
+		BF2FCBE92A1C6ABD006ABF4F /* FastlaneCommands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FastlaneCommands.swift; sourceTree = "<group>"; };
+		BF2FCBEB2A1C6AE4006ABF4F /* PodsCommands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PodsCommands.swift; sourceTree = "<group>"; };
+		BF2FCBED2A1C6B60006ABF4F /* XcodeCommands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XcodeCommands.swift; sourceTree = "<group>"; };
+		BF2FCBF22A1C9DC6006ABF4F /* ModulesConfigs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModulesConfigs.swift; sourceTree = "<group>"; };
+		BF2FCBFC2A1DE232006ABF4F /* GlobalConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalConstants.swift; sourceTree = "<group>"; };
 		BF3A973228900120006134AE /* PreferencesCellView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PreferencesCellView.xib; sourceTree = "<group>"; };
 		BF3B8053263171390085E75A /* Projects.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Projects.swift; sourceTree = "<group>"; };
 		BF3B805E26318A7A0085E75A /* AppleScriptCommand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleScriptCommand.swift; sourceTree = "<group>"; };
@@ -240,13 +257,13 @@
 		BFA529092635169A003427A8 /* ConfigType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfigType.swift; sourceTree = "<group>"; };
 		BFA5290C2635169A003427A8 /* Project.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Project.swift; sourceTree = "<group>"; };
 		BFA5290D2635169A003427A8 /* ShellOut.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShellOut.swift; sourceTree = "<group>"; };
+		BFA808BF2A1C6847006CF4D9 /* JKTool-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "JKTool-Bridging-Header.h"; sourceTree = "<group>"; };
 		BFA9F76428865EE300EE989B /* Export.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Export.swift; sourceTree = "<group>"; };
 		BFB7CA812700893F0099B634 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		BFB7CA84270092080099B634 /* Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alert.swift; sourceTree = "<group>"; };
 		BFE94AF429F50DBA006A85F1 /* JKTool-completion */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "JKTool-completion"; sourceTree = "<group>"; };
 		BFEB07B4286AA7DB00B5D197 /* Merge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Merge.swift; sourceTree = "<group>"; };
 		BFEB07D1286B0ECD00B5D197 /* Squash.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Squash.swift; sourceTree = "<group>"; };
-		BFEBAE6728608295006928AD /* ExecutableBuild.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExecutableBuild.swift; sourceTree = "<group>"; };
 		BFF30916288A3F11002D9A47 /* PreferencesController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesController.swift; sourceTree = "<group>"; };
 		BFF72BEF295306770050122C /* ZipUtilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZipUtilities.swift; sourceTree = "<group>"; };
 		BFF72BF1295306770050122C /* unzip.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = unzip.c; sourceTree = "<group>"; };
@@ -331,6 +348,19 @@
 				BFF30916288A3F11002D9A47 /* PreferencesController.swift */,
 			);
 			path = JKTools;
+			sourceTree = "<group>";
+		};
+		BF2FCBEF2A1C6E8E006ABF4F /* Project */ = {
+			isa = PBXGroup;
+			children = (
+				BFA529082635169A003427A8 /* SubProject.swift */,
+				BFA529092635169A003427A8 /* ConfigType.swift */,
+				BFA5290C2635169A003427A8 /* Project.swift */,
+				BF2FCBFC2A1DE232006ABF4F /* GlobalConstants.swift */,
+				BF5C7E7929E94366003F3009 /* JSONExtension.swift */,
+				BF2FCBF22A1C9DC6006ABF4F /* ModulesConfigs.swift */,
+			);
+			path = Project;
 			sourceTree = "<group>";
 		};
 		BF3B804E263049AB0085E75A /* AppleScripts */ = {
@@ -528,13 +558,11 @@
 			isa = PBXGroup;
 			children = (
 				BFA528EB26351606003427A8 /* main.swift */,
+				BFA808BF2A1C6847006CF4D9 /* JKTool-Bridging-Header.h */,
 				BFA528F226351634003427A8 /* JKTool.swift */,
+				BF2FCBEF2A1C6E8E006ABF4F /* Project */,
 				BF69D6B7286331BB009CE7D1 /* Commands */,
-				BF69D6992861C6B5009CE7D1 /* ArgumentParserToolInfo */,
-				BF69D63D2861BF01009CE7D1 /* ArgumentParser */,
-				BFA528F626351659003427A8 /* Colors */,
-				BFF72BEE295306770050122C /* Zip */,
-				BFA529072635169A003427A8 /* Shell */,
+				BFA808C02A1C68A9006CF4D9 /* Libraries */,
 			);
 			path = JKTool;
 			sourceTree = "<group>";
@@ -555,13 +583,27 @@
 			isa = PBXGroup;
 			children = (
 				BFA5290D2635169A003427A8 /* ShellOut.swift */,
-				BFEBAE6728608295006928AD /* ExecutableBuild.swift */,
-				BFA529082635169A003427A8 /* SubProject.swift */,
-				BFA529092635169A003427A8 /* ConfigType.swift */,
-				BFA5290C2635169A003427A8 /* Project.swift */,
-				BF5C7E7929E94366003F3009 /* JSONExtension.swift */,
+				BF2FCBED2A1C6B60006ABF4F /* XcodeCommands.swift */,
+				BF2FCBEB2A1C6AE4006ABF4F /* PodsCommands.swift */,
+				BF2FCBE92A1C6ABD006ABF4F /* FastlaneCommands.swift */,
+				BF2FCBE72A1C6AA2006ABF4F /* SPMCommands.swift */,
+				BF2FCBE52A1C6A6F006ABF4F /* MarathonCommands.swift */,
+				BF2FCBE32A1C6A56006ABF4F /* FileCommands.swift */,
+				BF2FCBE12A1C69F4006ABF4F /* GitCommands.swift */,
 			);
 			path = Shell;
+			sourceTree = "<group>";
+		};
+		BFA808C02A1C68A9006CF4D9 /* Libraries */ = {
+			isa = PBXGroup;
+			children = (
+				BF69D6992861C6B5009CE7D1 /* ArgumentParserToolInfo */,
+				BF69D63D2861BF01009CE7D1 /* ArgumentParser */,
+				BFA528F626351659003427A8 /* Colors */,
+				BFF72BEE295306770050122C /* Zip */,
+				BFA529072635169A003427A8 /* Shell */,
+			);
+			path = Libraries;
 			sourceTree = "<group>";
 		};
 		BFF72BEE295306770050122C /* Zip */ = {
@@ -765,6 +807,7 @@
 				BF69D6782861BF01009CE7D1 /* DumpHelpGenerator.swift in Sources */,
 				BF69D6A42862EA6A009CE7D1 /* Archive.swift in Sources */,
 				BF69D6A22862EA55009CE7D1 /* Build.swift in Sources */,
+				BF2FCBF32A1C9DC6006ABF4F /* ModulesConfigs.swift in Sources */,
 				BFF72C08295306780050122C /* Zip.swift in Sources */,
 				BF69D6882861BF01009CE7D1 /* ArgumentVisibility.swift in Sources */,
 				BF69D6B028632E90009CE7D1 /* Tag.swift in Sources */,
@@ -775,12 +818,14 @@
 				BF69D6902861BF01009CE7D1 /* ArgumentDefinition.swift in Sources */,
 				BF41E5CE29E6CB2E0030CB5D /* Modules.swift in Sources */,
 				BF69D66E2861BF01009CE7D1 /* EnumerableFlag.swift in Sources */,
+				BF2FCBEC2A1C6AE4006ABF4F /* PodsCommands.swift in Sources */,
 				BF69D6AE28632E86009CE7D1 /* Pull.swift in Sources */,
 				BFA528FD26351659003427A8 /* Colors.swift in Sources */,
 				BFA528FB26351659003427A8 /* ANSIProperties.swift in Sources */,
-				BFEBAE6828608295006928AD /* ExecutableBuild.swift in Sources */,
 				BF69D6912861BF01009CE7D1 /* ParsedValues.swift in Sources */,
 				BF69D6B928643944009CE7D1 /* Po.swift in Sources */,
+				BF2FCBFD2A1DE232006ABF4F /* GlobalConstants.swift in Sources */,
+				BF2FCBE22A1C69F4006ABF4F /* GitCommands.swift in Sources */,
 				BF69D6712861BF01009CE7D1 /* ParsableCommand.swift in Sources */,
 				BF69D6862861BF01009CE7D1 /* Errors.swift in Sources */,
 				BF69D6852861BF01009CE7D1 /* OptionGroup.swift in Sources */,
@@ -791,6 +836,7 @@
 				BF69D6752861BF01009CE7D1 /* FishCompletionsGenerator.swift in Sources */,
 				BFA528EC26351606003427A8 /* main.swift in Sources */,
 				BF69D68C2861BF01009CE7D1 /* ParserError.swift in Sources */,
+				BF2FCBE82A1C6AA2006ABF4F /* SPMCommands.swift in Sources */,
 				BF69D68E2861BF01009CE7D1 /* InputOrigin.swift in Sources */,
 				BF69D6C1286478C5009CE7D1 /* Prune.swift in Sources */,
 				BF26C475287C31090071E3F9 /* Upload.swift in Sources */,
@@ -801,6 +847,7 @@
 				BF69D6C7286478EC009CE7D1 /* Status.swift in Sources */,
 				BF69D6812861BF01009CE7D1 /* CollectionExtensions.swift in Sources */,
 				BF69D66F2861BF01009CE7D1 /* ParsableArgumentsValidation.swift in Sources */,
+				BF2FCBEA2A1C6ABD006ABF4F /* FastlaneCommands.swift in Sources */,
 				BF69D68B2861BF01009CE7D1 /* ArgumentSet.swift in Sources */,
 				BF69D6942861BF01009CE7D1 /* ArgumentDecoder.swift in Sources */,
 				BF69D6832861BF01009CE7D1 /* Option.swift in Sources */,
@@ -812,7 +859,9 @@
 				BF69D67C2861BF01009CE7D1 /* MessageInfo.swift in Sources */,
 				BFA5290E2635169A003427A8 /* SubProject.swift in Sources */,
 				BF69D6BD286478A7009CE7D1 /* Commit.swift in Sources */,
+				BF2FCBE42A1C6A56006ABF4F /* FileCommands.swift in Sources */,
 				BFF72C07295306770050122C /* QuickZip.swift in Sources */,
+				BF2FCBE62A1C6A6F006ABF4F /* MarathonCommands.swift in Sources */,
 				BF69D67A2861BF01009CE7D1 /* HelpGenerator.swift in Sources */,
 				BF69D6A62862EA8D009CE7D1 /* Git.swift in Sources */,
 				BF69D6932861BF01009CE7D1 /* SplitArguments.swift in Sources */,
@@ -826,6 +875,7 @@
 				BF69D6742861BF01009CE7D1 /* BashCompletionsGenerator.swift in Sources */,
 				BFEB07B5286AA7DB00B5D197 /* Merge.swift in Sources */,
 				BF14657229ED385C0022D8D5 /* Biz.swift in Sources */,
+				BF2FCBEE2A1C6B60006ABF4F /* XcodeCommands.swift in Sources */,
 				BF69D6BB2864789B009CE7D1 /* Init.swift in Sources */,
 				BF69D6BF286478B6009CE7D1 /* Push.swift in Sources */,
 				BF69D6792861BF01009CE7D1 /* HelpCommand.swift in Sources */,
@@ -1034,7 +1084,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.jk.JKTool.JKTool;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/JKTool/Zip/minizip/include/Minizip.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/JKTool/JKTool-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
@@ -1057,7 +1107,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.jk.JKTool.JKTool;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/JKTool/Zip/minizip/include/Minizip.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/JKTool/JKTool-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Release;

@@ -15,7 +15,6 @@ struct JKTool: ParsableCommand {
         version: "1.0.0",
         subcommands: [Modules.self,
                       Build.self,
-                      Build.XCFramework.self,
                       Build.Clean.self,
                       Archive.self,
                       Export.self,
@@ -53,7 +52,7 @@ extension JKTool.ToolVersion {
         mutating func run() {
             
             func downTool() {
-                guard let toolUrl = URL(string: JKToolConfig.sharedInstance.config.toolUrl) else {
+                guard let toolUrl = URL(string: ModulesConfigs.sharedInstance.config.toolUrl) else {
                     return po(tip: "转换JKTool下载路径失败，请检查路径是否有效",type: .error)
                 }
                 
@@ -79,7 +78,7 @@ extension JKTool.ToolVersion {
             
             
             func downToolCompletion() {
-                guard let completionUrl = URL(string: JKToolConfig.sharedInstance.config.completionUrl) else {
+                guard let completionUrl = URL(string: ModulesConfigs.sharedInstance.config.completionUrl) else {
                     return po(tip: "转换JKTool命令提示下载路径失败，请检查路径是否有效",type: .error)
                 }
                 guard let data = try? Data(contentsOf: completionUrl) else {

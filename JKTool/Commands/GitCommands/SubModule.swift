@@ -39,7 +39,7 @@ extension JKTool.Git {
                             
                             do {
                                 po(tip: "【\(module.name)】开始执行：git submodule update")
-                                try shellOut(to: .gitSubmoduleUpdate(remote: remote ?? false,path: "\(JKToolConfig.sharedInstance.config.checkouts)/\(module.name)"),at: project.rootProject.directoryPath)
+                                try shellOut(to: .gitSubmoduleUpdate(remote: remote ?? false,path: "\(ModulesConfigs.sharedInstance.config.checkouts)/\(module.name)"),at: project.rootProject.directoryPath)
                                 po(tip: "【\(module.name)】已存在， update 成功")
 
                             } catch {
@@ -50,7 +50,7 @@ extension JKTool.Git {
                             
                             do {
                                 po(tip: "【\(module.name)】开始执行：git submodule add")
-                                try shellOut(to: .gitSubmoduleAdd(name: module.name,url: module.url, path: "\(JKToolConfig.sharedInstance.config.checkouts)/\(module.name)",branch: module.branch),at: project.rootProject.directoryPath)
+                                try shellOut(to: .gitSubmoduleAdd(name: module.name,url: module.url, path: "\(ModulesConfigs.sharedInstance.config.checkouts)/\(module.name)",branch: module.branch),at: project.rootProject.directoryPath)
                                 po(tip: "【\(module.name)】Add 成功")
                             } catch {
                                 let error = error as! ShellOutError
@@ -96,7 +96,7 @@ extension JKTool.Git {
             if prune == true {
                 for record in pruneRecordList {
                     do {
-                        try shellOut(to: .gitSubmoduleRemove(path: "\(JKToolConfig.sharedInstance.config.checkouts)/\(record)"),at: project.rootProject.directoryPath)
+                        try shellOut(to: .gitSubmoduleRemove(path: "\(ModulesConfigs.sharedInstance.config.checkouts)/\(record)"),at: project.rootProject.directoryPath)
                         po(tip: "【\(record)】Remove 成功")
                     } catch {
                         let error = error as! ShellOutError

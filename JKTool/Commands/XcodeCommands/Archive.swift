@@ -19,8 +19,8 @@ extension JKTool {
         @Option(name: .shortAndLong, help: "归档环境，default：Release")
         var configuration: String = "Release"
         
-        @Option(name: .shortAndLong, help: "Scheme")
-        var scheme: String
+        @Option(name: .shortAndLong, help: "Target")
+        var target: String
         
         @Option(name: .long, help: "内容格式请参照：JKTool config")
         var configPath: String
@@ -53,7 +53,7 @@ extension JKTool {
             let date = Date.init().timeIntervalSince1970
             
             do {
-                try shellOut(to: .archive(scheme: scheme, isWorkspace: project.projectType.isWorkSpace(),projectName: project.projectType.entrance(), buildPath: project.buildPath, configuration: configuration, sdk: configs.sdk), at: project.directoryPath)
+                try shellOut(to: .archive(target: target, isWorkspace: project.workSpaceType.isWorkSpace(),projectName: project.workSpaceType.entrance(), buildPath: project.buildPath, configuration: configuration, sdk: configs.sdk), at: project.directoryPath)
             } catch  {
                 let error = error as! ShellOutError
                 po(tip:  error.message + error.output,type: .error)
@@ -62,7 +62,7 @@ extension JKTool {
             po(tip: "======Archive项目完成[\(String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")]======")
             
             if export {
-                JKTool.Export.main(["--configuration","\(configuration)","--scheme","\(scheme)","--config-path","\(configPath)","--path","\(project.directoryPath)"])
+                JKTool.Export.main(["--configuration","\(configuration)","--target","\(target)","--config-path","\(configPath)","--path","\(project.directoryPath)"])
             }
         }
     }

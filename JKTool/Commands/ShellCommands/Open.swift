@@ -36,7 +36,7 @@ extension JKTool.Open {
             }
             
             if FileManager.default.isDirectory(path: project.directoryPath) {
-                _ = try? shellOut(to: ShellOutCommand(string: "xed \(project.directoryPath)/\(project.projectType.entrance())"))
+                _ = try? shellOut(to: ShellOutCommand(string: "xed \(project.directoryPath)/\(project.workSpaceType.entrance())"))
             } else {
                 _ = try? shellOut(to: ShellOutCommand(string: "xed \(project.directoryPath)"))
             }

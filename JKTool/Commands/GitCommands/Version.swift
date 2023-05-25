@@ -66,33 +66,32 @@ extension JKTool.Git.GitVersion {
         @Option(name: .shortAndLong, help: "设备类型，default：iOS")
         var sdk: String?
         
+        @Option(name: .shortAndLong, help: "加入模拟器(x86_64)架构，default：false")
+        var includedSimulators: Bool?
+        
         @Option(name: .shortAndLong, help: "执行路径")
         var path: String?
         
         mutating func run() {
             
-            let configuration = configuration ?? "Release"
-            let sdk = sdk ?? "iOS"
-            
             guard let project = Project.project(directoryPath: path ?? FileManager.default.currentDirectoryPath) else {
                 return po(tip: "\(path ?? FileManager.default.currentDirectoryPath)目录没有检索到工程", type: .error)
             }
-    
-            guard let status = try? shellOut(to: .gitDiffHEAD(),at: project.directoryPath) else {
-                return po(tip: "\(project.directoryPath)获取 gitDiffHEAD 失败，请检查是否为git仓库", type: .error)
-            }
             
-            guard let commitId = try? shellOut(to: .gitCurrentCommitId(),at: project.directoryPath) else {
-                return po(tip: "\(project.directoryPath)获取 gitCurrentCommitId 失败，请检查是否为git仓库", type: .error)
-            }
+            let sdk = sdk ?? "iOS"
+            let configuration = configuration ?? "Release"
             
-            guard var xcodeVersion = try? shellOut(to: .xcodeVersion(),at: project.directoryPath) else {
-                return po(tip: "\(project.directoryPath)获取 xcodeVersion 失败，请检查是否安装了xcode", type: .error)
-            }
+            let status = try? shellOut(to: .gitDiffHEAD(),at: project.directoryPath)
+            let commitId = try? shellOut(to: .gitCurrentCommitId(),at: project.directoryPath)
             
-            xcodeVersion = xcodeVersion.replacingOccurrences(of: " ", with: "-").replacingOccurrences(of: "\n", with: "-")
+            let xcodeVersion = String.safe(GlobalConstants.xcodeVersion)
             
-            let currentVersion  =  String.safeString(string: commitId).appendingBySeparator(ShellOutCommand.MD5(string: String.safeString(string: status))).appendingBySeparator(configuration).appendingBySeparator(sdk).appendingBySeparator(xcodeVersion)
+            let currentVersion  =  String.safe(commitId)
+                .appendingBySeparator(String.safe(status?.MD5) )
+                .appendingBySeparator(configuration)
+                .appendingBySeparator(sdk)
+                .appendingBySeparator(xcodeVersion)
+                .appendingBySeparator(SdkType(includedSimulators).rawValue)
             po(tip: currentVersion, type: .echo)
         }
     }

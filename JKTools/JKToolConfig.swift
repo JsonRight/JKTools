@@ -12,7 +12,7 @@ public struct JKToolConfig: Decodable,Encodable {
     
     var checkouts: String = "Module/checkouts"
     var builds: String = "Module/Builds"
-    var build: String = "Build"
+    var build: String = "build"
     var toolUrl: String = "https://gitee.com/jk14138/JKTools/releases/download/JKTool/JKTool"
     var completionUrl: String = "https://gitee.com/jk14138/JKTools/releases/download/JKTool-completion/JKTool-completion"
     
@@ -25,7 +25,7 @@ public struct JKToolConfig: Decodable,Encodable {
             self.builds = "Module/Builds"
         }
         if self.build == "" {
-            self.build = "Build"
+            self.build = "build"
         }
         if self.toolUrl == "" {
             self.toolUrl = "https://gitee.com/jk14138/JKTools/releases/download/JKTool/JKTool"

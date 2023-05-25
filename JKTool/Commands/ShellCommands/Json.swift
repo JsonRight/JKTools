@@ -262,7 +262,7 @@ extension JKTool.ToolArray {
         
         mutating func run() {
             
-            var json = String.toArray(string: array)
+            let json = String.toArray(string: array)
             guard index > json.count - 1 else {
                 return po(tip: "Undefined",type: .echo)
             }

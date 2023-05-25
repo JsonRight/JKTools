@@ -37,7 +37,7 @@
       disableMainThreadChecker = "YES"
       launchStyle = "0"
       useCustomWorkingDirectory = "YES"
-      customWorkingDirectory = "/Users/jiangkui/Desktop/Demo/JKAppKit"
+      customWorkingDirectory = "/Users/jiangkui/Desktop/&#x8fd8;&#x5457;App/hb_module/LBKShell"
       ignoresPersistentStateOnLaunch = "NO"
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"

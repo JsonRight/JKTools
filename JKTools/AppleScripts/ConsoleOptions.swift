@@ -14,7 +14,7 @@ public struct ConsoleOptions {
     var url:String?
     var path:String?
     var branch:String?
-    var scheme:String?
+    var target:String?
     var export:String?
     var tag:String?
     var desc:String?

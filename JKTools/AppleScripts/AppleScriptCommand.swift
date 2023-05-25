@@ -118,8 +118,8 @@ extension AppleScriptCommand {
             consoleScript = consoleScript + " -v=" + tag
         }
         
-        if let scheme = options.scheme {
-            consoleScript = consoleScript + " -t=" + scheme
+        if let target = options.target {
+            consoleScript = consoleScript + " -t=" + target
         }
     
         if let cache = options.cache {

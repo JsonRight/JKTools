@@ -262,7 +262,7 @@ JKFoundation git@*/JKFoundation.git master
 
 Modulefile 单行分3个部分：
 
-1. scheme 模块名称，建议工程名、scheme使用同一个，scheme将作为文件名称以及build命令的scheme使用
+1. target 模块名称，建议工程名、target使用同一个，target将作为文件名称以及build命令的target使用
 2. 子模块git仓库地址
 3. 默认依赖分支/tag
 

@@ -242,7 +242,7 @@ extension JKTool.HBBiz {
                 return po(tip: "\(path ?? FileManager.default.currentDirectoryPath)目录不存在", type: .error)
             }
             
-            if !project.projectType.vaild() {
+            if !project.workSpaceType.vaild() {
                 return po(tip: "\(path ?? FileManager.default.currentDirectoryPath)目录下不是个正确的Xcode工程", type: .error)
             }
             
@@ -261,17 +261,17 @@ extension JKTool.HBBiz {
                         
             let sdk = sdk ?? "iOS"
             
-            let scheme = ProjectListsModel.projectList(project: project)?.defaultScheme(sdk) ?? project.destination
+            let target = project.defaultTarget
             
-            po(tip: "【\(scheme)】开始加固！")
+            po(tip: "【\(target)】开始加固！")
             
             guard let sec_config = try? String(contentsOf: URL(fileURLWithPath: secConfigPath)) else {
                 return po(tip: "\(secConfigPath)无法解析！", type: .error)
             }
             
             let config = sec_config.replacingOccurrences(of: "${SourceRoot}", with: project.directoryPath)
-                .replacingOccurrences(of: "${XcodeProject}", with: "\(project.directoryPath)/\(project.projectType.entrance())")
-                .replacingOccurrences(of: "${Scheme}", with: scheme).replacingOccurrences(of: "${Target}", with: scheme)
+                .replacingOccurrences(of: "${XcodeProject}", with: "\(project.directoryPath)/\(project.workSpaceType.entrance())")
+                .replacingOccurrences(of: "${Target}", with: target).replacingOccurrences(of: "${Target}", with: target)
             
             _ = try? config.data(using: .utf8)?.write(to: URL(fileURLWithPath: secConfigPath), options: .atomicWrite)
             
@@ -285,13 +285,13 @@ extension JKTool.HBBiz {
                 _ = try? sec_config.data(using: .utf8)?.write(to: URL(fileURLWithPath: secConfigPath), options: .atomicWrite)
                 
                 let error = error as! ShellOutError
-                po(tip: "【\(scheme)】加固失败：\n" + error.message + error.output,type: .error)
+                po(tip: "【\(target)】加固失败：\n" + error.message + error.output,type: .error)
             }
             
             _ = try? sec_config.data(using: .utf8)?.write(to: URL(fileURLWithPath: secConfigPath), options: .atomicWrite)
             
             
-            po(tip: "【\(scheme)】加固完成！")
+            po(tip: "【\(target)】加固完成！")
         }
     }
 }
@@ -311,8 +311,8 @@ extension JKTool.HBBiz {
         @Option(name: .shortAndLong, help: "导出环境，default：Release")
         var configuration: String = "Release"
         
-        @Option(name: .long, help: "Scheme")
-        var scheme: String
+        @Option(name: .long, help: "Target")
+        var target: String
         
         @Option(name: .shortAndLong, help: "更新话术,默认：上传时间")
         var message: String?
@@ -326,7 +326,7 @@ extension JKTool.HBBiz {
                 return po(tip: "\(path ?? FileManager.default.currentDirectoryPath)目录不存在", type: .error)
             }
             
-            if !project.projectType.vaild() {
+            if !project.workSpaceType.vaild() {
                 return po(tip: "\(path ?? FileManager.default.currentDirectoryPath)目录下不是个正确的Xcode工程", type: .error)
             }
             
@@ -354,12 +354,12 @@ extension JKTool.HBBiz {
             })()
             
             do {
-                let result = try shellOut(to: ShellOutCommand(string: "fir publish \(project.buildPath)/\(configuration)/\(scheme).\(Platform(sdk).fileExtension()) -c \(message)"))
+                let result = try shellOut(to: ShellOutCommand(string: "fir publish \(project.buildPath)/\(configuration)/\(target).\(Platform(sdk).fileExtension()) -c \(message)"))
                 
-                po(tip:"【\(scheme)】fir 上传成功！[\(result)]")
+                po(tip:"【\(target)】fir 上传成功！[\(result)]")
             } catch {
                 let error = error as! ShellOutError
-                po(tip: "【\(scheme)】fir上传失败：\n" + error.message + error.output,type: .error)
+                po(tip: "【\(target)】fir上传失败：\n" + error.message + error.output,type: .error)
             }
         }
     }
