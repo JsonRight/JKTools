@@ -394,9 +394,9 @@ extension Project {
             do {
                 let data = try JSONSerialization.data(withJSONObject: list, options: .fragmentsAllowed)
                 try data.write(to: URL(fileURLWithPath: self.recordListPath), options: .atomicWrite)
-                po(tip: "【\(self.destination)】Modulefile.recordList 写入成功")
+                po(tip: "【\(self.workSpaceType.projectName())】Modulefile.recordList 写入成功")
             } catch {
-                po(tip: "【\(self.destination)】Modulefile.recordList 写入失败",type: .error)
+                po(tip: "【\(self.workSpaceType.projectName())】Modulefile.recordList 写入失败",type: .error)
             }
             return oldRecordList.compactMap { record in
                 if !list.contains(record) {

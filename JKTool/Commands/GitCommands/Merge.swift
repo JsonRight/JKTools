@@ -39,10 +39,10 @@ extension JKTool.Git {
                 
                 do {
                     let result = try shellOut(to: .gitMerge(branch: branch, squash: squash,commit: commit,message: message), at: project.directoryPath)
-                    po(tip: "【\(project.destination)】Merge完成\n\(result)", type: .tip)
+                    po(tip: "【\(project.workSpaceType.projectName())】Merge完成\n\(result)", type: .tip)
                 } catch {
                     let error = error as! ShellOutError
-                    po(tip: "【\(project.destination)】 Merge失败\n" + error.message + error.output,type: .warning)
+                    po(tip: "【\(project.workSpaceType.projectName())】 Merge失败\n" + error.message + error.output,type: .warning)
                 }
             }
             

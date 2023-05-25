@@ -28,10 +28,10 @@ _JKTool()
             opts="--path"
             ;;
         archive)
-            opts="--configuration --target --config-path --export --path"
+            opts="--configuration --scheme --config-path --export --path"
             ;;
         export|upload)
-            opts="--configuration --target --config-path --path"
+            opts="--configuration --scheme --config-path --path"
             ;;
         git)
             case "${COMP_WORDS[2]}" in
@@ -101,7 +101,7 @@ _JKTool()
                             opts="--short --path"
                             ;;
                         version)
-                            opts="--configuration --sdk --path"
+                            opts="--configuration --sdk --included-simulators --path"
                             ;;
                         *)
                             opts="commit version"
@@ -161,13 +161,13 @@ _JKTool()
         biz)
             case "${COMP_WORDS[2]}" in
                 mpaas)
-                    opts="--target --configuration --path"
+                    opts="--scheme --configuration --path"
                     ;;
                 bbsec)
                     opts="--sdk --sec-script-path-name --sec-config-path --sec-license-path --path"
                     ;;
                 fir)
-                    opts="--sdk --configuration --target --message --path"
+                    opts="--sdk --configuration --scheme --message --path"
                     ;;
                 *)
                     opts="mpaas bbsec fir"

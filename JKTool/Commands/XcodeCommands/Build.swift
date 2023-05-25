@@ -261,17 +261,17 @@ extension JKTool.Build {
         let date = Date.init().timeIntervalSince1970
 
         if options.cache == false {
-            po(tip: "【\(buildType.name())】.\(buildType.ext(options.useXcframework)) 不使用缓存，需重新编译！",type: .tip)
+            po(tip: "【\(project.workSpaceType.projectName())】.\(buildType.ext(options.useXcframework)) 不使用缓存，需重新编译！",type: .tip)
             return true
         }
         
-        if !FileManager.default.fileExists(atPath: "\(cachePath)/\(buildType.description)") {
-            po(tip: "【\(buildType.name())】.\(buildType.ext(options.useXcframework)) 缓存不可用，需重新编译！",type: .tip)
+        if !FileManager.default.fileExists(atPath: "\(cachePath)/\(buildType.libName()).\(buildType.ext(options.useXcframework))") {
+            po(tip: "【\(project.workSpaceType.projectName())】.\(buildType.ext(options.useXcframework)) 缓存不可用，需重新编译！",type: .tip)
             return true
         }
         
         guard let copyPath = copyPath else {
-            po(tip: "【\(buildType.name())】.\(buildType.ext(options.useXcframework)) 缓存可用，不存在目标路径！",type: .warning)
+            po(tip: "【\(project.workSpaceType.projectName())】.\(buildType.ext(options.useXcframework)) 缓存可用，不存在目标路径！",type: .warning)
             return false
         }
         
@@ -283,25 +283,16 @@ extension JKTool.Build {
                     try shellOut(to: .copyFolder(from: "\(cachePath)/\(project.workSpaceType.projectName())", to: "\(copyPath)/\(project.workSpaceType.projectName())/"))
                 }
                 break
-            case .Framework(_,_):
+            case .Framework(_,_), .Bundle(_,_):
                 try shellOut(to: .copyFolder(from: "\(cachePath)/\(buildType.libName()).\(buildType.ext(options.useXcframework))", to: "\(copyPath)/\(project.workSpaceType.projectName())"))
-                if FileManager.default.fileExists(atPath: "\(cachePath)/\(project.workSpaceType.projectName())") {
-                    try shellOut(to: .copyFolder(from: "\(cachePath)/\(project.workSpaceType.projectName())", to: "\(copyPath)/\(project.workSpaceType.projectName())/"))
-                }
-                break
-            case .Bundle(_,_):
-                try shellOut(to: .copyFolder(from: "\(cachePath)/\(buildType.libName()).\(buildType.ext(options.useXcframework))", to: "\(copyPath)/\(project.workSpaceType.projectName())"))
-                if FileManager.default.fileExists(atPath: "\(cachePath)/\(project.workSpaceType.projectName())") {
-                    try shellOut(to: .copyFolder(from: "\(cachePath)/\(project.workSpaceType.projectName())", to: "\(copyPath)/\(project.workSpaceType.projectName())/"))
-                }
                 break
             }
             
-            po(tip: "【\(buildType.name())】.\(buildType.ext(options.useXcframework)) 缓存Copy成功[\(String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")]",type: .tip)
+            po(tip: "【\(project.workSpaceType.projectName())】.\(buildType.ext(options.useXcframework)) 缓存Copy成功[\(String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")]",type: .tip)
             return false
             
         } catch {
-            po(tip: "【\(buildType.name())】.\(buildType.ext(options.useXcframework)) 缓存重用失败，需重新编译！",type: .warning)
+            po(tip: "【\(project.workSpaceType.projectName())】.\(buildType.ext(options.useXcframework)) 缓存重用失败，需重新编译！",type: .warning)
             return true
         }
     }
@@ -323,19 +314,19 @@ extension JKTool.Build {
             
             project.writeBuildLog(log: realMachine)
             if options.includedSimulators != true || buildType.isBundle() {
-                po(tip: "【\(buildType.name())】.\(buildType.ext()) build成功[\(String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")]",type: .tip)
+                po(tip: "【\(project.workSpaceType.projectName())】.\(buildType.ext()) build成功[\(String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")]",type: .tip)
                 return (realMachine,nil)
             }
             
             let simulators = try shellOut(to:.build(target: buildType.name(), isWorkspace: project.workSpaceType.isWorkSpace(), projectName: project.workSpaceType.entrance(), projectPath: project.directoryPath, configuration: configuration, sdk: sdk, codeSignAllowed: sign , isSimulators: true), at: project.directoryPath)
             project.writeBuildLog(log: simulators)
-            po(tip: "【\(buildType.name())】.\(buildType.ext()) build成功[\(String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")]",type: .tip)
+            po(tip: "【\(project.workSpaceType.projectName())】.\(buildType.ext()) build成功[\(String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")]",type: .tip)
             return (realMachine,simulators)
             
         } catch {
             let error = error as! ShellOutError
             project.writeBuildLog(log: error.message + error.output)
-            po(tip: "【\(buildType.name())】.\(buildType.ext()) Build失败，详情(\(project.buildLogPath))",type: .error)
+            po(tip: "【\(project.workSpaceType.projectName())】.\(buildType.ext()) Build失败，详情(\(project.buildLogPath))",type: .error)
             return (nil, nil)
         }
         
@@ -358,7 +349,7 @@ extension JKTool.Build {
         
         guard  let realMachinePath = PatternEnum.StaticPath.path(buildResult.realMachine),
                FileManager.default.fileExists(atPath: realMachinePath) else {
-            return po(tip: "【\(buildType.name())】.\(buildType.ext()) 未找到编译成功的真机库文件。",type: .error)
+            return po(tip: "【\(project.workSpaceType.projectName())】.\(buildType.ext()) 未找到编译成功的真机库文件。",type: .error)
         }
         _ = try? shellOut(to: .copyFolder(from: realMachinePath, to: cachePath))
         
@@ -369,12 +360,12 @@ extension JKTool.Build {
         if options.includedSimulators == false {
             guard  let simulatorsPath = PatternEnum.StaticPath.path(buildResult.simulators),
                    FileManager.default.fileExists(atPath: simulatorsPath) else {
-                return po(tip: "【\(buildType.name())】.\(buildType.ext()) 未找到编译成功的模拟器库文件。",type: .error)
+                return po(tip: "【\(project.workSpaceType.projectName())】.\(buildType.ext()) 未找到编译成功的模拟器库文件。",type: .error)
             }
             _ = try? shellOut(to: .staticMerge(source: "\(cachePath)/\(buildType.description)", otherSourcePath: [simulatorsPath]))
         }
         
-        po(tip: "【\(buildType.name())】.\(buildType.ext()) 缓存构建成功[\(String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")]",type: .tip)
+        po(tip: "【\(project.workSpaceType.projectName())】.\(buildType.ext()) 缓存构建成功[\(String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")]",type: .tip)
     }
     
     func cacheFramework(project: Project, buildType: BuildType, cachePath: String, buildResult: (realMachine: String?, simulators:String?)) {
@@ -382,14 +373,14 @@ extension JKTool.Build {
         
         guard  let realMachinePath = PatternEnum.FrameworkPath.path(buildResult.realMachine),
                FileManager.default.fileExists(atPath: realMachinePath) else {
-            return po(tip: "【\(buildType.name())】.\(buildType.ext()) 未找到编译成功的真机库文件。",type: .error)
+            return po(tip: "【\(project.workSpaceType.projectName())】.\(buildType.ext()) 未找到编译成功的真机库文件。",type: .error)
         }
         
         if options.includedSimulators == true {
             
             guard  let simulatorsPath = PatternEnum.FrameworkPath.path(buildResult.simulators),
                    FileManager.default.fileExists(atPath: simulatorsPath) else {
-                return po(tip: "【\(buildType.name())】.\(buildType.ext()) 未找到编译成功的模拟器库文件。",type: .error)
+                return po(tip: "【\(project.workSpaceType.projectName())】.\(buildType.ext()) 未找到编译成功的模拟器库文件。",type: .error)
             }
             
             if options.useXcframework == true {
@@ -407,22 +398,19 @@ extension JKTool.Build {
                 _ = try? shellOut(to: .frameworkMerge(source: "\(cachePath)/\(buildType.description)"))
             }
         }
-        po(tip: "【\(buildType.name())】.\(buildType.ext()) 缓存构建成功[\(String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")]",type: .tip)
+        po(tip: "【\(project.workSpaceType.projectName())】.\(buildType.ext()) 缓存构建成功[\(String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")]",type: .tip)
     }
     
     func cacheBundle(project: Project, buildType: BuildType, cachePath: String, buildResult: (realMachine: String?, simulators:String?)) {
         let date = Date.init().timeIntervalSince1970
-        let configuration = (buildType.isBundle() ? nil: options.configuration) ?? "Release"
-        let sdk = options.sdk ?? "iOS"
-        
         guard  let realMachinePath = PatternEnum.BundlePath.path(buildResult.realMachine),
                FileManager.default.fileExists(atPath: realMachinePath) else {
-            return po(tip: "【\(buildType.name())】.\(buildType.ext()) 未找到编译成功的真机库文件。",type: .error)
+            return po(tip: "【\(project.workSpaceType.projectName())】.\(buildType.ext()) 未找到编译成功的真机库文件。",type: .error)
         }
         
         _ = try? shellOut(to: .copyFolder(from: realMachinePath, to: cachePath))
         
-        po(tip: "【\(buildType.name())】.\(buildType.ext()) 缓存构建成功[\(String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")]",type: .tip)
+        po(tip: "【\(project.workSpaceType.projectName())】.\(buildType.ext()) 缓存构建成功[\(String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")]",type: .tip)
     }
 }
 
@@ -583,7 +571,7 @@ extension JKTool.Build {
                 
                 let sdk = sdk ?? "iOS"
                 
-                let target = ProjectListsModel.projectList(project: project)?.defaultTarget(sdk) ?? project.destination
+                let target = ProjectListsModel.projectList(project: project)?.defaultTarget(sdk) ?? project.workSpaceType.projectName()
                 
                 po(tip:"【\(target)】clean开始")
                 let date = Date.init().timeIntervalSince1970
@@ -646,7 +634,7 @@ extension JKTool.Build {
             
             func build(project:Project) {
                 
-                let target = ProjectListsModel.projectList(project: project)?.defaultTarget(sdk) ?? project.destination
+                let target = ProjectListsModel.projectList(project: project)?.defaultTarget(sdk) ?? project.workSpaceType.projectName()
                 
                 po(tip:"【\(target)】build开始")
                 
@@ -797,7 +785,7 @@ extension JKTool.Build {
                 }
             }
             
-            let target = ProjectListsModel.projectList(project: project)?.defaultTarget(sdk) ?? project.destination
+            let target = ProjectListsModel.projectList(project: project)?.defaultTarget(sdk) ?? project.workSpaceType.projectName()
             
             if options.checkCustomBuildScript == true, FileManager.default.fileExists(atPath: project.directoryPath + "/build.sh") {
                 let date = Date.init().timeIntervalSince1970
@@ -841,7 +829,7 @@ extension JKTool.Build {
             
             func build(project:Project) {
                 
-                let target = ProjectListsModel.projectList(project: project)?.defaultTarget(sdk) ?? project.destination
+                let target = ProjectListsModel.projectList(project: project)?.defaultTarget(sdk) ?? project.workSpaceType.projectName()
                 
                 po(tip:"【\(target)】build开始")
                 
@@ -984,7 +972,7 @@ extension JKTool.Build {
                 }
             }
             
-            let target = ProjectListsModel.projectList(project: project)?.defaultTarget(sdk) ?? project.destination
+            let target = ProjectListsModel.projectList(project: project)?.defaultTarget(sdk) ?? project.workSpaceType.projectName()
             
             if options.checkCustomBuildScript == true, FileManager.default.fileExists(atPath: project.directoryPath + "/build.sh") {
                 let date = Date.init().timeIntervalSince1970
@@ -1029,7 +1017,7 @@ extension JKTool.Build {
             
             func build(project:Project) {
                 
-                let target = ProjectListsModel.projectList(project: project)?.defaultTarget(sdk) ?? project.destination
+                let target = ProjectListsModel.projectList(project: project)?.defaultTarget(sdk) ?? project.workSpaceType.projectName()
                 
                 po(tip:"【\(target)】build开始")
                 
@@ -1171,7 +1159,7 @@ extension JKTool.Build {
                 }
             }
             
-            let target = ProjectListsModel.projectList(project: project)?.defaultTarget(sdk) ?? project.destination
+            let target = ProjectListsModel.projectList(project: project)?.defaultTarget(sdk) ?? project.workSpaceType.projectName()
             
             if options.checkCustomBuildScript == true, FileManager.default.fileExists(atPath: project.directoryPath + "/build.sh") {
                 let date = Date.init().timeIntervalSince1970
@@ -1216,7 +1204,7 @@ extension JKTool.Build {
             
             func build(project:Project) {
                 
-                let target = ProjectListsModel.projectList(project: project)?.defaultTarget(sdk) ?? project.destination
+                let target = ProjectListsModel.projectList(project: project)?.defaultTarget(sdk) ?? project.workSpaceType.projectName()
                 
                 po(tip:"【\(target)】不是一个可编译项目，将直接引用此目录。")
                 let isRootProject = (project == project.rootProject)
@@ -1265,7 +1253,7 @@ extension JKTool.Build {
                 }
             }
             
-            let target = ProjectListsModel.projectList(project: project)?.defaultTarget(sdk) ?? project.destination
+            let target = ProjectListsModel.projectList(project: project)?.defaultTarget(sdk) ?? project.workSpaceType.projectName()
             
             if options.checkCustomBuildScript == true, FileManager.default.fileExists(atPath: project.directoryPath + "/build.sh") {
                 let date = Date.init().timeIntervalSince1970

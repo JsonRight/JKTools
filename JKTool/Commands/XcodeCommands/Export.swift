@@ -19,8 +19,8 @@ extension JKTool {
         @Option(name: .shortAndLong, help: "导出环境，default：Release")
         var configuration: String = "Release"
         
-        @Option(name: .shortAndLong, help: "Target")
-        var target: String
+        @Option(name: .shortAndLong, help: "Scheme")
+        var scheme: String
         
         @Option(name: .long, help: "内容格式请参照：JKTool config")
         var configPath: String
@@ -70,11 +70,11 @@ extension JKTool {
             }
             
             guard let exportConfig = configs.exportConfigList.filter({ $0.configuration == configuration }).first else {
-                return po(tip: "【\(target)】exportConfigList没有匹配到\(configuration)",type: .error)
+                return po(tip: "【\(scheme)】exportConfigList没有匹配到\(configuration)",type: .error)
             }
             
             do {
-                try shellOut(to: .export(target: target, buildPath: project.buildPath, configuration: configuration, export: exportConfig.exportOptionsPath.convertRelativePath(absolutPath:project.directoryPath), fileExtension: Platform(configs.sdk).fileExtension() ,toSavePath: exportConfig.saveConfig?.path), at: project.directoryPath)
+                try shellOut(to: .export(scheme: scheme, buildPath: project.buildPath, configuration: configuration, export: exportConfig.exportOptionsPath.convertRelativePath(absolutPath:project.directoryPath), fileExtension: Platform(configs.sdk).fileExtension() ,toSavePath: exportConfig.saveConfig?.path), at: project.directoryPath)
             } catch  {
                 let error = error as! ShellOutError
                 po(tip:  error.message + error.output,type: .error)

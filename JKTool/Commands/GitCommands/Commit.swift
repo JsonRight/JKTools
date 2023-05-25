@@ -31,10 +31,10 @@ extension JKTool.Git {
                 
                 do {
                     try shellOut(to: .gitCommit(message: message), at: project.directoryPath)
-                    po(tip: "【\(project.destination)】Commit完成", type: .tip)
+                    po(tip: "【\(project.workSpaceType.projectName())】Commit完成", type: .tip)
                 } catch {
                     let error = error as! ShellOutError
-                    po(tip: "【\(project.destination)】 Commit失败\n" + error.message + error.output,type: .warning)
+                    po(tip: "【\(project.workSpaceType.projectName())】 Commit失败\n" + error.message + error.output,type: .warning)
                 }
             }
             guard let project = Project.project(directoryPath: path ?? FileManager.default.currentDirectoryPath) else {

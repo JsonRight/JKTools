@@ -26,8 +26,8 @@ extension JKTool.HBBiz {
             _superCommandName: "biz",
             abstract: "MPaaS工程处理")
         
-        @Option(name: .shortAndLong, help: "工程对应的Target")
-        var target: String
+        @Option(name: .shortAndLong, help: "工程对应的Scheme")
+        var scheme: String
         
         @Option(name: .shortAndLong, help: "代码环境[Debug、LBK_ENV_DEV、LBK_ENV_PRE、Release]，default：Debug")
         var configuration: String?
@@ -63,8 +63,8 @@ extension JKTool.HBBiz {
             
             do {
                 po(tip: "开始更新配置")
-                try shellOut(to: .copyFile(from: "\(project.buildsPath)/MPaaSPackage/\(target)/\(modeReflect(string: configuration))/meta.config", to: "\(project.directoryPath)/MPaaS/Targets/\(target)/meta.config"))
-                try shellOut(to: .copyFile(from: "\(project.buildsPath)/MPaaSPackage/\(target)/\(modeReflect(string: configuration))/yw_1222.jpg", to: "\(project.directoryPath)/MPaaS/Targets/\(target)/yw_1222.jpg"))
+                try shellOut(to: .copyFile(from: "\(project.buildsPath)/MPaaSPackage/\(scheme)/\(modeReflect(string: configuration))/meta.config", to: "\(project.directoryPath)/MPaaS/Targets/\(scheme)/meta.config"))
+                try shellOut(to: .copyFile(from: "\(project.buildsPath)/MPaaSPackage/\(scheme)/\(modeReflect(string: configuration))/yw_1222.jpg", to: "\(project.directoryPath)/MPaaS/Targets/\(scheme)/yw_1222.jpg"))
                 po(tip: "配置更新成功")
             } catch {
                 let error = error as! ShellOutError
@@ -79,8 +79,8 @@ extension JKTool.HBBiz {
             po(tip: "遍历amr列表")
             
             
-            guard let fileList = FileManager.default.getFileList(directoryPath: "\(project.buildsPath)/MPaaSPackage/\(target)/\(modeReflect(string: configuration))") else {
-                return po(tip: "【\(project.buildsPath)/MPaaSPackage/\(target)/\(modeReflect(string: configuration))】为空", type: .error)
+            guard let fileList = FileManager.default.getFileList(directoryPath: "\(project.buildsPath)/MPaaSPackage/\(scheme)/\(modeReflect(string: configuration))") else {
+                return po(tip: "【\(project.buildsPath)/MPaaSPackage/\(scheme)/\(modeReflect(string: configuration))】为空", type: .error)
             }
             
             var amr_path_list = [String]()
@@ -258,9 +258,6 @@ extension JKTool.HBBiz {
                 return po(tip: "\(secLicensePath)不存在！", type: .error)
             }
             
-                        
-            let sdk = sdk ?? "iOS"
-            
             let target = project.defaultTarget
             
             po(tip: "【\(target)】开始加固！")
@@ -311,8 +308,8 @@ extension JKTool.HBBiz {
         @Option(name: .shortAndLong, help: "导出环境，default：Release")
         var configuration: String = "Release"
         
-        @Option(name: .long, help: "Target")
-        var target: String
+        @Option(name: .long, help: "Scheme")
+        var scheme: String
         
         @Option(name: .shortAndLong, help: "更新话术,默认：上传时间")
         var message: String?
@@ -354,12 +351,12 @@ extension JKTool.HBBiz {
             })()
             
             do {
-                let result = try shellOut(to: ShellOutCommand(string: "fir publish \(project.buildPath)/\(configuration)/\(target).\(Platform(sdk).fileExtension()) -c \(message)"))
+                let result = try shellOut(to: ShellOutCommand(string: "fir publish \(project.buildPath)/\(configuration)/\(scheme).\(Platform(sdk).fileExtension()) -c \(message)"))
                 
-                po(tip:"【\(target)】fir 上传成功！[\(result)]")
+                po(tip:"【\(scheme)】fir 上传成功！[\(result)]")
             } catch {
                 let error = error as! ShellOutError
-                po(tip: "【\(target)】fir上传失败：\n" + error.message + error.output,type: .error)
+                po(tip: "【\(scheme)】fir上传失败：\n" + error.message + error.output,type: .error)
             }
         }
     }
