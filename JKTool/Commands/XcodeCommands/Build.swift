@@ -21,9 +21,6 @@ private struct Options: ParsableArguments {
     @Option(name: .long, help: "加入模拟器(x86_64)架构，default：false")
     var includedSimulators: Bool?
     
-    @Option(name: .long, help: "对Bundle进行签名，default：false")
-    var signBundle: Bool?
-    
     @Option(name: .long, help: "mac解锁密码（访问钥匙串），Bundle签名时才需要访问mac的钥匙串")
     var macPassword: String?
     
@@ -59,10 +56,6 @@ private struct Options: ParsableArguments {
         
         if let includedSimulators = includedSimulators {
             args.append(contentsOf: ["--included-simulators",String(includedSimulators)])
-        }
-        
-        if let signBundle = signBundle {
-            args.append(contentsOf: ["--sign-bundle",String(signBundle)])
         }
         
         if let macPassword = macPassword {
@@ -103,10 +96,6 @@ private struct Options: ParsableArguments {
         
         if let includedSimulators = includedSimulators {
             args.append(contentsOf: ["--included-simulators",String(includedSimulators)])
-        }
-        
-        if let signBundle = signBundle {
-            args.append(contentsOf: ["--sign-bundle",String(signBundle)])
         }
         
         if let macPassword = macPassword {
@@ -301,16 +290,15 @@ extension JKTool.Build {
         let date = Date.init().timeIntervalSince1970
         let configuration = (buildType.isBundle() ? nil: options.configuration) ?? "Release"
         let sdk = options.sdk ?? "iOS"
-        let sign = options.signBundle ?? false
         
-        _ = try? shellOut(to: .clean(target: buildType.name(), isWorkspace: project.workSpaceType.isWorkSpace(), projectName: project.workSpaceType.entrance(), projectPath: project.directoryPath, configuration: configuration, sdk: sdk, isSimulators: false), at: project.directoryPath)
-        if options.includedSimulators != false,
-           buildType.isBundle() == false {
-            _ = try? shellOut(to: .clean(target: buildType.name(), isWorkspace: project.workSpaceType.isWorkSpace(), projectName: project.workSpaceType.entrance(), projectPath: project.directoryPath, configuration: configuration, sdk: sdk, isSimulators: true), at: project.directoryPath)
-        }
-        
+//        _ = try? shellOut(to: .clean(scheme: buildType.name(), isWorkspace: project.workSpaceType.isWorkSpace(), projectName: project.workSpaceType.entrance(), projectPath: project.directoryPath, configuration: configuration, sdk: sdk, includedSimulators: false), at: project.directoryPath)
+//        if options.includedSimulators != false,
+//           buildType.isBundle() == false {
+//            _ = try? shellOut(to: .clean(target: buildType.name(), isWorkspace: project.workSpaceType.isWorkSpace(), projectName: project.workSpaceType.entrance(), projectPath: project.directoryPath, configuration: configuration, sdk: sdk, isSimulators: true), at: project.directoryPath)
+//        }
+//        
         do {
-            let realMachine = try shellOut(to:.build(target: buildType.name(), isWorkspace: project.workSpaceType.isWorkSpace(), projectName: project.workSpaceType.entrance(), projectPath: project.directoryPath, configuration: configuration, sdk: sdk, codeSignAllowed: sign , isSimulators: false), at: project.directoryPath)
+            let realMachine = try shellOut(to:.build(scheme: buildType.name(), isWorkspace: project.workSpaceType.isWorkSpace(), projectName: project.workSpaceType.entrance(), projectPath: project.directoryPath, configuration: configuration, sdk: sdk, includedSimulators: options.includedSimulators), at: project.directoryPath)
             
             project.writeBuildLog(log: realMachine)
             if options.includedSimulators != true || buildType.isBundle() {
@@ -318,7 +306,7 @@ extension JKTool.Build {
                 return (realMachine,nil)
             }
             
-            let simulators = try shellOut(to:.build(target: buildType.name(), isWorkspace: project.workSpaceType.isWorkSpace(), projectName: project.workSpaceType.entrance(), projectPath: project.directoryPath, configuration: configuration, sdk: sdk, codeSignAllowed: sign , isSimulators: true), at: project.directoryPath)
+            let simulators = try shellOut(to:.build(scheme: buildType.name(), isWorkspace: project.workSpaceType.isWorkSpace(), projectName: project.workSpaceType.entrance(), projectPath: project.directoryPath, configuration: configuration, sdk: sdk,  includedSimulators: options.includedSimulators), at: project.directoryPath)
             project.writeBuildLog(log: simulators)
             po(tip: "【\(project.workSpaceType.projectName())】.\(buildType.ext()) build成功[\(String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")]",type: .tip)
             return (realMachine,simulators)
@@ -395,7 +383,6 @@ extension JKTool.Build {
                 _ = try? shellOut(to: .xcframeworkMerge(to: "\(cachePath)/\(buildType.ext(options.useXcframework))",otherSourcePath: [realMachinePath]))
             } else {
                 _ = try? shellOut(to: .copyFolder(from: realMachinePath, to: cachePath))
-                _ = try? shellOut(to: .frameworkMerge(source: "\(cachePath)/\(buildType.description)"))
             }
         }
         po(tip: "【\(project.workSpaceType.projectName())】.\(buildType.ext()) 缓存构建成功[\(String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")]",type: .tip)

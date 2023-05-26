@@ -9,13 +9,16 @@ import Foundation
 
 extension ShellOutCommand {
     
-    static func clean(target:String, isWorkspace:Bool,projectName: String, projectPath:String, configuration: String, sdk: String, isSimulators: Bool) -> ShellOutCommand {
-        let shell = "xcodebuild clean \(isWorkspace ? "-workspace" : "-project") \(projectName) -target \(target) -configuration \(configuration) VALID_ARCHS='\(Platform(sdk).archs(isSimulators ? .Simulator:.RealMachine))' -destination 'generic/platform=\(Platform(sdk).platform(isSimulators ? .Simulator:.RealMachine))' -parallelizeTargets -quiet -UseModernBuildSystem=YES"
+    static func clean(scheme:String, isWorkspace:Bool,projectName: String, projectPath:String, configuration: String, sdk: String, includedSimulators: Bool?) -> ShellOutCommand {
+        let validArchs = Platform(sdk).archs(includedSimulators == true ? [.RealMachine,.Simulator]: [.RealMachine])
+        let shell = "xcodebuild clean \(isWorkspace ? "-workspace" : "-project") \(projectName) -scheme \(scheme) -configuration \(configuration) -arch \(validArchs.joined(separator: " -arch ")) -parallelizeTargets -quiet -UseModernBuildSystem=YES"
         return ShellOutCommand(string:shell)
     }
     
-    static func build(target:String, isWorkspace:Bool,projectName: String, projectPath:String, configuration: String, sdk: String, codeSignAllowed:Bool, isSimulators: Bool) -> ShellOutCommand {
-        let shell = "xcodebuild build \(isWorkspace ? "-workspace" : "-project") \(projectName) -target \(target) -configuration \(configuration) VALID_ARCHS='\(Platform(sdk).archs(isSimulators ? .Simulator:.RealMachine))' -destination 'generic/platform=\(Platform(sdk).platform(isSimulators ? .Simulator:.RealMachine))'\(codeSignAllowed == false ? " CODE_SIGNING_ALLOWED=NO" : "") -UseModernBuildSystem=YES BUILD_LIBRARIES_FOR_DISTRIBUTION=YES -parallelizeTargets -jobs \(ProcessInfo.processInfo.activeProcessorCount) -verbose"
+    static func build(scheme:String, isWorkspace:Bool,projectName: String, projectPath:String, configuration: String, sdk: String, includedSimulators: Bool?) -> ShellOutCommand {
+        
+        let validArchs = Platform(sdk).archs(includedSimulators == true ? [.RealMachine,.Simulator]: [.RealMachine])
+        let shell = "xcodebuild \(isWorkspace ? "-workspace" : "-project") \(projectName) -scheme \(scheme) -configuration \(configuration) -arch \(validArchs.joined(separator: " -arch ")) -UseModernBuildSystem=YES BUILD_LIBRARIES_FOR_DISTRIBUTION=YES -parallelizeTargets -jobs \(ProcessInfo.processInfo.activeProcessorCount) -verbose clean build"
         return ShellOutCommand(string:shell)
     }
     
@@ -73,7 +76,7 @@ extension ShellOutCommand {
     }
     
     static func buildSettings(isWorkspace:Bool,projectName: String, projectPath:String, configuration: String, sdk: String) -> ShellOutCommand {
-        let shell = "xcodebuild -showBuildSettings \(isWorkspace ? "-workspace" : "-project") \(projectPath)/\(projectName) VALID_ARCHS='\(Platform(sdk).archs(.RealMachine))' -destination 'generic/platform=\(Platform(sdk).platform(.RealMachine))' -json"
+        let shell = "xcodebuild -showBuildSettings \(isWorkspace ? "-workspace" : "-project") \(projectPath)/\(projectName) VALID_ARCHS='\(Platform(sdk).arch(.RealMachine))' -destination 'generic/platform=\(Platform(sdk).platform(.RealMachine))' -json"
         return ShellOutCommand(string: shell)
     }
 }
@@ -102,6 +105,7 @@ extension ShellOutCommand {
     /// IOS build Framework Debug x86_64 iphonesimulator
     /// IOS build Framework Release arm64 iphoneos
     static func xcframeworkMerge(to path:String, otherSourcePath:[String] = [String]()) -> ShellOutCommand {
+        // 可能需要使用--framework
         let shell = "xcodebuild -create-xcframework -framework ".connecting(spaceCommand: otherSourcePath.joined(separator: " -framework ")).connecting(spaceCommand: " -output \(path)")
         return ShellOutCommand(string:shell)
     }

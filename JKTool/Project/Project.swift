@@ -159,6 +159,10 @@ enum BuildType: CustomStringConvertible {
         }
     }
     
+    func libBuildPath(_ configuration: String, sdk: String,sdkType: SdkType) -> String {
+        return "\(Platform(sdk).libBuildPath(configuration, sdk: sdkType))"
+    }
+    
 }
 
 //struct BuildSettingsModel: Decodable {

@@ -22,7 +22,7 @@ _JKTool()
             esac
             ;;
         build)
-            opts="--cache --configuration --sdk --included-simulators --sign-bundle --mac-password --copy-path --path --use-xcframework --check-custom-build-script"
+            opts="--cache --configuration --sdk --included-simulators --mac-password --copy-path --path --use-xcframework --check-custom-build-script"
             ;;
         clean)
             opts="--path"

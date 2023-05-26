@@ -109,7 +109,7 @@ public enum Platform: String {
         }
     }
     
-    func archs(_ sdk: SdkType) -> String {
+    func arch(_ sdk: SdkType) -> String {
         switch self {
         case .iOS where sdk == .Simulator:
             return "x86_64"
@@ -135,6 +135,40 @@ public enum Platform: String {
             return "x86_64"
         case .carPlayOS:
             return "arm64"
+        }
+    }
+    func archs(_ sdks: [SdkType]) -> [String] {
+        return sdks.compactMap { sdk in
+            return arch(sdk)
+        }
+    }
+    
+    func libBuildPath(_ configuration: String,sdk: SdkType) -> String {
+        switch self {
+        case .iOS where sdk == .Simulator:
+            return "\(configuration)-\(self.sdk(sdk))"
+        case .iOS:
+            return "\(configuration)-\(self.sdk(sdk))"
+        case .iPadOS where sdk == .Simulator:
+            return "\(configuration)-\(self.sdk(sdk))"
+        case .iPadOS:
+            return "\(configuration)-\(self.sdk(sdk))"
+        case .macOS where sdk == .Simulator:
+            return "\(configuration)"
+        case .macOS:
+            return "\(configuration)"
+        case .tvOS where sdk == .Simulator:
+            return "\(configuration)-\(self.sdk(sdk))"
+        case .tvOS:
+            return "\(configuration)-\(self.sdk(sdk))"
+        case .watchOS where sdk == .Simulator:
+            return "\(configuration)-\(self.sdk(sdk))"
+        case .watchOS:
+            return "\(configuration)-\(self.sdk(sdk))"
+        case .carPlayOS where sdk == .Simulator:
+            return "\(configuration)-\(self.sdk(sdk))"
+        case .carPlayOS:
+            return "\(configuration)-\(self.sdk(sdk))"
         }
     }
     
