@@ -78,7 +78,6 @@ private struct Options: ParsableArguments {
             args.append(contentsOf: ["--check-custom-build-script",String(checkCustomBuildScript)])
         }
         
-        
         return args
       }
     
@@ -177,7 +176,6 @@ extension JKTool.Build {
             po(tip:"【\(project.workSpaceType.projectName())】刷新链接库[\(GlobalConstants.duration(to: date) + " s")]")
         }
         
-        
         if options.checkCustomBuildScript == true, FileManager.default.fileExists(atPath: project.directoryPath + "/build.sh") {
             do {
                 po(tip:"【\(project.workSpaceType.projectName())】执行build.sh")
@@ -223,7 +221,6 @@ extension JKTool.Build {
                 
                 for target in project.targets {
                     
-                    
                     if options.cache == false {
                         po(tip: "【\(project.workSpaceType.projectName())】.\(target.ext(options.useXcframework)) 不使用缓存，需重新编译！",type: .tip)
                     } else {
@@ -241,7 +238,9 @@ extension JKTool.Build {
                     _ = tryCopyCache(project: project, buildType: target, cachePath: cachePath, copyPath: copyPath)
 
                 }
+                po(tip:"【\(project.workSpaceType.projectName())】build完成[\(GlobalConstants.duration(to: date) + " s")]")
             } else if let copyPath = copyPath {
+                po(tip:"【\(project.workSpaceType.projectName())】无法检测到可编译内容，将执行link操作")
                 _ = try? shellOut(to: .removeFolder(from: "\(copyPath)/\(project.workSpaceType.projectName())" ))
                 do {
                     try shellOut(to: .createSymlink(to: project.directoryPath, at: copyPath))
@@ -249,12 +248,10 @@ extension JKTool.Build {
                     let error = error as! ShellOutError
                     po(tip: "【\(project.workSpaceType.projectName())】copy error：\n" + error.message + error.output,type: .error)
                 }
+            } else {
+                po(tip:"【\(project.workSpaceType.projectName())】无法检测到可编译内容[\(GlobalConstants.duration(to: date) + " s")]")
             }
-            
-            
         }
-        
-        po(tip:"【\(project.workSpaceType.projectName())】build完成[\(GlobalConstants.duration(to: date) + " s")]")
     }
     
     func tryCopyCache(project: Project, buildType: BuildType, cachePath: String, copyPath: String?) -> Bool {
@@ -301,8 +298,8 @@ extension JKTool.Build {
             return nil
         }
         
+        let shell = ShellOutCommand.build(scheme: buildType.name(), isWorkspace: project.workSpaceType.isWorkSpace(), projectName: project.workSpaceType.entrance(), projectPath: project.directoryPath, configuration: configuration, sdk: sdk, isSimulators: false)
         do {
-            let shell = ShellOutCommand.build(scheme: buildType.name(), isWorkspace: project.workSpaceType.isWorkSpace(), projectName: project.workSpaceType.entrance(), projectPath: project.directoryPath, configuration: configuration, sdk: sdk, isSimulators: false)
             let realMachine = try shellOut(to:shell, at: project.directoryPath)
             
             po(tip: "【\(project.workSpaceType.projectName())】.\(buildType.ext()) build命令执行成功[\(GlobalConstants.duration(to: date) + " s")]",type: .tip)
@@ -311,7 +308,7 @@ extension JKTool.Build {
             return realMachine
         } catch {
             let error = error as! ShellOutError
-            let path = project.writeLog(log: error.message + error.output, target: buildType, isSimulator: isSimulators)
+            let path = project.writeLog(log: "build command:\n[\(shell.string)]\n" + error.message + error.output, target: buildType, isSimulator: isSimulators)
             po(tip: "【\(project.workSpaceType.projectName())】.\(buildType.ext()) Build失败，详情(\(path))",type: .error)
             return nil
         }
