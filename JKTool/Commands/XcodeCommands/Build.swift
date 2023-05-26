@@ -293,13 +293,7 @@ extension JKTool.Build {
         let configuration = (buildType.isBundle() ? nil: options.configuration) ?? "Release"
         let sdk = options.sdk ?? "iOS"
         
-//        _ = try? shellOut(to: .clean(scheme: buildType.name(), isWorkspace: project.workSpaceType.isWorkSpace(), projectName: project.workSpaceType.entrance(), projectPath: project.directoryPath, configuration: configuration, sdk: sdk, includedSimulators: false), at: project.directoryPath)
-//        if options.includedSimulators != false,
-//           buildType.isBundle() == false {
-//            _ = try? shellOut(to: .clean(target: buildType.name(), isWorkspace: project.workSpaceType.isWorkSpace(), projectName: project.workSpaceType.entrance(), projectPath: project.directoryPath, configuration: configuration, sdk: sdk, isSimulators: true), at: project.directoryPath)
-//        }
-        
-        if buildType.isBundle() == true && isSimulators == true {
+        if isSimulators == true && (buildType.isBundle() == true || options.includedSimulators != true) {
             return nil
         }
         
