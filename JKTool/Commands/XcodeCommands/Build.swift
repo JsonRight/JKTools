@@ -206,6 +206,10 @@ extension JKTool.Build {
             let isRootProject = (project == project.rootProject)
             let copyPath = isRootProject ? options.copyPath: (options.copyPath ?? project.rootProject.buildsPath)
             
+            if let copyPath = copyPath {
+                _ = try? shellOut(to: .createFolder(path: copyPath))
+            }
+            
             if project.workSpaceType.vaild() {
                 
                 _ = try? shellOut(to: .createFolder(path: cachePath))
