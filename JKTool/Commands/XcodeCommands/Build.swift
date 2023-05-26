@@ -303,11 +303,9 @@ extension JKTool.Build {
         
         do {
             let shell = ShellOutCommand.build(scheme: buildType.name(), isWorkspace: project.workSpaceType.isWorkSpace(), projectName: project.workSpaceType.entrance(), projectPath: project.directoryPath, configuration: configuration, sdk: sdk, isSimulators: false)
-            po(tip: "【\(project.workSpaceType.projectName())】.\(buildType.ext()) 命令构建成功[\(GlobalConstants.duration(to: date) + " s")]",type: .tip)
-            let date1 = Date.init().timeIntervalSince1970
             let realMachine = try shellOut(to:shell, at: project.directoryPath)
             
-            po(tip: "【\(project.workSpaceType.projectName())】.\(buildType.ext()) build命令执行成功[\(GlobalConstants.duration(to: date1) + " s")]",type: .tip)
+            po(tip: "【\(project.workSpaceType.projectName())】.\(buildType.ext()) build命令执行成功[\(GlobalConstants.duration(to: date) + " s")]",type: .tip)
             
             _ = project.writeLog(log: realMachine, target: buildType, isSimulator: isSimulators)
             return realMachine
