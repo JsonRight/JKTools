@@ -9,16 +9,15 @@ import Foundation
 
 extension ShellOutCommand {
     
-    static func clean(scheme:String, isWorkspace:Bool,projectName: String, projectPath:String, configuration: String, sdk: String, includedSimulators: Bool?) -> ShellOutCommand {
-        let validArchs = Platform(sdk).archs(includedSimulators == true ? [.RealMachine,.Simulator]: [.RealMachine])
-        let shell = "xcodebuild clean \(isWorkspace ? "-workspace" : "-project") \(projectName) -scheme \(scheme) -configuration \(configuration) -arch \(validArchs.joined(separator: " -arch ")) -parallelizeTargets -quiet -UseModernBuildSystem=YES"
+    static func clean(scheme:String, isWorkspace:Bool,projectName: String, projectPath:String, configuration: String, sdk: String, isSimulators: Bool?) -> ShellOutCommand {
+        
+        let shell = "xcodebuild clean \(isWorkspace ? "-workspace" : "-project") \(projectName) -scheme \(scheme) -configuration \(configuration) -sdk \(Platform(sdk).sdk(SdkType(isSimulators))) -parallelizeTargets -quiet -UseModernBuildSystem=YES"
         return ShellOutCommand(string:shell)
     }
     
-    static func build(scheme:String, isWorkspace:Bool,projectName: String, projectPath:String, configuration: String, sdk: String, includedSimulators: Bool?) -> ShellOutCommand {
+    static func build(scheme:String, isWorkspace:Bool,projectName: String, projectPath:String, configuration: String, sdk: String, isSimulators: Bool?) -> ShellOutCommand {
         
-        let validArchs = Platform(sdk).archs(includedSimulators == true ? [.RealMachine,.Simulator]: [.RealMachine])
-        let shell = "xcodebuild \(isWorkspace ? "-workspace" : "-project") \(projectName) -scheme \(scheme) -configuration \(configuration) -arch \(validArchs.joined(separator: " -arch ")) -UseModernBuildSystem=YES BUILD_LIBRARIES_FOR_DISTRIBUTION=YES -parallelizeTargets -jobs \(ProcessInfo.processInfo.activeProcessorCount) -verbose clean build"
+        let shell = "xcodebuild \(isWorkspace ? "-workspace" : "-project") \(projectName) -scheme \(scheme) -configuration \(configuration) -sdk \(Platform(sdk).sdk(SdkType(isSimulators))) -UseModernBuildSystem=YES BUILD_LIBRARIES_FOR_DISTRIBUTION=YES -parallelizeTargets -jobs \(ProcessInfo.processInfo.activeProcessorCount) -verbose clean build"
         return ShellOutCommand(string:shell)
     }
     

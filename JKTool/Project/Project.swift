@@ -332,11 +332,16 @@ class Project {
         }
     }()
     
-    lazy var buildLogPath: String = {
-        return self.buildPath.appending("/buildLog.log")
+    lazy var buildSimulatorLogPath: String = {
+        return self.buildPath.appending("/build-Simulator.log")
     }()
+    
+    lazy var buildRealMachineLogPath: String = {
+        return self.buildPath.appending("/build-RealMachine.log")
+    }()
+    
     lazy var buildBundleLogPath: String = {
-        return self.buildPath.appending("/buildBundleLog.log")
+        return self.buildPath.appending("/build-Bundle.log")
     }()
     lazy var buildScriptPath: String = {
         return self.directoryPath.appending("/build.sh")
@@ -412,16 +417,14 @@ extension Project {
         return []
     }
     
-    func writeBuildLog(log: String) {
+    func writeBuildSimulatorLog(log: String) {
         let data = log.data(using: .utf8)
-        _ = try? data?.write(to: URL(fileURLWithPath: self.buildLogPath), options: .atomicWrite)
+        _ = try? data?.write(to: URL(fileURLWithPath: self.buildSimulatorLogPath), options: .atomicWrite)
     }
     
-    func removeBuildLog() {
-        let exist = FileManager.default.fileExists(atPath: self.buildLogPath)
-        if !exist {
-            try? FileManager.default.removeItem(atPath: self.buildLogPath)
-        }
+    func writeBuildRealMachineLog(log: String) {
+        let data = log.data(using: .utf8)
+        _ = try? data?.write(to: URL(fileURLWithPath: self.buildRealMachineLogPath), options: .atomicWrite)
     }
     
     func writeBuildBundleLog(log: String) {
@@ -429,13 +432,22 @@ extension Project {
         _ = try? data?.write(to: URL(fileURLWithPath: self.buildBundleLogPath), options: .atomicWrite)
     }
     
-    func removeBuildBundleLog() {
-        let exist = FileManager.default.fileExists(atPath: self.buildBundleLogPath)
-        if !exist {
-            try? FileManager.default.removeItem(atPath: self.buildBundleLogPath)
+    func writeLog(log: String, target: BuildType, isSimulator: Bool) -> String {
+        let data = log.data(using: .utf8)
+        let path: String
+        switch target {
+        case .Static(_, _, _),.Framework(_, _):
+            path = isSimulator ? self.buildSimulatorLogPath:self.buildRealMachineLogPath
+            _ = try? data?.write(to: URL(fileURLWithPath: path), options: .atomicWrite)
+            return path
+        case .Bundle(_, _):
+            path = self.buildRealMachineLogPath
+            _ = try? data?.write(to: URL(fileURLWithPath: path), options: .atomicWrite)
+            return path
         }
+        
     }
-
+    
     static func project(directoryPath: String = FileManager.default.currentDirectoryPath) -> Project?{
         let exist = FileManager.default.fileExists(atPath: directoryPath)
         if !exist {

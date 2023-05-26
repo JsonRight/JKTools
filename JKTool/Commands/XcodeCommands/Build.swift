@@ -223,9 +223,11 @@ extension JKTool.Build {
                     
                     guard needBuild else { continue }
                     
-                    let result = build(project: project, buildType: target)
+                    let realMachine = build(project: project, buildType: target, isSimulators: false)
                     
-                    creatCache(project: project, buildType: target, cachePath: cachePath, buildResult: result)
+                    let simulators = build(project: project, buildType: target, isSimulators: true)
+                    
+                    creatCache(project: project, buildType: target, cachePath: cachePath, buildResult: (realMachine, simulators))
                     
                     _ = tryCopyCache(project: project, buildType: target, cachePath: cachePath, copyPath: copyPath)
 
@@ -286,7 +288,7 @@ extension JKTool.Build {
         }
     }
     
-    func build(project: Project, buildType: BuildType) -> (realMachine: String?, simulators:String?) {
+    func build(project: Project, buildType: BuildType, isSimulators: Bool) -> String? {
         let date = Date.init().timeIntervalSince1970
         let configuration = (buildType.isBundle() ? nil: options.configuration) ?? "Release"
         let sdk = options.sdk ?? "iOS"
@@ -296,26 +298,19 @@ extension JKTool.Build {
 //           buildType.isBundle() == false {
 //            _ = try? shellOut(to: .clean(target: buildType.name(), isWorkspace: project.workSpaceType.isWorkSpace(), projectName: project.workSpaceType.entrance(), projectPath: project.directoryPath, configuration: configuration, sdk: sdk, isSimulators: true), at: project.directoryPath)
 //        }
-//        
+        guard isSimulators == false, buildType.isBundle() == false else { return nil }
+        
         do {
-            let realMachine = try shellOut(to:.build(scheme: buildType.name(), isWorkspace: project.workSpaceType.isWorkSpace(), projectName: project.workSpaceType.entrance(), projectPath: project.directoryPath, configuration: configuration, sdk: sdk, includedSimulators: options.includedSimulators), at: project.directoryPath)
+            let realMachine = try shellOut(to:.build(scheme: buildType.name(), isWorkspace: project.workSpaceType.isWorkSpace(), projectName: project.workSpaceType.entrance(), projectPath: project.directoryPath, configuration: configuration, sdk: sdk, isSimulators: false), at: project.directoryPath)
             
-            project.writeBuildLog(log: realMachine)
-            if options.includedSimulators != true || buildType.isBundle() {
-                po(tip: "【\(project.workSpaceType.projectName())】.\(buildType.ext()) build成功[\(String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")]",type: .tip)
-                return (realMachine,nil)
-            }
-            
-            let simulators = try shellOut(to:.build(scheme: buildType.name(), isWorkspace: project.workSpaceType.isWorkSpace(), projectName: project.workSpaceType.entrance(), projectPath: project.directoryPath, configuration: configuration, sdk: sdk,  includedSimulators: options.includedSimulators), at: project.directoryPath)
-            project.writeBuildLog(log: simulators)
+            _ = project.writeLog(log: realMachine, target: buildType, isSimulator: isSimulators)
             po(tip: "【\(project.workSpaceType.projectName())】.\(buildType.ext()) build成功[\(String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")]",type: .tip)
-            return (realMachine,simulators)
-            
+            return realMachine
         } catch {
             let error = error as! ShellOutError
-            project.writeBuildLog(log: error.message + error.output)
-            po(tip: "【\(project.workSpaceType.projectName())】.\(buildType.ext()) Build失败，详情(\(project.buildLogPath))",type: .error)
-            return (nil, nil)
+            let path = project.writeLog(log: error.message + error.output, target: buildType, isSimulator: isSimulators)
+            po(tip: "【\(project.workSpaceType.projectName())】.\(buildType.ext()) Build失败，详情(\(path))",type: .error)
+            return nil
         }
         
     }

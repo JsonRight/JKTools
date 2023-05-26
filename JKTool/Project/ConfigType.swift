@@ -16,8 +16,8 @@ public enum LibraryOptions: String {
 
 public enum SdkType: String {
     case Simulator, RealMachine
-    init(_ includedSimulators: Bool?) {
-        switch includedSimulators {
+    init(_ isSimulators: Bool?) {
+        switch isSimulators {
         case true:
             self = .Simulator
         default:
