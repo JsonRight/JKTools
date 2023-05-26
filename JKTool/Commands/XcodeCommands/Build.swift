@@ -219,9 +219,14 @@ extension JKTool.Build {
                 
                 for target in project.targets {
                     
-                    let needBuild = tryCopyCache(project: project, buildType: target, cachePath: cachePath, copyPath: copyPath)
                     
-                    guard needBuild else { continue }
+                    if options.cache == false {
+                        po(tip: "【\(project.workSpaceType.projectName())】.\(target.ext(options.useXcframework)) 不使用缓存，需重新编译！",type: .tip)
+                    } else {
+                        let needBuild = tryCopyCache(project: project, buildType: target, cachePath: cachePath, copyPath: copyPath)
+                        
+                        guard needBuild else { continue }
+                    }
                     
                     let realMachine = build(project: project, buildType: target, isSimulators: false)
                     
@@ -250,11 +255,6 @@ extension JKTool.Build {
     
     func tryCopyCache(project: Project, buildType: BuildType, cachePath: String, copyPath: String?) -> Bool {
         let date = Date.init().timeIntervalSince1970
-
-        if options.cache == false {
-            po(tip: "【\(project.workSpaceType.projectName())】.\(buildType.ext(options.useXcframework)) 不使用缓存，需重新编译！",type: .tip)
-            return true
-        }
         
         if !FileManager.default.fileExists(atPath: "\(cachePath)/\(buildType.libName()).\(buildType.ext(options.useXcframework))") {
             po(tip: "【\(project.workSpaceType.projectName())】.\(buildType.ext(options.useXcframework)) 缓存不可用，需重新编译！",type: .tip)
@@ -305,6 +305,7 @@ extension JKTool.Build {
             
             _ = project.writeLog(log: realMachine, target: buildType, isSimulator: isSimulators)
             po(tip: "【\(project.workSpaceType.projectName())】.\(buildType.ext()) build成功[\(String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")]",type: .tip)
+            
             return realMachine
         } catch {
             let error = error as! ShellOutError
