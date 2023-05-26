@@ -59,7 +59,7 @@ extension JKTool {
                 po(tip:  error.message + error.output,type: .error)
             }
             
-            po(tip: "======Archive项目完成[\(String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")]======")
+            po(tip: "======Archive项目完成[\(GlobalConstants.duration(to: date) + " s")]======")
             
             if export {
                 JKTool.Export.main(["--configuration","\(configuration)","--scheme","\(scheme)","--config-path","\(configPath)","--path","\(project.directoryPath)"])

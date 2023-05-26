@@ -40,7 +40,7 @@ extension JKTool.Git {
                             po(tip: "【\(module.name)】开始执行：git clone")
                             let date = Date.init().timeIntervalSince1970
                             try shellOut(to: .gitClone(url: module.url, to: modulePath, branch: module.branch))
-                            po(tip: "【\(module.name)】clone成功[\(String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")]")
+                            po(tip: "【\(module.name)】clone成功[\(GlobalConstants.duration(to: date) + " s")]")
                             cloneHistory.append(module.name)
                         } catch {
                             let error = error as! ShellOutError
@@ -95,7 +95,7 @@ extension JKTool.Git {
                     }
                 }
             }
-            po(tip: "======clone子模块完成[\(String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")]======")
+            po(tip: "======clone子模块完成[\(GlobalConstants.duration(to: date) + " s")]======")
         }
     }
 }

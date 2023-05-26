@@ -65,7 +65,7 @@ extension JKTool.Upload {
                 let error = error as! ShellOutError
                 po(tip:  error.message + error.output,type: .error)
             }
-            po(tip: "======Upload项目完成[\(String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")]======")
+            po(tip: "======Upload项目完成[\(GlobalConstants.duration(to: date) + " s")]======")
         }
     }
     struct ApiAuth: ParsableCommand {
@@ -120,7 +120,7 @@ extension JKTool.Upload {
                 let error = error as! ShellOutError
                 po(tip:  error.message + error.output,type: .error)
             }
-            po(tip: "======Upload项目完成[\(String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")]======")
+            po(tip: "======Upload项目完成[\(GlobalConstants.duration(to: date) + " s")]======")
         }
     }
 }

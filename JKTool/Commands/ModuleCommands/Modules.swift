@@ -131,7 +131,7 @@ extension JKTool.Modules {
                     po(tip: "【\(destinationForPath(path: path))】开始执行：git clone")
                     let date = Date.init().timeIntervalSince1970
                     try shellOut(to: .gitClone(url: url, to: path, branch: branch))
-                    po(tip:"【\(destinationForPath(path: path))】clone成功[\(String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")]")
+                    po(tip:"【\(destinationForPath(path: path))】clone成功[\(GlobalConstants.duration(to: date) + " s")]")
                 } catch {
                     let error = error as! ShellOutError
                     po(tip:  error.message + error.output,type: .error)
@@ -160,7 +160,7 @@ extension JKTool.Modules {
             
             JKTool.Modules.Update.main(args)
             
-            po(tip: "======clone项目完成[\(String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")]======")
+            po(tip: "======clone项目完成[\(GlobalConstants.duration(to: date) + " s")]======")
         }
     }
 }

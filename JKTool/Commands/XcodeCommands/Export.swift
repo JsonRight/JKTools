@@ -79,7 +79,7 @@ extension JKTool {
                 let error = error as! ShellOutError
                 po(tip:  error.message + error.output,type: .error)
             }
-            po(tip: "======Export IPA 完成[\(String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")]======")
+            po(tip: "======Export IPA 完成[\(GlobalConstants.duration(to: date) + " s")]======")
         }
     }
 }

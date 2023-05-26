@@ -44,5 +44,18 @@ struct GlobalConstants {
         return raw
     }
     
+    static func durationFormat(_ duration: TimeInterval) ->String {
+        let formatter = DateComponentsFormatter()
+        formatter.unitsStyle = .positional
+        formatter.allowedUnits = [.hour, .minute, .second]
+        formatter.zeroFormattingBehavior = .pad
+        let timeString = formatter.string(from: duration)
+        return timeString ?? "00:00:00"
+    }
+    
+    static func duration(to history: TimeInterval) ->String {
+        return durationFormat(Date.init().timeIntervalSince1970 - history)
+    }
+    
     private init() {}
 }

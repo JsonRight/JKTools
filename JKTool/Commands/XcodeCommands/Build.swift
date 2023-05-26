@@ -146,7 +146,7 @@ extension JKTool {
                 
                 run(subProject)
             }
-            po(tip: "======build项目完成[\(String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")]======")
+            po(tip: "======build项目完成[\(GlobalConstants.duration(to: date) + " s")]======")
         }
     }
 }
@@ -174,7 +174,7 @@ extension JKTool.Build {
                     _ = try? shellOut(to: .createSymlink(to: project.rootProject.checkoutsPath + "/" + moduleName, at: project.buildsPath))
                 }
             }
-            po(tip:"【\(project.workSpaceType.projectName())】刷新链接库[\(String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")]")
+            po(tip:"【\(project.workSpaceType.projectName())】刷新链接库[\(GlobalConstants.duration(to: date) + " s")]")
         }
         
         
@@ -250,7 +250,7 @@ extension JKTool.Build {
             
         }
         
-        po(tip:"【\(project.workSpaceType.projectName())】build完成[\(String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")]")
+        po(tip:"【\(project.workSpaceType.projectName())】build完成[\(GlobalConstants.duration(to: date) + " s")]")
     }
     
     func tryCopyCache(project: Project, buildType: BuildType, cachePath: String, copyPath: String?) -> Bool {
@@ -279,7 +279,7 @@ extension JKTool.Build {
                 break
             }
             
-            po(tip: "【\(project.workSpaceType.projectName())】.\(buildType.ext(options.useXcframework)) 缓存Copy成功[\(String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")]",type: .tip)
+            po(tip: "【\(project.workSpaceType.projectName())】.\(buildType.ext(options.useXcframework)) 缓存Copy成功[\(GlobalConstants.duration(to: date) + " s")]",type: .tip)
             return false
             
         } catch {
@@ -301,7 +301,7 @@ extension JKTool.Build {
             let realMachine = try shellOut(to:.build(scheme: buildType.name(), isWorkspace: project.workSpaceType.isWorkSpace(), projectName: project.workSpaceType.entrance(), projectPath: project.directoryPath, configuration: configuration, sdk: sdk, isSimulators: false), at: project.directoryPath)
             
             _ = project.writeLog(log: realMachine, target: buildType, isSimulator: isSimulators)
-            po(tip: "【\(project.workSpaceType.projectName())】.\(buildType.ext()) build成功[\(String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")]",type: .tip)
+            po(tip: "【\(project.workSpaceType.projectName())】.\(buildType.ext()) build成功[\(GlobalConstants.duration(to: date) + " s")]",type: .tip)
             
             return realMachine
         } catch {
@@ -346,7 +346,7 @@ extension JKTool.Build {
             _ = try? shellOut(to: .staticMerge(source: "\(cachePath)/\(buildType.description)", otherSourcePath: [simulatorsPath]))
         }
         
-        po(tip: "【\(project.workSpaceType.projectName())】.\(buildType.ext()) 缓存构建成功[\(String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")]",type: .tip)
+        po(tip: "【\(project.workSpaceType.projectName())】.\(buildType.ext()) 缓存构建成功[\(GlobalConstants.duration(to: date) + " s")]",type: .tip)
     }
     
     func cacheFramework(project: Project, buildType: BuildType, cachePath: String, buildResult: (realMachine: String?, simulators:String?)) {
@@ -378,7 +378,7 @@ extension JKTool.Build {
                 _ = try? shellOut(to: .copyFolder(from: realMachinePath, to: cachePath))
             }
         }
-        po(tip: "【\(project.workSpaceType.projectName())】.\(buildType.ext()) 缓存构建成功[\(String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")]",type: .tip)
+        po(tip: "【\(project.workSpaceType.projectName())】.\(buildType.ext()) 缓存构建成功[\(GlobalConstants.duration(to: date) + " s")]",type: .tip)
     }
     
     func cacheBundle(project: Project, buildType: BuildType, cachePath: String, buildResult: (realMachine: String?, simulators:String?)) {
@@ -390,7 +390,7 @@ extension JKTool.Build {
         
         _ = try? shellOut(to: .copyFolder(from: realMachinePath, to: cachePath))
         
-        po(tip: "【\(project.workSpaceType.projectName())】.\(buildType.ext()) 缓存构建成功[\(String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")]",type: .tip)
+        po(tip: "【\(project.workSpaceType.projectName())】.\(buildType.ext()) 缓存构建成功[\(GlobalConstants.duration(to: date) + " s")]",type: .tip)
     }
 }
 
@@ -427,7 +427,7 @@ extension JKTool.Build {
                 
                 run(subProject)
             }
-            po(tip: "======Clean项目完成[\(String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")]======")
+            po(tip: "======Clean项目完成[\(GlobalConstants.duration(to: date) + " s")]======")
         }
     }
 }
@@ -441,7 +441,7 @@ extension JKTool.Build.Clean {
         }
         _ = try? shellOut(to: .removeFolder(from: project.buildPath))
         
-        po(tip:"【\(project.workSpaceType.projectName())】Clean完成[\(String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")]")
+        po(tip:"【\(project.workSpaceType.projectName())】Clean完成[\(GlobalConstants.duration(to: date) + " s")]")
     }
 }
 
@@ -516,7 +516,7 @@ extension JKTool {
                 default: break
             }
             
-            po(tip: "======build项目完成[\(String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")]======")
+            po(tip: "======build项目完成[\(GlobalConstants.duration(to: date) + " s")]======")
         }
     }
 }
@@ -562,7 +562,7 @@ extension JKTool.Build {
                 
                 _ = try? shellOut(to: .removeFolder(from: project.buildPath + "/Universal/"))
                 
-                po(tip:"【\(target)】clean完成[\(String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")]")
+                po(tip:"【\(target)】clean完成[\(GlobalConstants.duration(to: date) + " s")]")
             }
             
             guard let project = Project.project(directoryPath: path ?? FileManager.default.currentDirectoryPath) else {
@@ -590,7 +590,7 @@ extension JKTool.Build {
                 
             }
             
-            po(tip: "======Clean 项目完成[\(String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")]======")
+            po(tip: "======Clean 项目完成[\(GlobalConstants.duration(to: date) + " s")]======")
         }
     }
 
@@ -738,7 +738,7 @@ extension JKTool.Build {
                     
                 }
                 
-                po(tip:"【\(target)】build完成[\(String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")]")
+                po(tip:"【\(target)】build完成[\(GlobalConstants.duration(to: date) + " s")]")
             }
             
             
@@ -778,7 +778,7 @@ extension JKTool.Build {
                     let error = error as! ShellOutError
                     po(tip: "【\(target)】build.sh run error：\n" + error.message + error.output,type: .error)
                 }
-                po(tip:"【\(target)】build完成[\(String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")]")
+                po(tip:"【\(target)】build完成[\(GlobalConstants.duration(to: date) + " s")]")
                 return
             }
             
@@ -926,7 +926,7 @@ extension JKTool.Build {
                     
                 }
                 
-                po(tip:"【\(target)】build完成[\(String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")]")
+                po(tip:"【\(target)】build完成[\(GlobalConstants.duration(to: date) + " s")]")
             }
             
             guard let project = Project.project(directoryPath: options.path ?? FileManager.default.currentDirectoryPath) else {
@@ -965,7 +965,7 @@ extension JKTool.Build {
                     let error = error as! ShellOutError
                     po(tip: "【\(target)】build.sh run error：\n" + error.message + error.output,type: .error)
                 }
-                po(tip:"【\(target)】build完成[\(String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")]")
+                po(tip:"【\(target)】build完成[\(GlobalConstants.duration(to: date) + " s")]")
                 return
             }
             
@@ -1113,7 +1113,7 @@ extension JKTool.Build {
                     }
                     
                 }
-                po(tip:"【\(target)】build完成[\(String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")]")
+                po(tip:"【\(target)】build完成[\(GlobalConstants.duration(to: date) + " s")]")
             }
             
             guard let project = Project.project(directoryPath: options.path ?? FileManager.default.currentDirectoryPath) else {
@@ -1152,7 +1152,7 @@ extension JKTool.Build {
                     let error = error as! ShellOutError
                     po(tip: "【\(target)】build.sh run error：\n" + error.message + error.output,type: .error)
                 }
-                po(tip:"【\(target)】build完成[\(String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")]")
+                po(tip:"【\(target)】build完成[\(GlobalConstants.duration(to: date) + " s")]")
                 return
             }
             
@@ -1207,7 +1207,7 @@ extension JKTool.Build {
                     po(tip:"【\(target)】未执行任何操作，请检查是否符合工程结构",type: .warning)
                 }
                 
-                po(tip:"【\(target)】createSymlink完成[\(String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")]")
+                po(tip:"【\(target)】createSymlink完成[\(GlobalConstants.duration(to: date) + " s")]")
             }
             
             guard let project = Project.project(directoryPath: options.path ?? FileManager.default.currentDirectoryPath) else {
@@ -1246,7 +1246,7 @@ extension JKTool.Build {
                     let error = error as! ShellOutError
                     po(tip: "【\(target)】build.sh run error：\n" + error.message + error.output,type: .error)
                 }
-                po(tip:"【\(target)】build完成[\(String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")]")
+                po(tip:"【\(target)】build完成[\(GlobalConstants.duration(to: date) + " s")]")
                 return
             }
             
