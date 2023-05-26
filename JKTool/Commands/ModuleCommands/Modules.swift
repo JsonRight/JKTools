@@ -114,7 +114,7 @@ extension JKTool.Modules {
             let date = Date.init().timeIntervalSince1970
             let path = path ?? FileManager.default.currentDirectoryPath
             let fileList = FileManager.default.getFileList(directoryPath: path)
-            let isEmpty = fileList?.isEmpty
+            let isEmpty = fileList?.isEmpty ?? true
             
             if isEmpty == true || force == true {
                 if let fileList = fileList {
