@@ -446,7 +446,7 @@ extension JKTool.Build.Clean {
         if project != project.rootProject {
             _ = try? shellOut(to: .removeFolder(from: project.rootProject.buildsPath + "/" + project.workSpaceType.projectName()))
         }
-        _ = try? shellOut(to: .removeFolder(from: project.buildPath + "/Universal/"))
+        _ = try? shellOut(to: .removeFolder(from: project.buildPath))
         
         po(tip:"【\(project.workSpaceType.projectName())】Clean完成[\(String(format: "%.2f", Date.init().timeIntervalSince1970-date) + "s")]")
     }
