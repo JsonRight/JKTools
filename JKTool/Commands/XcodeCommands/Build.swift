@@ -404,9 +404,9 @@ extension JKTool.Build {
 extension JKTool.Build {
     struct Clean: ParsableCommand {
         static var configuration = CommandConfiguration(
-            commandName: "build",
+            commandName: "clean",
             _superCommandName: "JKTool",
-            abstract: "build部分命令对于固定工程格式封装",
+            abstract: "清理缓存",
             version: "1.0.0")
         
         @Option(name: .shortAndLong, help: "执行路径")
