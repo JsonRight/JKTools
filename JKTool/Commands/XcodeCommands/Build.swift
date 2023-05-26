@@ -298,7 +298,10 @@ extension JKTool.Build {
 //           buildType.isBundle() == false {
 //            _ = try? shellOut(to: .clean(target: buildType.name(), isWorkspace: project.workSpaceType.isWorkSpace(), projectName: project.workSpaceType.entrance(), projectPath: project.directoryPath, configuration: configuration, sdk: sdk, isSimulators: true), at: project.directoryPath)
 //        }
-        guard isSimulators == false, buildType.isBundle() == false else { return nil }
+        
+        if buildType.isBundle() == true && isSimulators == true {
+            return nil
+        }
         
         do {
             let realMachine = try shellOut(to:.build(scheme: buildType.name(), isWorkspace: project.workSpaceType.isWorkSpace(), projectName: project.workSpaceType.entrance(), projectPath: project.directoryPath, configuration: configuration, sdk: sdk, isSimulators: false), at: project.directoryPath)
