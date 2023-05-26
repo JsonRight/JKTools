@@ -57,5 +57,7 @@ struct GlobalConstants {
         return durationFormat(Date.init().timeIntervalSince1970 - history)
     }
     
+    static var cpu: Int = ProcessInfo.processInfo.activeProcessorCount
+    
     private init() {}
 }

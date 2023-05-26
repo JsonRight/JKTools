@@ -17,14 +17,14 @@ extension ShellOutCommand {
     
     static func build(scheme:String, isWorkspace:Bool,projectName: String, projectPath:String, configuration: String, sdk: String, isSimulators: Bool?) -> ShellOutCommand {
         
-        let shell = "xcodebuild \(isWorkspace ? "-workspace" : "-project") \(projectName) -scheme \(scheme) -configuration \(configuration) -sdk \(Platform(sdk).sdk(SdkType(isSimulators))) -UseModernBuildSystem=YES BUILD_LIBRARIES_FOR_DISTRIBUTION=YES -parallelizeTargets -jobs \(ProcessInfo.processInfo.activeProcessorCount) -verbose clean build"
+        let shell = "xcodebuild \(isWorkspace ? "-workspace" : "-project") \(projectName) -scheme \(scheme) -configuration \(configuration) -sdk \(Platform(sdk).sdk(SdkType(isSimulators))) -UseModernBuildSystem=YES BUILD_LIBRARIES_FOR_DISTRIBUTION=YES -parallelizeTargets -jobs \(GlobalConstants.cpu) -verbose clean build"
         return ShellOutCommand(string:shell)
     }
     
     static func archive(scheme:String, isWorkspace:Bool,projectName: String, buildPath:String,configuration:String, sdk: String) -> ShellOutCommand {
         
         var shell = "xcodebuild clean \(isWorkspace ? "-workspace" : "-project") \(projectName) -scheme \(scheme)"
-        shell.connected(andCommand: "xcodebuild archive \(isWorkspace ? "-workspace" : "-project") \(projectName) -scheme \(scheme) -configuration \(configuration) -parallelizeTargets -jobs \(ProcessInfo.processInfo.activeProcessorCount)")
+        shell.connected(andCommand: "xcodebuild archive \(isWorkspace ? "-workspace" : "-project") \(projectName) -scheme \(scheme) -configuration \(configuration) -parallelizeTargets -jobs \(GlobalConstants.cpu)")
         shell.connected(spaceCommand: "-archivePath \(buildPath)/\(configuration)/\(scheme).xcarchive")
         return ShellOutCommand(string: shell)
     }
