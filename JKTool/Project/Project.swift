@@ -449,11 +449,12 @@ extension Project {
     }
     
     static func project(directoryPath: String = FileManager.default.currentDirectoryPath) -> Project?{
+        
         let exist = FileManager.default.fileExists(atPath: directoryPath)
         if !exist {
             return nil
         }
-        return Project(directoryPath: directoryPath)
+        return Project(directoryPath: directoryPath.convertRelativePath())
     }
 }
 
