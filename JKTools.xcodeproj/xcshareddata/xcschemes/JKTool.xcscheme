@@ -37,7 +37,7 @@
       disableMainThreadChecker = "YES"
       launchStyle = "0"
       useCustomWorkingDirectory = "YES"
-      customWorkingDirectory = "/Users/jiangkui/Desktop/Demo/JKAppKit"
+      customWorkingDirectory = "/Users/jiangkui/Desktop/&#x8fd8;&#x5457;App/hb_module/LBKShell"
       ignoresPersistentStateOnLaunch = "NO"
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
@@ -58,8 +58,8 @@
             isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
-            argument = "module update"
-            isEnabled = "NO">
+            argument = "module update --submodule true"
+            isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "git merge --branch origin/feature/jiangkui/hb_ios_16 --recursive true"
@@ -91,7 +91,7 @@
          </CommandLineArgument>
          <CommandLineArgument
             argument = "build"
-            isEnabled = "YES">
+            isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "help update"

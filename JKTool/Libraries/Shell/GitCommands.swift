@@ -146,8 +146,7 @@ extension ShellOutCommand {
     
     /// Run a git submodule add
     static func gitSubmoduleAdd(name: String, url: String, path: String, branch: String? = nil) -> ShellOutCommand {
-        var command = "git submodule add --name \(name) \(url) \(path) --force"
-        command.append(" -b \(branch ?? "master")")
+        let command = "git submodule add -b \(branch ?? "master") -f --name \(name) \(url) \(path)"
         return ShellOutCommand(string: command)
     }
     
