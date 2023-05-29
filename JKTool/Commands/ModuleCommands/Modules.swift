@@ -51,9 +51,7 @@ extension JKTool.Modules {
             }
             
             var args = [String]()
-            if let force = force {
-                args.append(contentsOf: ["--force",String(force)])
-            }
+            
             if let path = path {
                 args.append(contentsOf: ["--path",String(path)])
             }
@@ -70,6 +68,9 @@ extension JKTool.Modules {
                 
                 JKTool.Git.SubModule.main(args)
             } else {
+                if let force = force {
+                    args.append(contentsOf: ["--force",String(force)])
+                }
                 JKTool.Git.Clone.main(args)
             }
         }
