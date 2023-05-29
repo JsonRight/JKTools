@@ -199,9 +199,9 @@ extension JKTool.Build {
                 .appendingBySeparator(sdk)
                 .appendingBySeparator(xcodeVersion)
                 .appendingBySeparator(SdkType(options.includedSimulators).rawValue)
-            let cachePath = "\(project.buildPath)/Universal/\(currentVersion)"
             
             let isRootProject = (project == project.rootProject)
+            let cachePath = isRootProject ? "\(project.buildPath)/Universal/Products":"\(project.buildPath)/Universal/\(currentVersion)"
             let copyPath = isRootProject ? options.copyPath: (options.copyPath ?? project.rootProject.buildsPath)
             
             if let copyPath = copyPath {

@@ -51,6 +51,7 @@ extension JKTool {
                      "apiIssuerID": "String",
                      "authKeyPath": "authKeyPath路径"
                    },
+                   "needConfigurationInProductsPath": "是否在产物路径中加入环境参数"
                    "ipaPath": "ipa路径"
                  }
                }

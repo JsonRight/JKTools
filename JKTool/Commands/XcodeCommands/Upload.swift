@@ -57,10 +57,31 @@ extension JKTool.Upload {
                 return po(tip: "请检查配置文件格式是否正确！",type: .error)
             }
             
-            po(tip: "======Upload项目开始======")
             let date = Date.init().timeIntervalSince1970
+            let exportPath: String
+            
+            if let ipaPath = configs.uploadConfig.ipaPath {
+                exportPath = ipaPath
+                po(tip: "【\(scheme)】配置文件中已指定上传文件(\(exportPath))")
+            } else {
+                exportPath = configs.needConfigurationInProductsPath == true ? "\(project.buildPath)/\(configuration)/\(scheme).\(Platform(configs.sdk).fileExtension())": "\(project.buildPath)/\(scheme).\(Platform(configs.sdk).fileExtension())"
+                po(tip: "【\(scheme)】前往项目目录查找上传文件(\(exportPath))")
+            }
+            
+            guard FileManager.default.fileExists(atPath: exportPath) else {
+                return po(tip: "【\(scheme)】没有找到可上传的文件(\(exportPath))",type: .error)
+            }
+            
+            guard let username = configs.uploadConfig.accountAuthConfig?.username,
+            let password = configs.uploadConfig.accountAuthConfig?.password else {
+                return po(tip: "【\(scheme)】配置文件中未指定(uploadConfig.accountAuthConfig.username/password)",type: .error)
+            }
+            
+            po(tip: "======Upload项目开始======")
+            
             do {
-                try shellOut(to: .upload(scheme: scheme, buildPath: project.buildPath, configuration: configuration,fileExtension: Platform(configs.sdk).fileExtension(), path: configs.uploadConfig.ipaPath, username: configs.uploadConfig.accountAuthConfig!.username, password: configs.uploadConfig.accountAuthConfig!.password))
+                try shellOut(to: .upload(scheme: scheme, path: exportPath, username: username, password: password))
+                
             } catch  {
                 let error = error as! ShellOutError
                 po(tip:  error.message + error.output,type: .error)
@@ -105,17 +126,41 @@ extension JKTool.Upload {
                 return po(tip: "请检查配置文件格式是否正确！",type: .error)
             }
             
-            po(tip: "======Upload项目开始======")
             let date = Date.init().timeIntervalSince1970
             
+            let exportPath: String
+            
+            if let ipaPath = configs.uploadConfig.ipaPath {
+                exportPath = ipaPath
+                po(tip: "【\(scheme)】配置中已指定上传文件(\(exportPath))")
+            } else {
+                exportPath = configs.needConfigurationInProductsPath == true ? "\(project.buildPath)/\(configuration)/\(scheme).\(Platform(configs.sdk).fileExtension())": "\(project.buildPath)/\(scheme).\(Platform(configs.sdk).fileExtension())"
+                po(tip: "【\(scheme)】前往项目目录查找上传文件(\(exportPath))")
+            }
+            
+            guard FileManager.default.fileExists(atPath: exportPath) else {
+                return po(tip: "【\(scheme)】没有找到可上传的文件(\(exportPath))",type: .error)
+            }
+            
+            guard let apiKey = configs.uploadConfig.apiAuthConfig?.apiKey,
+            let apiIssuerID = configs.uploadConfig.apiAuthConfig?.apiIssuerID,
+            let authKeyPath = configs.uploadConfig.apiAuthConfig?.authKeyPath else {
+                return po(tip: "【\(scheme)】配置文件中未指定(uploadConfig.apiAuthConfig.apiKey/apiIssuerID/authKeyPath)",type: .error)
+            }
+            
+            po(tip: "======Upload项目开始======")
+            
+            
             do {
-                try shellOut(to: .installApiP8(apiKey: configs.uploadConfig.apiAuthConfig!.apiKey, authKeyPath: configs.uploadConfig.apiAuthConfig!.authKeyPath))
+                try shellOut(to: .installApiP8(apiKey: apiKey, authKeyPath: authKeyPath))
             } catch  {
                 let error = error as! ShellOutError
                 po(tip:  error.message + error.output,type: .error)
             }
             do {
-                try shellOut(to: .upload(scheme: scheme, buildPath: project.buildPath, configuration: configuration,fileExtension: Platform(configs.sdk).fileExtension(), path: configs.uploadConfig.ipaPath, apiKey: configs.uploadConfig.apiAuthConfig!.apiKey, apiIssuerID: configs.uploadConfig.apiAuthConfig!.apiIssuerID))
+                
+                try shellOut(to: .upload(scheme: scheme, path: exportPath, apiKey: apiKey, apiIssuerID: apiIssuerID))
+                
             } catch  {
                 let error = error as! ShellOutError
                 po(tip:  error.message + error.output,type: .error)

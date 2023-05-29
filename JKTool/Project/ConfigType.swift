@@ -193,8 +193,8 @@ public enum Platform: String {
 public struct ProjectConfigModel: Decodable {
     
     struct SaveConfigModel:Decodable {
-        var path: String
-        
+        var path: String?
+        var allFiles: Bool?
     }
 
     struct ExportConfigModel:Decodable {
@@ -248,6 +248,8 @@ public struct ProjectConfigModel: Decodable {
     }
     
     var sdk: String
+    
+    var needConfigurationInProductsPath: Bool?
     
     var certificateConfig: CertificateConfigModel
     

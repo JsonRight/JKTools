@@ -21,45 +21,42 @@ extension ShellOutCommand {
         return ShellOutCommand(string:shell)
     }
     
-    static func archive(scheme:String, isWorkspace:Bool,projectName: String, buildPath:String,configuration:String, sdk: String) -> ShellOutCommand {
-        
-        var shell = "xcodebuild clean \(isWorkspace ? "-workspace" : "-project") \(projectName) -scheme \(scheme)"
-        shell.connected(andCommand: "xcodebuild archive \(isWorkspace ? "-workspace" : "-project") \(projectName) -scheme \(scheme) -configuration \(configuration) -parallelizeTargets -jobs \(GlobalConstants.cpu)")
-        shell.connected(spaceCommand: "-archivePath \(buildPath)/\(configuration)/\(scheme).xcarchive")
+    static func archive(scheme:String, isWorkspace:Bool,projectName: String, configuration:String, sdk: String, archivePath: String) -> ShellOutCommand {
+        let shell = "xcodebuild \(isWorkspace ? "-workspace" : "-project") \(projectName) -scheme \(scheme) -configuration \(configuration) -sdk \(Platform(sdk).sdk(.RealMachine)) -archivePath \(archivePath) -parallelizeTargets -jobs \(GlobalConstants.cpu) clean archive"
         return ShellOutCommand(string: shell)
     }
     
-    static func export(scheme:String, buildPath:String,configuration:String, export:String, fileExtension: String,toSavePath:String?) -> ShellOutCommand {
-        var shell = "".folderExisting(at: "\(buildPath)/\(configuration)/\(scheme).xcarchive")
-        shell.connected(andCommand: "xcodebuild -exportArchive -archivePath \(buildPath)/\(configuration)/\(scheme).xcarchive -exportPath \(buildPath)/\(configuration) -exportOptionsPlist \(export)")
+    static func export(scheme: String, archivePath: String, export:String,exportPath: String, fileExtension: String ,toSavePath:String?, allFiles: Bool?) -> ShellOutCommand {
+        var shell = "xcodebuild -exportArchive -archivePath \(archivePath) -exportPath \(exportPath) -exportOptionsPlist \(export)"
         if let toSavePath = toSavePath,!toSavePath.isEmpty {
+            
             shell.connected(andCommand: "mkdir -p \(toSavePath)")
-            shell.connected(andCommand: "rm -rf \(toSavePath)/\(scheme).\(fileExtension)")
-            shell.connected(andCommand: "cp -R \(buildPath)/\(configuration)/\(scheme).\(fileExtension) \(toSavePath)")
+            if allFiles == true {
+                shell.connected(andCommand: "cp -rf \(exportPath)/* \(toSavePath)")
+            } else {
+                shell.connected(andCommand: "rm -rf \(toSavePath)/\(scheme).\(fileExtension)")
+                shell.connected(andCommand: "cp -R \(exportPath)/\(scheme).\(fileExtension) \(toSavePath)")
+            }
+            
         }
         return ShellOutCommand(string: shell)
     }
     
-    static func upload(scheme:String, buildPath:String,configuration:String, fileExtension: String, path:String?, username: String, password: String) -> ShellOutCommand {
-        let path = path ?? "\(buildPath)/\(configuration)/\(scheme).\(fileExtension)"
-        var shell = "".fileExisting(at: path)
-        shell.connected(andCommand: "xcrun altool --validate-app -f \(path) -u \(username) -p \(password) --output-format xml")
+    static func upload(scheme:String, path:String, username: String, password: String) -> ShellOutCommand {
+        
+        var shell = "xcrun altool --validate-app -f \(path) -u \(username) -p \(password) --output-format xml"
         shell.connected(andCommand: "xcrun altool --upload-app -f \(path) -u \(username) -p \(password) --output-format xml")
         return ShellOutCommand(string: shell)
     }
     
-    static func upload(scheme:String, buildPath:String, configuration:String, fileExtension: String, path:String?, apiKey: String, apiIssuerID: String) -> ShellOutCommand {
-        let path = path ?? "\(buildPath)/\(configuration)/\(scheme).\(fileExtension)"
-        var shell = "".fileExisting(at: path)
-        shell.connected(andCommand: "xcrun altool --validate-app -f \(path) --apiKey \(apiKey) --apiIssuer \(apiIssuerID) --output-format xml")
+    static func upload(scheme:String, path:String, apiKey: String, apiIssuerID: String) -> ShellOutCommand {
+        var shell = "xcrun altool --validate-app -f \(path) --apiKey \(apiKey) --apiIssuer \(apiIssuerID) --output-format xml"
         shell.connected(andCommand: "xcrun altool --upload-app --apiKey \(apiKey) --apiIssuer \(apiIssuerID) --output-format xml")
         return ShellOutCommand(string: shell)
     }
     
-    static func upload(scheme:String, buildPath:String,configuration:String, export:String) -> ShellOutCommand {
-        var shell = "".fileExisting(at: "\(buildPath)/\(configuration)/\(scheme).xcarchive")
-        shell.fileExisted(at: export)
-        shell.connected(andCommand: "xcodebuild -exportArchive -archivePath \(buildPath)/\(configuration)/\(scheme).xcarchive -exportOptionsPlist \(export)")
+    static func upload(archivePath: String, export:String) -> ShellOutCommand {
+        let shell = "xcodebuild -exportArchive -archivePath \(archivePath) -exportOptionsPlist \(export)"
         
         return ShellOutCommand(string: shell)
     }
