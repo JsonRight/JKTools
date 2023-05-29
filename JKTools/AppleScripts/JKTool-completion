@@ -11,7 +11,7 @@ _JKTool()
         module)
             case "${COMP_WORDS[2]}" in
                 update)
-                    opts="--force --submodule --prune --remote --branch --path"
+                    opts="--force --submodule --prune --remote --path"
                     ;;
                 init)
                     opts="--url --path --force --submodule --prune --remote --branch"
