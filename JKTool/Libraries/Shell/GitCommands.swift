@@ -158,12 +158,28 @@ extension ShellOutCommand {
 
     /// Checkout a given git branch
     static func gitCheckout(branch: String, force: Bool = false) -> ShellOutCommand {
-        var command = "git checkout"
+        var command = "git switch \(branch) || git checkout"
         command.append(argument: branch)
         if force {
             command.append(" --force")
         }
 
+        return ShellOutCommand(string: command)
+    }
+    
+    /// Checkout a given git branch
+    static func gitSwitch(branch: String) -> ShellOutCommand {
+        let command = "git switch \(branch)"
+        return ShellOutCommand(string: command)
+    }
+    
+    /// Checkout a given git branch
+    static func gitBranch(branch: String?) -> ShellOutCommand {
+        
+        var command = "git branch"
+        if let branch = branch {
+            command.append(" | grep \(branch)")
+        }
         return ShellOutCommand(string: command)
     }
     

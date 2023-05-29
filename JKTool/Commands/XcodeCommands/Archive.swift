@@ -55,7 +55,7 @@ extension JKTool {
             let archivePath = configs.needConfigurationInProductsPath == true ? "\(project.buildPath)/\(configuration)/\(scheme).xcarchive": "\(project.buildPath)/\(scheme).xcarchive"
             
             do {
-                try shellOut(to: .archive(scheme: scheme, isWorkspace: project.workSpaceType.isWorkSpace(), projectName: project.workSpaceType.projectName(), configuration: configuration, sdk: configs.sdk,archivePath: archivePath), at: project.directoryPath)
+                try shellOut(to: .archive(scheme: scheme, isWorkspace: project.workSpaceType.isWorkSpace(), projectName: project.workSpaceType.entrance(), configuration: configuration, sdk: configs.sdk,archivePath: archivePath), at: project.directoryPath)
             } catch  {
                 let error = error as! ShellOutError
                 po(tip:  error.message + error.output,type: .error)

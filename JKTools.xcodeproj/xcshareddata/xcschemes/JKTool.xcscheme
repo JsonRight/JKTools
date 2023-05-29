@@ -58,6 +58,10 @@
             isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
+            argument = "JKTool archive --path Loan/LBKShell --config-path ../../Configs/Loan.json --export true --scheme Loan --configuration LBK_ENV_DEV "
+            isEnabled = "YES">
+         </CommandLineArgument>
+         <CommandLineArgument
             argument = "module update --submodule true"
             isEnabled = "YES">
          </CommandLineArgument>

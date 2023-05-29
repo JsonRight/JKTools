@@ -28,6 +28,19 @@ extension JKTool.Git {
         mutating func run() {
             
             func checkout(project: Project){
+                
+                if let _ = try? shellOut(to: .gitBranch(branch: branch), at: project.directoryPath) {
+                    do {
+                        try shellOut(to: .gitSwitch(branch: branch), at: project.directoryPath)
+                        po(tip: "【\(project.workSpaceType.projectName())】Switch[\(branch)]完成", type: .tip)
+                    } catch {
+                        let error = error as! ShellOutError
+                        po(tip: "【\(project.workSpaceType.projectName())】 Switch失败\n" + error.message + error.output,type: .warning)
+                    }
+                    return
+                }
+                
+                
                 do {
                     try shellOut(to: .gitCheckout(branch: branch, force: force), at: project.directoryPath)
                     po(tip: "【\(project.workSpaceType.projectName())】Checkout[\(branch)]完成", type: .tip)
